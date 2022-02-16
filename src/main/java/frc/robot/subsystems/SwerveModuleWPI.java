@@ -22,7 +22,7 @@ import frc.robot.Constants;
 import frc.robot.util;
 import frc.robot.Constants.ModuleConstants;
 
-public class SwerveModule {
+public class SwerveModuleWPI {
   private final CANSparkMax m_driveMotor;
   private final CANSparkMax m_turningMotor;
 
@@ -52,7 +52,7 @@ public class SwerveModule {
    * @param driveMotorChannel ID for the drive motor.
    * @param turningMotorChannel ID for the turning motor.
    */
-  public SwerveModule(
+  public SwerveModuleWPI(
       int driveMotorChannel,
       int turningMotorChannel,
       int analogEncoderPort,

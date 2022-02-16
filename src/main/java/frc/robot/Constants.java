@@ -21,6 +21,7 @@ public final class Constants {
 
     public static final boolean MK4I = true;
     public static final boolean isNAVX = true;
+    public static final boolean isSDS = true;
 
     public static final int kFrontLeftDriveMotorPort = 1;
     public static final int kRearLeftDriveMotorPort = 6;
