@@ -16,7 +16,15 @@ import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
+import frc.robot.commands.RunConveyorWithEncoder;
+import frc.robot.commands.ReverseInfeedAndConveyor;
+import frc.robot.commands.RunConveyorOneBall;
+import frc.robot.commands.RunConveyorTwoBall;
+import frc.robot.commands.RunShooterMotors;
+import frc.robot.commands.RunInfeedSingulatorMotors;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.Infeed;
+import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -32,12 +40,14 @@ import java.util.List;
  */
 public class RobotContainer {
   // The robot's subsystems
-  private final DriveSubsystem m_robotDrive = new DriveSubsystem();
+  private final DriveSubsystem m_robotDrive = DriveSubsystem.get_instance();
+  private final Infeed m_infeed = Infeed.get_instance();
+  private final Shooter m_shooter = Shooter.get_instance();
 
-  // The driver's controller
-  XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
-
-  JoystickButton _a = new JoystickButton(m_driverController, XboxController.Button.kA.value);
+  // Controller Setup
+  private BeakXBoxController m_driverController = new BeakXBoxController(0);
+  private BeakXBoxController m_operatorController = new BeakXBoxController(OIConstants.kOperatorControllerPort);
+  //---
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -51,9 +61,9 @@ public class RobotContainer {
         new RunCommand(
             () ->
                 m_robotDrive.drive(
-                    util.deadband(-m_driverController.getLeftY()/2),
-                    util.deadband(-m_driverController.getLeftX()/2),
-                    util.deadband(-m_driverController.getRightX()/2),
+                    util.deadband(-m_driverController.getLeftYAxis()),
+                    util.deadband(-m_driverController.getLeftXAxis()),
+                    util.deadband(-m_driverController.getRightXAxis()),
                     true),
             m_robotDrive));
   }
@@ -65,7 +75,15 @@ public class RobotContainer {
    * {@link JoystickButton}.
    */
   private void configureButtonBindings() {
-      _a.whenPressed(new InstantCommand(() -> m_robotDrive.zeroHeading()));
+      m_driverController.start.whenPressed(new InstantCommand(() -> m_robotDrive.zeroHeading()));
+      m_operatorController.y.toggleWhenPressed(new RunInfeedSingulatorMotors());
+      m_operatorController.b.whenPressed(new RunConveyorWithEncoder());
+      m_operatorController.x.toggleWhenPressed(new RunShooterMotors());
+      m_operatorController.a.whenPressed(new RunConveyorTwoBall());
+      m_operatorController.start.toggleWhenPressed(new RunConveyorOneBall());
+      m_operatorController.right_bumper.whenPressed(new InstantCommand(() -> m_shooter.shiftShooterVbus(0, 0.02)));
+      m_operatorController.left_bumper.whenPressed(new InstantCommand(() -> m_shooter.shiftShooterVbus(0.02, 0)));
+      m_operatorController.back.toggleWhenPressed(new ReverseInfeedAndConveyor());
   }
 
   /**
