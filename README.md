@@ -1,5 +1,2 @@
-# Team 4028
-## FRC Season 2022
-
-### competition branch (main)
-this branch is for competition-ready code, NOT one-off testing and quick development
+### development branch
+This branch is for development purposes; feel free to branch off and change as needed when doing any testing or development activities.
