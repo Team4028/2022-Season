@@ -140,4 +140,9 @@ public final class Constants {
         new TrapezoidProfile.Constraints(
             kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
   }
+  public static final class VBusConstants {
+    public static double kShooterFrontVBus = 0.7;
+    public static double kShooterRatio = 1.1;
+    public static double kShooterBackVBus = kShooterRatio * kShooterFrontVBus;
+  }
 }
