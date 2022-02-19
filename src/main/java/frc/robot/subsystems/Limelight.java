@@ -83,11 +83,23 @@ public class Limelight extends SubsystemBase {
         distEst = distEstTotal / distEstIters;
         distEstTotal = 0;
         distEstIters = 0;
-        put("Distance", distEst * 12);
+        put("Distance", distEst);
       }
 
-      // EXCEL OP
-      double dist = 0.9306 * Math.pow(getArea(), -1.243);
+      /*// EXCEL OP
+      double x = getX();
+      double dist =
+        0.0069 * (Math.pow(x, 2)) -
+        0.2369 * x +
+        6.2049;
+      // Equation R^2 = 0.9956
+      // Very confident. but will probably need to use PID to
+      // always face the same way.*/
+      double targH = 84.;
+      double mountH = 3.5;
+      double mountA = 45;
+      double dist = (targH - mountH) /
+                    Math.tan(Math.toRadians(mountA + getX()));
       distEstTotal += dist;
       distEstIters++;
     }
