@@ -5,12 +5,18 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class Shooter extends SubsystemBase {
   /** Creates a new Shooter. */
   private static Shooter _instance = new Shooter();
   double limeLightDistance, shooterIndex;
-  
+  boolean fineAdjustment = false;
+
+  public void toggle() {
+    fineAdjustment = !fineAdjustment;
+  }
+
   public static Shooter getInstance() {
     return _instance;
   }
@@ -18,27 +24,26 @@ public class Shooter extends SubsystemBase {
   public Shooter() {
     shooterIndex = 6;
   }
+
   public double index() {
     return shooterIndex;
   }
- /* public double incrementIndexFine() {
-    shooterIndex = shooterIndex + 0.5;
-    return shooterIndex;*/
-  //}
-  public double incrementIndex() {
-    shooterIndex = shooterIndex + 1;
-    return shooterIndex;
-  }
- /* public double decrementIndexFine() {
-    shooterIndex = shooterIndex - 0.5;
-    return shooterIndex;*/
- // }
-  public double decrementIndex() {
-    shooterIndex = shooterIndex - 1;
-    return shooterIndex;
-  }
-  
 
+  public void incrementIndex() {
+    if (fineAdjustment) {
+      shooterIndex += Constants.kFineAdjustment;
+    } else {
+      shooterIndex += Constants.kCoarseAdjustment;
+    }
+  }
+
+  public void decrementIndex() {
+    if (fineAdjustment) {
+      shooterIndex -= Constants.kFineAdjustment;
+    } else {
+      shooterIndex -= Constants.kCoarseAdjustment;
+    }
+  }
 
   @Override
   public void periodic() {

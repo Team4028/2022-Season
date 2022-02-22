@@ -7,12 +7,12 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Shooter;
 
-public class IncrementShooterIndex extends CommandBase {
-  /** Creates a new IncrementShooterIndex. */
-  private Shooter _s = Shooter.getInstance();
-  public IncrementShooterIndex() {
-    addRequirements(_s);
+public class ToggleFineAdjustment extends CommandBase {
+  Shooter _s = Shooter.getInstance();
+  /** Creates a new ToggleFineAdjustment. */
+  public ToggleFineAdjustment() {
     // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(_s);
   }
 
   // Called when the command is initially scheduled.
@@ -22,7 +22,7 @@ public class IncrementShooterIndex extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    _s.incrementIndex();
+    _s.toggle();
   }
 
   // Called once the command ends or is interrupted.
@@ -32,6 +32,6 @@ public class IncrementShooterIndex extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return true;
+    return false;
   }
 }

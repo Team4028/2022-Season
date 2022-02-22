@@ -4,9 +4,15 @@
 
 package frc.robot;
 
+import javax.swing.plaf.basic.BasicBorders.ToggleButtonBorder;
+
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.commands.DecrementShooterIndex;
+import frc.robot.commands.IncrementShooterIndex;
+import frc.robot.commands.ToggleFineAdjustment;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.Shooter;
 import frc.robot.utilities.ShooterTable;
@@ -24,6 +30,11 @@ public class Robot extends TimedRobot {
   private Shooter _s;
   private RobotContainer m_robotContainer;
 
+  private IncrementShooterIndex _inc = new IncrementShooterIndex();
+  private DecrementShooterIndex _dec = new DecrementShooterIndex();
+  private ToggleFineAdjustment _tog = new ToggleFineAdjustment();
+
+
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -34,7 +45,7 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
     _s = Shooter.getInstance();
-    m_robotContainer.configureButtonBindings();
+    
     
   }
 
@@ -65,7 +76,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
-
+    m_robotContainer.configureButtonBindings();
     /*
      * String autoSelected = SmartDashboard.getString("Auto Selector",
      * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
@@ -82,6 +93,7 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
+    m_robotContainer.configureButtonBindings();
     _shooterTable = ShooterTable.getPrimaryTable();
     ShooterTableEntry tableOfShooter = _shooterTable.CalcShooterValues(10.) ;
     //System.out.println(tableOfShooter.ShootorFrontRPM);
@@ -102,7 +114,18 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+    m_robotContainer._LeftBump.whenPressed(_dec);
+    m_robotContainer._RightBump.whenPressed(_inc);
+    m_robotContainer._Start.whenPressed(_tog);
+    /*if (m_robotContainer._controller.getLeftBumperPressed()) {
+      _dec.schedule();
+    } else if (m_robotContainer._controller.getRightBumperPressed()) {
+      _inc.schedule();
+    }*/
+    System.out.println(_s.index());
+    SmartDashboard.putNumber("shooter Index", _s.index());
+  }
 
   @Override
   public void testInit() {

@@ -140,4 +140,7 @@ public final class Constants {
         new TrapezoidProfile.Constraints(
             kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
   }
+
+  public static final double kFineAdjustment = 0.5;
+  public static final double kCoarseAdjustment = 1.;
 }
