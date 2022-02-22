@@ -163,8 +163,8 @@ public class ShooterTable {
         // primarytable.add(new ShooterTableEntry(_indexCounter++,  42, 4400, .50));
 
 
-        primarytable.add(new ShooterTableEntry(_indexCounter, 10., 4000, 4400, 60., "10 foot example shot", false));
-        
+        primarytable.add(new ShooterTableEntry(_indexCounter, 9., 4000, 4400, 60., "9 foot example shot", false));
+        primarytable.add(new ShooterTableEntry(_indexCounter, 11., 4100, 4500, 60., "11 foot example shot", false));
         
 		return primarytable;
     }

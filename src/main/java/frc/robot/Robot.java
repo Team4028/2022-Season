@@ -8,6 +8,9 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.Shooter;
+import frc.robot.utilities.ShooterTable;
+import frc.robot.utilities.ShooterTableEntry;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -17,7 +20,8 @@ import frc.robot.subsystems.DriveSubsystem;
  */
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
-
+  private ShooterTable _shooterTable;
+  private Shooter _s;
   private RobotContainer m_robotContainer;
 
   /**
@@ -29,6 +33,9 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
+    _s = Shooter.getInstance();
+    m_robotContainer.configureButtonBindings();
+    
   }
 
   /**
@@ -74,7 +81,13 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during autonomous. */
   @Override
-  public void autonomousPeriodic() {}
+  public void autonomousPeriodic() {
+    _shooterTable = ShooterTable.getPrimaryTable();
+    ShooterTableEntry tableOfShooter = _shooterTable.CalcShooterValues(10.) ;
+    //System.out.println(tableOfShooter.ShootorFrontRPM);
+    System.out.println(_s.index());
+
+  }
 
   @Override
   public void teleopInit() {

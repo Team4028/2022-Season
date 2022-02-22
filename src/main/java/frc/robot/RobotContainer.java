@@ -16,7 +16,10 @@ import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
+import frc.robot.commands.DecrementShooterIndex;
+import frc.robot.commands.IncrementShooterIndex;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -32,8 +35,18 @@ import java.util.List;
  */
 public class RobotContainer {
   // The robot's subsystems
+  private XboxController _controller = new XboxController(0);
+  public JoystickButton _A = new JoystickButton(_controller, XboxController.Button.valueOf("kA").value);
+  public JoystickButton _B = new JoystickButton(_controller, XboxController.Button.valueOf("kB").value);
+  public JoystickButton _X = new JoystickButton(_controller, XboxController.Button.valueOf("kX").value);
+  public JoystickButton _Y = new JoystickButton(_controller, XboxController.Button.valueOf("kY").value);
+  public JoystickButton _Back = new JoystickButton(_controller, XboxController.Button.valueOf("kBack").value);
+  public JoystickButton _LeftBump = new JoystickButton(_controller, XboxController.Button.valueOf("kLeftBumper").value);
+  public JoystickButton _RightBump = new JoystickButton(_controller, XboxController.Button.valueOf("kRightBumper").value);
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
-
+  public Shooter _shootersub;
+  public DecrementShooterIndex _decCom = new DecrementShooterIndex();
+  public IncrementShooterIndex _incCom = new IncrementShooterIndex();
   // The driver's controller
   XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
 
@@ -41,6 +54,7 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+    
     // Configure the button bindings
     configureButtonBindings();
 
@@ -64,8 +78,10 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then calling passing it to a
    * {@link JoystickButton}.
    */
-  private void configureButtonBindings() {
+  public void configureButtonBindings() {
       _a.whenPressed(new InstantCommand(() -> m_robotDrive.zeroHeading()));
+      _LeftBump.whenPressed(_decCom);
+        _RightBump.whenPressed(_incCom);
   }
 
   /**
