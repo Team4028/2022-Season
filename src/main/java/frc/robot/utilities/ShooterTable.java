@@ -163,8 +163,15 @@ public class ShooterTable {
         // primarytable.add(new ShooterTableEntry(_indexCounter++,  42, 4400, .50));
 
 
-        primarytable.add(new ShooterTableEntry(_indexCounter, 9., 4000, 4400, 60., "9 foot example shot", false));
-        primarytable.add(new ShooterTableEntry(_indexCounter, 11., 4100, 4500, 60., "11 foot example shot", false));
+        // primarytable.add(new ShooterTableEntry(_indexCounter, 9., 4000, 4400, 60., "9 foot example shot", false));
+        // primarytable.add(new ShooterTableEntry(_indexCounter, 11., 4100, 4500, 60., "11 foot example shot", false));
+        primarytable.add(new ShooterTableEntry(_indexCounter, 6., 1500, 1300, 60., "6 foot example shot", false));
+        primarytable.add(new ShooterTableEntry(_indexCounter, 9., 1650, 1450, 60., "9 foot example shot", false));
+        
+
+        // 0.38 VBus + 1.4 ratio = close shot?
+
+
         
 		return primarytable;
     }
