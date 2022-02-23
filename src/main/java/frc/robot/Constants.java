@@ -160,7 +160,7 @@ public final class Constants {
     public static final double kInfeed = 0.6; // op y
     public static final double kSingulator = 0.5; // op y
 
-    public static final double kShooterFront = 0.555;//0.47; // op x
+    public static final double kShooterFront = 0.47;//0.47; // op x
     public static final double kShooterBack = 1.0 * kShooterFront; // .7 // op x
   }
 
