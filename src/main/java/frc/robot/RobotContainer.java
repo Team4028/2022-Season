@@ -19,6 +19,14 @@ import frc.robot.Constants.OIConstants;
 import frc.robot.commands.DecrementShooterIndex;
 import frc.robot.commands.IncrementShooterIndex;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.commands.RunConveyorWithEncoder;
+import frc.robot.commands.ReverseInfeedAndConveyor;
+import frc.robot.commands.RunConveyorOneBall;
+import frc.robot.commands.RunConveyorTwoBall;
+import frc.robot.commands.RunShooterMotors;
+import frc.robot.commands.ToggleFineAdjustment;
+import frc.robot.commands.RunInfeedSingulatorMotors;
+import frc.robot.subsystems.Infeed;
 import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -35,23 +43,18 @@ import java.util.List;
  */
 public class RobotContainer {
   // The robot's subsystems
-  public XboxController _controller = new XboxController(0);
-  public JoystickButton _A = new JoystickButton(_controller, XboxController.Button.valueOf("kA").value);
-  public JoystickButton _B = new JoystickButton(_controller, XboxController.Button.valueOf("kB").value);
-  public JoystickButton _X = new JoystickButton(_controller, XboxController.Button.valueOf("kX").value);
-  public JoystickButton _Y = new JoystickButton(_controller, XboxController.Button.valueOf("kY").value);
-  public JoystickButton _Back = new JoystickButton(_controller, XboxController.Button.valueOf("kBack").value);
-  public JoystickButton _LeftBump = new JoystickButton(_controller, XboxController.Button.valueOf("kLeftBumper").value);
-  public JoystickButton _RightBump = new JoystickButton(_controller, XboxController.Button.valueOf("kRightBumper").value);
-  public JoystickButton _Start = new JoystickButton(_controller, XboxController.Button.valueOf("kStart").value);
-  private final DriveSubsystem m_robotDrive = new DriveSubsystem();
-  public Shooter _shootersub = Shooter.getInstance();
+  private final DriveSubsystem m_robotDrive = DriveSubsystem.get_instance();
+  private final Infeed m_infeed = Infeed.get_instance();
+  private final Shooter m_shooter = Shooter.getInstance();
+
+  // Controller Setup
+  private BeakXBoxController m_driverController = new BeakXBoxController(OIConstants.kDriverControllerPort);
+  private BeakXBoxController m_operatorController = new BeakXBoxController(OIConstants.kOperatorControllerPort);
+  //---
+
   public DecrementShooterIndex _decCom = new DecrementShooterIndex();
   public IncrementShooterIndex _incCom = new IncrementShooterIndex();
-  // The driver's controller
-  XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
-
-  JoystickButton _a = new JoystickButton(m_driverController, XboxController.Button.kA.value);
+  public ToggleFineAdjustment _tog = new ToggleFineAdjustment();
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -66,9 +69,9 @@ public class RobotContainer {
         new RunCommand(
             () ->
                 m_robotDrive.drive(
-                    util.deadband(-m_driverController.getLeftY()/2),
-                    util.deadband(-m_driverController.getLeftX()/2),
-                    util.deadband(-m_driverController.getRightX()/2),
+                    util.deadband(-m_driverController.getLeftYAxis()),
+                    util.deadband(-m_driverController.getLeftXAxis()),
+                    util.deadband(-m_driverController.getRightXAxis()),
                     true),
             m_robotDrive));
   }
@@ -79,10 +82,20 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then calling passing it to a
    * {@link JoystickButton}.
    */
-  public void configureButtonBindings() {
-      //_a.whenPressed(new InstantCommand(() -> m_robotDrive.zeroHeading()));
-      _LeftBump.whenPressed(_decCom);
-      _RightBump.whenPressed(_incCom);
+  private void configureButtonBindings() {
+      m_driverController.start.whenPressed(new InstantCommand(() -> m_robotDrive.zeroHeading()));
+      m_operatorController.y.toggleWhenPressed(new RunInfeedSingulatorMotors());
+      m_operatorController.b.whenPressed(new RunConveyorWithEncoder());
+      m_operatorController.x.toggleWhenPressed(new RunShooterMotors());
+      m_operatorController.a.whenPressed(new RunConveyorTwoBall());
+      m_operatorController.start.toggleWhenPressed(new RunConveyorOneBall());
+      m_operatorController.right_bumper.whenPressed(new InstantCommand(() -> m_shooter.shiftShooterVbus(0, 0.02)));
+      m_operatorController.left_bumper.whenPressed(new InstantCommand(() -> m_shooter.shiftShooterVbus(0.02, 0)));
+      m_operatorController.back.toggleWhenPressed(new ReverseInfeedAndConveyor());
+      m_operatorController.left_bumper.whenPressed(_decCom);
+      m_operatorController.right_bumper.whenPressed(_incCom);
+      //m_operatorController.home.whenPressed(_tog);
+      // Need to sort out the above.
   }
 
   /**

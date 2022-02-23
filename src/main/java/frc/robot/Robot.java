@@ -76,7 +76,6 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
-    m_robotContainer.configureButtonBindings();
     /*
      * String autoSelected = SmartDashboard.getString("Auto Selector",
      * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
@@ -93,7 +92,6 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
-    m_robotContainer.configureButtonBindings();
     _shooterTable = ShooterTable.getPrimaryTable();
     ShooterTableEntry tableOfShooter = _shooterTable.CalcShooterValues(10.) ;
     //System.out.println(tableOfShooter.ShootorFrontRPM);
@@ -115,9 +113,6 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    m_robotContainer._LeftBump.whenPressed(_dec);
-    m_robotContainer._RightBump.whenPressed(_inc);
-    m_robotContainer._Start.whenPressed(_tog);
     System.out.println(_s.index());
     SmartDashboard.putNumber("Shooter Index", _s.index());
     SmartDashboard.putString("Adjustment Mode", (_s.getFineAdjustment() ? "Fine" : "Coarse"));
@@ -125,8 +120,9 @@ public class Robot extends TimedRobot {
 
   @Override
   public void testInit() {
+
     // Cancels all running commands at the start of test mode.
-    CommandScheduler.getInstance().cancelAll();
+    //CommandScheduler.getInstance().cancelAll();
   }
 
   /** This function is called periodically during test mode. */

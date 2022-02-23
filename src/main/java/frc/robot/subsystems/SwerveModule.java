@@ -120,7 +120,7 @@ public class SwerveModule {
 
     // Calculate the drive output from the drive PID controller.
     final double driveOutput =
-        state.speedMetersPerSecond/util.feetToMeters(12);//ontroller.calculate(m_driveEncoder.getVelocity(), state.speedMetersPerSecond);
+        state.speedMetersPerSecond;//ontroller.calculate(m_driveEncoder.getVelocity(), state.speedMetersPerSecond);
 
     // Calculate the turning motor output from the turning PID controller.
     final var turnOutput =
