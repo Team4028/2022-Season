@@ -19,8 +19,14 @@ public class Shooter extends SubsystemBase {
   private TalonFX _backMotor;
   /** Creates a new Shooter. */
   private static Shooter _instance = new Shooter();
-  double limeLightDistance, shooterIndex = 6;
+  private Limelight _l;
+  double limelightDistance, shooterIndex = 6;
   boolean fineAdjustment = false;
+
+  public double getLimelightDistance() {
+    double dist = _l.distance();
+    return dist;
+  }
 
   public void toggle() {
     fineAdjustment = !fineAdjustment;
@@ -38,7 +44,9 @@ public class Shooter extends SubsystemBase {
     _frontMotor = new TalonFX(SubsystemConstants.SHOOTER_FRONT_MOTOR_ID);
     _backMotor = new TalonFX(SubsystemConstants.SHOOTER_BACK_MOTOR_ID);
   
-    _backMotor.setInverted(InvertType.InvertMotorOutput);    
+    _backMotor.setInverted(InvertType.InvertMotorOutput);
+    
+    _l = Limelight.getInstance();
   }
 
   public void runShooterMotors(){

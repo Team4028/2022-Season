@@ -94,8 +94,7 @@ public class RobotContainer {
       m_operatorController.back.toggleWhenPressed(new ReverseInfeedAndConveyor());
       m_operatorController.left_bumper.whenPressed(_decCom);
       m_operatorController.right_bumper.whenPressed(_incCom);
-      //m_operatorController.home.whenPressed(_tog);
-      // Need to sort out the above.
+      m_operatorController.left_stick_button.whenPressed(_tog);
   }
 
   /**
