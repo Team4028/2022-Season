@@ -69,9 +69,9 @@ public class RobotContainer {
         new RunCommand(
             () ->
                 m_robotDrive.drive(
-                    util.deadband(-m_driverController.getLeftYAxis()),
-                    util.deadband(-m_driverController.getLeftXAxis()),
-                    util.deadband(-m_driverController.getRightXAxis()),
+                    util.deadband(-m_driverController.getLeftYAxis()/2),
+                    util.deadband(-m_driverController.getLeftXAxis()/2),
+                    util.deadband(-m_driverController.getRightXAxis()/2),
                     true),
             m_robotDrive));
   }
