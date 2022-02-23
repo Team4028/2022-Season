@@ -4,11 +4,20 @@
 
 package frc.robot;
 
+import javax.swing.plaf.basic.BasicBorders.ToggleButtonBorder;
+
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.commands.DecrementShooterIndex;
+import frc.robot.commands.IncrementShooterIndex;
+import frc.robot.commands.ToggleFineAdjustment;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.Limelight;
+import frc.robot.subsystems.Shooter;
+import frc.robot.utilities.ShooterTable;
+import frc.robot.utilities.ShooterTableEntry;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -18,9 +27,11 @@ import frc.robot.subsystems.Limelight;
  */
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
-
+  private ShooterTable _shooterTable;
+  private Shooter _s;
   private RobotContainer m_robotContainer;
   private Limelight _l;
+
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -32,6 +43,9 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
     _l = new Limelight();
+    _s = Shooter.getInstance();
+    
+    
   }
 
   /**
@@ -48,6 +62,7 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
+    _s.getLimelightDistance();
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
@@ -61,7 +76,6 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
-
     /*
      * String autoSelected = SmartDashboard.getString("Auto Selector",
      * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
@@ -77,7 +91,13 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during autonomous. */
   @Override
-  public void autonomousPeriodic() {}
+  public void autonomousPeriodic() {
+    _shooterTable = ShooterTable.getPrimaryTable();
+    ShooterTableEntry tableOfShooter = _shooterTable.CalcShooterValues(10.) ;
+    //System.out.println(tableOfShooter.ShootorFrontRPM);
+    System.out.println(_s.index());
+
+  }
 
   @Override
   public void teleopInit() {
@@ -95,12 +115,16 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     _l.distance();
     _l.putTargetValues();
+    System.out.println(_s.index());
+    SmartDashboard.putNumber("Shooter Index", _s.index());
+    SmartDashboard.putString("Adjustment Mode", (_s.getFineAdjustment() ? "Fine" : "Coarse"));
   }
 
   @Override
   public void testInit() {
+
     // Cancels all running commands at the start of test mode.
-    CommandScheduler.getInstance().cancelAll();
+    //CommandScheduler.getInstance().cancelAll();
   }
 
   /** This function is called periodically during test mode. */

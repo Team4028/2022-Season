@@ -61,8 +61,8 @@ public class Motor extends SubsystemBase {
     front_kMax = 20400;
     back_kMax = 17000;
 
-    front_kAccel = VBusConstants.kShooterFrontVBus * front_kMax;
-    back_kAccel = VBusConstants.kShooterBackVBus * back_kMax;
+    front_kAccel = VBusConstants.kShooterFront * front_kMax;
+    back_kAccel = VBusConstants.kShooterBack * back_kMax;
 
     _front.config_kF(0, front_kF);
     _back.config_kF(0, back_kF);
@@ -81,14 +81,14 @@ public class Motor extends SubsystemBase {
     SmartDashboard.putNumber("Front Shooter D Gain", front_kD);
     SmartDashboard.putNumber("Front Shooter I Zone", front_kIz);
     SmartDashboard.putNumber("Front Shooter Feed Forward", front_kF);
-    SmartDashboard.putNumber("Front Shooter VBus", VBusConstants.kShooterFrontVBus);
+    SmartDashboard.putNumber("Front Shooter VBus", VBusConstants.kShooterFront);
     
     SmartDashboard.putNumber("Back Shooter P Gain", back_kP);
     SmartDashboard.putNumber("Back Shooter I Gain", back_kI);
     SmartDashboard.putNumber("Back Shooter D Gain", back_kD);
     SmartDashboard.putNumber("Back Shooter I Zone", back_kIz);
     SmartDashboard.putNumber("Back Shooter Feed Forward", back_kF);
-    SmartDashboard.putNumber("Back Shooter VBus", VBusConstants.kShooterBackVBus);
+    SmartDashboard.putNumber("Back Shooter VBus", VBusConstants.kShooterBack);
   }
 
   public void update() {
@@ -104,7 +104,7 @@ public class Motor extends SubsystemBase {
     if((front_d != front_kD)) { _front.config_kD(0, front_d); front_kD = front_d; }
     if((front_iz != front_kIz)) { _front.config_IntegralZone(0, front_iz); front_kIz = front_iz; }
     if((front_f != front_kF)) { _front.config_kF(0, front_f); front_kF = front_f; }
-    if((VBusConstants.kShooterFrontVBus != front_vbus)) { VBusConstants.kShooterFrontVBus = front_vbus; }
+    if((VBusConstants.kShooterFront != front_vbus)) { VBusConstants.kShooterFront = front_vbus; }
 
     double back_p = SmartDashboard.getNumber("Back Shooter P Gain", 0);
     double back_i = SmartDashboard.getNumber("Back Shooter I Gain", 0);
@@ -118,7 +118,7 @@ public class Motor extends SubsystemBase {
     if((back_d != back_kD)) { _back.config_kD(0, back_d); back_kD = back_d; }
     if((back_iz != back_kIz)) { _back.config_IntegralZone(0, back_iz); back_kIz = back_iz; }
     if((back_f != back_kF)) { _back.config_kF(0, back_f); back_kF = back_f; }
-    if((VBusConstants.kShooterBackVBus != back_vbus)) { VBusConstants.kShooterBackVBus = back_vbus; }
+    if((VBusConstants.kShooterBack != back_vbus)) { VBusConstants.kShooterBack = back_vbus; }
   }
 
   public void run() {
