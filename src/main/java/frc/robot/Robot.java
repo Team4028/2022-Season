@@ -30,10 +30,6 @@ public class Robot extends TimedRobot {
   private Shooter _s;
   private RobotContainer m_robotContainer;
 
-  private IncrementShooterIndex _inc = new IncrementShooterIndex();
-  private DecrementShooterIndex _dec = new DecrementShooterIndex();
-  private ToggleFineAdjustment _tog = new ToggleFineAdjustment();
-
 
   /**
    * This function is run when the robot is first started up and should be used for any

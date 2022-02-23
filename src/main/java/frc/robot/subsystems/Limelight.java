@@ -99,8 +99,8 @@ public class Limelight extends SubsystemBase {
       double mountH = 21.;//3.5;
       double mountA = 45;
       double dist = (targH - mountH) /
-                    Math.tan(Math.toRadians(mountA + getX()))/* *
-                    Math.cos(getY()))*/;
+                    Math.tan(Math.toRadians(mountA + getX())) *
+                    Math.cos(Math.toRadians(getY()));
       distEstTotal += dist;
       distEstIters++;
     }

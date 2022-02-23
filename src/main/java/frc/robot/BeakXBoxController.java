@@ -24,6 +24,7 @@ public final class BeakXBoxController {
     public JoystickButton left_bumper;
     public JoystickButton right_bumper;
     public JoystickButton left_stick_button;
+    public JoystickButton right_stick_button;
 
     public BeakXBoxController(int port){
         controller = new XboxController(port);
@@ -36,7 +37,7 @@ public final class BeakXBoxController {
         back = new JoystickButton(controller, 7);
         start = new JoystickButton(controller, 8);
         left_stick_button = new JoystickButton(controller, 9);
-       
+        right_stick_button = new JoystickButton(controller, 10);
        
     }
 

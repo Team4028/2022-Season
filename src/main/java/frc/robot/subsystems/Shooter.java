@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import java.util.LinkedHashMap;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
@@ -22,10 +24,11 @@ public class Shooter extends SubsystemBase {
   private Limelight _l;
   double limelightDistance, shooterIndex = 6;
   boolean fineAdjustment = false;
+  boolean accept = true;
 
   public double getLimelightDistance() {
-    double dist = _l.distance();
-    return dist;
+    limelightDistance = _l.distance() / 12;
+    return limelightDistance;
   }
 
   public void toggle() {
@@ -38,6 +41,17 @@ public class Shooter extends SubsystemBase {
 
   public static Shooter getInstance() {
     return _instance;
+  }
+
+  public void acceptLimelight() {
+    if (accept) {
+      shooterIndex = limelightDistance; // TODO: round
+    } else {
+      shooterIndex = 6; // TODO: default in constants
+    }
+    accept = !accept;
+    SmartDashboard.putString("Accept Limelight Mode", (accept ? "Accept Limelight" : "Reset to Default"));
+    // TODO: better naming
   }
 
   public Shooter() {
