@@ -10,20 +10,22 @@ import frc.robot.Constants;
 public class Shooter extends SubsystemBase {
   /** Creates a new Shooter. */
   private static Shooter _instance = new Shooter();
-  double limeLightDistance, shooterIndex;
+  double limeLightDistance, shooterIndex = 6;
   boolean fineAdjustment = false;
 
   public void toggle() {
     fineAdjustment = !fineAdjustment;
   }
 
+  public boolean getFineAdjustment() {
+    return fineAdjustment;
+  }
+
   public static Shooter getInstance() {
     return _instance;
   }
 
-  public Shooter() {
-    shooterIndex = 6;
-  }
+  public Shooter() {}
 
   public double index() {
     return shooterIndex;

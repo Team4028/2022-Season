@@ -82,7 +82,7 @@ public class RobotContainer {
   public void configureButtonBindings() {
       //_a.whenPressed(new InstantCommand(() -> m_robotDrive.zeroHeading()));
       _LeftBump.whenPressed(_decCom);
-        _RightBump.whenPressed(_incCom);
+      _RightBump.whenPressed(_incCom);
   }
 
   /**

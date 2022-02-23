@@ -118,13 +118,9 @@ public class Robot extends TimedRobot {
     m_robotContainer._LeftBump.whenPressed(_dec);
     m_robotContainer._RightBump.whenPressed(_inc);
     m_robotContainer._Start.whenPressed(_tog);
-    /*if (m_robotContainer._controller.getLeftBumperPressed()) {
-      _dec.schedule();
-    } else if (m_robotContainer._controller.getRightBumperPressed()) {
-      _inc.schedule();
-    }*/
     System.out.println(_s.index());
-    SmartDashboard.putNumber("shooter Index", _s.index());
+    SmartDashboard.putNumber("Shooter Index", _s.index());
+    SmartDashboard.putString("Adjustment Mode", (_s.getFineAdjustment() ? "Fine" : "Coarse"));
   }
 
   @Override
