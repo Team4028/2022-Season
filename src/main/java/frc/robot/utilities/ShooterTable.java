@@ -13,7 +13,7 @@ import java.util.LinkedList;
 public class ShooterTable {
 
     private static ShooterTable _primary = new ShooterTable(true);
-    private static ShooterTable _secondary = new ShooterTable(false);
+    //private static ShooterTable _secondary = new ShooterTable(false);
 	
 	public static ShooterTable getPrimaryTable() {
 		return _primary;
@@ -165,8 +165,10 @@ public class ShooterTable {
 
         // primarytable.add(new ShooterTableEntry(_indexCounter, 9., 4000, 4400, 60., "9 foot example shot", false));
         // primarytable.add(new ShooterTableEntry(_indexCounter, 11., 4100, 4500, 60., "11 foot example shot", false));
-        primarytable.add(new ShooterTableEntry(_indexCounter, 6., 1500, 1300, 60., "6 foot example shot", false));
+        primarytable.add(new ShooterTableEntry(_indexCounter, 5., 1350, 1120, 60., "5 foot example shot", false));
         primarytable.add(new ShooterTableEntry(_indexCounter, 9., 1650, 1450, 60., "9 foot example shot", false));
+
+        primarytable.add(new ShooterTableEntry(_indexCounter++, 10., 1365, 1180, 60., "Shooter Index 12", false));
         
 
         // 0.38 VBus + 1.4 ratio = close shot?

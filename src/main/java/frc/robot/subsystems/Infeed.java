@@ -4,15 +4,13 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
 
 public class Infeed extends SubsystemBase {
   /** Creates a new Infeed. */
-  private TalonSRX _MotorInfeedOne;
+  //private TalonSRX _MotorInfeedOne;
   private static Infeed _instance = new Infeed();
   public static Infeed get_instance() {
     return _instance;

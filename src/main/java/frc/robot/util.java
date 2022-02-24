@@ -19,5 +19,11 @@ public final class util {
     public static double metersToFeet(double meters){
         return meters * 3.281;
     }
+    public static double toFalconRPM(double velocity) {
+        return velocity  * 600 / 4096;
+    }
+    public static double toFalconVelocity(double rpm) {
+        return rpm * 4096 / 600;
+    }
 
 }

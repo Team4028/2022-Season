@@ -6,12 +6,11 @@ package frc.robot;
 
 
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 public final class BeakXBoxController {
 
-    private static final double kDeadband = .05;
+    //private static final double kDeadband = .05;
 
     private XboxController controller;
 

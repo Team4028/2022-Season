@@ -131,8 +131,6 @@ public final class Constants {
             kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
   }
 
-  public static final double kFineAdjustment = 0.5;
-  public static final double kCoarseAdjustment = 1.;
   public static final class SubsystemConstants {
     /*************** CAN IDS **************/
 
@@ -154,7 +152,7 @@ public final class Constants {
 
   public static final class VBusConstants {
     public static final double kConveyAll = 0.5; // op start
-    public static final double kConveyOne = 0.5; // op b
+    public static final double kConveyOne = 0.85; // op b
     public static final double kConveyTwo = 0.5; // op a
 
     public static final double kInfeed = 0.6; // op y
@@ -165,10 +163,20 @@ public final class Constants {
     public static double kShooterBack = kShooterRatio * kShooterFront; // .7 // op x
   }
 
+  public static final class RPMConstants {
+    public static final double kShooterFront = 1400.;
+    public static final double kShooterBack = 1180.;
+  }
+
   public static final class EncoderConstants {
     public static final double kConveyOne = 20.;
     public static final double kConveyTwo = 50.;
   }
 
-
+  public static final class DefaultConstants {
+    public static final double kFineAdjustment = 0.5;
+    public static final double kCoarseAdjustment = 1.;
+    
+    public static final double kIndexDefault = 6.;
+  }
 }
