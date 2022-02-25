@@ -10,7 +10,9 @@ import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.util;
 import frc.robot.Constants.DefaultConstants;
+import frc.robot.Constants.RPMConstants;
 import frc.robot.Constants.SubsystemConstants;
 import frc.robot.Constants.VBusConstants;
 
@@ -73,11 +75,11 @@ public class Shooter extends SubsystemBase {
     _front.configFactoryDefault();
     _back.configFactoryDefault();
 
-    front_kF = 0.05;
-    back_kF = 0.055;
+    front_kF = 0.01;
+    back_kF = 0.22;
 
-    front_kP = 0.3;
-    back_kP = 0.17;
+    front_kP = 0.1;
+    back_kP = 0.4;
 
     front_kI = 0.001;
     back_kI = 0.001;
@@ -191,8 +193,8 @@ public class Shooter extends SubsystemBase {
   }
 
   public void runShooterMotors() {
-    _front.set(ControlMode.Velocity, front_kAccel);
-    _back.set(ControlMode.Velocity, back_kAccel);
+    _front.set(ControlMode.Velocity, util.toFalconVelocity(RPMConstants.kShooterFront));
+    _back.set(ControlMode.Velocity, util.toFalconVelocity(RPMConstants.kShooterBack));
 
     SmartDashboard.putNumber("Front Shooter Error", _front.getClosedLoopError());
     SmartDashboard.putNumber("Back Shooter Error", _back.getClosedLoopError());

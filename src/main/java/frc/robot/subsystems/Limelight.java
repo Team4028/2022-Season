@@ -83,6 +83,7 @@ public class Limelight extends SubsystemBase {
         distEst = distEstTotal / distEstIters;
         distEstTotal = 0;
         distEstIters = 0;
+        put("Limelight Distance", distEst / 12);
       }
 
       double targH = 84.;
@@ -92,7 +93,7 @@ public class Limelight extends SubsystemBase {
         (Math.tan(Math.toRadians(mountA + getX())) *
         Math.cos(Math.toRadians(getY())));
 
-      distEstTotal += dist;
+      distEstTotal += (dist + 23 + 26);
       distEstIters++;
     }
     return distEst;

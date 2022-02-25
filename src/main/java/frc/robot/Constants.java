@@ -164,8 +164,8 @@ public final class Constants {
   }
 
   public static final class RPMConstants {
-    public static final double kShooterFront = 1400.;
-    public static final double kShooterBack = 1180.;
+    public static final double kShooterFront = 1075.;
+    public static final double kShooterBack = 2460.;
   }
 
   public static final class EncoderConstants {
