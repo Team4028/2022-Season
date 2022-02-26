@@ -4,7 +4,6 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -17,8 +16,10 @@ public class Conveyor extends SubsystemBase {
   private CANSparkMax _conveyorMotor; // needs to be reversed
   private boolean isTargetReached = false;
   private RelativeEncoder _enc;
-
+  private double encoderOffset = 0;
   private static Conveyor _instance = new Conveyor();
+  
+  
   public static Conveyor get_instance() {
     return _instance;
   }
@@ -40,38 +41,33 @@ public class Conveyor extends SubsystemBase {
   }
 
   public void runConveyorMotorWithEncoder(double target, double vbus){
-    
     // isTargetReached = false;
-    System.out.println("runConveyorMotorWithEncoder On" + _enc.getPosition());
+    // System.out.println("runConveyorMotorWithEncoder On" + _enc.getPosition());
     if (getEncoderPosition() >= target /*&& !isTargetReached*/)
     {
-      _conveyorMotor.set(0);
-      _enc.setPosition(0.);
-      System.out.println("encoder value " +_enc.getPosition());
+      // System.out.println("Encoder Value " +_enc.getPosition());
+      stopConveyorMotor();
       resetEncoder();
       isTargetReached = true;
     }
     else{
-      _conveyorMotor.set(vbus);
+      runConveyorMotor(vbus);
     }
-    
-
   }
 
-public void setEndStuff()
-{
-  isTargetReached = true;
-  resetEncoder();
-}
-  
+// public void setEndStuff()
+// {
+//   isTargetReached = true;
+//   resetEncoder();
+// }
 
   public double getEncoderPosition()
   {
-    return _enc.getPosition();
+    return (_enc.getPosition() - encoderOffset);
   }
   
   public void resetEncoder(){
-    _enc.setPosition(0);
+    encoderOffset = _enc.getPosition();
   }
 
   public void setIsTargetReached(){
