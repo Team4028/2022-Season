@@ -4,15 +4,9 @@
 
 // package frc.robot.commands;
 
-// import edu.wpi.first.wpilibj2.command.CommandBase;
 // import frc.robot.subsystems.Shooter;
 // import frc.robot.subsystems.TestingEther;
 
-// public class RunShooterMotors extends CommandBase {
-//   private Shooter _shooter = Shooter.getInstance();
-//   /** Creates a new ToggleFiveAndSix. */
-//   public RunShooterMotors() {
-//   addRequirements(Shooter.getInstance());
 //     // Use addRequirements() here to declare subsystem dependencies.
 //   }
 
