@@ -112,6 +112,8 @@ public final class Constants {
     public static final double i_kMaxModuleAngularSpeedRadiansPerSecond = 2 * Math.PI;
     public static final double i_kMaxModuleAngularAccelerationRadiansPerSecondSquared = 2 * Math.PI;
 
+    public static final double i_integratedEncoderTicksPerModRev = 2048 * (150/7);
+
     public static final int i_kEncoderCPR = 4096;
     public static final double i_kWheelDiameterMeters = util.inchesToMeters(4.0);
     public static final double i_kDriveEncoderDistancePerPulse =

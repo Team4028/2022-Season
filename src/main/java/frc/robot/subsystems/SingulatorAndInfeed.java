@@ -38,6 +38,7 @@ public class SingulatorAndInfeed extends SubsystemBase {
   }
   public void runInfeedSingulatorMotors(double mult){
     _infeedMotor.set(ControlMode.PercentOutput, mult * VBusConstants.kInfeed);
+    System.out.println("burh");
     // _singulatorMotor.set(mult * VBusConstants.kSingulator);
   }
   

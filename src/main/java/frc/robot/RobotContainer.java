@@ -54,7 +54,9 @@ public class RobotContainer {
   private final DriveSubsystem m_robotDrive = DriveSubsystem.get_instance();
   private final Infeed m_infeed = Infeed.get_instance();
   private final SingulatorAndInfeed m_singulatorAndInfeed = SingulatorAndInfeed.get_instance();
+  private final RunInfeedSingulatorMotors _RunInfeedSingulatorMotors;
   private static RobotContainer _instance;
+  private WaitCommand _wait;
 
   public static final RobotContainer get_instance(){
       if(_instance == null){
@@ -76,6 +78,9 @@ public class RobotContainer {
   public RobotContainer() {
     
     // Configure the button bindings
+    _RunInfeedSingulatorMotors = new RunInfeedSingulatorMotors();
+    _wait = new WaitCommand(1.0);
+    _wait.addRequirements(m_singulatorAndInfeed);
     configureButtonBindings();
 
     // Configure default commands
@@ -108,8 +113,7 @@ public class RobotContainer {
       m_singulatorAndInfeed.downInfeed())
       .andThen(new WaitCommand(1.0))
       .andThen(new InstantCommand(() -> m_singulatorAndInfeed.holdInfeed())));
-      m_driverController.y.whenPressed(new RunInfeedSingulatorMotors());
-      m_driverController.x.cancelWhenPressed(new RunInfeedSingulatorMotors());
+      m_driverController.y.toggleWhenPressed(_RunInfeedSingulatorMotors);
     //   m_operatorController.b.whenPressed(new RunConveyorWithEncoder());
     // //   m_operatorController.x.toggleWhenPressed(new RunShooterMotors());
     //   m_operatorController.a.whenPressed(new RunConveyorTwoBall());

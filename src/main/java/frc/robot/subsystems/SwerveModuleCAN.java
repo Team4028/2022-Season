@@ -95,7 +95,7 @@ public class SwerveModuleCAN {
     checkMotorCoder();
     // Optimize the reference state to avoid spinning further than 90 degrees
     SwerveModuleState state =
-        optimize(SwerveModuleState.optimize(desiredState, Rotation2d.fromDegrees(m_turningMotor.getSelectedSensorPosition(0) * (7/150) / 2048 * 360)), getTurningEncoderRadians());
+        optimize(SwerveModuleState.optimize(desiredState, Rotation2d.fromDegrees(m_turningMotor.getSelectedSensorPosition(0) / 4096 * 360)), getTurningEncoderRadians());
 
     // Calculate the drive output from the drive PID controller.
     final double driveOutput =
