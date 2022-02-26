@@ -92,7 +92,6 @@ public class Robot extends TimedRobot {
     _shooterTable = ShooterTable.getPrimaryTable();
     ShooterTableEntry tableOfShooter = _shooterTable.CalcShooterValues(10.) ;
     //System.out.println(tableOfShooter.ShootorFrontRPM);
-    System.out.println(_s.index());
 
   }
 
@@ -110,7 +109,6 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    System.out.println(_s.index());
     SmartDashboard.putNumber("Shooter Index", _s.index());
     SmartDashboard.putString("Adjustment Mode", (_s.getFineAdjustment() ? "Fine" : "Coarse"));
   }

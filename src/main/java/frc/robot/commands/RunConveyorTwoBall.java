@@ -7,37 +7,38 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.EncoderConstants;
 import frc.robot.Constants.VBusConstants;
-import frc.robot.subsystems.TestingEther;
+import frc.robot.subsystems.Conveyor;
+
 
 public class RunConveyorTwoBall extends CommandBase {
-  private TestingEther _TestEther = TestingEther.get_instance();
+  private Conveyor _Conveyor = Conveyor.get_instance();
   /** Creates a new RunWithEncoderA. */
   public RunConveyorTwoBall() {
-    addRequirements(_TestEther);
+    addRequirements(_Conveyor);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    _TestEther.runConveyorMotorWithEncoder(EncoderConstants.kConveyTwo, VBusConstants.kConveyTwo);
+    _Conveyor.runConveyorMotorWithEncoder(EncoderConstants.kConveyTwo, VBusConstants.kConveyTwo);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    _TestEther.runConveyorMotorWithEncoder(EncoderConstants.kConveyTwo, VBusConstants.kConveyTwo);
+    _Conveyor.runConveyorMotorWithEncoder(EncoderConstants.kConveyTwo, VBusConstants.kConveyTwo);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    _TestEther.resetEncoder();
+    _Conveyor.resetEncoder();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return _TestEther.getIsTargetReached();
+    return _Conveyor.getIsTargetReached();
   }
 }
