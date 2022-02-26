@@ -5,33 +5,40 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Shooter;
+import frc.robot.Constants.VBusConstants;
+import frc.robot.subsystems.Conveyor;
 
-public class ToggleFineAdjustment extends CommandBase {
-  Shooter _s = Shooter.getInstance();
-  /** Creates a new ToggleFineAdjustment. */
-  public ToggleFineAdjustment() {
+
+public class RunConveyor extends CommandBase {
+  private Conveyor conveyor = Conveyor.get_instance();
+  /** Creates a new ToggleThree. */
+  public RunConveyor() {
+    addRequirements(conveyor);
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(_s);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    conveyor.runConveyorMotor(VBusConstants.kConveyAll);
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    _s.toggle();
+    conveyor.runConveyorMotor(VBusConstants.kConveyAll);
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    conveyor.stopConveyorMotor();
+    conveyor.resetEncoder();
+  }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return true;
+    return false;
   }
 }

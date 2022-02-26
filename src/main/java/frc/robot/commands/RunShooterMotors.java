@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Shooter;
 
 public class RunShooterMotors extends CommandBase {
-  private Shooter _shooter = Shooter.getInstance();
+  private Shooter shooter = Shooter.getInstance();
   /** Creates a new ToggleFiveAndSix. */
   public RunShooterMotors() {
   addRequirements(Shooter.getInstance());
@@ -18,19 +18,19 @@ public class RunShooterMotors extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    _shooter.runShooterMotors2();
+    shooter.runShooterMotors2();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    _shooter.runShooterMotors2();
+    shooter.runShooterMotors2();
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    _shooter.stopShooterMotors();
+    shooter.stopShooterMotors();
   }
 
   // Returns true when the command should end.

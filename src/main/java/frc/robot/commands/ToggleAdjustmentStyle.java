@@ -5,41 +5,33 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants.EncoderConstants;
-import frc.robot.Constants.VBusConstants;
-import frc.robot.subsystems.TestingEther;
+import frc.robot.subsystems.Shooter;
 
-public class RunConveyorWithEncoder extends CommandBase {
-  private TestingEther _TE = TestingEther.get_instance();
-  /** Creates a new RunWithEncoder. */
-  public RunConveyorWithEncoder() {
-    addRequirements(_TE);
+public class ToggleAdjustmentStyle extends CommandBase {
+  Shooter shooter = Shooter.getInstance();
+  /** Creates a new ToggleFineAdjustment. */
+  public ToggleAdjustmentStyle() {
     // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(shooter);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-    _TE.runConveyorMotorWithEncoder(EncoderConstants.kConveyOne, VBusConstants.kConveyOne);
-    
-  }
+  public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    _TE.runConveyorMotorWithEncoder(EncoderConstants.kConveyOne, VBusConstants.kConveyOne);
-    
+    shooter.toggle();
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-    _TE.resetEncoder();
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return _TE.getIsTargetReached();
+    return true;
   }
 }

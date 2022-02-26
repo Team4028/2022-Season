@@ -169,8 +169,8 @@ public final class Constants {
   }
 
   public static final class EncoderConstants {
-    public static final double kConveyOne = 20.;
-    public static final double kConveyTwo = 50.;
+    public static final double kConveyOne = 20;
+    public static final double kConveyTwo = 50;
   }
 
   public static final class DefaultConstants {

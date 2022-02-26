@@ -20,12 +20,12 @@ import frc.robot.commands.AcceptLimelightDistance;
 import frc.robot.commands.DecrementShooterIndex;
 import frc.robot.commands.IncrementShooterIndex;
 import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.commands.RunConveyorWithEncoder;
+import frc.robot.commands.RunConveyor;
 import frc.robot.commands.ReverseInfeedAndConveyor;
 import frc.robot.commands.RunConveyorOneBall;
 import frc.robot.commands.RunConveyorTwoBall;
 import frc.robot.commands.RunShooterMotors;
-import frc.robot.commands.ToggleFineAdjustment;
+import frc.robot.commands.ToggleAdjustmentStyle;
 import frc.robot.commands.RunInfeedSingulatorMotors;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -78,14 +78,14 @@ public class RobotContainer {
   private void configureButtonBindings() {
       m_driverController.start.whenPressed(new InstantCommand(() -> m_robotDrive.zeroHeading()));
       m_operatorController.y.toggleWhenPressed(new RunInfeedSingulatorMotors());
-      m_operatorController.b.whenPressed(new RunConveyorWithEncoder());
+      m_operatorController.b.whenPressed(new RunConveyorOneBall());
       m_operatorController.x.toggleWhenPressed(new RunShooterMotors());
       m_operatorController.a.whenPressed(new RunConveyorTwoBall());
       m_operatorController.start.toggleWhenPressed(new RunConveyorOneBall());
       m_operatorController.back.toggleWhenPressed(new ReverseInfeedAndConveyor());
       m_operatorController.left_bumper.whenPressed(new DecrementShooterIndex());
       m_operatorController.right_bumper.whenPressed(new IncrementShooterIndex());
-      m_operatorController.left_stick_button.whenPressed(new ToggleFineAdjustment());
+      m_operatorController.left_stick_button.whenPressed(new ToggleAdjustmentStyle());
       m_operatorController.right_stick_button.whenPressed(new AcceptLimelightDistance());
       // FIXME: bruh spagheti controller
 
