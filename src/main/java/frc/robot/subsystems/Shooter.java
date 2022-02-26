@@ -76,15 +76,20 @@ public class Shooter extends SubsystemBase {
     _front.configFactoryDefault();
     _back.configFactoryDefault();
 
+    // "ok so... let's like, not ever change these numbers, ever"
+    // - Gabe
+    // EXCEPT when new shoter hardware
     // TODO: constants
-    front_kF = 0.0485;
-    back_kF = 0.0565;
+    front_kF = 0.05;
+    //front_kF = 0.03;
+    back_kF = 0.055;
 
-    front_kP = 0.1;
-    back_kP = 0.4;
+    front_kP = 0.4;
+    back_kP = 0.1;
 
     // TODO: we probably don't need this at all
-    front_kD = 0.;
+    // but me and Gabe feel better knowing we have this
+    front_kD = 0.0;
     back_kD = 0.;
 
     front_kMax = 20400;

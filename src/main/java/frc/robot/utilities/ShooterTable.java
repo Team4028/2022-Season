@@ -6,6 +6,8 @@ package frc.robot.utilities;
 import java.util.Iterator;
 import java.util.LinkedList;
 
+import frc.robot.util;
+
 
 /**
  * Add your docs here.
@@ -165,7 +167,7 @@ public class ShooterTable {
 
         // primarytable.add(new ShooterTableEntry(_indexCounter, 9., 4000, 4400, 60., "9 foot example shot", false));
         // primarytable.add(new ShooterTableEntry(_indexCounter, 11., 4100, 4500, 60., "11 foot example shot", false));
-        primarytable.add(new ShooterTableEntry(_indexCounter++, 10., 1390, 1180, 60., "Index 10", false));
+        /*primarytable.add(new ShooterTableEntry(_indexCounter++, 10., 1390, 1180, 60., "Index 10", false));
         primarytable.add(new ShooterTableEntry(_indexCounter++, 11., 1455, 1215, 60., "Index 11", false));
         primarytable.add(new ShooterTableEntry(_indexCounter++, 12., 1510, 1250, 60., "Index 12", false));
         primarytable.add(new ShooterTableEntry(_indexCounter++, 13., 1420, 1550, 60., "Index 13", false));
@@ -173,8 +175,13 @@ public class ShooterTable {
         primarytable.add(new ShooterTableEntry(_indexCounter++, 15., 1220, 1950, 60., "Index 15", false));
         primarytable.add(new ShooterTableEntry(_indexCounter++, 16., 1140, 2140, 60., "Index 16", false));
         primarytable.add(new ShooterTableEntry(_indexCounter++, 17., 1365, 1180, 60., "Index 17", false));
-        primarytable.add(new ShooterTableEntry(_indexCounter++, 18., 1365, 1180, 60., "Index 18", false));
+        primarytable.add(new ShooterTableEntry(_indexCounter++, 18., 1365, 1180, 60., "Index 18", false));*/
 
+        /*primarytable.add(new ShooterTableEntry(_indexCounter++, 11., 1320, 1740, 60., "Index 11", false));
+        primarytable.add(new ShooterTableEntry(_indexCounter++, 14., 1320, 2340, 60., "Index 14", false));
+        primarytable.add(new ShooterTableEntry(_indexCounter++, 19., 1475, 2575, 60., "Index 19", false));*/
+
+        primarytable.add(new ShooterTableEntry(_indexCounter++, 11., 1250, 1120, 60., "Index 11", false));
         
 
         // 0.38 VBus + 1.4 ratio = close shot?
