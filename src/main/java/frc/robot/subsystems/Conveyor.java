@@ -4,16 +4,87 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.SubsystemConstants;
 
 public class Conveyor extends SubsystemBase {
   /** Creates a new Conveyor. */
+  private CANSparkMax _conveyorMotor; // needs to be reversed
+  private boolean isTargetReached = false;
+  private RelativeEncoder _enc;
+
+  private static Conveyor _instance = new Conveyor();
+  public static Conveyor get_instance() {
+    return _instance;
+  }
+  
   public Conveyor() {
+    _conveyorMotor = new CANSparkMax(SubsystemConstants.CONVEYOR_MOTOR_ID, MotorType.kBrushless);
+    _enc = _conveyorMotor.getEncoder();
+    _enc.setPosition(0);
+    _conveyorMotor.setInverted(true);
+  }
+
+
+  public void runConveyorMotor(double vbus){
+    _conveyorMotor.set(vbus);
+  }
+
+  public void stopConveyorMotor(){
+    _conveyorMotor.set(0);
+  }
+
+  public void runConveyorMotorWithEncoder(double target, double vbus){
     
+    // isTargetReached = false;
+    System.out.println("runConveyorMotorWithEncoder On" + _enc.getPosition());
+    if (getEncoderPosition() >= target /*&& !isTargetReached*/)
+    {
+      _conveyorMotor.set(0);
+      _enc.setPosition(0.);
+      System.out.println("encoder value " +_enc.getPosition());
+      resetEncoder();
+      isTargetReached = true;
+    }
+    else{
+      _conveyorMotor.set(vbus);
+    }
+    
+
+  }
+
+public void setEndStuff()
+{
+  isTargetReached = true;
+  resetEncoder();
+}
+  
+
+  public double getEncoderPosition()
+  {
+    return _enc.getPosition();
+  }
+  
+  public void resetEncoder(){
+    _enc.setPosition(0);
+  }
+
+  public void setIsTargetReached(){
+    isTargetReached = false;
+  }
+
+  public boolean getIsTargetReached(){
+    return isTargetReached;
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
   }
+
 }
