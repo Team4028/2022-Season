@@ -11,34 +11,36 @@ import frc.robot.subsystems.Conveyor;
 
 
 public class RunConveyorTwoBall extends CommandBase {
-  private Conveyor _Conveyor = Conveyor.get_instance();
+  private Conveyor conveyor = Conveyor.get_instance();
   /** Creates a new RunWithEncoderA. */
   public RunConveyorTwoBall() {
-    addRequirements(_Conveyor);
+    addRequirements(conveyor);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    _Conveyor.runConveyorMotorWithEncoder(EncoderConstants.kConveyTwo, VBusConstants.kConveyTwo);
+    conveyor.resetEncoder();
+    conveyor.setIsTargetReached();
+    conveyor.runConveyorMotorWithEncoder(EncoderConstants.kConveyTwo, VBusConstants.kConveyTwo);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    _Conveyor.runConveyorMotorWithEncoder(EncoderConstants.kConveyTwo, VBusConstants.kConveyTwo);
+    conveyor.runConveyorMotorWithEncoder(EncoderConstants.kConveyTwo, VBusConstants.kConveyTwo);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    _Conveyor.resetEncoder();
+    // no special end steps needed
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return _Conveyor.getIsTargetReached();
+    return conveyor.getIsTargetReached();
   }
 }
