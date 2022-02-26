@@ -179,4 +179,10 @@ public final class Constants {
     
     public static final double kIndexDefault = 6.;
   }
+
+  public static final class LimelightConstants {
+    public static final double kTargetHeight = 84.; // 104 when
+    public static final double kMountHeight = 21.; // Might be something like 22. Hard to measure
+    public static final double kMountAngle = 45; // is 50 meta?
+  }
 }

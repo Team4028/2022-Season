@@ -15,6 +15,8 @@ import frc.robot.Constants.DefaultConstants;
 import frc.robot.Constants.RPMConstants;
 import frc.robot.Constants.SubsystemConstants;
 import frc.robot.Constants.VBusConstants;
+import frc.robot.utilities.ShooterTable;
+import frc.robot.utilities.ShooterTableEntry;
 
 public class Shooter extends SubsystemBase {
   private TalonFX _front;
@@ -22,17 +24,16 @@ public class Shooter extends SubsystemBase {
   /** Creates a new Shooter. */
   private static Shooter _instance = new Shooter();
   private Limelight _l;
+  private ShooterTable _st = ShooterTable.getPrimaryTable();
   double limelightDistance, shooterIndex = 6;
   boolean fineAdjustment = false;
   boolean accept = true;
 
-  public double front_kF, front_kP, front_kI,
-      front_kD, front_kIz, front_kAccel,
-      front_kMax;
+  public double front_kF, front_kP,
+      front_kD, front_kMax;
 
-  public double back_kF, back_kP, back_kI,
-      back_kD, back_kIz, back_kAccel,
-      back_kMax;
+  public double back_kF, back_kP,
+      back_kD, back_kMax;
 
   public double getLimelightDistance() {
     _l.putTargetValues();
@@ -75,47 +76,33 @@ public class Shooter extends SubsystemBase {
     _front.configFactoryDefault();
     _back.configFactoryDefault();
 
-    front_kF = 0.01;
-    back_kF = 0.22;
+    // TODO: constants
+    front_kF = 0.0485;
+    back_kF = 0.0565;
 
     front_kP = 0.1;
     back_kP = 0.4;
 
-    front_kI = 0.001;
-    back_kI = 0.001;
-
-    front_kD = 5.;
-    back_kD = 5.;
+    // TODO: we probably don't need this at all
+    front_kD = 0.;
+    back_kD = 0.;
 
     front_kMax = 20400;
     back_kMax = 17000;
 
-    front_kAccel = VBusConstants.kShooterFront * front_kMax;
-    back_kAccel = VBusConstants.kShooterBack * back_kMax;
-
     _front.config_kF(0, front_kF);
     _back.config_kF(0, back_kF);
-
-    _front.config_kP(0, front_kP);
-    _back.config_kP(0, back_kP);
-
-    _front.config_kI(0, front_kI);
-    _back.config_kI(0, back_kI);
 
     _front.config_kD(0, front_kD);
     _back.config_kD(0, back_kD);
 
-    SmartDashboard.putNumber("Front Shooter P Gain", front_kP);
-    SmartDashboard.putNumber("Front Shooter I Gain", front_kI);
-    SmartDashboard.putNumber("Front Shooter D Gain", front_kD);
-    SmartDashboard.putNumber("Front Shooter I Zone", front_kIz);
-    SmartDashboard.putNumber("Front Shooter Feed Forward", front_kF);
+    SmartDashboard.putNumber("Front P Gain", front_kP);
+    SmartDashboard.putNumber("Front D Gain", front_kD);
+    SmartDashboard.putNumber("Front F Gain", front_kF);
 
-    SmartDashboard.putNumber("Back Shooter P Gain", back_kP);
-    SmartDashboard.putNumber("Back Shooter I Gain", back_kI);
-    SmartDashboard.putNumber("Back Shooter D Gain", back_kD);
-    SmartDashboard.putNumber("Back Shooter I Zone", back_kIz);
-    SmartDashboard.putNumber("Back Shooter Feed Forward", back_kF);
+    SmartDashboard.putNumber("Back P Gain", back_kP);
+    SmartDashboard.putNumber("Back D Gain", back_kD);
+    SmartDashboard.putNumber("Back F Gain", back_kF);
   }
 
   public static class Shot {
@@ -135,54 +122,34 @@ public class Shooter extends SubsystemBase {
   }
 
   public void update() {
-    double front_p = SmartDashboard.getNumber("Front Shooter P Gain", 0);
-    double front_i = SmartDashboard.getNumber("Front Shooter I Gain", 0);
-    double front_d = SmartDashboard.getNumber("Front Shooter D Gain", 0);
-    double front_iz = SmartDashboard.getNumber("Front Shooter I Zone", 0);
-    double front_f = SmartDashboard.getNumber("Front Shooter Feed Forward", 0);
+    double front_p = SmartDashboard.getNumber("Front P Gain", 0);
+    double front_d = SmartDashboard.getNumber("Front D Gain", 0);
+    double front_f = SmartDashboard.getNumber("Front F Gain", 0);
 
     if ((front_p != front_kP)) {
       _front.config_kP(0, front_p);
       front_kP = front_p;
     }
-    if ((front_i != front_kI)) {
-      _front.config_kI(0, front_i);
-      front_kI = front_i;
-    }
     if ((front_d != front_kD)) {
       _front.config_kD(0, front_d);
       front_kD = front_d;
-    }
-    if ((front_iz != front_kIz)) {
-      _front.config_IntegralZone(0, front_iz);
-      front_kIz = front_iz;
     }
     if ((front_f != front_kF)) {
       _front.config_kF(0, front_f);
       front_kF = front_f;
     }
 
-    double back_p = SmartDashboard.getNumber("Back Shooter P Gain", 0);
-    double back_i = SmartDashboard.getNumber("Back Shooter I Gain", 0);
-    double back_d = SmartDashboard.getNumber("Back Shooter D Gain", 0);
-    double back_iz = SmartDashboard.getNumber("Back Shooter I Zone", 0);
-    double back_f = SmartDashboard.getNumber("Back Shooter Feed Forward", 0);
+    double back_p = SmartDashboard.getNumber("Back P Gain", 0);
+    double back_d = SmartDashboard.getNumber("Back D Gain", 0);
+    double back_f = SmartDashboard.getNumber("Back F Gain", 0);
 
     if ((back_p != back_kP)) {
       _back.config_kP(0, back_p);
       back_kP = back_p;
     }
-    if ((back_i != back_kI)) {
-      _back.config_kI(0, back_i);
-      back_kI = back_i;
-    }
     if ((back_d != back_kD)) {
       _back.config_kD(0, back_d);
       back_kD = back_d;
-    }
-    if ((back_iz != back_kIz)) {
-      _back.config_IntegralZone(0, back_iz);
-      back_kIz = back_iz;
     }
     if ((back_f != back_kF)) {
       _back.config_kF(0, back_f);
@@ -190,14 +157,32 @@ public class Shooter extends SubsystemBase {
     }
 
     SmartDashboard.putNumber("Shooter Index", shooterIndex);
+    ShooterTableEntry e = _st.CalcShooterValues(shooterIndex);
+    SmartDashboard.putString("Shot", e.Description);
+    SmartDashboard.putNumber("Shot Front RPM", e.ShooterFrontRPM);
+    SmartDashboard.putNumber("Shot Back RPM", e.ShooterBackRPM);
+
+    getLimelightDistance();
+  }
+
+  // runShooterMotors... but AWESOME!
+  public void runShooterMotors2() {
+    ShooterTableEntry entry = ShooterTable.getPrimaryTable().CalcShooterValues(shooterIndex);
+    _front.set(ControlMode.Velocity, util.toFalconVelocity(entry.ShooterFrontRPM));
+    _back.set(ControlMode.Velocity, util.toFalconVelocity(entry.ShooterBackRPM));
+
+    SmartDashboard.putNumber("Front Error", util.toFalconRPM(_front.getClosedLoopError()));
+    SmartDashboard.putNumber("Back Error", util.toFalconRPM(_back.getClosedLoopError()));
+    SmartDashboard.putNumber("Front Motor RPM", util.toFalconRPM(_front.getSelectedSensorVelocity()));
+    SmartDashboard.putNumber("Back Motor RPM", util.toFalconRPM(_back.getSelectedSensorVelocity()));
   }
 
   public void runShooterMotors() {
     _front.set(ControlMode.Velocity, util.toFalconVelocity(RPMConstants.kShooterFront));
     _back.set(ControlMode.Velocity, util.toFalconVelocity(RPMConstants.kShooterBack));
 
-    SmartDashboard.putNumber("Front Shooter Error", _front.getClosedLoopError());
-    SmartDashboard.putNumber("Back Shooter Error", _back.getClosedLoopError());
+    SmartDashboard.putNumber("Front Error", _front.getClosedLoopError());
+    SmartDashboard.putNumber("Back Error", _back.getClosedLoopError());
     SmartDashboard.putNumber("Front Motor RPM", _front.getSelectedSensorVelocity() * 600 / 4096);
     SmartDashboard.putNumber("Back Motor RPM", _back.getSelectedSensorVelocity() * 600 / 4096);
   }
@@ -229,6 +214,7 @@ public class Shooter extends SubsystemBase {
 
   @Override
   public void periodic() {
+    update();
     // This method will be called once per scheduler run
   }
 }

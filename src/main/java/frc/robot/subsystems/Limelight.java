@@ -9,6 +9,7 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.LimelightConstants;
 
 public class Limelight extends SubsystemBase {
   //private Motor _m = Motor.getInstance();
@@ -86,30 +87,22 @@ public class Limelight extends SubsystemBase {
         put("Limelight Distance", distEst / 12);
       }
 
-      double targH = 84.;
-      double mountH = 21.;
-      double mountA = 45;
-      double dist = (targH - mountH) /
-        (Math.tan(Math.toRadians(mountA + getX())) *
-        Math.cos(Math.toRadians(getY())));
+      double heightDelta = LimelightConstants.kTargetHeight -
+                           LimelightConstants.kMountHeight;
+      double goalAngle = (LimelightConstants.kMountAngle + getX()) *
+                         (3.14159 / 180.);
+      double yawComp = getY() * (3.14159 / 180.);
+
+
+      double dist = heightDelta /
+                    (Math.tan(goalAngle) *
+                    Math.cos(yawComp));
 
       distEstTotal += (dist + 23 + 26);
       distEstIters++;
     }
     return distEst;
  }
-
-  /*public void update() {
-    double mountAngle = get("Mount Angle", 0.);
-    double mountHeight = get("Mount Height", 0.);
-    double targetHeight = get("Target Height", 0.);
-    double distIters = get("Distance Iterations", 0.);
-
-    if (mountAngle != kMountAngle) { kMountAngle = mountAngle; }
-    if (mountHeight != kMountHeight) { kMountHeight = mountHeight; }
-    if (targetHeight != kTargetHeight) { kTargetHeight = targetHeight; }
-    if (distIters != kDistIters) { kDistIters = distIters; }
-  }*/
 
   public void putTargetValues() {
     put("Target X Offset", entry("tx").getDouble(0.));

@@ -5,7 +5,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-
+import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
@@ -36,6 +36,14 @@ public class TestingEther extends SubsystemBase {
   _infeedMotor = new TalonSRX(SubsystemConstants.INFEED_MOTOR_ID);
   _singulatorMotor = new CANSparkMax(SubsystemConstants.SINGULATOR_MOTOR_ID, MotorType.kBrushless);
   _conveyorMotor = new CANSparkMax(SubsystemConstants.CONVEYOR_MOTOR_ID, MotorType.kBrushless);
+
+  SupplyCurrentLimitConfiguration _scf = new SupplyCurrentLimitConfiguration();
+  _scf.currentLimit = 20.;
+  _scf.enable = true;
+
+  _infeedMotor.configSupplyCurrentLimit(_scf);
+  _singulatorMotor.setSmartCurrentLimit(20);
+  _conveyorMotor.setSmartCurrentLimit(20);
 
   // _shooterMotorOne = new TalonFX(SubsystemConstants.SHOOTER_1_MOTOR_ID);
   // _shooterMotorTwo = new TalonFX(SubsystemConstants.SHOOTER_2_MOTOR_ID);
