@@ -70,7 +70,7 @@ public class SwerveModuleCAN {
     m_turningMotor.selectProfileSlot(0, 0);
     
 
-    configMotorPID(m_turningMotor, 0, 0.57, 0.0, 0.06);
+    configMotorPID(m_turningMotor, 0, 0.8, 0.0, 0.06);
   }
 
   private double getTurningEncoderRadians(){
@@ -134,9 +134,8 @@ private double getTurnPulses(double referenceAngleRadians){
 }
 
 private void checkMotorCoder(){
-  if(resetIterations > 250 && m_turningEncoder.getAbsolutePosition() * 4096.0 / 360.0 != m_turningMotor.getSelectedSensorPosition()){
+  if(resetIterations < 1 && m_turningEncoder.getAbsolutePosition() * 4096.0 / 360.0 != m_turningMotor.getSelectedSensorPosition()){
     m_turningEncoder.setPositionToAbsolute();
-    resetIterations = 0;
   }
   resetIterations++;
 }

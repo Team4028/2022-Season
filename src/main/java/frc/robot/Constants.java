@@ -161,6 +161,8 @@ public final class Constants {
 
     public static final int INFEED_MOTOR_ID = 13;
     public static final int SINGULATOR_MOTOR_ID = 14;
+    public static final int INFEED_LEFT_NEO_ID = 16;
+    public static final int INFEED_RIGHT_NEO_ID = 17;
     public static final int CONVEYOR_MOTOR_ID = 15;
     public static final int KICKER_MOTOR_ID = 16;
     public static final int SHOOTER_FRONT_MOTOR_ID = 17;
@@ -179,6 +181,8 @@ public final class Constants {
 
     public static final double kInfeed = 0.6; // op y
     public static final double kSingulator = 0.5; // op y
+    public static final double kInfeedUp = 0.8;
+    public static final double kInfeedDown = -0.50;
 
     public static final double kShooterFront = 0.47;//0.47; // op x
     public static final double kShooterBack = 1.0 * kShooterFront; // .7 // op x
