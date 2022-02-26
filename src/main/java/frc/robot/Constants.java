@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
@@ -19,7 +20,10 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 public final class Constants {
   public static final class DriveConstants {
 
-    public static final boolean MK4I = false;
+    public static final boolean MK4I = true;
+    public static final boolean isNAVX = false;
+    public static final double BASE_SPEED_SCALE = 0.25;
+
 
     public static final int kFrontLeftDriveMotorPort = 1;
     public static final int kRearLeftDriveMotorPort = 6;
@@ -46,10 +50,12 @@ public final class Constants {
     public static final int i_kFrontRightEncoderCan = 2;
     public static final int i_kRearRightEncoderCan = 4;
 
+    public static final int pigeonCan = 1;
 
-    public static final double kTrackWidth = MK4I? util.inchesToMeters(23.75): util.inchesToMeters(23.5);
+
+    public static final double kTrackWidth = util.inchesToMeters(23.75 - 2);
     // Distance between centers of right and left wheels on robot
-    public static final double kWheelBase = MK4I? util.inchesToMeters(25.75): util.inchesToMeters(21.5);
+    public static final double kWheelBase = util.inchesToMeters(25.75 - 2);
     // Distance between front and back wheels on robot
     public static final SwerveDriveKinematics kDriveKinematics =
         new SwerveDriveKinematics(
@@ -58,17 +64,24 @@ public final class Constants {
             new Translation2d(-kWheelBase / 2, kTrackWidth / 2),
             new Translation2d(-kWheelBase / 2, -kTrackWidth / 2));
 
-    public static final boolean kGyroReversed = !MK4I; //true for mk2 chassis
+    public static final boolean kGyroReversed = false; //true for mk2 chassis
 
     // These are example values only - DO NOT USE THESE FOR YOUR OWN ROBOT!
     // These characterization values MUST be determined either experimentally or theoretically
     // for *your* robot's drive.
     // The SysId tool provides a convenient method for obtaining these values for your robot.
-    public static final double ksVolts = 0;
-    public static final double kvVoltSecondsPerMeter = 0;
-    public static final double kaVoltSecondsSquaredPerMeter = 0;
+    public static final double ksVolts = 0.65802;
+    public static final double kvVoltSecondsPerMeter = 2.2288;
+    public static final double kaVoltSecondsSquaredPerMeter = 0.17825;
 
-    public static final double kMaxSpeedMetersPerSecond = MK4I? util.feetToMeters(16.3):util.feetToMeters(12.0);
+    public static final SimpleMotorFeedforward driveTrainFeedforward = new SimpleMotorFeedforward(
+      DriveConstants.ksVolts,
+      DriveConstants.kvVoltSecondsPerMeter,
+      DriveConstants.kaVoltSecondsSquaredPerMeter
+    );
+
+    public static final double kMaxSpeedMetersPerSecond = util.feetToMeters(12.0);
+    public static final double i_kMaxSpeedMetersPerSecond = util.feetToMeters(16.3);
   }
 
   public static final class ModuleConstants {
@@ -103,26 +116,33 @@ public final class Constants {
     public static final double i_kWheelDiameterMeters = util.inchesToMeters(4.0);
     public static final double i_kDriveEncoderDistancePerPulse =
         // Assumes the encoders are directly mounted on the wheel shafts
-        (i_kWheelDiameterMeters * Math.PI) * (1.0 / (50.0 / 14.0) / (17.0 / 27.0) / (45.0 / 15.0));
+        (i_kWheelDiameterMeters * Math.PI) * (1.0 / (50.0 / 14.0) / (17.0 / 27.0) / (45.0 / 15.0)) / 2048;
 
     public static final double i_kTurningEncoderDistancePerPulse =
         // Assumes the encoders are on a 1:1 reduction with the module shaft.
         (2 * Math.PI) / (double) i_kEncoderCPR;
 
-    public static final double i_kPModuleTurningController = 0.05;
+    public static final double i_kPModuleTurningController = 0.2;
 
     public static final double i_kPModuleDriveController = 0;
+
+    public static final double i_kEncoderCountsPerModuleRev = (150/7) * 2048;
+
+    public static final double kModuleMaxSpeedTurningRadiansPerSecond = 16*Math.PI;
+    public static final double kModuleMaxAccelerationTurningRadiansPerSecondSquared = 256*Math.PI;
+    public static final double kModuleMaxSpeedTurningPulsesPer100Ms = kModuleMaxSpeedTurningRadiansPerSecond * i_kEncoderCountsPerModuleRev * 0.1;
+    public static final double kModuleMaxAccelerationTurningPulsesPer100MsSquared = kModuleMaxAccelerationTurningRadiansPerSecondSquared * i_kEncoderCountsPerModuleRev * 0.01;
   }
 
 
   public static final class AutoConstants {
-    public static final double kMaxSpeedMetersPerSecond = util.feetToMeters(12);
-    public static final double kMaxAccelerationMetersPerSecondSquared = util.feetToMeters(12);
+    public static final double kMaxSpeedMetersPerSecond = util.feetToMeters(16.3);
+    public static final double kMaxAccelerationMetersPerSecondSquared = util.feetToMeters(16.3);
     public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;
     public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;
 
-    public static final double kPXController = 0;
-    public static final double kPYController = 0;
+    public static final double kPXController = 0.51422;
+    public static final double kPYController = kPXController;
     public static final double kPThetaController = 0;
 
     // Constraint for the motion profilied robot angle controller
