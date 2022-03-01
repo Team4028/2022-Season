@@ -4,17 +4,15 @@
 
 package frc.robot.commands;
 
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.climber;
+import frc.robot.subsystems.Climb;
 
-public class reverseCom extends CommandBase {
-  climber _m;
-  /** Creates a new reverseCom. */
-  public reverseCom() {
-    _m = climber.get_instance();
+public class climbCom extends CommandBase {
+  private Climb _sub;
+  /** Creates a new climbCom. */
+  public climbCom() {
+    _sub = new Climb();
+    Climb.get_instance();
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -25,8 +23,7 @@ public class reverseCom extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    System.out.println("in reverse state");
-    //_m.set(-.2);
+    _sub.main();
   }
 
   // Called once the command ends or is interrupted.

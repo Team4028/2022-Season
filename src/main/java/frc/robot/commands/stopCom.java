@@ -8,15 +8,15 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.climber;
+import frc.robot.subsystems.Climber;
 
 public class stopCom extends CommandBase {
   
-  climber _m;
+  Climber climber;
   /** Creates a new stopCom. */
 
   public stopCom() {
-    _m = climber.get_instance();
+    climber = Climber.get_instance();
     // Use addRequirements() here to declare subsystem dependencies.
   }
 

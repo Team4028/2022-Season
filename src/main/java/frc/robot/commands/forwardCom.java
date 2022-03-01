@@ -4,15 +4,19 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.climb;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-public class climbCom extends CommandBase {
-  private climb _sub;
-  /** Creates a new climbCom. */
-  public climbCom() {
-    _sub = new climb();
-    climb.get_instance();
+import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.Climber;
+
+public class forwardCom extends CommandBase {
+  Climber _m; 
+
+
+  /** Creates a new motorCom. */
+  public forwardCom() {
+    _m = Climber.get_instance();
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -23,7 +27,8 @@ public class climbCom extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    _sub.main();
+    System.out.println("in forward state");
+ // _m.set(.2);
   }
 
   // Called once the command ends or is interrupted.

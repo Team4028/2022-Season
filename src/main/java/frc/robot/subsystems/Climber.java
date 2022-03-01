@@ -12,13 +12,13 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class climber extends SubsystemBase {
+public class Climber extends SubsystemBase {
   /** Creates a new motor. */
   CANSparkMax _m;
   DigitalInput _button;
   RelativeEncoder _encoder;
-  private static climber _instance = new climber();
-  public climber() {
+  private static Climber _instance = new Climber();
+  public Climber() {
     _m = new CANSparkMax(1, MotorType.kBrushless);
     _button = new DigitalInput(0);
     _encoder = _m.getEncoder();
@@ -35,7 +35,7 @@ public class climber extends SubsystemBase {
   public boolean isClosed(){
     return _button.get();
   }
-   public static climber get_instance() {
+   public static Climber get_instance() {
       return _instance;
    }
     
