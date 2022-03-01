@@ -76,10 +76,10 @@ public class ShooterTable {
                         / (steAbove.DistanceInFeet - steBelow.DistanceInFeet);
 
                 // round to int
-                double shooterFrontAdj = scaleFactor * (steAbove.ShootorFrontRPM - steBelow.ShootorFrontRPM);
-                int shooterFrontCalculatedRPM = steBelow.ShootorFrontRPM + (int) (Math.round(shooterFrontAdj));
-                double shootorBackAdj = scaleFactor * (steAbove.ShooterBackRPM - steBelow.ShooterBackRPM);
-                int shooterBackCalculatedRPM = steBelow.ShooterBackRPM + (int) (Math.round(shootorBackAdj));
+                double shooterFrontAdj = scaleFactor * (steAbove.ShooterFrontRPM - steBelow.ShooterFrontRPM);
+                int shooterFrontCalculatedRPM = steBelow.ShooterFrontRPM + (int) (Math.round(shooterFrontAdj));
+                double shooterBackAdj = scaleFactor * (steAbove.ShooterBackRPM - steBelow.ShooterBackRPM);
+                int shooterBackCalculatedRPM = steBelow.ShooterBackRPM + (int) (Math.round(shooterBackAdj));
             
                 double actuatorValue = steBelow.ActuatorVal + (scaleFactor * (steAbove.ActuatorVal - steBelow.ActuatorVal));
 

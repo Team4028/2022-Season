@@ -7,7 +7,7 @@ package frc.robot.utilities;
 public class ShooterTableEntry {
     public final int Index;
 	public final double DistanceInFeet;
-	public final int ShootorFrontRPM;
+	public final int ShooterFrontRPM;
     public final int ShooterBackRPM;
 	public final double ActuatorVal;
     public final String Description;
@@ -22,7 +22,7 @@ public class ShooterTableEntry {
 	public ShooterTableEntry(int index, double distanceInFeet, int shooterFrontRPM, int shooterBackRPM, double actuatorValue, String description, boolean isDefault) {
 		Index = index;
 		DistanceInFeet = distanceInFeet;
-		ShootorFrontRPM = shooterFrontRPM;
+		ShooterFrontRPM = shooterFrontRPM;
         ShooterBackRPM = shooterBackRPM;
 		ActuatorVal = actuatorValue;
         Description = description;
