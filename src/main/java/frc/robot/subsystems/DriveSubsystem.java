@@ -63,29 +63,29 @@ public class DriveSubsystem extends SubsystemBase {
     return _instance;
   }
 
-      private final SwerveModuleCAN m_frontLeft =
-      new SwerveModuleCAN(
+      private final SwerveModuleCANTwoElectricBoogaloo m_frontLeft =
+      new SwerveModuleCANTwoElectricBoogaloo(
           i_kFrontLeftDriveMotorPort,
           i_kFrontLeftTurningMotorPort,
           i_kFrontLeftEncoderCan,
           i_FRONT_LEFT_ANGLE_OFFSET);
 
-     private final SwerveModuleCAN m_rearLeft =
-      new SwerveModuleCAN(
+     private final SwerveModuleCANTwoElectricBoogaloo m_rearLeft =
+      new SwerveModuleCANTwoElectricBoogaloo(
           i_kRearLeftDriveMotorPort,
           i_kRearLeftTurningMotorPort,
           i_kRearLeftEncoderCan,
           i_BACK_LEFT_ANGLE_OFFSET);
 
-     private final SwerveModuleCAN m_frontRight =
-      new SwerveModuleCAN(
+     private final SwerveModuleCANTwoElectricBoogaloo m_frontRight =
+      new SwerveModuleCANTwoElectricBoogaloo(
           i_kFrontRightDriveMotorPort,
           i_kFrontRightTurningMotorPort,
           i_kFrontRightEncoderCan,
           i_FRONT_RIGHT_ANGLE_OFFSET);
 
-    private final SwerveModuleCAN m_rearRight =
-      new SwerveModuleCAN(
+    private final SwerveModuleCANTwoElectricBoogaloo m_rearRight =
+      new SwerveModuleCANTwoElectricBoogaloo(
           i_kRearRightDriveMotorPort,
           i_kRearRightTurningMotorPort,
           i_kRearRightEncoderCan,

@@ -22,7 +22,7 @@ public final class Constants {
 
     public static final boolean MK4I = true;
     public static final boolean isNAVX = false;
-    public static final double BASE_SPEED_SCALE = 0.25;
+    public static final double BASE_SPEED_SCALE = 0.05;
 
 
     public static final int kFrontLeftDriveMotorPort = 1;
@@ -183,8 +183,8 @@ public final class Constants {
 
     public static final double kInfeed = 0.6; // op y
     public static final double kSingulator = 0.5; // op y
-    public static final double kInfeedUp = 0.8;
-    public static final double kInfeedDown = -0.50;
+    public static final double kInfeedUp = 0.5;
+    public static final double kInfeedDown = -0.75;
 
     public static final double kShooterFront = 0.47;//0.47; // op x
     public static final double kShooterBack = 1.0 * kShooterFront; // .7 // op x

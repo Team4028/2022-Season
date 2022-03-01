@@ -105,14 +105,14 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
       m_driverController.start.whenPressed(new InstantCommand(() -> m_robotDrive.zeroHeading()));
-      m_driverController.left_bumper.whenPressed(new InstantCommand(() -> 
+      /*m_driverController.left_bumper.whenPressed(new InstantCommand(() -> 
       m_singulatorAndInfeed.liftInfeed())
       .andThen(new WaitCommand(2.0))
       .andThen(new InstantCommand(() -> m_singulatorAndInfeed.holdInfeed())));
       m_driverController.right_bumper.whenPressed(new InstantCommand(() -> 
       m_singulatorAndInfeed.downInfeed())
       .andThen(new WaitCommand(1.0))
-      .andThen(new InstantCommand(() -> m_singulatorAndInfeed.holdInfeed())));
+      .andThen(new InstantCommand(() -> m_singulatorAndInfeed.holdInfeed())));*/
       m_driverController.y.toggleWhenPressed(_RunInfeedSingulatorMotors);
     //   m_operatorController.b.whenPressed(new RunConveyorWithEncoder());
     // //   m_operatorController.x.toggleWhenPressed(new RunShooterMotors());
