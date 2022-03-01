@@ -27,7 +27,6 @@ import frc.robot.commands.RunConveyorTwoBall;
 import frc.robot.commands.RunShooterMotors;
 import frc.robot.commands.ToggleAdjustmentStyle;
 import frc.robot.commands.RunInfeedSingulatorMotors;
-import frc.robot.subsystems.Infeed;
 import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -45,7 +44,6 @@ import java.util.List;
 public class RobotContainer {
   // The robot's subsystems
   private final DriveSubsystem m_robotDrive = DriveSubsystem.get_instance();
-  private final Infeed m_infeed = Infeed.get_instance();
   private final Shooter m_shooter = Shooter.getInstance();
 
   // Controller Setup
