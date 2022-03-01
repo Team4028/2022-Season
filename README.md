@@ -1,2 +1,2 @@
-### development branch
-This branch is for development purposes; feel free to branch off and change as needed when doing any testing or development activities.
+### competition branch
+Competition-ready code for 2022.
