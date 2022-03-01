@@ -19,8 +19,7 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 public final class Constants {
   public static final class DriveConstants {
 
-    public static final boolean MK4I = true;
-    public static final boolean isNAVX = true;
+    public static final boolean MK4I = false;
 
     public static final int kFrontLeftDriveMotorPort = 1;
     public static final int kRearLeftDriveMotorPort = 6;
@@ -47,12 +46,10 @@ public final class Constants {
     public static final int i_kFrontRightEncoderCan = 2;
     public static final int i_kRearRightEncoderCan = 4;
 
-    public static final int pigeonCan = 1;
 
-
-    public static final double kTrackWidth = util.inchesToMeters(23.75);
+    public static final double kTrackWidth = MK4I? util.inchesToMeters(23.75): util.inchesToMeters(23.5);
     // Distance between centers of right and left wheels on robot
-    public static final double kWheelBase = util.inchesToMeters(25.75);
+    public static final double kWheelBase = MK4I? util.inchesToMeters(25.75): util.inchesToMeters(21.5);
     // Distance between front and back wheels on robot
     public static final SwerveDriveKinematics kDriveKinematics =
         new SwerveDriveKinematics(
@@ -61,7 +58,7 @@ public final class Constants {
             new Translation2d(-kWheelBase / 2, kTrackWidth / 2),
             new Translation2d(-kWheelBase / 2, -kTrackWidth / 2));
 
-    public static final boolean kGyroReversed = false; //true for mk2 chassis
+    public static final boolean kGyroReversed = !MK4I; //true for mk2 chassis
 
     // These are example values only - DO NOT USE THESE FOR YOUR OWN ROBOT!
     // These characterization values MUST be determined either experimentally or theoretically
@@ -71,8 +68,7 @@ public final class Constants {
     public static final double kvVoltSecondsPerMeter = 0;
     public static final double kaVoltSecondsSquaredPerMeter = 0;
 
-    public static final double kMaxSpeedMetersPerSecond = util.feetToMeters(12.0);
-    public static final double i_kMaxSpeedMetersPerSecond = util.feetToMeters(16.3);
+    public static final double kMaxSpeedMetersPerSecond = MK4I? util.feetToMeters(16.3):util.feetToMeters(12.0);
   }
 
   public static final class ModuleConstants {
@@ -96,6 +92,7 @@ public final class Constants {
 
   public static final class OIConstants {
     public static final int kDriverControllerPort = 0;
+    public static final int kOperatorControllerPort = 1;
   }
 
   public static final class MK4IModuleConstants {
@@ -112,22 +109,15 @@ public final class Constants {
         // Assumes the encoders are on a 1:1 reduction with the module shaft.
         (2 * Math.PI) / (double) i_kEncoderCPR;
 
-    public static final double i_kPModuleTurningController = 0.2;
+    public static final double i_kPModuleTurningController = 0.05;
 
     public static final double i_kPModuleDriveController = 0;
-
-    public static final double i_kEncoderCountsPerModuleRev = (150/7) * 2048;
-
-    public static final double kModuleMaxSpeedTurningRadiansPerSecond = 16*Math.PI;
-    public static final double kModuleMaxAccelerationTurningRadiansPerSecondSquared = 256*Math.PI;
-    public static final double kModuleMaxSpeedTurningPulsesPer100Ms = kModuleMaxSpeedTurningRadiansPerSecond * i_kEncoderCountsPerModuleRev * 0.1;
-    public static final double kModuleMaxAccelerationTurningPulsesPer100MsSquared = kModuleMaxAccelerationTurningRadiansPerSecondSquared * i_kEncoderCountsPerModuleRev * 0.01;
   }
 
 
   public static final class AutoConstants {
-    public static final double kMaxSpeedMetersPerSecond = util.feetToMeters(6);
-    public static final double kMaxAccelerationMetersPerSecondSquared = util.feetToMeters(4);
+    public static final double kMaxSpeedMetersPerSecond = util.feetToMeters(12);
+    public static final double kMaxAccelerationMetersPerSecondSquared = util.feetToMeters(12);
     public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;
     public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;
 
@@ -140,9 +130,44 @@ public final class Constants {
         new TrapezoidProfile.Constraints(
             kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
   }
-  public static final class VBusConstants {
-    public static double kShooterFrontVBus = 0.7;
-    public static double kShooterRatio = 1.1;
-    public static double kShooterBackVBus = kShooterRatio * kShooterFrontVBus;
+
+  public static final double kFineAdjustment = 0.5;
+  public static final double kCoarseAdjustment = 1.;
+  public static final class SubsystemConstants {
+    /*************** CAN IDS **************/
+
+    //0-8 will be alotted for swerve motors
+    //9-12 will be alotted and encoders
+
+    public static final int INFEED_MOTOR_ID = 13;
+    public static final int SINGULATOR_MOTOR_ID = 14;
+    public static final int CONVEYOR_MOTOR_ID = 15;
+    public static final int KICKER_MOTOR_ID = 16;
+    public static final int SHOOTER_FRONT_MOTOR_ID = 17;
+    public static final int SHOOTER_BACK_MOTOR_ID = 18;
+
+    public static final int CLIMB_MOTOR_ID = 19; // this might need two motors
+
+    public static final int TOF1_SENSOR_ID = 420;
+    public static final int TOF2_SENSOR_ID = 69;
   }
+
+  public static final class VBusConstants {
+    public static final double kConveyAll = 0.5; // op start
+    public static final double kConveyOne = 0.5; // op b
+    public static final double kConveyTwo = 0.5; // op a
+
+    public static final double kInfeed = 0.6; // op y
+    public static final double kSingulator = 0.5; // op y
+
+    public static final double kShooterFront = 0.47;//0.47; // op x
+    public static final double kShooterBack = 1.0 * kShooterFront; // .7 // op x
+  }
+
+  public static final class EncoderConstants {
+    public static final double kConveyOne = 20;
+    public static final double kConveyTwo = 50;
+  }
+
+
 }

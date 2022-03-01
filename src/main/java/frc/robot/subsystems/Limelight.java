@@ -83,7 +83,7 @@ public class Limelight extends SubsystemBase {
         distEst = distEstTotal / distEstIters;
         distEstTotal = 0;
         distEstIters = 0;
-        put("Distance", distEst);
+        put("Limelight Distance", distEst / 12);
       }
 
       /*// EXCEL OP
@@ -96,10 +96,13 @@ public class Limelight extends SubsystemBase {
       // Very confident. but will probably need to use PID to
       // always face the same way.*/
       double targH = 84.;
-      double mountH = 3.5;
+
+      double mountH = 21.;//3.5;
       double mountA = 45;
       double dist = (targH - mountH) /
-                    Math.tan(Math.toRadians(mountA + getX()));
+        (Math.tan(Math.toRadians(mountA + getX())) *
+        Math.cos(Math.toRadians(getY())));
+
       distEstTotal += dist;
       distEstIters++;
     }
