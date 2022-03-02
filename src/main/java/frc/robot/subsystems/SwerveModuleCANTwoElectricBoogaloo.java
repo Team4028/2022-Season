@@ -50,9 +50,9 @@ public class SwerveModuleCANTwoElectricBoogaloo {
     m_turningMotor = new WPI_TalonFX(turningMotorChannel);
     m_turningEncoder = new WPI_CANCoder(CANEncoderPort);
 
-    m_turningEncoder.configFactoryDefault();
-    m_turningMotor.configFactoryDefault();
-    m_driveMotor.configFactoryDefault();
+    // m_turningEncoder.configFactoryDefault();
+    // m_turningMotor.configFactoryDefault();
+    // m_driveMotor.configFactoryDefault();
     m_turningEncoder.setPositionToAbsolute();
     if(m_turningEncoder.configGetSensorInitializationStrategy() != SensorInitializationStrategy.BootToAbsolutePosition){
         m_turningEncoder.configSensorInitializationStrategy(SensorInitializationStrategy.BootToAbsolutePosition, CAN_TIMEOUT_MS);
@@ -105,7 +105,7 @@ public class SwerveModuleCANTwoElectricBoogaloo {
     checkMotorCoder();
     // Optimize the reference state to avoid spinning further than 90 degrees
     SwerveModuleState state =
-        optimize(SwerveModuleState.optimize(desiredState, new Rotation2d(getTurningEncoderRadians())), getTurningEncoderRadians());
+        optimizetwoelecboogaloo(SwerveModuleState.optimize(desiredState, new Rotation2d(getTurningEncoderRadians())), new Rotation2d(getTurningEncoderRadians()));
 
     // Calculate the drive output from the drive PID controller.
     final double driveOutput =
@@ -174,6 +174,46 @@ private void checkMotorCoder(){
     m_turningMotor.setSelectedSensorPosition(m_turningEncoder.getAbsolutePosition() / 360 * 2048 * (150/7));
   }
   resetIterations++;
+}
+public static SwerveModuleState optimizetwoelecboogaloo(SwerveModuleState desiredState, Rotation2d currentAngle) {
+  double targetAngle = placeInAppropriate0To360Scope(currentAngle.getDegrees(), desiredState.angle.getDegrees());
+  double targetSpeed = desiredState.speedMetersPerSecond;
+  double delta = targetAngle - currentAngle.getDegrees();
+  if (Math.abs(delta) > 90){
+      targetSpeed = -targetSpeed;
+      targetAngle = delta > 90 ? (targetAngle -= 180) : (targetAngle += 180);
+  }        
+  return new SwerveModuleState(targetSpeed, Rotation2d.fromDegrees(targetAngle));
+}
+
+/**
+   * @param scopeReference Current Angle
+   * @param newAngle Target Angle
+   * @return Closest angle within scope
+   */
+  private static double placeInAppropriate0To360Scope(double scopeReference, double newAngle) {
+    double lowerBound;
+    double upperBound;
+    double lowerOffset = scopeReference % 360;
+    if (lowerOffset >= 0) {
+        lowerBound = scopeReference - lowerOffset;
+        upperBound = scopeReference + (360 - lowerOffset);
+    } else {
+        upperBound = scopeReference - lowerOffset;
+        lowerBound = scopeReference - (360 + lowerOffset);
+    }
+    while (newAngle < lowerBound) {
+        newAngle += 360;
+    }
+    while (newAngle > upperBound) {
+        newAngle -= 360;
+    }
+    if (newAngle - scopeReference > 180) {
+        newAngle -= 360;
+    } else if (newAngle - scopeReference < -180) {
+        newAngle += 360;
+    }
+    return newAngle;
 }
 
 }
