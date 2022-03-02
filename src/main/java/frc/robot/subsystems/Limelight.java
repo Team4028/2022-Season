@@ -9,6 +9,7 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.LimelightConstants;
 
 public class Limelight extends SubsystemBase {
   //private Motor _m = Motor.getInstance();
@@ -86,45 +87,28 @@ public class Limelight extends SubsystemBase {
         put("Limelight Distance", distEst / 12);
       }
 
-      /*// EXCEL OP
-      double x = getX();
-      double dist =
-        0.0069 * (Math.pow(x, 2)) -
-        0.2369 * x +
-        6.2049;
-      // Equation R^2 = 0.9956
-      // Very confident. but will probably need to use PID to
-      // always face the same way.*/
-      double targH = 84.;
+      double heightDelta = LimelightConstants.kTargetHeight -
+                           LimelightConstants.kMountHeight;
+      double goalAngle = (LimelightConstants.kMountAngle + getX()) *
+                         (3.14159 / 180.);
+      double yawComp = getY() * (3.14159 / 180.);
 
-      double mountH = 21.;//3.5;
-      double mountA = 45;
-      double dist = (targH - mountH) /
-        (Math.tan(Math.toRadians(mountA + getX())) *
-        Math.cos(Math.toRadians(getY())));
 
-      distEstTotal += dist;
+      double dist = heightDelta /
+                    (Math.tan(goalAngle) *
+                    Math.cos(yawComp));
+
+      distEstTotal += (dist + 23 + 26);
       distEstIters++;
     }
     return distEst;
  }
 
-  /*public void update() {
-    double mountAngle = get("Mount Angle", 0.);
-    double mountHeight = get("Mount Height", 0.);
-    double targetHeight = get("Target Height", 0.);
-    double distIters = get("Distance Iterations", 0.);
-
-    if (mountAngle != kMountAngle) { kMountAngle = mountAngle; }
-    if (mountHeight != kMountHeight) { kMountHeight = mountHeight; }
-    if (targetHeight != kTargetHeight) { kTargetHeight = targetHeight; }
-    if (distIters != kDistIters) { kDistIters = distIters; }
-  }*/
-
   public void putTargetValues() {
     put("Target X Offset", entry("tx").getDouble(0.));
     put("Target Y Offset", entry("ty").getDouble(0.));
     put("Target Area", entry("ta").getDouble(0.));
+    SmartDashboard.putBoolean("Has Target", getHasTarget());
   }
 
   public boolean set(String key, double val) {

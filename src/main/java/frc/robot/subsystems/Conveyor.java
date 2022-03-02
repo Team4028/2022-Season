@@ -26,6 +26,7 @@ public class Conveyor extends SubsystemBase {
   
   public Conveyor() {
     _conveyorMotor = new CANSparkMax(SubsystemConstants.CONVEYOR_MOTOR_ID, MotorType.kBrushless);
+    _conveyorMotor.setSmartCurrentLimit(20);
     _enc = _conveyorMotor.getEncoder();
     _enc.setPosition(0);
     _conveyorMotor.setInverted(true);
