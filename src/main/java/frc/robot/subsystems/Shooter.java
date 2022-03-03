@@ -11,10 +11,9 @@ import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.util;
-import frc.robot.Constants.DefaultConstants;
+import frc.robot.Constants.IndexConstants;
 import frc.robot.Constants.RPMConstants;
 import frc.robot.Constants.SubsystemConstants;
-import frc.robot.Constants.VBusConstants;
 import frc.robot.utilities.ShooterTable;
 import frc.robot.utilities.ShooterTableEntry;
 
@@ -58,7 +57,7 @@ public class Shooter extends SubsystemBase {
     if (accept) {
       shooterIndex = limelightDistance; // TODO: round
     } else {
-      shooterIndex = DefaultConstants.kIndexDefault;
+      shooterIndex = IndexConstants.kIndexDefault;
     }
     accept = !accept;
     SmartDashboard.putString("Accept Limelight Mode", (accept ? "Accept Limelight" : "Reset to Default"));
@@ -161,13 +160,24 @@ public class Shooter extends SubsystemBase {
       back_kF = back_f;
     }
 
-    SmartDashboard.putNumber("Shooter Index", shooterIndex);
+    put("Shooter Index", shooterIndex);
     ShooterTableEntry e = _st.CalcShooterValues(shooterIndex);
     SmartDashboard.putString("Shot", e.Description);
-    SmartDashboard.putNumber("Shot Front RPM", e.ShooterFrontRPM);
-    SmartDashboard.putNumber("Shot Back RPM", e.ShooterBackRPM);
+    put("Shot Front RPM", e.ShooterFrontRPM);
+    put("Shot Back RPM", e.ShooterBackRPM);
+    put("Actuator Value", e.ActuatorVal);
+
+    put("Front Error", util.toFalconRPM(_front.getClosedLoopError()));
+    put("Back Error", util.toFalconRPM(_back.getClosedLoopError()));
+    put("Front Motor RPM", util.toFalconRPM(_front.getSelectedSensorVelocity()));
+    put("Back Motor RPM", util.toFalconRPM(_back.getSelectedSensorVelocity()));
+
 
     getLimelightDistance();
+  }
+
+  public void put(String key, double val) {
+    SmartDashboard.putNumber(key, val);
   }
 
   // runShooterMotors... but AWESOME!
@@ -175,11 +185,6 @@ public class Shooter extends SubsystemBase {
     ShooterTableEntry entry = ShooterTable.getPrimaryTable().CalcShooterValues(shooterIndex);
     _front.set(ControlMode.Velocity, util.toFalconVelocity(entry.ShooterFrontRPM));
     _back.set(ControlMode.Velocity, util.toFalconVelocity(entry.ShooterBackRPM));
-
-    SmartDashboard.putNumber("Front Error", util.toFalconRPM(_front.getClosedLoopError()));
-    SmartDashboard.putNumber("Back Error", util.toFalconRPM(_back.getClosedLoopError()));
-    SmartDashboard.putNumber("Front Motor RPM", util.toFalconRPM(_front.getSelectedSensorVelocity()));
-    SmartDashboard.putNumber("Back Motor RPM", util.toFalconRPM(_back.getSelectedSensorVelocity()));
   }
 
   public void runShooterMotors() {
@@ -203,17 +208,17 @@ public class Shooter extends SubsystemBase {
 
   public void incrementIndex() {
     if (fineAdjustment) {
-      shooterIndex += DefaultConstants.kFineAdjustment;
+      shooterIndex += IndexConstants.kFineAdjustment;
     } else {
-      shooterIndex += DefaultConstants.kCoarseAdjustment;
+      shooterIndex += IndexConstants.kCoarseAdjustment;
     }
   }
 
   public void decrementIndex() {
     if (fineAdjustment) {
-      shooterIndex -= DefaultConstants.kFineAdjustment;
+      shooterIndex -= IndexConstants.kFineAdjustment;
     } else {
-      shooterIndex -= DefaultConstants.kCoarseAdjustment;
+      shooterIndex -= IndexConstants.kCoarseAdjustment;
     }
   }
 

@@ -19,6 +19,7 @@ import frc.robot.Constants.OIConstants;
 import frc.robot.commands.AcceptLimelightDistance;
 import frc.robot.commands.DecrementShooterIndex;
 import frc.robot.commands.IncrementShooterIndex;
+import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.commands.RunConveyor;
 import frc.robot.commands.ReverseInfeedAndConveyor;
@@ -47,6 +48,7 @@ public class RobotContainer {
   // Controller Setup
   private BeakXBoxController m_driverController = new BeakXBoxController(OIConstants.kDriverControllerPort);
   private BeakXBoxController m_operatorController = new BeakXBoxController(OIConstants.kOperatorControllerPort);
+
   //---
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -81,12 +83,13 @@ public class RobotContainer {
       m_operatorController.b.whenPressed(new RunConveyorOneBall());
       m_operatorController.x.toggleWhenPressed(new RunShooterMotors());
       m_operatorController.a.whenPressed(new RunConveyorTwoBall());
-      m_operatorController.start.toggleWhenPressed(new RunConveyorOneBall());
+      m_operatorController.start.toggleWhenPressed(new RunConveyor());
       m_operatorController.back.toggleWhenPressed(new ReverseInfeedAndConveyor());
       m_operatorController.left_bumper.whenPressed(new DecrementShooterIndex());
       m_operatorController.right_bumper.whenPressed(new IncrementShooterIndex());
       m_operatorController.left_stick_button.whenPressed(new ToggleAdjustmentStyle());
       m_operatorController.right_stick_button.whenPressed(new AcceptLimelightDistance());
+
       // FIXME: bruh spagheti controller
 
   }

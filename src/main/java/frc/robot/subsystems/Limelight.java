@@ -108,6 +108,7 @@ public class Limelight extends SubsystemBase {
     put("Target X Offset", entry("tx").getDouble(0.));
     put("Target Y Offset", entry("ty").getDouble(0.));
     put("Target Area", entry("ta").getDouble(0.));
+    SmartDashboard.putBoolean("Has Target", getHasTarget());
   }
 
   public boolean set(String key, double val) {

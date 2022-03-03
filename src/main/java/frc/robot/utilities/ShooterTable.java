@@ -177,11 +177,11 @@ public class ShooterTable {
         primarytable.add(new ShooterTableEntry(_indexCounter++, 17., 1365, 1180, 60., "Index 17", false));
         primarytable.add(new ShooterTableEntry(_indexCounter++, 18., 1365, 1180, 60., "Index 18", false));*/
 
-        /*primarytable.add(new ShooterTableEntry(_indexCounter++, 11., 1320, 1740, 60., "Index 11", false));
-        primarytable.add(new ShooterTableEntry(_indexCounter++, 14., 1320, 2340, 60., "Index 14", false));
-        primarytable.add(new ShooterTableEntry(_indexCounter++, 19., 1475, 2575, 60., "Index 19", false));*/
+        primarytable.add(new ShooterTableEntry(_indexCounter++, 11., 1320, 1740, 110., "Index 11", false));
+        primarytable.add(new ShooterTableEntry(_indexCounter++, 14., 1320, 2340, 140., "Index 14", false));
+        primarytable.add(new ShooterTableEntry(_indexCounter++, 19., 1475, 2575, 190., "Index 19", false));
 
-        primarytable.add(new ShooterTableEntry(_indexCounter++, 11., 1250, 1120, 60., "Index 11", false));
+        //primarytable.add(new ShooterTableEntry(_indexCounter++, 11., 1250, 1120, 60., "Index 11", false));
         
 
         // 0.38 VBus + 1.4 ratio = close shot?
