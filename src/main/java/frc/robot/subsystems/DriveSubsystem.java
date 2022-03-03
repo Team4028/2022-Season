@@ -51,7 +51,7 @@ public class DriveSubsystem extends SubsystemBase {
 
 
   private static final double i_FRONT_LEFT_ANGLE_OFFSET = Math.toRadians(154.6);
-  private static final double i_FRONT_RIGHT_ANGLE_OFFSET = Math.toRadians(169.3);
+  private static final double i_FRONT_RIGHT_ANGLE_OFFSET = -Math.toRadians(169.3);
   private static final double i_BACK_LEFT_ANGLE_OFFSET = Math.toRadians(31.3);
   private static final double i_BACK_RIGHT_ANGLE_OFFSET = Math.toRadians(199.1);
 

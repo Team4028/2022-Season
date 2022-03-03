@@ -70,15 +70,15 @@ public final class Constants {
     // These characterization values MUST be determined either experimentally or theoretically
     // for *your* robot's drive.
     // The SysId tool provides a convenient method for obtaining these values for your robot.
-    public static final double ksVolts = 0.65802;
-    public static final double kvVoltSecondsPerMeter = 2.2288;
-    public static final double kaVoltSecondsSquaredPerMeter = 0.17825;
+    public static final double ksVolts = 0.798;
+    public static final double kvVoltSecondsPerMeter = 2.35;
+    public static final double kaVoltSecondsSquaredPerMeter = 0.30;
 
     public static final SimpleMotorFeedforward driveTrainFeedforward = new SimpleMotorFeedforward(
-      DriveConstants.ksVolts,
-      DriveConstants.kvVoltSecondsPerMeter,
-      DriveConstants.kaVoltSecondsSquaredPerMeter
-    );
+      ksVolts,
+      kvVoltSecondsPerMeter,
+      kaVoltSecondsSquaredPerMeter
+      );
 
     public static final double kMaxSpeedMetersPerSecond = util.feetToMeters(12.0);
     public static final double i_kMaxSpeedMetersPerSecond = util.feetToMeters(16.3);
@@ -112,13 +112,15 @@ public final class Constants {
     public static final double i_kMaxModuleAngularSpeedRadiansPerSecond = 2 * Math.PI;
     public static final double i_kMaxModuleAngularAccelerationRadiansPerSecondSquared = 2 * Math.PI;
 
-    public static final double i_integratedEncoderTicksPerModRev = 2048 * (150/7);
+    public static final double i_integratedEncoderTicksPerModRev = 2048 * (150.0/7.0);
 
     public static final int i_kEncoderCPR = 4096;
     public static final double i_kWheelDiameterMeters = util.inchesToMeters(4.0);
     public static final double i_kDriveEncoderDistancePerPulse =
         // Assumes the encoders are directly mounted on the wheel shafts
-        (i_kWheelDiameterMeters * Math.PI) * (1.0 / (50.0 / 14.0) / (17.0 / 27.0) / (45.0 / 15.0)) / 2048;
+        (i_kWheelDiameterMeters * Math.PI) * (1.0 / (50.0 / 14.0) / (17.0 / 27.0) / (45.0 / 15.0)) / 2048.0;
+
+    public static final double i_kDriveEncoderCountsPerWheelRev = (50.0 / 14.0) * (17.0 / 27.0) * (45.0 / 15.0) * 2048.0;
 
     public static final double i_kTurningEncoderDistancePerPulse =
         // Assumes the encoders are on a 1:1 reduction with the module shaft.
@@ -128,7 +130,7 @@ public final class Constants {
 
     public static final double i_kPModuleDriveController = 0;
 
-    public static final double i_kEncoderCountsPerModuleRev = (150/7) * 2048;
+    public static final double i_kEncoderCountsPerModuleRev = (150.0/7.0) * 2048.0;
 
     public static final double kModuleMaxSpeedTurningRadiansPerSecond = 16*Math.PI;
     public static final double kModuleMaxAccelerationTurningRadiansPerSecondSquared = 256*Math.PI;
@@ -143,9 +145,9 @@ public final class Constants {
     public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;
     public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;
 
-    public static final double kPXController = 0.51422;
+    public static final double kPXController = 0.0;
     public static final double kPYController = kPXController;
-    public static final double kPThetaController = 0;
+    public static final double kPThetaController = 3.0;
 
     // Constraint for the motion profilied robot angle controller
     public static final TrapezoidProfile.Constraints kThetaControllerConstraints =

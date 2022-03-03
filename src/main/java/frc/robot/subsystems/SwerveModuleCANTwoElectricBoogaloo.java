@@ -5,16 +5,14 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
-import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.sensors.AbsoluteSensorRange;
 import com.ctre.phoenix.sensors.SensorInitializationStrategy;
-import com.ctre.phoenix.sensors.SensorTimeBase;
 import com.ctre.phoenix.sensors.WPI_CANCoder;
 
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -30,8 +28,6 @@ public class SwerveModuleCANTwoElectricBoogaloo {
   private final int STATUS_FRAME_GENERAL_PERIOD_MS = 250;
   private final int CAN_TIMEOUT_MS = 250;
 
-  private TalonFXConfiguration steerConfiguration = new TalonFXConfiguration();
-  private TalonFXConfiguration driveConfiguration = new TalonFXConfiguration();
 
   private int resetIterations = 0;
 
@@ -62,7 +58,7 @@ public class SwerveModuleCANTwoElectricBoogaloo {
     m_turningEncoder.configAbsoluteSensorRange(AbsoluteSensorRange.Unsigned_0_to_360);
     m_turningMotor.configSelectedFeedbackCoefficient(1);
     m_turningEncoder.configMagnetOffset(Math.toDegrees(turningMotorOffset));
-    m_turningMotor.setSensorPhase(true);
+    m_turningMotor.setSensorPhase(false);
     m_turningMotor.configAllowableClosedloopError(0, 10, CAN_TIMEOUT_MS);
     m_turningMotor.setStatusFramePeriod(
               StatusFrameEnhanced.Status_1_General,
@@ -72,7 +68,7 @@ public class SwerveModuleCANTwoElectricBoogaloo {
 
     m_driveMotor.setNeutralMode(NeutralMode.Brake);
     m_driveMotor.configSelectedFeedbackCoefficient(1);
-    m_turningMotor.setNeutralMode(NeutralMode.Coast);
+    m_turningMotor.setNeutralMode(NeutralMode.Brake);
     m_turningMotor.setInverted(true);
     m_turningMotor.selectProfileSlot(0, 0);
     m_turningMotor.setSelectedSensorPosition(m_turningEncoder.getPosition() / 360 * 2048 * 150 / 7);
@@ -80,11 +76,13 @@ public class SwerveModuleCANTwoElectricBoogaloo {
     
 
     configMotorPID(m_turningMotor, 0, 0.2, 0.0, 0.1);
+    configMotorPID(m_driveMotor, 0, 0.13367, 0.0, 0.0);
+    m_driveMotor.config_kF(0, 0);//DriveConstants.kvVoltSecondsPerMeter * 10.0 / 12.0 * MK4IModuleConstants.i_kDriveEncoderDistancePerPulse);
     System.out.println(m_turningMotor.getSelectedSensorPosition());
   }
 
   private double getTurningEncoderRadians(){
-    return Math.toRadians(m_turningMotor.getSelectedSensorPosition(0) * (7/150) * Math.PI * 2 / 2048);
+    return m_turningMotor.getSelectedSensorPosition(0) * 2.0 * Math.PI / MK4IModuleConstants.i_integratedEncoderTicksPerModRev;
     }
 
   /**
@@ -105,14 +103,18 @@ public class SwerveModuleCANTwoElectricBoogaloo {
     checkMotorCoder();
     // Optimize the reference state to avoid spinning further than 90 degrees
     SwerveModuleState state =
-        optimizetwoelecboogaloo(SwerveModuleState.optimize(desiredState, new Rotation2d(getTurningEncoderRadians())), new Rotation2d(getTurningEncoderRadians()));
+        vargooseoptimize(SwerveModuleState.optimize(desiredState, new Rotation2d(getTurningEncoderRadians())), new Rotation2d(getTurningEncoderRadians()));
 
     // Calculate the drive output from the drive PID controller.
     final double driveOutput =
         DriveConstants.driveTrainFeedforward.calculate(state.speedMetersPerSecond);
 
-    m_driveMotor.setVoltage(driveOutput);
-    m_turningMotor.set(ControlMode.Position, getTurnPulses(state.angle.getRadians()));
+    //m_driveMotor.set(ControlMode.Velocity, state.speedMetersPerSecond / MK4IModuleConstants.i_kDriveEncoderDistancePerPulse);
+    m_driveMotor.set(ControlMode.Velocity,
+    state.speedMetersPerSecond / 10.0 / MK4IModuleConstants.i_kDriveEncoderDistancePerPulse,
+    DemandType.ArbitraryFeedForward,
+    DriveConstants.driveTrainFeedforward.calculate(state.speedMetersPerSecond));
+    setHeading(state.angle.getDegrees());
   }
 
   public void configMotorPID(WPI_TalonFX talon, int slotIdx, double p, double i, double d){
@@ -127,48 +129,38 @@ public class SwerveModuleCANTwoElectricBoogaloo {
     m_turningMotor.setSelectedSensorPosition(0);
   }
 
-private SwerveModuleState optimize(SwerveModuleState st, double currentAngleRadians){
-  double currentAngleRadiansMod = currentAngleRadians % (2.0 * Math.PI);
-  if (currentAngleRadiansMod < 0.0) {
-      currentAngleRadiansMod += 2.0 * Math.PI;
-  }
 
-  double adjustedReferenceAngleRadians = st.angle.getRadians() + currentAngleRadians - currentAngleRadiansMod;
-  if (st.angle.getRadians() - currentAngleRadiansMod > Math.PI) {
-      adjustedReferenceAngleRadians -= 2.0 * Math.PI;
-  } else if (st.angle.getRadians() - currentAngleRadiansMod < -Math.PI) {
-      adjustedReferenceAngleRadians += 2.0 * Math.PI;
-  }
+public void setHeading(double _angle){
+  //double newAngleDemand = _angle;
+  double currentSensorPosition = m_turningMotor.getSelectedSensorPosition() * 360.0 / MK4IModuleConstants.i_integratedEncoderTicksPerModRev;
+  double remainder = Math.IEEEremainder(currentSensorPosition, 360.0);
+  double newAngleDemand = _angle + currentSensorPosition -remainder;
+ 
+  //System.out.println(mSteeringMotor.getSelectedSensorPosition()-remainder );
+  if(newAngleDemand - currentSensorPosition > 180.1){
+        newAngleDemand -= 360.0;
+    } else if (newAngleDemand - currentSensorPosition < -180.1){
+        newAngleDemand += 360.0;
+    }
+    
+  m_turningMotor.set(ControlMode.Position, newAngleDemand / 360.0 * MK4IModuleConstants.i_integratedEncoderTicksPerModRev);
+}
+public static SwerveModuleState vargooseoptimize(
+  SwerveModuleState desiredState, Rotation2d currentAngle) {
+var delta = desiredState.angle.minus(currentAngle);
+while(Math.abs(delta.getDegrees()) > 90.0){
+  desiredState =   new SwerveModuleState(
+    -desiredState.speedMetersPerSecond,
+    Rotation2d.fromDegrees(
+      delta.getDegrees() < 90.0?
+      delta.getDegrees() + 180.0:
+      delta.getDegrees() - 180.0
+    ));
+  delta = desiredState.angle.minus(currentAngle);
+}
+  return new SwerveModuleState(desiredState.speedMetersPerSecond, desiredState.angle);
 
-  st = new SwerveModuleState(st.speedMetersPerSecond, new Rotation2d(adjustedReferenceAngleRadians));
-  double changeAngleRads = st.angle.getRadians() - currentAngleRadians;
-  while(Math.abs(changeAngleRads) > Math.PI / 2){
-  if(changeAngleRads > Math.PI / 2){
-    st = new SwerveModuleState(-st.speedMetersPerSecond, new Rotation2d(st.angle.getRadians() - Math.PI));
-  } else if(changeAngleRads < -Math.PI / 2){
-    st = new SwerveModuleState(-st.speedMetersPerSecond, new Rotation2d(st.angle.getRadians() + Math.PI));
-  }
-  changeAngleRads = st.angle.getRadians() - currentAngleRadians;
 }
-
-  return st;
-}
-private double getoptimizedchange(SwerveModuleState st, double currentAngleRadians){
-double changeAngleRads = st.angle.getRadians() - currentAngleRadians;
-while(Math.abs(changeAngleRads) > Math.PI / 2){
-if(changeAngleRads > Math.PI / 2){
-  st = new SwerveModuleState(-st.speedMetersPerSecond, new Rotation2d(st.angle.getRadians() - Math.PI));
-} else if(changeAngleRads < -Math.PI / 2){
-  st = new SwerveModuleState(-st.speedMetersPerSecond, new Rotation2d(st.angle.getRadians() + Math.PI));
-}
-changeAngleRads = st.angle.getRadians() - currentAngleRadians;
-}
-return changeAngleRads;
-}
-private double getTurnPulses(double referenceAngleRadians){
-  return referenceAngleRadians * MK4IModuleConstants.i_kEncoderCountsPerModuleRev / 2 / Math.PI;
-}
-
 private void checkMotorCoder(){
   if(resetIterations <1){
     m_turningMotor.setSelectedSensorPosition(m_turningEncoder.getAbsolutePosition() / 360 * 2048 * (150/7));
