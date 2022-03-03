@@ -24,7 +24,7 @@ public class Shooter extends SubsystemBase {
   private static Shooter _instance = new Shooter();
   private Limelight _l;
   private ShooterTable _st = ShooterTable.getPrimaryTable();
-  double limelightDistance, shooterIndex = 6;
+  double limelightDistance, shooterIndex = IndexConstants.kIndexDefault;
   boolean fineAdjustment = false;
   boolean accept = true;
 
