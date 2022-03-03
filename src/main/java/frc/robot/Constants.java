@@ -157,10 +157,6 @@ public final class Constants {
 
     public static final double kInfeed = 0.6; // op y
     public static final double kSingulator = 0.5; // op y
-
-    public static double kShooterFront = 0.47;//0.47; // op x
-    public static final double kShooterRatio = 1.0;
-    public static double kShooterBack = kShooterRatio * kShooterFront; // .7 // op x
   }
 
   public static final class RPMConstants {
@@ -173,7 +169,7 @@ public final class Constants {
     public static final double kConveyTwo = 50;
   }
 
-  public static final class DefaultConstants {
+  public static final class IndexConstants {
     public static final double kFineAdjustment = 0.5;
     public static final double kCoarseAdjustment = 1.;
     
@@ -184,5 +180,10 @@ public final class Constants {
     public static final double kTargetHeight = 88.; // 104 when
     public static final double kMountHeight = 21.; // Might be something like 22. Hard to measure
     public static final double kMountAngle = 44.25; // is 50 meta?
+  }
+
+  public static final class VisionConstants {
+    public static final String kCamera1Url = "http://10.40.28.59:1181/stream.mjpg";
+    public static final String kCamera2Url = "http://10.40.28.59:1183/stream.mjpg";
   }
 }

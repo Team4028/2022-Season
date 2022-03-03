@@ -27,6 +27,7 @@ import frc.robot.commands.RunConveyorOneBall;
 import frc.robot.commands.RunConveyorTwoBall;
 import frc.robot.commands.RunShooterMotors;
 import frc.robot.commands.ToggleAdjustmentStyle;
+import frc.robot.commands.ToggleCamera;
 import frc.robot.commands.RunInfeedSingulatorMotors;
 import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -80,6 +81,7 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
       m_driverController.start.whenPressed(new InstantCommand(() -> m_robotDrive.zeroHeading()));
+      m_driverController.a.whenPressed(new ToggleCamera());
       m_operatorController.y.toggleWhenPressed(new RunInfeedSingulatorMotors());
       m_operatorController.b.whenPressed(new RunConveyorOneBall());
       m_operatorController.x.toggleWhenPressed(new RunShooterMotors());
