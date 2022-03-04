@@ -5,15 +5,14 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.climb;
+import frc.robot.subsystems.Shooter;
 
-public class climbCom extends CommandBase {
-  private climb _sub;
-  /** Creates a new climbCom. */
-  public climbCom() {
-    _sub = new climb();
-    climb.get_instance();
+public class ToggleAdjustmentStyle extends CommandBase {
+  Shooter shooter = Shooter.getInstance();
+  /** Creates a new ToggleFineAdjustment. */
+  public ToggleAdjustmentStyle() {
     // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(shooter);
   }
 
   // Called when the command is initially scheduled.
@@ -23,7 +22,7 @@ public class climbCom extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    _sub.main();
+    shooter.toggle();
   }
 
   // Called once the command ends or is interrupted.
@@ -33,6 +32,6 @@ public class climbCom extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return true;
   }
 }

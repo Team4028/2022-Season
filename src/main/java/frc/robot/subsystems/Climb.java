@@ -7,11 +7,10 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import java.util.Date;
-import java.util.Scanner;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import frc.robot.subsystems.climber;
+import frc.robot.subsystems.Climber;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Joystick;
@@ -33,13 +32,13 @@ class State {
   static State pivot5B;
   static State extend4A;
   static State stop;
-  static climber _i;
+  static Climber climber;
 
   static long startTime;
   static long elapsedTime;
 
   public State() {
-    _i = climber.get_instance();
+    climber = Climber.get_instance();
   }
 
   void getclassName() {
@@ -56,8 +55,8 @@ class State {
 class extend1G extends State {
   void enter() {
     startTime = new Date().getTime();
-    _i.zeroEncoder();
-    _i.set(.2);
+    climber.zeroEncoder();
+    climber.set(.2);
     getclassName();
   }
 
@@ -66,11 +65,11 @@ class extend1G extends State {
      // System.out.println(_i.getEncoderPos());
       elapsedTime = new Date().getTime() - startTime;
       //System.out.println(_i.getEncoderPos());
-      if (_i.getEncoderPos() > 120 ) {
+      if (climber.getEncoderPos() > 120 ) {
         current = driveForward1;
         return;
       }
-      if (!_i.isClosed()) {
+      if (!climber.isClosed()) {
         current = stop;
         return;
       }
@@ -84,8 +83,8 @@ class driveForward1 extends State {
   void enter() {
     startTime = new Date().getTime();
     getclassName();
-    _i.zeroEncoder();
-    _i.set(-.2);
+    climber.zeroEncoder();
+    climber.set(-.2);
 
   }
 
@@ -97,7 +96,7 @@ class driveForward1 extends State {
         current = retract1G;
         return;
       }
-      if (!_i.isClosed()) {
+      if (!climber.isClosed()) {
         current = stop;
         return;
       }
@@ -110,8 +109,8 @@ class driveForward1 extends State {
 class retract1G extends State {
   void enter() {
     startTime = new Date().getTime();
-    _i.set(.2);
-    _i.zeroEncoder();
+    climber.set(.2);
+    climber.zeroEncoder();
     getclassName();
   }
 
@@ -119,11 +118,11 @@ class retract1G extends State {
     while (true) {
       //System.out.println(_i.getEncoderPos());
       elapsedTime = new Date().getTime() - startTime;
-      if (_i.getEncoderPos() > 120 ) {
+      if (climber.getEncoderPos() > 120 ) {
         current = tiltForw1T;
         return;
       }
-      if (!_i.isClosed()) {
+      if (!climber.isClosed()) {
         current = stop;
         return;
       }
@@ -136,8 +135,8 @@ class retract1G extends State {
 class tiltForw1T extends State {
   void enter() {
     startTime = new Date().getTime();
-    _i.zeroEncoder();
-    _i.set(-.2);
+    climber.zeroEncoder();
+    climber.set(-.2);
     getclassName();
   }
 
@@ -149,7 +148,7 @@ class tiltForw1T extends State {
         current = extend2G;
         return;
       }
-      if (!_i.isClosed()) {
+      if (!climber.isClosed()) {
         current = stop;
         return;
       }
@@ -163,10 +162,10 @@ class extend2G extends State {
   void enter() {
 
     startTime = new Date().getTime();
-    _i.zeroEncoder();
+    climber.zeroEncoder();
     getclassName();
     
-    _i.set(.2);
+    climber.set(.2);
 
   }
 
@@ -174,12 +173,12 @@ class extend2G extends State {
     while (true) {
       //System.out.println(_i.getEncoderPos());
       elapsedTime = new Date().getTime() - startTime;
-      if (_i.getEncoderPos() > 120 ) {
+      if (climber.getEncoderPos() > 120 ) {
 
         current = pivot2B;
         return;
       }
-      if (!_i.isClosed()) {
+      if (!climber.isClosed()) {
         current = stop;
         return;
       }
@@ -192,9 +191,9 @@ class extend2G extends State {
 class pivot2B extends State {
   void enter() {
     startTime = new Date().getTime();
-    _i.zeroEncoder();
+    climber.zeroEncoder();
     getclassName();
-    _i.set(-.2);
+    climber.set(-.2);
 
   }
 
@@ -206,7 +205,7 @@ class pivot2B extends State {
         current = extend3A;
         return;
       }
-      if (!_i.isClosed()) {
+      if (!climber.isClosed()) {
         current = stop;
         return;
       }
@@ -219,9 +218,9 @@ class pivot2B extends State {
 class extend3A extends State {
   void enter() {
     startTime = new Date().getTime();
-    _i.zeroEncoder();
+    climber.zeroEncoder();
     getclassName();
-    _i.set(.2);
+    climber.set(.2);
 
   }
 
@@ -229,12 +228,12 @@ class extend3A extends State {
     while (true) {
       elapsedTime = new Date().getTime() - startTime;
      // System.out.println(_i.getEncoderPos());
-      if (_i.getEncoderPos() > 120) {
+      if (climber.getEncoderPos() > 120) {
 
         current = pivot3B;
         return;
       }
-      if (!_i.isClosed()) {
+      if (!climber.isClosed()) {
         current = stop;
         return;
       }
@@ -247,9 +246,9 @@ class extend3A extends State {
 class pivot3B extends State {
   void enter() {
     startTime = new Date().getTime();
-    _i.zeroEncoder();
+    climber.zeroEncoder();
     getclassName();
-    _i.set(-.2);
+    climber.set(-.2);
 
   }
 
@@ -261,7 +260,7 @@ class pivot3B extends State {
         current = retract2A;
         return;
       }
-      if (!_i.isClosed()) {
+      if (!climber.isClosed()) {
         current = stop;
         return;
       }
@@ -275,20 +274,20 @@ class retract2A extends State {
   void enter() {
     //System.out.println(_i.getEncoderPos());
     startTime = new Date().getTime();
-    _i.zeroEncoder();
+    climber.zeroEncoder();
     getclassName();
-    _i.set(.2);
+    climber.set(.2);
 
   }
 
   void update() {
     while (true) {
       elapsedTime = new Date().getTime() - startTime;
-      if (_i.getEncoderPos() > 120 ) {
+      if (climber.getEncoderPos() > 120 ) {
         current = disengage1B;
         return;
       }
-      if (!_i.isClosed()) {
+      if (!climber.isClosed()) {
         current = stop;
         return;
       }
@@ -301,9 +300,9 @@ class retract2A extends State {
 class disengage1B extends State {
   void enter() {
     startTime = new Date().getTime();
-    _i.zeroEncoder();
+    climber.zeroEncoder();
     getclassName();
-    _i.set(-.2);
+    climber.set(-.2);
 
   }
 
@@ -315,7 +314,7 @@ class disengage1B extends State {
         current = pivot4B;
         return;
       }
-      if (!_i.isClosed()) {
+      if (!climber.isClosed()) {
         current = stop;
         return;
       }
@@ -328,8 +327,8 @@ class disengage1B extends State {
 class pivot4B extends State {
   void enter() {
     startTime = new Date().getTime();
-    _i.zeroEncoder();
-    _i.set(.2);
+    climber.zeroEncoder();
+    climber.set(.2);
     getclassName();
   }
 
@@ -337,11 +336,11 @@ class pivot4B extends State {
     while (true) {
       //System.out.println(_i.getEncoderPos());
       elapsedTime = new Date().getTime() - startTime;
-      if (_i.getEncoderPos() > 120 ) {
+      if (climber.getEncoderPos() > 120 ) {
         current = retract3A;
         return;
       }
-      if (!_i.isClosed()) {
+      if (!climber.isClosed()) {
         current = stop;
         return;
       }
@@ -354,9 +353,9 @@ class pivot4B extends State {
 class retract3A extends State {
   void enter() {
     startTime = new Date().getTime();
-    _i.zeroEncoder();
+    climber.zeroEncoder();
     getclassName();
-    _i.set(-.2);
+    climber.set(-.2);
 
   }
 
@@ -368,7 +367,7 @@ class retract3A extends State {
         current = pivot5B;
         return;
       }
-      if (!_i.isClosed()) {
+      if (!climber.isClosed()) {
         current = stop;
         return;
       }
@@ -381,9 +380,9 @@ class retract3A extends State {
 class pivot5B extends State {
   void enter() {
     startTime = new Date().getTime();
-    _i.zeroEncoder();
+    climber.zeroEncoder();
     getclassName();
-    _i.set(.2);
+    climber.set(.2);
 
   }
 
@@ -391,11 +390,11 @@ class pivot5B extends State {
     while (true) {
       elapsedTime = new Date().getTime() - startTime;
       //System.out.println(_i.getEncoderPos());
-      if (_i.getEncoderPos() > 120) {
+      if (climber.getEncoderPos() > 120) {
         current = extend4A;
         return;
       }
-      if (!_i.isClosed()) {
+      if (!climber.isClosed()) {
         current = stop;
         return;
       }
@@ -408,9 +407,9 @@ class pivot5B extends State {
 class extend4A extends State {
   void enter() {
     startTime = new Date().getTime();
-    _i.zeroEncoder();
+    climber.zeroEncoder();
     getclassName();
-    _i.set(-.2);
+    climber.set(-.2);
 
   }
 
@@ -422,7 +421,7 @@ class extend4A extends State {
         current = stop;
         return;
       }
-      if (!_i.isClosed()) {
+      if (!climber.isClosed()) {
         current = stop;
         return;
       }
@@ -435,7 +434,7 @@ class extend4A extends State {
 
 class stop extends State {
   void enter() {
-    _i.set(0);
+    climber.set(0);
   }
 
   void update() {}
@@ -445,7 +444,7 @@ class stop extends State {
 
 
 
-public class climb {
+public class Climb {
   public static void main() {
 
     State.extend1G = new extend1G();
@@ -472,9 +471,9 @@ public class climb {
 
   }
 
-  public static climb get_instance() {
-    climb _instance = new climb();
-    return _instance;
+  public static Climb get_instance() {
+    Climb climb = new Climb();
+    return climb;
   }
 }
 

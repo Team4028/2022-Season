@@ -6,8 +6,6 @@ package frc.robot.subsystems;
 
 import java.util.NavigableMap;
 
-import com.ctre.phoenix.sensors.Pigeon2;
-import com.ctre.phoenix.sensors.WPI_Pigeon2;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -18,8 +16,6 @@ import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.SPI;
 import frc.robot.util;
-import frc.robot.Constants.DriveConstants;
-
 import static frc.robot.Constants.DriveConstants.*;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -28,20 +24,15 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class DriveSubsystem extends SubsystemBase {
 
   private static final double FRONT_LEFT_ANGLE_OFFSET = -Math.toRadians(146.7);//0.0);//60.6);//60.7
-  private static final double FRONT_RIGHT_ANGLE_OFFSET = -Math.toRadians(147.0);//141.2);//139.1
+  private static final double FRONT_RIGHT_ANGLE_OFFSET = -Math.toRadians(93.0);//141.2);//139.1
   private static final double BACK_LEFT_ANGLE_OFFSET = -Math.toRadians(314.6);//60.6);//60.7
   private static final double BACK_RIGHT_ANGLE_OFFSET = -Math.toRadians(70.9);//60.3);//60.7
 
-  // private  SwerveModule m_frontLeft;
-  // private  SwerveModule m_frontRight;
-  // private  SwerveModule m_rearLeft;
-  // private  SwerveModule m_rearRight;
 
-
-  private static final double i_FRONT_LEFT_ANGLE_OFFSET = -Math.toRadians(205.1);//204.6);//0.0);//60.6);//60.7
-  private static final double i_FRONT_RIGHT_ANGLE_OFFSET = -Math.toRadians(203.9);//204.2);//141.2);//139.1
-  private static final double i_BACK_LEFT_ANGLE_OFFSET = -Math.toRadians(328.1);//329.4);//60.6);//60.7
-  private static final double i_BACK_RIGHT_ANGLE_OFFSET = -Math.toRadians(160.5);//160.6);//60.3);//60.7
+  private static final double i_FRONT_LEFT_ANGLE_OFFSET = -Math.toRadians(204.6);//0.0);//60.6);//60.7
+  private static final double i_FRONT_RIGHT_ANGLE_OFFSET = -Math.toRadians(204.2);//141.2);//139.1
+  private static final double i_BACK_LEFT_ANGLE_OFFSET = -Math.toRadians(329.4);//60.6);//60.7
+  private static final double i_BACK_RIGHT_ANGLE_OFFSET = -Math.toRadians(160.6);//60.3);//60.7
 
   private static DriveSubsystem _instance;
   public static final DriveSubsystem get_instance(){
@@ -51,77 +42,73 @@ public class DriveSubsystem extends SubsystemBase {
     return _instance;
   }
 
-      private final SwerveModuleCAN m_frontLeft =
-      new SwerveModuleCAN(
-          i_kFrontLeftDriveMotorPort,
-          i_kFrontLeftTurningMotorPort,
-          i_kFrontLeftEncoderCan,
-          i_FRONT_LEFT_ANGLE_OFFSET);
-
-     private final SwerveModuleCAN m_rearLeft =
-      new SwerveModuleCAN(
-          i_kRearLeftDriveMotorPort,
-          i_kRearLeftTurningMotorPort,
-          i_kRearLeftEncoderCan,
-          i_BACK_LEFT_ANGLE_OFFSET);
-
-     private final SwerveModuleCAN m_frontRight =
-      new SwerveModuleCAN(
-          i_kFrontRightDriveMotorPort,
-          i_kFrontRightTurningMotorPort,
-          i_kFrontRightEncoderCan,
-          i_FRONT_RIGHT_ANGLE_OFFSET);
-
-    private final SwerveModuleCAN m_rearRight =
-      new SwerveModuleCAN(
-          i_kRearRightDriveMotorPort,
-          i_kRearRightTurningMotorPort,
-          i_kRearRightEncoderCan,
-          i_BACK_RIGHT_ANGLE_OFFSET);
-
-    //      private final SwerveModule m_frontLeft =
-    //   new SwerveModule(
+    //   private final SwerveModuleCAN m_frontLeft =
+    //   new SwerveModuleCAN(
     //       i_kFrontLeftDriveMotorPort,
     //       i_kFrontLeftTurningMotorPort,
-    //       0,
+    //       i_kFrontLeftEncoderCan,
     //       i_FRONT_LEFT_ANGLE_OFFSET);
 
-    //  private final SwerveModule m_rearLeft =
-    //   new SwerveModule(
-    //       kRearLeftDriveMotorPort,
-    //       kRearLeftTurningMotorPort,
-    //       2,
-    //       BACK_LEFT_ANGLE_OFFSET);
+    //  private final SwerveModuleCAN m_rearLeft =
+    //   new SwerveModuleCAN(
+    //       i_kRearLeftDriveMotorPort,
+    //       i_kRearLeftTurningMotorPort,
+    //       i_kRearLeftEncoderCan,
+    //       i_BACK_LEFT_ANGLE_OFFSET);
 
-    //  private final SwerveModule m_frontRight =
-    //   new SwerveModule(
-    //       kFrontRightDriveMotorPort,
-    //       kFrontRightTurningMotorPort,
-    //       1,
-    //       FRONT_RIGHT_ANGLE_OFFSET);
+    //  private final SwerveModuleCAN m_frontRight =
+    //   new SwerveModuleCAN(
+    //       i_kFrontRightDriveMotorPort,
+    //       i_kFrontRightTurningMotorPort,
+    //       i_kFrontRightEncoderCan,
+    //       i_FRONT_RIGHT_ANGLE_OFFSET);
 
-    // private final SwerveModule m_rearRight =
-    //   new SwerveModule(
-    //       kRearRightDriveMotorPort,
-    //       kRearRightTurningMotorPort,
-    //       3,
-    //       BACK_RIGHT_ANGLE_OFFSET);
+    // private final SwerveModuleCAN m_rearRight =
+    //   new SwerveModuleCAN(
+    //       i_kRearRightDriveMotorPort,
+    //       i_kRearRightTurningMotorPort,
+    //       i_kRearRightEncoderCan,
+    //       i_BACK_RIGHT_ANGLE_OFFSET);
+
+         private final SwerveModule m_frontLeft =
+      new SwerveModule(
+          kFrontLeftDriveMotorPort,
+          kFrontLeftTurningMotorPort,
+          0,
+          FRONT_LEFT_ANGLE_OFFSET);
+
+     private final SwerveModule m_rearLeft =
+      new SwerveModule(
+          kRearLeftDriveMotorPort,
+          kRearLeftTurningMotorPort,
+          2,
+          BACK_LEFT_ANGLE_OFFSET);
+
+     private final SwerveModule m_frontRight =
+      new SwerveModule(
+          kFrontRightDriveMotorPort,
+          kFrontRightTurningMotorPort,
+          1,
+          FRONT_RIGHT_ANGLE_OFFSET);
+
+    private final SwerveModule m_rearRight =
+      new SwerveModule(
+          kRearRightDriveMotorPort,
+          kRearRightTurningMotorPort,
+          3,
+          BACK_RIGHT_ANGLE_OFFSET);
 
   // Robot swerve modules
 
   // The gyro sensor
-  // private final Pigeon2 m_pigeon = new Pigeon2(1);
-  private final Gyro m_gyro = DriveConstants.isNAVX? new AHRS(SPI.Port.kMXP): new WPI_Pigeon2(DriveConstants.pigeonCan);
+  private final Gyro m_gyro = new AHRS(SPI.Port.kMXP);
 
   // Odometry class for tracking robot pose
   SwerveDriveOdometry m_odometry =
       new SwerveDriveOdometry(kDriveKinematics, m_gyro.getRotation2d());
 
   /** Creates a new DriveSubsystem. */
-  public DriveSubsystem() {
-    // m_pigeon.configFactoryDefault();
-    // m_pigeon.configDisableTemperatureCompensation(false);
-  }
+  public DriveSubsystem() {  }
 
   @Override
   public void periodic() {
@@ -169,22 +156,18 @@ public class DriveSubsystem extends SubsystemBase {
    */
   @SuppressWarnings("ParameterName")
   public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
-    xSpeed *= i_kMaxSpeedMetersPerSecond;
-    ySpeed *= i_kMaxSpeedMetersPerSecond;
-    rot *= i_kMaxSpeedMetersPerSecond;
     var swerveModuleStates =
         kDriveKinematics.toSwerveModuleStates(
             fieldRelative
                 ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, Rotation2d.fromDegrees((kGyroReversed ? -1.0 : 1.0) * m_gyro.getRotation2d().getDegrees()))
                 : new ChassisSpeeds(xSpeed, ySpeed, rot));
     SwerveDriveKinematics.desaturateWheelSpeeds(
-        swerveModuleStates, i_kMaxSpeedMetersPerSecond); //change for mk2
+        swerveModuleStates, kMaxSpeedMetersPerSecond);
     m_frontLeft.setDesiredState(swerveModuleStates[0]);
     m_frontRight.setDesiredState(swerveModuleStates[1]);
     m_rearLeft.setDesiredState(swerveModuleStates[2]);
     m_rearRight.setDesiredState(swerveModuleStates[3]);
-    System.out.println(swerveModuleStates[0].angle.getDegrees());
-    //bruhtestmoment
+    //System.out.println(swerveModuleStates[0].speedMetersPerSecond);
   }
 
   /**
@@ -200,14 +183,6 @@ public class DriveSubsystem extends SubsystemBase {
     m_rearLeft.setDesiredState(desiredStates[2]);
     m_rearRight.setDesiredState(desiredStates[3]);
   }
-
-  /** Resets the drive encoders to currently read a position of 0. */
-  // public void resetEncoders() {
-  //   m_frontLeft.resetEncoders();
-  //   m_rearLeft.resetEncoders();
-  //   m_frontRight.resetEncoders();
-  //   m_rearRight.resetEncoders();
-  // }
 
   /** Zeroes the heading of the robot. */
   public void zeroHeading() {
