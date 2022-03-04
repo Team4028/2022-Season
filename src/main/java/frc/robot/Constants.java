@@ -7,6 +7,7 @@ package frc.robot;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 
 /**
@@ -22,7 +23,7 @@ public final class Constants {
 
     public static final boolean MK4I = true;
     public static final boolean isNAVX = false;
-    public static final double BASE_SPEED_SCALE = 0.05;
+    public static final double BASE_SPEED_SCALE = 0.25;
 
 
     public static final int kFrontLeftDriveMotorPort = 1;
@@ -132,6 +133,8 @@ public final class Constants {
 
     public static final double i_kEncoderCountsPerModuleRev = (150.0/7.0) * 2048.0;
 
+    public static final double i_kNominalVoltage = 12.0;
+
     public static final double kModuleMaxSpeedTurningRadiansPerSecond = 16*Math.PI;
     public static final double kModuleMaxAccelerationTurningRadiansPerSecondSquared = 256*Math.PI;
     public static final double kModuleMaxSpeedTurningPulsesPer100Ms = kModuleMaxSpeedTurningRadiansPerSecond * i_kEncoderCountsPerModuleRev * 0.1;
@@ -142,17 +145,26 @@ public final class Constants {
   public static final class AutoConstants {
     public static final double kMaxSpeedMetersPerSecond = util.feetToMeters(16.3);
     public static final double kMaxAccelerationMetersPerSecondSquared = util.feetToMeters(16.3);
-    public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;
-    public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;
 
-    public static final double kPXController = 0.0;
+
+    public static final double kPXController = 2.0;
     public static final double kPYController = kPXController;
-    public static final double kPThetaController = 3.0;
+    public static final double kPThetaController = 3.5;
+    public static final double kMaxAngularSpeedRadiansPerSecond = kMaxSpeedMetersPerSecond /
+    Math.hypot(DriveConstants.kTrackWidth / 2.0, DriveConstants.kWheelBase / 2.0);
+    public static final double kMaxAngularSpeedRadiansPerSecondSquared = kMaxAngularSpeedRadiansPerSecond;
 
     // Constraint for the motion profilied robot angle controller
     public static final TrapezoidProfile.Constraints kThetaControllerConstraints =
         new TrapezoidProfile.Constraints(
             kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
+
+    public static final TrajectoryConfig AutonTrajectoryConfig =
+    new TrajectoryConfig(
+            AutoConstants.kMaxSpeedMetersPerSecond,
+            AutoConstants.kMaxAccelerationMetersPerSecondSquared)
+        // Add kinematics to ensure max speed is actually obeyed
+        .setKinematics(DriveConstants.kDriveKinematics);
   }
 
   public static final double kFineAdjustment = 0.5;

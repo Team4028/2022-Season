@@ -147,6 +147,9 @@ public class DriveSubsystem extends SubsystemBase {
 
     SmartDashboard.putNumber("X (Feet)", util.metersToFeet(m_odometry.getPoseMeters().getX()));
     SmartDashboard.putNumber("Y (Feet)", util.metersToFeet(m_odometry.getPoseMeters().getY()));
+    SmartDashboard.putNumber("X (Metres)", m_odometry.getPoseMeters().getX());
+    SmartDashboard.putNumber("Y (Metres)", m_odometry.getPoseMeters().getY());
+    SmartDashboard.putNumber("Heading (Deg)", m_odometry.getPoseMeters().getRotation().getDegrees());
     SmartDashboard.putNumber("FL Angle", m_frontLeft.getState().angle.getDegrees());
     SmartDashboard.putNumber("FR Angle", m_frontRight.getState().angle.getDegrees());
     SmartDashboard.putNumber("RL Angle", m_rearLeft.getState().angle.getDegrees());
@@ -220,6 +223,7 @@ public class DriveSubsystem extends SubsystemBase {
   /** Zeroes the heading of the robot. */
   public void zeroHeading() {
     m_gyro.reset();
+    resetOdometry(new Pose2d(0, 0, m_gyro.getRotation2d()));
   }
 
   /**

@@ -18,7 +18,7 @@ import com.ctre.phoenix.sensors.WPI_CANCoder;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import frc.robot.Constants.DriveConstants;
-import frc.robot.Constants.MK4IModuleConstants;
+import static frc.robot.Constants.MK4IModuleConstants.*;
 
 public class SwerveModuleCANTwoElectricBoogaloo {
   private final WPI_TalonFX m_driveMotor;
@@ -73,6 +73,8 @@ public class SwerveModuleCANTwoElectricBoogaloo {
     m_turningMotor.selectProfileSlot(0, 0);
     m_turningMotor.setSelectedSensorPosition(m_turningEncoder.getPosition() / 360 * 2048 * 150 / 7);
     m_turningMotor.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 20, 25, 1.0));
+    m_driveMotor.configVoltageCompSaturation(12.0);
+    m_driveMotor.enableVoltageCompensation(true);
     
 
     configMotorPID(m_turningMotor, 0, 0.2, 0.0, 0.1);
@@ -82,7 +84,7 @@ public class SwerveModuleCANTwoElectricBoogaloo {
   }
 
   private double getTurningEncoderRadians(){
-    return m_turningMotor.getSelectedSensorPosition(0) * 2.0 * Math.PI / MK4IModuleConstants.i_integratedEncoderTicksPerModRev;
+    return m_turningMotor.getSelectedSensorPosition(0) * 2.0 * Math.PI / i_integratedEncoderTicksPerModRev;
     }
 
   /**
@@ -91,7 +93,7 @@ public class SwerveModuleCANTwoElectricBoogaloo {
    * @return The current state of the module.
    */
   public SwerveModuleState getState() {
-    return new SwerveModuleState(m_driveMotor.getSelectedSensorVelocity() * MK4IModuleConstants.i_kDriveEncoderDistancePerPulse * 10, new Rotation2d(getTurningEncoderRadians()));
+    return new SwerveModuleState(m_driveMotor.getSelectedSensorVelocity() * i_kDriveEncoderDistancePerPulse * 10, new Rotation2d(getTurningEncoderRadians()));
   }
 
   /**
@@ -106,14 +108,14 @@ public class SwerveModuleCANTwoElectricBoogaloo {
         vargooseoptimize(SwerveModuleState.optimize(desiredState, new Rotation2d(getTurningEncoderRadians())), new Rotation2d(getTurningEncoderRadians()));
 
     // Calculate the drive output from the drive PID controller.
-    final double driveOutput =
-        DriveConstants.driveTrainFeedforward.calculate(state.speedMetersPerSecond);
+    final double feedForward =
+        DriveConstants.driveTrainFeedforward.calculate(state.speedMetersPerSecond) / i_kNominalVoltage;
 
     //m_driveMotor.set(ControlMode.Velocity, state.speedMetersPerSecond / MK4IModuleConstants.i_kDriveEncoderDistancePerPulse);
     m_driveMotor.set(ControlMode.Velocity,
-    state.speedMetersPerSecond / 10.0 / MK4IModuleConstants.i_kDriveEncoderDistancePerPulse,
+    state.speedMetersPerSecond / 10.0 / i_kDriveEncoderDistancePerPulse,
     DemandType.ArbitraryFeedForward,
-    DriveConstants.driveTrainFeedforward.calculate(state.speedMetersPerSecond));
+    feedForward);
     setHeading(state.angle.getDegrees());
   }
 
@@ -132,7 +134,7 @@ public class SwerveModuleCANTwoElectricBoogaloo {
 
 public void setHeading(double _angle){
   //double newAngleDemand = _angle;
-  double currentSensorPosition = m_turningMotor.getSelectedSensorPosition() * 360.0 / MK4IModuleConstants.i_integratedEncoderTicksPerModRev;
+  double currentSensorPosition = m_turningMotor.getSelectedSensorPosition() * 360.0 / i_integratedEncoderTicksPerModRev;
   double remainder = Math.IEEEremainder(currentSensorPosition, 360.0);
   double newAngleDemand = _angle + currentSensorPosition -remainder;
  
@@ -143,7 +145,7 @@ public void setHeading(double _angle){
         newAngleDemand += 360.0;
     }
     
-  m_turningMotor.set(ControlMode.Position, newAngleDemand / 360.0 * MK4IModuleConstants.i_integratedEncoderTicksPerModRev);
+  m_turningMotor.set(ControlMode.Position, newAngleDemand / 360.0 * i_integratedEncoderTicksPerModRev);
 }
 public static SwerveModuleState vargooseoptimize(
   SwerveModuleState desiredState, Rotation2d currentAngle) {
