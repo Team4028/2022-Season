@@ -45,7 +45,7 @@ import frc.robot.commands.RotateDrivetrainByAngle;
 // import frc.robot.commands.RunShooterMotors;
 // import frc.robot.commands.ToggleFineAdjustment;
 import frc.robot.commands.RunInfeedSingulatorMotors;
-import frc.robot.subsystems.SingulatorAndInfeed;
+import frc.robot.subsystems.Infeed;
 import frc.robot.utilities.Trajectories;
 // import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -69,7 +69,7 @@ import java.util.function.BooleanSupplier;
 public class RobotContainer {
   // The robot's subsystems
   private final DriveSubsystem m_robotDrive = DriveSubsystem.get_instance();
-  private final SingulatorAndInfeed m_singulatorAndInfeed = SingulatorAndInfeed.get_instance();
+  private final Infeed m_singulatorAndInfeed = Infeed.get_instance();
   private final RunInfeedSingulatorMotors _RunInfeedSingulatorMotors;
   private static RobotContainer _instance;
   private WaitCommand _wait;

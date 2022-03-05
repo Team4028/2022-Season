@@ -14,17 +14,17 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.SubsystemConstants;
 import frc.robot.Constants.VBusConstants;
 
-public class SingulatorAndInfeed extends SubsystemBase {
+public class Infeed extends SubsystemBase {
   /** Creates a new SingulatorAndInfeed. */
   private TalonSRX _infeedMotor;
   private CANSparkMax _singulatorMotor;
   private CANSparkMax _neoLeft;
   private CANSparkMax _neoRight;
-  private static SingulatorAndInfeed _instance = new SingulatorAndInfeed();
-  public static SingulatorAndInfeed get_instance() {
+  private static Infeed _instance = new Infeed();
+  public static Infeed get_instance() {
    return _instance;
   }
-  public SingulatorAndInfeed() {
+  public Infeed() {
     _infeedMotor = new TalonSRX(SubsystemConstants.INFEED_MOTOR_ID);
     // _singulatorMotor = new CANSparkMax(SubsystemConstants.SINGULATOR_MOTOR_ID, MotorType.kBrushless);
     _neoLeft = new CANSparkMax(SubsystemConstants.INFEED_LEFT_NEO_ID, MotorType.kBrushless);

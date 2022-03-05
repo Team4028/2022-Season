@@ -7,12 +7,12 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.VBusConstants;
 import frc.robot.subsystems.Conveyor;
-import frc.robot.subsystems.SingulatorAndInfeed;
+import frc.robot.subsystems.Infeed;
 
 public class ReverseInfeedAndConveyor extends CommandBase {
   /** Creates a new ReverseInfeedAndConveyor. */
   private Conveyor _Con = Conveyor.get_instance();
-  private SingulatorAndInfeed _SingIn = SingulatorAndInfeed.get_instance();
+  private Infeed _SingIn = Infeed.get_instance();
   public ReverseInfeedAndConveyor() {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(_Con);
