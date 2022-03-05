@@ -40,8 +40,6 @@ public final class BeakXBoxController {
        
     }
 
-
-
     public double getLeftXAxis(){
         return controller.getRawAxis(0);
     }

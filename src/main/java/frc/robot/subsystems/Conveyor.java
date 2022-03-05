@@ -58,12 +58,6 @@ public class Conveyor extends SubsystemBase {
     }
   }
 
-// public void setEndStuff()
-// {
-//   isTargetReached = true;
-//   resetEncoder();
-// }
-
   public double getEncoderPosition()
   {
     return (_enc.getPosition() - encoderOffset);

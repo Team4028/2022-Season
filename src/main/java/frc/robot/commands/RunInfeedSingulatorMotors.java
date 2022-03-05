@@ -5,12 +5,12 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.SingulatorAndInfeed;
+import frc.robot.subsystems.Infeed;
 
 
 public class RunInfeedSingulatorMotors extends CommandBase {
   /** Creates a new ToggleOneAndTwo. */
-  private SingulatorAndInfeed _SingulatorAndInfeed = SingulatorAndInfeed.get_instance();
+  private Infeed _SingulatorAndInfeed = Infeed.get_instance();
   public RunInfeedSingulatorMotors() {
     addRequirements(_SingulatorAndInfeed);
     // Use addRequirements() here to declare subsystem dependencies.

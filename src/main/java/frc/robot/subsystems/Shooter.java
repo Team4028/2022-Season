@@ -30,43 +30,13 @@ public class Shooter extends SubsystemBase {
 
   private CANSparkMax _angle;
   private RelativeEncoder _angleEnc;
-  /** Creates a new Shooter. */
-  private static Shooter _instance = new Shooter();
+  
   private Limelight _l;
   private ShooterTable _st = ShooterTable.getPrimaryTable();
   double limelightDistance, shooterIndex = IndexConstants.kIndexDefault;
-  boolean fineAdjustment = false;
-  boolean accept = true;
+  boolean fineAdjustment = false, accept = true;
 
-  public double getLimelightDistance() {
-    _l.putTargetValues();
-    limelightDistance = _l.distance() / 12;
-    return limelightDistance;
-  }
-
-  public void toggle() {
-    fineAdjustment = !fineAdjustment;
-  }
-
-  public boolean getFineAdjustment() {
-    SmartDashboard.putString("Adjustment Mode", (fineAdjustment ? "Fine" : "Coarse"));
-    return fineAdjustment;
-  }
-
-  public static Shooter getInstance() {
-    return _instance;
-  }
-
-  public void acceptLimelight() {
-    if (accept) {
-      shooterIndex = limelightDistance; // TODO: round
-    } else {
-      shooterIndex = IndexConstants.kIndexDefault;
-    }
-    accept = !accept;
-    SmartDashboard.putString("Accept Limelight Mode", (accept ? "Accept Limelight" : "Reset to Default"));
-    // TODO: better naming
-  }
+  private static Shooter _instance = new Shooter();
 
   public Shooter() {
     _front = new TalonFX(SubsystemConstants.SHOOTER_FRONT_MOTOR_ID);
@@ -167,6 +137,36 @@ public class Shooter extends SubsystemBase {
     } else {
       shooterIndex -= IndexConstants.kCoarseAdjustment;
     }
+  }
+
+  public void toggle() {
+    fineAdjustment = !fineAdjustment;
+  }
+
+  public boolean getFineAdjustment() {
+    SmartDashboard.putString("Adjustment Mode", (fineAdjustment ? "Fine" : "Coarse"));
+    return fineAdjustment;
+  }
+
+  public double getLimelightDistance() {
+    _l.putTargetValues();
+    limelightDistance = _l.distance() / 12;
+    return limelightDistance;
+  }
+
+  public void acceptLimelight() {
+    if (accept) {
+      shooterIndex = limelightDistance; // TODO: round
+    } else {
+      shooterIndex = IndexConstants.kIndexDefault;
+    }
+    accept = !accept;
+    SmartDashboard.putString("Accept Limelight Mode", (accept ? "Accept Limelight" : "Reset to Default"));
+    // TODO: better naming
+  }
+
+  public static Shooter getInstance() {
+    return _instance;
   }
 
   @Override
