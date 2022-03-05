@@ -9,11 +9,15 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 
 /**
- * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
- * constants. This class should not be used for any other purpose. All constants should be declared
+ * The Constants class provides a convenient place for teams to hold robot-wide
+ * numerical or boolean
+ * constants. This class should not be used for any other purpose. All constants
+ * should be declared
  * globally (i.e. public static). Do not put anything functional in this class.
  *
- * <p>It is advised to statically import this class (or one of its inner classes) wherever the
+ * <p>
+ * It is advised to statically import this class (or one of its inner classes)
+ * wherever the
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
@@ -46,29 +50,29 @@ public final class Constants {
     public static final int i_kFrontRightEncoderCan = 2;
     public static final int i_kRearRightEncoderCan = 4;
 
-
-    public static final double kTrackWidth = MK4I? util.inchesToMeters(23.75): util.inchesToMeters(23.5);
+    public static final double kTrackWidth = MK4I ? util.inchesToMeters(23.75) : util.inchesToMeters(23.5);
     // Distance between centers of right and left wheels on robot
-    public static final double kWheelBase = MK4I? util.inchesToMeters(25.75): util.inchesToMeters(21.5);
+    public static final double kWheelBase = MK4I ? util.inchesToMeters(25.75) : util.inchesToMeters(21.5);
     // Distance between front and back wheels on robot
-    public static final SwerveDriveKinematics kDriveKinematics =
-        new SwerveDriveKinematics(
-            new Translation2d(kWheelBase / 2, kTrackWidth / 2),
-            new Translation2d(kWheelBase / 2, -kTrackWidth / 2),
-            new Translation2d(-kWheelBase / 2, kTrackWidth / 2),
-            new Translation2d(-kWheelBase / 2, -kTrackWidth / 2));
+    public static final SwerveDriveKinematics kDriveKinematics = new SwerveDriveKinematics(
+        new Translation2d(kWheelBase / 2, kTrackWidth / 2),
+        new Translation2d(kWheelBase / 2, -kTrackWidth / 2),
+        new Translation2d(-kWheelBase / 2, kTrackWidth / 2),
+        new Translation2d(-kWheelBase / 2, -kTrackWidth / 2));
 
-    public static final boolean kGyroReversed = !MK4I; //true for mk2 chassis
+    public static final boolean kGyroReversed = !MK4I; // true for mk2 chassis
 
     // These are example values only - DO NOT USE THESE FOR YOUR OWN ROBOT!
-    // These characterization values MUST be determined either experimentally or theoretically
+    // These characterization values MUST be determined either experimentally or
+    // theoretically
     // for *your* robot's drive.
-    // The SysId tool provides a convenient method for obtaining these values for your robot.
+    // The SysId tool provides a convenient method for obtaining these values for
+    // your robot.
     public static final double ksVolts = 0;
     public static final double kvVoltSecondsPerMeter = 0;
     public static final double kaVoltSecondsSquaredPerMeter = 0;
 
-    public static final double kMaxSpeedMetersPerSecond = MK4I? util.feetToMeters(16.3):util.feetToMeters(12.0);
+    public static final double kMaxSpeedMetersPerSecond = MK4I ? util.feetToMeters(16.3) : util.feetToMeters(12.0);
   }
 
   public static final class ModuleConstants {
@@ -114,7 +118,6 @@ public final class Constants {
     public static final double i_kPModuleDriveController = 0;
   }
 
-
   public static final class AutoConstants {
     public static final double kMaxSpeedMetersPerSecond = util.feetToMeters(12);
     public static final double kMaxAccelerationMetersPerSecondSquared = util.feetToMeters(12);
@@ -126,16 +129,15 @@ public final class Constants {
     public static final double kPThetaController = 0;
 
     // Constraint for the motion profilied robot angle controller
-    public static final TrapezoidProfile.Constraints kThetaControllerConstraints =
-        new TrapezoidProfile.Constraints(
-            kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
+    public static final TrapezoidProfile.Constraints kThetaControllerConstraints = new TrapezoidProfile.Constraints(
+        kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
   }
 
   public static final class SubsystemConstants {
     /*************** CAN IDS **************/
 
-    //0-8 will be alotted for swerve motors
-    //9-12 will be alotted and encoders
+    // 0-8 will be alotted for swerve motors
+    // 9-12 will be alotted and encoders
 
     public static final int INFEED_MOTOR_ID = 13;
     public static final int SINGULATOR_MOTOR_ID = 14;
@@ -143,8 +145,9 @@ public final class Constants {
     public static final int KICKER_MOTOR_ID = 16;
     public static final int SHOOTER_FRONT_MOTOR_ID = 17;
     public static final int SHOOTER_BACK_MOTOR_ID = 18;
+    public static final int ANGLE_MOTOR_ID = 19;
 
-    public static final int CLIMB_MOTOR_ID = 19; // this might need two motors
+    // public static final int CLIMB_MOTOR_ID = 19; // this might need two motors
 
     public static final int TOF1_SENSOR_ID = 420;
     public static final int TOF2_SENSOR_ID = 69;
@@ -157,6 +160,9 @@ public final class Constants {
 
     public static final double kInfeed = 0.6; // op y
     public static final double kSingulator = 0.5; // op y
+
+    public static final double kKicker = 0.5;
+    public static final double kAngle = 0.1;
   }
 
   public static final class RPMConstants {
@@ -167,13 +173,15 @@ public final class Constants {
   public static final class EncoderConstants {
     public static final double kConveyOne = 20;
     public static final double kConveyTwo = 50;
+
+    public static final double kAngleThreshold = 0.1;
   }
 
   public static final class IndexConstants {
     public static final double kFineAdjustment = 0.5;
     public static final double kCoarseAdjustment = 1.;
-    
-    public static final double kIndexDefault = 6.;
+
+    public static final double kIndexDefault = 14.;
   }
 
   public static final class LimelightConstants {
@@ -185,5 +193,22 @@ public final class Constants {
   public static final class VisionConstants {
     public static final String kCamera1Url = "http://10.40.28.59:1181/stream.mjpg";
     public static final String kCamera2Url = "http://10.40.28.59:1183/stream.mjpg";
+  }
+
+  public static final class PIDConstants {
+    // TODO: more damping
+    public static final class Front {
+      public static double kF = 0.05;
+      public static double kP = 0.4;
+      public static double kD = 0.002;
+      public static double kMax = 20400;
+    }
+
+    public static final class Back {
+      public static double kF = 0.055;
+      public static double kP = 0.1;
+      public static double kD = 0.002;
+      public static double kMax = 17000;
+    }
   }
 }

@@ -26,7 +26,6 @@ public class RunInfeedSingulatorMotors extends CommandBase {
   @Override
   public void execute() {
     _SingulatorAndInfeed.runInfeedSingulatorMotors(1);
-    System.out.println("line");
   }
 
   // Called once the command ends or is interrupted.
