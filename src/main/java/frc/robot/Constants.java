@@ -131,8 +131,6 @@ public final class Constants {
             kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
   }
 
-  public static final double kFineAdjustment = 0.5;
-  public static final double kCoarseAdjustment = 1.;
   public static final class SubsystemConstants {
     /*************** CAN IDS **************/
 
@@ -154,14 +152,16 @@ public final class Constants {
 
   public static final class VBusConstants {
     public static final double kConveyAll = 0.5; // op start
-    public static final double kConveyOne = 0.5; // op b
+    public static final double kConveyOne = 0.85; // op b
     public static final double kConveyTwo = 0.5; // op a
 
     public static final double kInfeed = 0.6; // op y
     public static final double kSingulator = 0.5; // op y
+  }
 
-    public static final double kShooterFront = 0.47;//0.47; // op x
-    public static final double kShooterBack = 1.0 * kShooterFront; // .7 // op x
+  public static final class RPMConstants {
+    public static final double kShooterFront = 1075.;
+    public static final double kShooterBack = 2460.;
   }
 
   public static final class EncoderConstants {
@@ -169,5 +169,21 @@ public final class Constants {
     public static final double kConveyTwo = 50;
   }
 
+  public static final class IndexConstants {
+    public static final double kFineAdjustment = 0.5;
+    public static final double kCoarseAdjustment = 1.;
+    
+    public static final double kIndexDefault = 6.;
+  }
 
+  public static final class LimelightConstants {
+    public static final double kTargetHeight = 88.; // 104 when
+    public static final double kMountHeight = 21.; // Might be something like 22. Hard to measure
+    public static final double kMountAngle = 44.25; // is 50 meta?
+  }
+
+  public static final class VisionConstants {
+    public static final String kCamera1Url = "http://10.40.28.59:1181/stream.mjpg";
+    public static final String kCamera2Url = "http://10.40.28.59:1183/stream.mjpg";
+  }
 }
