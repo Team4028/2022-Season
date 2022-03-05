@@ -5,40 +5,38 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.subsystems.Infeed;
 
-
-public class RunInfeedSingulatorMotors extends CommandBase {
-  /** Creates a new ToggleOneAndTwo. */
-  private Infeed infeed = Infeed.get_instance();
-  public RunInfeedSingulatorMotors() {
-    addRequirements(infeed);
+public class LiftInfeed extends CommandBase {
+  /** Creates a new LiftInfeed. */
+  private WaitCommand _wait;
+  public LiftInfeed() {
     // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(Infeed.get_instance());
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    infeed.runInfeedSingulatorMotors(1);
-    System.out.println("init");
+    Infeed.get_instance().liftInfeed();
+    _wait = new WaitCommand(3.0);
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-    infeed.runInfeedSingulatorMotors(1);
-  }
+  public void execute() {}
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    infeed.stopInfeedSingulatorMotors();
-    System.out.println("stop");
+    Infeed.get_instance().holdInfeed();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return _wait.isFinished();
   }
 }

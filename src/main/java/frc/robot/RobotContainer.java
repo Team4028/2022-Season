@@ -8,10 +8,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
-import edu.wpi.first.math.trajectory.TrajectoryConfig;
-import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
@@ -28,12 +25,16 @@ import frc.robot.commands.RunShooterMotors;
 import frc.robot.commands.ToggleAdjustmentStyle;
 import frc.robot.commands.ToggleCamera;
 import frc.robot.commands.RunInfeedSingulatorMotors;
+import frc.robot.commands.RotateDrivetrainByAngle;
+import frc.robot.subsystems.Infeed;
+import frc.robot.utilities.Trajectories;
+// import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import java.util.List;
 
 /*
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -44,6 +45,28 @@ import java.util.List;
 public class RobotContainer {
   // The robot's subsystems
   private final DriveSubsystem m_robotDrive = DriveSubsystem.get_instance();
+  private final Infeed m_singulatorAndInfeed = Infeed.get_instance();
+  private final RunInfeedSingulatorMotors _RunInfeedSingulatorMotors;
+  private static RobotContainer _instance;
+  private WaitCommand _wait;
+  private static Trajectories _trajectories = Trajectories.get_instance();
+
+  private PIDController xController = new PIDController(AutoConstants.kPXController, 0, 0);
+  private PIDController yController = new PIDController(AutoConstants.kPYController, 0, 0);
+  private ProfiledPIDController thetaController =
+  new ProfiledPIDController(
+      AutoConstants.kPThetaController, 0, 0, AutoConstants.kThetaControllerConstraints);
+
+  public static final RobotContainer get_instance(){
+      if(_instance == null){
+          _instance = new RobotContainer();
+      }
+      return _instance;
+  }
+//   private final Shooter m_shooter = Shooter.getInstance();
+
+
+
 
   // Controller Setup
   private BeakXBoxController m_driverController = new BeakXBoxController(OIConstants.kDriverControllerPort);
@@ -53,9 +76,13 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    
+    thetaController.enableContinuousInput(-Math.PI, Math.PI);
     // Configure the button bindings
+    _RunInfeedSingulatorMotors = new RunInfeedSingulatorMotors();
+    _wait = new WaitCommand(1.0);
+    _wait.addRequirements(m_singulatorAndInfeed);
     configureButtonBindings();
+
 
     // Configure default commands
     m_robotDrive.setDefaultCommand(
@@ -64,9 +91,9 @@ public class RobotContainer {
         new RunCommand(
             () ->
                 m_robotDrive.drive(
-                    util.deadband(-m_driverController.getLeftYAxis()/2),
-                    util.deadband(-m_driverController.getLeftXAxis()/2),
-                    util.deadband(-m_driverController.getRightXAxis()/2),
+                    util.deadband(-m_driverController.getLeftYAxis()),
+                    util.deadband(-m_driverController.getLeftXAxis()),
+                    util.deadband(-m_driverController.getRightXAxis()),
                     true),
             m_robotDrive));
   }
@@ -90,6 +117,43 @@ public class RobotContainer {
       m_operatorController.right_bumper.whenPressed(new IncrementShooterIndex());
       m_operatorController.left_stick_button.whenPressed(new ToggleAdjustmentStyle());
       m_operatorController.right_stick_button.whenPressed(new AcceptLimelightDistance());
+// ======== BELOW IMPORTED FROM MK4 CHASSIS ========
+      /*m_driverController.left_bumper.whenPressed(new InstantCommand(() -> 
+      m_singulatorAndInfeed.liftInfeed())
+      .andThen(new WaitCommand(2.0))
+      .andThen(new InstantCommand(() -> m_singulatorAndInfeed.holdInfeed())));
+      m_driverController.right_bumper.whenPressed(new InstantCommand(() -> 
+      m_singulatorAndInfeed.downInfeed())
+      .andThen(new WaitCommand(1.0))
+      .andThen(new InstantCommand(() -> m_singulatorAndInfeed.holdInfeed())));*/
+      m_driverController.y.toggleWhenPressed(_RunInfeedSingulatorMotors);
+      m_operatorController.b.whenPressed(new RunConveyor());
+      m_operatorController.x.toggleWhenPressed(new RunShooterMotors());
+      m_operatorController.a.whenPressed(new RunConveyorTwoBall());
+      m_operatorController.start.toggleWhenPressed(new RunConveyorOneBall());
+      m_operatorController.back.toggleWhenPressed(new ReverseInfeedAndConveyor());
+      m_operatorController.left_bumper.whenPressed(new DecrementShooterIndex());
+      m_operatorController.right_bumper.whenPressed(new IncrementShooterIndex());
+      m_operatorController.left_stick_button.whenPressed(new ToggleAdjustmentStyle());
+      m_operatorController.right_stick_button.whenPressed(new AcceptLimelightDistance());
+      // FIXME: bruh spagheti controller
+// ======== END IMPORT ======== //
+  }
+
+  public double getRightTrigger(){
+    return m_driverController.getRightTrigger();
+  }
+  private Command getSwerveControllerCommand(Trajectory traj){
+    return new SwerveControllerCommand(
+    traj,
+    m_robotDrive::getPose,
+    DriveConstants.kDriveKinematics,
+    xController,
+    yController,
+    thetaController,
+    m_robotDrive::setModuleStates,
+    m_robotDrive)
+    .andThen(new InstantCommand(() -> m_robotDrive.drive(0, 0, 0, true)));
   }
 
   /**
@@ -99,46 +163,15 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // Create config for trajectory
-    TrajectoryConfig config =
-        new TrajectoryConfig(
-                AutoConstants.kMaxSpeedMetersPerSecond,
-                AutoConstants.kMaxAccelerationMetersPerSecondSquared)
-            // Add kinematics to ensure max speed is actually obeyed
-            .setKinematics(DriveConstants.kDriveKinematics);
-
-    // An example trajectory to follow.  All units in meters.
-    Trajectory exampleTrajectory =
-        TrajectoryGenerator.generateTrajectory(
-            // Start at the origin facing the +X direction
-            new Pose2d(0, 0, new Rotation2d(0)),
-            // Pass through these two interior waypoints, making an 's' curve path
-            List.of(new Translation2d(1, 1), new Translation2d(2, -1)),
-            // End 3 meters straight ahead of where we started, facing forward
-            new Pose2d(3, 0, new Rotation2d(0)),
-            config);
-
-    var thetaController =
-        new ProfiledPIDController(
-            AutoConstants.kPThetaController, 0, 0, AutoConstants.kThetaControllerConstraints);
-    thetaController.enableContinuousInput(-Math.PI, Math.PI);
-
-    SwerveControllerCommand swerveControllerCommand =
-        new SwerveControllerCommand(
-            exampleTrajectory,
-            m_robotDrive::getPose, // Functional interface to feed supplier
-            DriveConstants.kDriveKinematics,
-
-            // Position controllers
-            new PIDController(AutoConstants.kPXController, 0, 0),
-            new PIDController(AutoConstants.kPYController, 0, 0),
-            thetaController,
-            m_robotDrive::setModuleStates,
-            m_robotDrive);
-
-    // Reset odometry to the starting pose of the trajectory.
-    m_robotDrive.resetOdometry(exampleTrajectory.getInitialPose());
-
-    // Run path following command, then stop at the end.
-    return swerveControllerCommand.andThen(() -> m_robotDrive.drive(0, 0, 0, false));
+    m_robotDrive.resetOdometry(new Pose2d(0, 0, new Rotation2d()));
+    return getSwerveControllerCommand(_trajectories.getTestCompFirstBall())
+    .andThen(new RotateDrivetrainByAngle(Rotation2d.fromDegrees(180), true))
+    .andThen(new WaitCommand(2.0))
+    .andThen(getSwerveControllerCommand(_trajectories.getTestCompSecondBall()))
+    .andThen(new WaitCommand(1.5))
+    .andThen(getSwerveControllerCommand(_trajectories.getTestCompReturnShoot()))
+    .andThen(new WaitCommand(2.0))
+    .andThen(new InstantCommand(() -> System.out.println("AUTON FINISHED")));
   }
+
 }
