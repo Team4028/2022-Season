@@ -33,55 +33,55 @@ public class Conveyor extends SubsystemBase {
   }
 
 
-//   public void runConveyorMotor(double vbus){
-//     _conveyorMotor.set(vbus);
-//   }
+  public void runConveyorMotor(double vbus){
+    _conveyorMotor.set(vbus);
+  }
 
-//   public void stopConveyorMotor(){
-//     _conveyorMotor.set(0);
-//   }
+  public void stopConveyorMotor(){
+    _conveyorMotor.set(0);
+  }
 
-//   public void runConveyorMotorWithEncoder(double target, double vbus){
-//     // isTargetReached = false;
-//     // System.out.println("runConveyorMotorWithEncoder On" + _enc.getPosition());
-//     if (getEncoderPosition() >= target /*&& !isTargetReached*/)
-//     {
-//       // System.out.println("Encoder Value " +_enc.getPosition());
-//       stopConveyorMotor();
-//       resetEncoder();
-//       isTargetReached = true;
-//     }
-//     else{
-//       runConveyorMotor(vbus);
-//     }
-//   }
+  public void runConveyorMotorWithEncoder(double target, double vbus){
+    // isTargetReached = false;
+    // System.out.println("runConveyorMotorWithEncoder On" + _enc.getPosition());
+    if (getEncoderPosition() >= target /*&& !isTargetReached*/)
+    {
+      // System.out.println("Encoder Value " +_enc.getPosition());
+      stopConveyorMotor();
+      resetEncoder();
+      isTargetReached = true;
+    }
+    else{
+      runConveyorMotor(vbus);
+    }
+  }
 
-// // public void setEndStuff()
-// // {
-// //   isTargetReached = true;
-// //   resetEncoder();
-// // }
-
-//   public double getEncoderPosition()
-//   {
-//     return (_enc.getPosition() - encoderOffset);
-//   }
-  
-//   public void resetEncoder(){
-//     encoderOffset = _enc.getPosition();
-//   }
-
-//   public void setIsTargetReached(){
-//     isTargetReached = false;
-//   }
-
-//   public boolean getIsTargetReached(){
-//     return isTargetReached;
-//   }
-
-//   @Override
-//   public void periodic() {
-//     // This method will be called once per scheduler run
-//   }
-
+// public void setEndStuff()
+// {
+//   isTargetReached = true;
+//   resetEncoder();
 // }
+
+  public double getEncoderPosition()
+  {
+    return (_enc.getPosition() - encoderOffset);
+  }
+  
+  public void resetEncoder(){
+    encoderOffset = _enc.getPosition();
+  }
+
+  public void setIsTargetReached(){
+    isTargetReached = false;
+  }
+
+  public boolean getIsTargetReached(){
+    return isTargetReached;
+  }
+
+  @Override
+  public void periodic() {
+    // This method will be called once per scheduler run
+  }
+
+}
