@@ -165,11 +165,6 @@ public final class Constants {
     public static final double kAngle = 0.1;
   }
 
-  public static final class RPMConstants {
-    public static final double kShooterFront = 1075.;
-    public static final double kShooterBack = 2460.;
-  }
-
   public static final class EncoderConstants {
     public static final double kConveyOne = 20;
     public static final double kConveyTwo = 50;

@@ -6,8 +6,6 @@ package frc.robot.utilities;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-import frc.robot.util;
-
 
 /**
  * Add your docs here.

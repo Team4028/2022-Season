@@ -17,7 +17,6 @@ import frc.robot.util;
 import frc.robot.Constants.EncoderConstants;
 import frc.robot.Constants.IndexConstants;
 import frc.robot.Constants.PIDConstants;
-import frc.robot.Constants.RPMConstants;
 import frc.robot.Constants.SubsystemConstants;
 import frc.robot.Constants.VBusConstants;
 import frc.robot.utilities.ShooterTable;
