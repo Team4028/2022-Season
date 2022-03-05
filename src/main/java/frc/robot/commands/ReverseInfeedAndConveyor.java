@@ -12,11 +12,7 @@ import frc.robot.subsystems.Infeed;
 public class ReverseInfeedAndConveyor extends CommandBase {
   /** Creates a new ReverseInfeedAndConveyor. */
   private Conveyor _Con = Conveyor.get_instance();
-<<<<<<< HEAD
   private Infeed _Infeed = Infeed.get_instance();
-=======
-  private Infeed _SingIn = Infeed.get_instance();
->>>>>>> origin/development
   public ReverseInfeedAndConveyor() {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(_Con);
