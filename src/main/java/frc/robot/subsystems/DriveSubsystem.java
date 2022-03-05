@@ -4,8 +4,23 @@
 
 package frc.robot.subsystems;
 
-import java.util.NavigableMap;
+import static frc.robot.Constants.DriveConstants.i_kFrontLeftDriveMotorPort;
+import static frc.robot.Constants.DriveConstants.i_kFrontLeftEncoderCan;
+import static frc.robot.Constants.DriveConstants.i_kFrontLeftTurningMotorPort;
+import static frc.robot.Constants.DriveConstants.i_kFrontRightDriveMotorPort;
+import static frc.robot.Constants.DriveConstants.i_kFrontRightEncoderCan;
+import static frc.robot.Constants.DriveConstants.i_kFrontRightTurningMotorPort;
+import static frc.robot.Constants.DriveConstants.i_kRearLeftDriveMotorPort;
+import static frc.robot.Constants.DriveConstants.i_kRearLeftEncoderCan;
+import static frc.robot.Constants.DriveConstants.i_kRearLeftTurningMotorPort;
+import static frc.robot.Constants.DriveConstants.i_kRearRightDriveMotorPort;
+import static frc.robot.Constants.DriveConstants.i_kRearRightEncoderCan;
+import static frc.robot.Constants.DriveConstants.i_kRearRightTurningMotorPort;
+import static frc.robot.Constants.DriveConstants.kDriveKinematics;
+import static frc.robot.Constants.DriveConstants.kGyroReversed;
+import static frc.robot.Constants.DriveConstants.kMaxSpeedMetersPerSecond;
 
+import com.ctre.phoenix.sensors.WPI_Pigeon2;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -15,11 +30,12 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.SPI;
-import frc.robot.util;
-import static frc.robot.Constants.DriveConstants.*;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.DriveConstants;
+import frc.robot.RobotContainer;
+import frc.robot.util;
 
 public class DriveSubsystem extends SubsystemBase {
 
@@ -29,10 +45,16 @@ public class DriveSubsystem extends SubsystemBase {
   private static final double BACK_RIGHT_ANGLE_OFFSET = -Math.toRadians(252. + 180.0);//70.9);//60.3);//60.7
 
 
-  private static final double i_FRONT_LEFT_ANGLE_OFFSET = -Math.toRadians(204.6);//0.0);//60.6);//60.7
-  private static final double i_FRONT_RIGHT_ANGLE_OFFSET = -Math.toRadians(204.2);//141.2);//139.1
-  private static final double i_BACK_LEFT_ANGLE_OFFSET = -Math.toRadians(329.4);//60.6);//60.7
-  private static final double i_BACK_RIGHT_ANGLE_OFFSET = -Math.toRadians(160.6);//60.3);//60.7
+  // private  SwerveModule m_frontLeft;
+  // private  SwerveModule m_frontRight;
+  // private  SwerveModule m_rearLeft;
+  // private  SwerveModule m_rearRight;
+
+
+  private static final double i_FRONT_LEFT_ANGLE_OFFSET = Math.toRadians(154.6);
+  private static final double i_FRONT_RIGHT_ANGLE_OFFSET = -Math.toRadians(169.3);
+  private static final double i_BACK_LEFT_ANGLE_OFFSET = Math.toRadians(31.3);
+  private static final double i_BACK_RIGHT_ANGLE_OFFSET = Math.toRadians(199.1);
 
   private static DriveSubsystem _instance;
   public static final DriveSubsystem get_instance(){
@@ -42,73 +64,77 @@ public class DriveSubsystem extends SubsystemBase {
     return _instance;
   }
 
-    //   private final SwerveModuleCAN m_frontLeft =
-    //   new SwerveModuleCAN(
+      private final SwerveModuleCANTwoElectricBoogaloo m_frontLeft =
+      new SwerveModuleCANTwoElectricBoogaloo(
+          i_kFrontLeftDriveMotorPort,
+          i_kFrontLeftTurningMotorPort,
+          i_kFrontLeftEncoderCan,
+          i_FRONT_LEFT_ANGLE_OFFSET);
+
+     private final SwerveModuleCANTwoElectricBoogaloo m_rearLeft =
+      new SwerveModuleCANTwoElectricBoogaloo(
+          i_kRearLeftDriveMotorPort,
+          i_kRearLeftTurningMotorPort,
+          i_kRearLeftEncoderCan,
+          i_BACK_LEFT_ANGLE_OFFSET);
+
+     private final SwerveModuleCANTwoElectricBoogaloo m_frontRight =
+      new SwerveModuleCANTwoElectricBoogaloo(
+          i_kFrontRightDriveMotorPort,
+          i_kFrontRightTurningMotorPort,
+          i_kFrontRightEncoderCan,
+          i_FRONT_RIGHT_ANGLE_OFFSET);
+
+    private final SwerveModuleCANTwoElectricBoogaloo m_rearRight =
+      new SwerveModuleCANTwoElectricBoogaloo(
+          i_kRearRightDriveMotorPort,
+          i_kRearRightTurningMotorPort,
+          i_kRearRightEncoderCan,
+          i_BACK_RIGHT_ANGLE_OFFSET);
+
+    //      private final SwerveModule m_frontLeft =
+    //   new SwerveModule(
     //       i_kFrontLeftDriveMotorPort,
     //       i_kFrontLeftTurningMotorPort,
-    //       i_kFrontLeftEncoderCan,
+    //       0,
     //       i_FRONT_LEFT_ANGLE_OFFSET);
 
-    //  private final SwerveModuleCAN m_rearLeft =
-    //   new SwerveModuleCAN(
-    //       i_kRearLeftDriveMotorPort,
-    //       i_kRearLeftTurningMotorPort,
-    //       i_kRearLeftEncoderCan,
-    //       i_BACK_LEFT_ANGLE_OFFSET);
+    //  private final SwerveModule m_rearLeft =
+    //   new SwerveModule(
+    //       kRearLeftDriveMotorPort,
+    //       kRearLeftTurningMotorPort,
+    //       2,
+    //       BACK_LEFT_ANGLE_OFFSET);
 
-    //  private final SwerveModuleCAN m_frontRight =
-    //   new SwerveModuleCAN(
-    //       i_kFrontRightDriveMotorPort,
-    //       i_kFrontRightTurningMotorPort,
-    //       i_kFrontRightEncoderCan,
-    //       i_FRONT_RIGHT_ANGLE_OFFSET);
+    //  private final SwerveModule m_frontRight =
+    //   new SwerveModule(
+    //       kFrontRightDriveMotorPort,
+    //       kFrontRightTurningMotorPort,
+    //       1,
+    //       FRONT_RIGHT_ANGLE_OFFSET);
 
-    // private final SwerveModuleCAN m_rearRight =
-    //   new SwerveModuleCAN(
-    //       i_kRearRightDriveMotorPort,
-    //       i_kRearRightTurningMotorPort,
-    //       i_kRearRightEncoderCan,
-    //       i_BACK_RIGHT_ANGLE_OFFSET);
-
-         private final SwerveModule m_frontLeft =
-      new SwerveModule(
-          kFrontLeftDriveMotorPort,
-          kFrontLeftTurningMotorPort,
-          0,
-          FRONT_LEFT_ANGLE_OFFSET);
-
-     private final SwerveModule m_rearLeft =
-      new SwerveModule(
-          kRearLeftDriveMotorPort,
-          kRearLeftTurningMotorPort,
-          2,
-          BACK_LEFT_ANGLE_OFFSET);
-
-     private final SwerveModule m_frontRight =
-      new SwerveModule(
-          kFrontRightDriveMotorPort,
-          kFrontRightTurningMotorPort,
-          1,
-          FRONT_RIGHT_ANGLE_OFFSET);
-
-    private final SwerveModule m_rearRight =
-      new SwerveModule(
-          kRearRightDriveMotorPort,
-          kRearRightTurningMotorPort,
-          3,
-          BACK_RIGHT_ANGLE_OFFSET);
+    // private final SwerveModule m_rearRight =
+    //   new SwerveModule(
+    //       kRearRightDriveMotorPort,
+    //       kRearRightTurningMotorPort,
+    //       3,
+    //       BACK_RIGHT_ANGLE_OFFSET);
 
   // Robot swerve modules
 
   // The gyro sensor
-  private final Gyro m_gyro = new AHRS(SPI.Port.kMXP);
+  // private final Pigeon2 m_pigeon = new Pigeon2(1);
+  private final Gyro m_gyro = DriveConstants.isNAVX? new AHRS(SPI.Port.kMXP): new WPI_Pigeon2(DriveConstants.pigeonCan);
 
   // Odometry class for tracking robot pose
   SwerveDriveOdometry m_odometry =
       new SwerveDriveOdometry(kDriveKinematics, m_gyro.getRotation2d());
 
   /** Creates a new DriveSubsystem. */
-  public DriveSubsystem() {  }
+  public DriveSubsystem() {
+    // m_pigeon.configFactoryDefault();
+    // m_pigeon.configDisableTemperatureCompensation(false);
+  }
 
   @Override
   public void periodic() {
@@ -122,6 +148,9 @@ public class DriveSubsystem extends SubsystemBase {
 
     SmartDashboard.putNumber("X (Feet)", util.metersToFeet(m_odometry.getPoseMeters().getX()));
     SmartDashboard.putNumber("Y (Feet)", util.metersToFeet(m_odometry.getPoseMeters().getY()));
+    SmartDashboard.putNumber("X (Metres)", m_odometry.getPoseMeters().getX());
+    SmartDashboard.putNumber("Y (Metres)", m_odometry.getPoseMeters().getY());
+    SmartDashboard.putNumber("Heading (Deg)", m_odometry.getPoseMeters().getRotation().getDegrees());
     SmartDashboard.putNumber("FL Angle", m_frontLeft.getState().angle.getDegrees());
     SmartDashboard.putNumber("FR Angle", m_frontRight.getState().angle.getDegrees());
     SmartDashboard.putNumber("RL Angle", m_rearLeft.getState().angle.getDegrees());
@@ -156,18 +185,18 @@ public class DriveSubsystem extends SubsystemBase {
    */
   @SuppressWarnings("ParameterName")
   public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
+    double speedScale = DriveConstants.BASE_SPEED_SCALE + RobotContainer.get_instance().getRightTrigger() * (1 - DriveConstants.BASE_SPEED_SCALE);
+    xSpeed *= speedScale * DriveConstants.i_kMaxSpeedMetersPerSecond;
+    ySpeed *= speedScale * DriveConstants.i_kMaxSpeedMetersPerSecond;
+    rot *= speedScale * DriveConstants.i_kMaxSpeedMetersPerSecond;
     var swerveModuleStates =
         kDriveKinematics.toSwerveModuleStates(
             fieldRelative
                 ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, Rotation2d.fromDegrees((kGyroReversed ? -1.0 : 1.0) * m_gyro.getRotation2d().getDegrees()))
                 : new ChassisSpeeds(xSpeed, ySpeed, rot));
     SwerveDriveKinematics.desaturateWheelSpeeds(
-        swerveModuleStates, kMaxSpeedMetersPerSecond);
-    m_frontLeft.setDesiredState(swerveModuleStates[0]);
-    m_frontRight.setDesiredState(swerveModuleStates[1]);
-    m_rearLeft.setDesiredState(swerveModuleStates[2]);
-    m_rearRight.setDesiredState(swerveModuleStates[3]);
-    //System.out.println(swerveModuleStates[0].speedMetersPerSecond);
+        swerveModuleStates, DriveConstants.i_kMaxSpeedMetersPerSecond);
+    setModuleStates(swerveModuleStates);
   }
 
   /**
@@ -184,9 +213,18 @@ public class DriveSubsystem extends SubsystemBase {
     m_rearRight.setDesiredState(desiredStates[3]);
   }
 
+  /** Resets the drive encoders to currently read a position of 0. */
+  public void resetEncoders() {
+    m_frontLeft.resetEncoders();
+    m_rearLeft.resetEncoders();
+    m_frontRight.resetEncoders();
+    m_rearRight.resetEncoders();
+  }
+
   /** Zeroes the heading of the robot. */
   public void zeroHeading() {
     m_gyro.reset();
+    resetOdometry(new Pose2d(0, 0, m_gyro.getRotation2d()));
   }
 
   /**

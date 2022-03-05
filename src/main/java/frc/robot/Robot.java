@@ -10,6 +10,12 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Shooter;
 
+// import frc.robot.commands.DecrementShooterIndex;
+// import frc.robot.commands.IncrementShooterIndex;
+// import frc.robot.commands.ToggleFineAdjustment;
+import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.utilities.ShooterTable;
+import frc.robot.utilities.ShooterTableEntry;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -19,6 +25,7 @@ import frc.robot.subsystems.Shooter;
  */
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
+  private ShooterTable _shooterTable;
   private RobotContainer m_robotContainer;
 
 
@@ -76,7 +83,13 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during autonomous. */
   @Override
-  public void autonomousPeriodic() {}
+  public void autonomousPeriodic() {
+    _shooterTable = ShooterTable.getPrimaryTable();
+    ShooterTableEntry tableOfShooter = _shooterTable.CalcShooterValues(10.) ;
+    //System.out.println(tableOfShooter.ShootorFrontRPM);
+    // System.out.println(_s.index());
+
+  }
 
   @Override
   public void teleopInit() {
@@ -91,7 +104,11 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+    // System.out.println(_s.index());
+    // SmartDashboard.putNumber("Shooter Index", _s.index());
+    // SmartDashboard.putString("Adjustment Mode", (_s.getFineAdjustment() ? "Fine" : "Coarse"));
+  }
 
   @Override
   public void testInit() {
