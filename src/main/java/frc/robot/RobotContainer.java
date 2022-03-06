@@ -22,6 +22,7 @@ import frc.robot.Constants.OIConstants;
 // import frc.robot.commands.IncrementShooterIndex;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.commands.FINDPATHERROR;
+import frc.robot.commands.ReverseInfeedAndConveyor;
 import frc.robot.commands.RotateDrivetrainByAngle;
 // import frc.robot.commands.RunConveyorWithEncoder;
 // import frc.robot.commands.LiftInfeed;
@@ -126,13 +127,14 @@ public class RobotContainer {
       .andThen(new WaitCommand(1.0))
       .andThen(new InstantCommand(() -> m_singulatorAndInfeed.holdInfeed())));*/
       m_driverController.y.toggleWhenPressed(_RunInfeedSingulatorMotors);
+      m_operatorController.y.toggleWhenPressed(_RunInfeedSingulatorMotors);
     //   m_operatorController.b.whenPressed(new RunConveyorWithEncoder());
     // //   m_operatorController.x.toggleWhenPressed(new RunShooterMotors());
     //   m_operatorController.a.whenPressed(new RunConveyorTwoBall());
     //   m_operatorController.start.toggleWhenPressed(new RunConveyorOneBall());
     // //   m_operatorController.right_bumper.whenPressed(new InstantCommand(() -> m_shooter.shiftShooterVbus(0, 0.02)));
     // //   m_operatorController.left_bumper.whenPressed(new InstantCommand(() -> m_shooter.shiftShooterVbus(0.02, 0)));
-    //   m_operatorController.back.toggleWhenPressed(new ReverseInfeedAndConveyor());
+    m_operatorController.back.toggleWhenPressed(new ReverseInfeedAndConveyor());
     //   m_operatorController.left_bumper.whenPressed(new DecrementShooterIndex());
     //   m_operatorController.right_bumper.whenPressed(new IncrementShooterIndex());
     //   m_operatorController.left_stick_button.whenPressed(new ToggleFineAdjustment());
