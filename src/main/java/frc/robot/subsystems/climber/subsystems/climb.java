@@ -174,7 +174,8 @@ class fireNewGExtendG extends State {
     startTime = new Date().getTime();
     _i.zeroEncoder();
     getclassName();
-    _i.setGripSol(Value.kForward);
+    _i.setGripSol1(Value.kForward);
+    _i.setGripSol2(Value.kForward);
 
   }
 
@@ -206,8 +207,10 @@ class gNewTNewRetGRet extends State {
     startTime = new Date().getTime();
     _i.zeroEncoder();
     getclassName();
-    _i.setGripSol(Value.kReverse);
-    _i.setTipSol(Value.kReverse);
+    _i.setGripSol1(Value.kReverse);
+    _i.setGripSol2(Value.kReverse);
+    _i.setTipSol1(Value.kReverse);
+    _i.setTipSol2(Value.kReverse);
 
   }
 
@@ -256,7 +259,8 @@ class retGFireTNewretG extends State {
         return;
       }
       if (elapsedTime > 5000  && elapsedTime < 7500) {
-        _i.setTipSol(Value.kForward);
+        _i.setTipSol1(Value.kForward);
+        _i.setTipSol2(Value.kForward);
       return;
     }
     if (elapsedTime > 7500  && elapsedTime < 8000) {

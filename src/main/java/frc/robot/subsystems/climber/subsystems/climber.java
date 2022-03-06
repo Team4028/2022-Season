@@ -22,15 +22,19 @@ public class climber extends SubsystemBase {
   CANSparkMax _grip2;
   DigitalInput _button;
   RelativeEncoder _encoderGrip;
-  DoubleSolenoid _gripSol;
-  DoubleSolenoid _tipSol;
+  DoubleSolenoid _gripSol1;
+  DoubleSolenoid _gripSol2;
+  DoubleSolenoid _tipSol1;
+  DoubleSolenoid _tipSol2;
   private static climber _instance = new climber();
   public climber() {
     
     _grip1 = new CANSparkMax(1, MotorType.kBrushless);
     _grip2 = new CANSparkMax(2, MotorType.kBrushless);
-    _gripSol = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 0, 1);
-    _tipSol = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 2, 3);
+    _gripSol1 = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 0, 1);
+    _gripSol2 = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 0, 1);
+    _tipSol1 = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 2, 3);
+    _tipSol2 = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 2, 3);
     _button = new DigitalInput(0);
     _encoderGrip = _grip1.getEncoder();
     grippyFollow();
@@ -38,11 +42,17 @@ public class climber extends SubsystemBase {
   public void setGrip(double vbus){
     _grip1.set(vbus);
   }
-  public void setTipSol(Value value) {
-    _tipSol.set(value);
+  public void setTipSol1(Value value) {
+    _tipSol1.set(value);
   }
-  public void setGripSol(Value value) {
-    _gripSol.set(value);
+  public void setTipSol2(Value value) {
+    _tipSol2.set(value);
+  }
+  public void setGripSol1(Value value) {
+    _gripSol1.set(value);
+  }
+  public void setGripSol2(Value value) {
+    _gripSol2.set(value);
   }
   public double getEncoderPos() {
     return _encoderGrip.getPosition();
