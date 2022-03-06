@@ -66,6 +66,7 @@ class extend1G extends State {
       elapsedTime = new Date().getTime() - startTime;
       //System.out.println(_i.getEncoderPos());
       if (_i.getEncoderPos() > 120 ) {
+        _i.setGrip(0);
         current = driveForward1;
         return;
       }
@@ -125,7 +126,8 @@ class retract1G extends State {
     while (true) {
       //System.out.println(_i.getEncoderPos());
       elapsedTime = new Date().getTime() - startTime;
-      if (_i.getEncoderPos() > 120 ) {
+      if (_i.getEncoderPos() < 60 ) {
+        _i.setGrip(0);
         current = extend2G;
         return;
       }
@@ -151,7 +153,8 @@ class extend2G extends State {
     while (true) {
       elapsedTime = new Date().getTime() - startTime;
       //System.out.println(_i.getEncoderPos());
-      if (elapsedTime > 3000) {
+      if (_i.getEncoderPos() > 120) {
+        _i.setGrip(0);
         current = fireNewGExtendG;
         return;
       }
@@ -179,8 +182,12 @@ class fireNewGExtendG extends State {
     while (true) {
       //System.out.println(_i.getEncoderPos());
       elapsedTime = new Date().getTime() - startTime;
-      if (elapsedTime > 50  && elapsedTime < 100) {
+      if (elapsedTime > 2000  && elapsedTime < 4000) {
         _i.setGrip(.2);
+        return;
+      }
+      if (elapsedTime > 4000 ) {
+        _i.setGrip(0);
         current = gNewTNewRetGRet;
         return;
       }
@@ -208,8 +215,12 @@ class gNewTNewRetGRet extends State {
     while (true) {
       //System.out.println(_i.getEncoderPos());
       elapsedTime = new Date().getTime() - startTime;
-        if (elapsedTime > 5000  && elapsedTime < 7500) {
+        if (elapsedTime > 2000  && elapsedTime < 4000) {
           _i.setGrip(-.2);
+        return;
+      }
+      if (elapsedTime > 4000) {
+        _i.setGrip(0);
         current = retGFireTNewretG;
         return;
       }
@@ -240,16 +251,15 @@ class retGFireTNewretG extends State {
 
 
      // set until tippy is off of bar
-      if (_i.getEncoderPos() > -120) {
+      if (_i.getEncoderPos() > 60) {
         _i.setGrip(-.2);
-        current = stop;
         return;
       }
       if (elapsedTime > 5000  && elapsedTime < 7500) {
         _i.setTipSol(Value.kForward);
       return;
     }
-    if (elapsedTime > 7501  && elapsedTime < 8000) {
+    if (elapsedTime > 7500  && elapsedTime < 8000) {
     if (_i.getEncoderPos() > -150) {
       _i.setGrip(.2);
     }
@@ -276,7 +286,7 @@ class retGFireTNewretG extends State {
     _i.setGrip(-.2);
 
   }
-
+//sup
   void update() {
     while (true) {
       //System.out.println(_i.getEncoderPos());
