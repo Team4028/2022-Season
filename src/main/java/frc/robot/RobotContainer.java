@@ -32,6 +32,7 @@ import frc.robot.commands.RotateDrivetrainByAngle;
 // import frc.robot.commands.RunShooterMotors;
 // import frc.robot.commands.ToggleFineAdjustment;
 import frc.robot.commands.RunInfeedSingulatorMotors;
+import frc.robot.commands.XDrive;
 import frc.robot.subsystems.Infeed;
 import frc.robot.subsystems.SingulatorAndInfeed;
 import frc.robot.utilities.Trajectories;
@@ -127,6 +128,7 @@ public class RobotContainer {
       .andThen(new WaitCommand(1.0))
       .andThen(new InstantCommand(() -> m_singulatorAndInfeed.holdInfeed())));*/
       m_driverController.y.toggleWhenPressed(_RunInfeedSingulatorMotors);
+      m_driverController.x.toggleWhenPressed(new XDrive());
       m_operatorController.y.toggleWhenPressed(_RunInfeedSingulatorMotors);
     //   m_operatorController.b.whenPressed(new RunConveyorWithEncoder());
     // //   m_operatorController.x.toggleWhenPressed(new RunShooterMotors());
