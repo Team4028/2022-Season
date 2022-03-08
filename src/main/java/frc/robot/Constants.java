@@ -130,17 +130,16 @@ public final class Constants {
     public static final double i_kDriveEncoderCountsPerWheelRev = (50.0 / 14.0) * (17.0 / 27.0) * (45.0 / 15.0)
         * 2048.0;
 
-    public static final double i_kTurningEncoderDistancePerPulse =
-        // Assumes the encoders are on a 1:1 reduction with the module shaft.
-        (2 * Math.PI) / (double) i_kEncoderCPR;
 
     public static final double i_kPModuleTurningController = 0.2;
 
-    public static final double i_kPModuleDriveController = 0;
+    public static final double i_kPModuleDriveController = 0.13367;
 
     public static final double i_kEncoderCountsPerModuleRev = (150.0 / 7.0) * 2048.0;
 
     public static final double i_kNominalVoltage = 12.0;
+
+    public static final double i_kTurningMotorAllowableClosedLoopError = 10.0;
 
     public static final double kModuleMaxSpeedTurningRadiansPerSecond = 16 * Math.PI;
     public static final double kModuleMaxAccelerationTurningRadiansPerSecondSquared = 256 * Math.PI;
