@@ -33,6 +33,7 @@ import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.RobotContainer;
 import frc.robot.util;
@@ -54,6 +55,10 @@ public class DriveSubsystem extends SubsystemBase {
   private static final double i_FRONT_RIGHT_ANGLE_OFFSET = -Math.toRadians(169.3);
   private static final double i_BACK_LEFT_ANGLE_OFFSET = Math.toRadians(31.3);
   private static final double i_BACK_RIGHT_ANGLE_OFFSET = Math.toRadians(199.1);
+
+  private int holdAngleCounter = 0;
+  private double holdAngle;
+  private boolean enableHoldAngle;
 
   private static DriveSubsystem _instance;
   public static final DriveSubsystem get_instance(){
@@ -172,6 +177,7 @@ public class DriveSubsystem extends SubsystemBase {
    */
   public void resetOdometry(Pose2d pose) {
     m_odometry.resetPosition(pose, m_gyro.getRotation2d());
+    holdAngleCounter = 0;
   }
 
   /**
@@ -188,6 +194,13 @@ public class DriveSubsystem extends SubsystemBase {
     xSpeed *= speedScale * DriveConstants.i_kMaxSpeedMetersPerSecond;
     ySpeed *= speedScale * DriveConstants.i_kMaxSpeedMetersPerSecond;
     rot *= speedScale * DriveConstants.i_kMaxSpeedMetersPerSecond;
+    if (rot == 0){
+      if (holdAngleCounter < 1 && enableHoldAngle){
+        holdAngleCounter++;
+        holdAngle = m_gyro.getRotation2d().getRadians();
+      }
+      rot = AutoConstants.thetaController.calculate(m_gyro.getRotation2d().getRadians(), holdAngle);
+    }
     var swerveModuleStates =
         kDriveKinematics.toSwerveModuleStates(
             fieldRelative
@@ -224,6 +237,13 @@ public class DriveSubsystem extends SubsystemBase {
   public void zeroHeading() {
     m_gyro.reset();
     resetOdometry(new Pose2d(0, 0, m_gyro.getRotation2d()));
+  }
+
+  public void setEnableHoldAngle(boolean enable){
+    enableHoldAngle = enable;
+  }
+  public void toggleEnableHoldAngle(){
+    enableHoldAngle = !enableHoldAngle;
   }
 
   /**

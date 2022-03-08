@@ -5,14 +5,9 @@
 package frc.robot;
 
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
-import edu.wpi.first.math.trajectory.TrajectoryConfig;
-import edu.wpi.first.math.trajectory.TrajectoryGenerator;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
@@ -21,7 +16,6 @@ import frc.robot.Constants.OIConstants;
 // import frc.robot.commands.DecrementShooterIndex;
 // import frc.robot.commands.IncrementShooterIndex;
 import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.commands.FINDPATHERROR;
 import frc.robot.commands.ReverseInfeedAndConveyor;
 import frc.robot.commands.RotateDrivetrainByAngle;
 // import frc.robot.commands.RunConveyorWithEncoder;
@@ -38,16 +32,11 @@ import frc.robot.subsystems.SingulatorAndInfeed;
 import frc.robot.utilities.Trajectories;
 // import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-
-import java.time.Instant;
-import java.util.List;
-import java.util.function.BooleanSupplier;
 
 /*
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -67,9 +56,6 @@ public class RobotContainer {
 
   private PIDController xController = new PIDController(AutoConstants.kPXController, 0, 0);
   private PIDController yController = new PIDController(AutoConstants.kPYController, 0, 0);
-  private ProfiledPIDController thetaController =
-  new ProfiledPIDController(
-      AutoConstants.kPThetaController, 0, 0, AutoConstants.kThetaControllerConstraints);
 
   public static final RobotContainer get_instance(){
       if(_instance == null){
@@ -89,7 +75,7 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    thetaController.enableContinuousInput(-Math.PI, Math.PI);
+    AutoConstants.thetaController.enableContinuousInput(-Math.PI, Math.PI);
     // Configure the button bindings
     _RunInfeedSingulatorMotors = new RunInfeedSingulatorMotors();
     _wait = new WaitCommand(1.0);
@@ -129,6 +115,7 @@ public class RobotContainer {
       .andThen(new InstantCommand(() -> m_singulatorAndInfeed.holdInfeed())));*/
       m_driverController.y.toggleWhenPressed(_RunInfeedSingulatorMotors);
       m_driverController.x.toggleWhenPressed(new XDrive());
+      m_driverController.left_stick_button.whenPressed(new InstantCommand(() -> m_robotDrive.toggleEnableHoldAngle()));
       m_operatorController.y.toggleWhenPressed(_RunInfeedSingulatorMotors);
     //   m_operatorController.b.whenPressed(new RunConveyorWithEncoder());
     // //   m_operatorController.x.toggleWhenPressed(new RunShooterMotors());
@@ -155,7 +142,7 @@ public class RobotContainer {
     DriveConstants.kDriveKinematics,
     xController,
     yController,
-    thetaController,
+    AutoConstants.thetaController,
     m_robotDrive::setModuleStates,
     m_robotDrive)
     .andThen(new InstantCommand(() -> m_robotDrive.drive(0, 0, 0, true)));
