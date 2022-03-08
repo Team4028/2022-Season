@@ -5,7 +5,6 @@
 package frc.robot;
 
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
@@ -24,7 +23,6 @@ import frc.robot.commands.RunConveyorTwoBall;
 import frc.robot.commands.RunShooterMotors;
 import frc.robot.commands.ToggleAdjustmentStyle;
 import frc.robot.commands.ToggleCamera;
-import frc.robot.commands.FINDPATHERROR;
 import frc.robot.commands.RotateDrivetrainByAngle;
 // import frc.robot.commands.RunConveyorWithEncoder;
 // import frc.robot.commands.LiftInfeed;
@@ -34,7 +32,7 @@ import frc.robot.commands.RotateDrivetrainByAngle;
 // import frc.robot.commands.RunShooterMotors;
 // import frc.robot.commands.ToggleFineAdjustment;
 import frc.robot.commands.RunInfeedSingulatorMotors;
-import frc.robot.commands.RotateDrivetrainByAngle;
+import frc.robot.commands.XDrive;
 import frc.robot.subsystems.Infeed;
 import frc.robot.utilities.Trajectories;
 // import frc.robot.subsystems.Shooter;
@@ -62,9 +60,6 @@ public class RobotContainer {
 
   private PIDController xController = new PIDController(AutoConstants.kPXController, 0, 0);
   private PIDController yController = new PIDController(AutoConstants.kPYController, 0, 0);
-  private ProfiledPIDController thetaController =
-  new ProfiledPIDController(
-      AutoConstants.kPThetaController, 0, 0, AutoConstants.kThetaControllerConstraints);
 
   public static final RobotContainer get_instance(){
       if(_instance == null){
@@ -85,7 +80,7 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    thetaController.enableContinuousInput(-Math.PI, Math.PI);
+    AutoConstants.thetaController.enableContinuousInput(-Math.PI, Math.PI);
     // Configure the button bindings
     _RunInfeedSingulatorMotors = new RunInfeedSingulatorMotors();
     _wait = new WaitCommand(1.0);
@@ -136,6 +131,9 @@ public class RobotContainer {
       .andThen(new WaitCommand(1.0))
       .andThen(new InstantCommand(() -> m_singulatorAndInfeed.holdInfeed())));*/
       m_driverController.y.toggleWhenPressed(_RunInfeedSingulatorMotors);
+      m_driverController.x.toggleWhenPressed(new XDrive());
+      m_driverController.left_stick_button.whenPressed(new InstantCommand(() -> m_robotDrive.toggleEnableHoldAngle()));
+      m_operatorController.y.toggleWhenPressed(_RunInfeedSingulatorMotors);
       m_operatorController.b.whenPressed(new RunConveyor());
       m_operatorController.x.toggleWhenPressed(new RunShooterMotors());
       m_operatorController.a.whenPressed(new RunConveyorTwoBall());
@@ -159,7 +157,7 @@ public class RobotContainer {
     DriveConstants.kDriveKinematics,
     xController,
     yController,
-    thetaController,
+    AutoConstants.thetaController,
     m_robotDrive::setModuleStates,
     m_robotDrive)
     .andThen(new InstantCommand(() -> m_robotDrive.drive(0, 0, 0, true)));
