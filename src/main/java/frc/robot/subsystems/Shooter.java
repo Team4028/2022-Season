@@ -44,7 +44,9 @@ public class Shooter extends SubsystemBase {
 
     _angle = new CANSparkMax(SubsystemConstants.ANGLE_MOTOR_ID, MotorType.kBrushless);
 
-    _back.setInverted(InvertType.InvertMotorOutput);
+    _back.setInverted(false);
+    _front.setInverted(false);
+    _kicker.setInverted(InvertType.InvertMotorOutput);
 
     _l = Limelight.getInstance();
 
@@ -88,6 +90,12 @@ public class Shooter extends SubsystemBase {
 
   public void put(String key, double val) {
     SmartDashboard.putNumber(key, val);
+  }
+
+  public void runShooterMotorsVbus(double vbus){
+    _front.set(ControlMode.PercentOutput, vbus);
+    _back.set(ControlMode.PercentOutput, vbus);
+    _kicker.set(ControlMode.PercentOutput, vbus);
   }
 
   public void runShooterMotors() {
