@@ -23,8 +23,6 @@ public class FINDPATHERROR extends CommandBase {
   private double initTime;
   public FINDPATHERROR(Trajectory traj) {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.demandPosM = demandPosM;
-    this.actualPosM = actualPosM;
     this.traj = traj;
   }
 

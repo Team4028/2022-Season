@@ -22,22 +22,8 @@ public class SwerveModule {
 
   private final RelativeEncoder m_driveEncoder;
   private final AnalogInput m_turningEncoder;
-  //private final AnalogInput m_offsetEncoder;
 
   private double turningMotorOffset;
-
-  private final PIDController m_drivePIDController =
-      new PIDController(0.005, 0, 0);
-
-  // Using a TrapezoidProfile PIDController to allow for smooth turning
-  // private final ProfiledPIDController m_turningPIDController =
-  //     new ProfiledPIDController(
-  //         ModuleConstants.kPModuleTurningController,
-  //         0,
-  //         0.0001,
-  //         new TrapezoidProfile.Constraints(
-  //             ModuleConstants.kMaxModuleAngularSpeedRadiansPerSecond,
-  //             ModuleConstants.kMaxModuleAngularAccelerationRadiansPerSecondSquared));
   private final PIDController m_turningPIDController = new PIDController(ModuleConstants.kPModuleTurningController, 0, 0.0001);
 
   /**
@@ -54,33 +40,11 @@ public class SwerveModule {
     m_driveMotor = new CANSparkMax(driveMotorChannel, MotorType.kBrushless);
     m_turningMotor = new CANSparkMax(turningMotorChannel, MotorType.kBrushless);
     this.turningMotorOffset = turningMotorOffset;
-
-    //this.m_driveEncoder = new Encoder(driveEncoderPorts[0], driveEncoderPorts[1]);
   
     m_turningEncoder = new AnalogInput(analogEncoderPort);
-    //m_turningEncoder = m_driveMotor.getEncoder();
 
     m_driveEncoder = m_driveMotor.getEncoder();
-    // Set the distance per pulse for the drive encoder. We can simply use the
-    // distance traveled for one rotation of the wheel divided by the encoder
-    // resolution.
     m_driveEncoder.setPositionConversionFactor(Constants.ModuleConstants.kDriveEncoderDistancePerPulse);
-
-    //m_turningEncoder.setPosition(turningMotorOffset);
-
-
-    // Set whether drive encoder should be reversed or not
-    // m_driveEncoder.setReverseDirection(driveEncoderReversed);
-
-    // Set the distance (in this case, angle) per pulse for the turning encoder.
-    // This is the the angle through an entire rotation (2 * pi) divided by the
-    // encoder resolution.
-
-    // Set whether turning encoder should be reversed or not
-    // m_turningEncoder.setReverseDirection(turningEncoderReversed);
-
-    // Limit the PID Controller's input range between -pi and pi and set the input
-    // to be continuous.
     m_turningPIDController.enableContinuousInput(-Math.PI, Math.PI);
   }
 
@@ -112,9 +76,8 @@ public class SwerveModule {
     SwerveModuleState state =
         SwerveModuleState.optimize(desiredState, new Rotation2d(getTurningEncoderRadians()));
 
-    // Calculate the drive output from the drive PID controller.
     final double driveOutput =
-        state.speedMetersPerSecond;//ontroller.calculate(m_driveEncoder.getVelocity(), state.speedMetersPerSecond);
+        state.speedMetersPerSecond;
 
     // Calculate the turning motor output from the turning PID controller.
     final var turnOutput =
@@ -124,10 +87,4 @@ public class SwerveModule {
     m_driveMotor.set(driveOutput);
     m_turningMotor.set(turnOutput);
   }
-
-  /** Zeros all the SwerveModule encoders. */
-  /*public void resetEncoders() {
-    m_driveEncoder.reset();
-    m_turningEncoder.reset();
-  }*/
 }

@@ -31,7 +31,7 @@ public class SwerveModuleCANTwoElectricBoogaloo {
   private final int CAN_TIMEOUT_MS = 250;
 
 
-  private int resetIterations = 0;
+  private boolean reset = true;
 
   /**
    * Constructs a SwerveModule.
@@ -71,6 +71,7 @@ public class SwerveModuleCANTwoElectricBoogaloo {
         StatusFrameEnhanced.Status_4_AinTempVbat,
         STATUS_FRAME_GENERAL_PERIOD_MS,
         CAN_TIMEOUT_MS);
+    //TODO: CAN Utilization issues
 
     m_driveMotor.setNeutralMode(NeutralMode.Brake);
     m_driveMotor.configSelectedFeedbackCoefficient(1);
@@ -107,7 +108,7 @@ public class SwerveModuleCANTwoElectricBoogaloo {
    * @param desiredState Desired state with speed and angle.
    */
   public void setDesiredState(SwerveModuleState desiredState) {
-    checkMotorCoder();
+    RezeroTurningMotorEncoder();
     // Optimize the reference state to avoid spinning further than 90 degrees
     SwerveModuleState state =
         optimize(SwerveModuleState.optimize(desiredState, new Rotation2d(getTurningEncoderRadians())), new Rotation2d(getTurningEncoderRadians()));
@@ -142,7 +143,6 @@ public void setHeading(double _angle){
   double remainder = Math.IEEEremainder(currentSensorPosition, 360.0);
   double newAngleDemand = _angle + currentSensorPosition -remainder;
  
-  //System.out.println(mSteeringMotor.getSelectedSensorPosition()-remainder );
   if(newAngleDemand - currentSensorPosition > 180.1){
         newAngleDemand -= 360.0;
     } else if (newAngleDemand - currentSensorPosition < -180.1){
@@ -167,10 +167,10 @@ while(Math.abs(delta.getDegrees()) > 90.0){
   return new SwerveModuleState(desiredState.speedMetersPerSecond, desiredState.angle);
 
 }
-private void checkMotorCoder(){
-  if(resetIterations <1){
+private void RezeroTurningMotorEncoder(){
+  if(reset){
     m_turningMotor.setSelectedSensorPosition(m_turningEncoder.getAbsolutePosition() / 360.0 * i_integratedEncoderTicksPerModRev);
-    resetIterations++;
+    reset = false;
   }
 }
 }

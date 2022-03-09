@@ -11,13 +11,11 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
-import frc.robot.subsystems.DriveSubsystem;
 
 import static frc.robot.Constants.AutoConstants.*;
 
 /** Add your docs here. */
 public class Trajectories {
-    private static DriveSubsystem m_drive = DriveSubsystem.get_instance();
     private static Trajectories _instance;
     public static Trajectories get_instance(){
         if(_instance == null){

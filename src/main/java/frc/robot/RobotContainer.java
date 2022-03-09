@@ -143,7 +143,6 @@ public class RobotContainer {
       m_operatorController.right_bumper.whenPressed(new IncrementShooterIndex());
       m_operatorController.left_stick_button.whenPressed(new ToggleAdjustmentStyle());
       m_operatorController.right_stick_button.whenPressed(new AcceptLimelightDistance());
-      // FIXME: bruh spagheti controller
 // ======== END IMPORT ======== //
   }
 
