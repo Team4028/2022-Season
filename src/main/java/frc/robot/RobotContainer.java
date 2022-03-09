@@ -4,7 +4,6 @@
 
 package frc.robot;
 
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
@@ -58,9 +57,6 @@ public class RobotContainer {
   private WaitCommand _wait;
   private static Trajectories _trajectories = Trajectories.get_instance();
 
-  private PIDController xController = new PIDController(AutoConstants.kPXController, 0, 0);
-  private PIDController yController = new PIDController(AutoConstants.kPYController, 0, 0);
-
   public static final RobotContainer get_instance(){
       if(_instance == null){
           _instance = new RobotContainer();
@@ -69,18 +65,13 @@ public class RobotContainer {
   }
 //   private final Shooter m_shooter = Shooter.getInstance();
 
-
-
-
   // Controller Setup
   private BeakXBoxController m_driverController = new BeakXBoxController(OIConstants.kDriverControllerPort);
   private BeakXBoxController m_operatorController = new BeakXBoxController(OIConstants.kOperatorControllerPort);
 
-  //---
-
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    AutoConstants.thetaController.enableContinuousInput(-Math.PI, Math.PI);
+    AutoConstants.AUTO_THETA_CONTROLLER.enableContinuousInput(-Math.PI, Math.PI);
     // Configure the button bindings
     _RunInfeedSingulatorMotors = new RunInfeedSingulatorMotors();
     _wait = new WaitCommand(1.0);
@@ -149,14 +140,18 @@ public class RobotContainer {
   public double getRightTrigger(){
     return m_driverController.getRightTrigger();
   }
+  /**
+   * @param traj Trajectory to follow
+   * @return New SwerveControllerCommand - commands DriveSubsystem to follow given trajectory, then stop
+   */
   private Command getSwerveControllerCommand(Trajectory traj){
     return new SwerveControllerCommand(
     traj,
     m_robotDrive::getPose,
     DriveConstants.kDriveKinematics,
-    xController,
-    yController,
-    AutoConstants.thetaController,
+    AutoConstants.AUTON_X_CONTROLLER,
+    AutoConstants.AUTON_Y_CONTROLLER,
+    AutoConstants.AUTO_THETA_CONTROLLER,
     m_robotDrive::setModuleStates,
     m_robotDrive)
     .andThen(new InstantCommand(() -> m_robotDrive.drive(0, 0, 0, true)));

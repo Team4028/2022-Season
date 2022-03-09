@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -24,7 +25,7 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-  //TODO: Better Organization of Constants class
+  //TODO: Better organization of Constants class
   public static final class DriveConstants {
 
     public static final boolean MK4I = true;
@@ -163,16 +164,16 @@ public final class Constants {
         new TrapezoidProfile.Constraints(
             kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
 
-    public static final ProfiledPIDController thetaController =
-    new ProfiledPIDController(
+    public static final ProfiledPIDController AUTO_THETA_CONTROLLER = new ProfiledPIDController(
         AutoConstants.kPThetaController, 0, 0, AutoConstants.kThetaControllerConstraints);
 
-    public static final TrajectoryConfig AutonTrajectoryConfig =
-    new TrajectoryConfig(
-            AutoConstants.kMaxSpeedMetersPerSecond,
-            AutoConstants.kMaxAccelerationMetersPerSecondSquared)
-        // Add kinematics to ensure max speed is actually obeyed
-        .setKinematics(DriveConstants.kDriveKinematics);
+    public static final TrajectoryConfig AutonTrajectoryConfig = new TrajectoryConfig(
+        AutoConstants.kMaxSpeedMetersPerSecond,
+        AutoConstants.kMaxAccelerationMetersPerSecondSquared)
+            // Add kinematics to ensure max speed is actually obeyed
+            .setKinematics(DriveConstants.kDriveKinematics);
+    public static final PIDController AUTON_X_CONTROLLER = new PIDController(AutoConstants.kPXController, 0, 0);
+    public static final PIDController AUTON_Y_CONTROLLER = new PIDController(AutoConstants.kPYController, 0, 0);
   }
 
   public static final class SubsystemConstants {

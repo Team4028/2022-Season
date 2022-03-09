@@ -34,8 +34,8 @@ public class SwerveModuleCANTwoElectricBoogaloo {
   private boolean reset = true;
 
   /**
-   * Constructs a SwerveModule.
-   *
+   * Constructs a SwerveModuleCANTwoElectricBoogaloo.
+   * Current best solution for MK4i Chassis
    * @param driveMotorChannel ID for the drive motor.
    * @param turningMotorChannel ID for the turning motor.
    */
@@ -138,7 +138,6 @@ public class SwerveModuleCANTwoElectricBoogaloo {
 
 
 public void setHeading(double _angle){
-  //double newAngleDemand = _angle;
   double currentSensorPosition = m_turningMotor.getSelectedSensorPosition() * 360.0 / i_integratedEncoderTicksPerModRev;
   double remainder = Math.IEEEremainder(currentSensorPosition, 360.0);
   double newAngleDemand = _angle + currentSensorPosition -remainder;

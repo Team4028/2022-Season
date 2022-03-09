@@ -18,6 +18,11 @@ public class RotateDrivetrainByAngle extends CommandBase {
   private ProfiledPIDController thetaController =
   new ProfiledPIDController(
       AutoConstants.kPThetaController, 0, 0, AutoConstants.kThetaControllerConstraints);
+  /**
+   * Rotates Drivetrain to given angle, either field or robot oriented
+   * @param rotation Demanded rotation
+   * @param fieldOriented If true, rotates to given rotation for field, if false, rotates rotation for robot
+   */
   public RotateDrivetrainByAngle(Rotation2d rotation, boolean fieldOriented) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(m_drive);

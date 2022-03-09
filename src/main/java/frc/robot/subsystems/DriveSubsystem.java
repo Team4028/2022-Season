@@ -39,19 +39,6 @@ import frc.robot.RobotContainer;
 import frc.robot.util;
 
 public class DriveSubsystem extends SubsystemBase {
-
-  // private static final double FRONT_LEFT_ANGLE_OFFSET = -Math.toRadians(324.4 + 180.0);//146.7);//0.0);//60.6);//60.7
-  // private static final double FRONT_RIGHT_ANGLE_OFFSET = -Math.toRadians(219.6 + 180.0);//93.0);//141.2);//139.1
-  // private static final double BACK_LEFT_ANGLE_OFFSET = -Math.toRadians(135.4 + 180.0);//314.6);//60.6);//60.7
-  // private static final double BACK_RIGHT_ANGLE_OFFSET = -Math.toRadians(252. + 180.0);//70.9);//60.3);//60.7
-
-
-  // private  SwerveModule m_frontLeft;
-  // private  SwerveModule m_frontRight;
-  // private  SwerveModule m_rearLeft;
-  // private  SwerveModule m_rearRight;
-
-
   private static final double i_FRONT_LEFT_ANGLE_OFFSET = Math.toRadians(154.6);
   private static final double i_FRONT_RIGHT_ANGLE_OFFSET = -Math.toRadians(169.3);
   private static final double i_BACK_LEFT_ANGLE_OFFSET = Math.toRadians(31.3);
@@ -97,36 +84,6 @@ public class DriveSubsystem extends SubsystemBase {
           i_kRearRightEncoderCan,
           i_BACK_RIGHT_ANGLE_OFFSET);
 
-    //      private final SwerveModule m_frontLeft =
-    //   new SwerveModule(
-    //       i_kFrontLeftDriveMotorPort,
-    //       i_kFrontLeftTurningMotorPort,
-    //       0,
-    //       i_FRONT_LEFT_ANGLE_OFFSET);
-
-    //  private final SwerveModule m_rearLeft =
-    //   new SwerveModule(
-    //       kRearLeftDriveMotorPort,
-    //       kRearLeftTurningMotorPort,
-    //       2,
-    //       BACK_LEFT_ANGLE_OFFSET);
-
-    //  private final SwerveModule m_frontRight =
-    //   new SwerveModule(
-    //       kFrontRightDriveMotorPort,
-    //       kFrontRightTurningMotorPort,
-    //       1,
-    //       FRONT_RIGHT_ANGLE_OFFSET);
-
-    // private final SwerveModule m_rearRight =
-    //   new SwerveModule(
-    //       kRearRightDriveMotorPort,
-    //       kRearRightTurningMotorPort,
-    //       3,
-    //       BACK_RIGHT_ANGLE_OFFSET);
-
-  // Robot swerve modules
-
   // The gyro sensor
   // private final Pigeon2 m_pigeon = new Pigeon2(1);
   private final Gyro m_gyro = DriveConstants.isNAVX? new AHRS(SPI.Port.kMXP): new WPI_Pigeon2(DriveConstants.pigeonCan);
@@ -137,8 +94,7 @@ public class DriveSubsystem extends SubsystemBase {
 
   /** Creates a new DriveSubsystem. */
   public DriveSubsystem() {
-    // m_pigeon.configFactoryDefault();
-    // m_pigeon.configDisableTemperatureCompensation(false);
+    zeroHeading();
   }
 
   @Override
@@ -200,7 +156,7 @@ public class DriveSubsystem extends SubsystemBase {
         holdAngleCounter++;
         holdAngle = m_gyro.getRotation2d().getRadians();
       }
-      rot = AutoConstants.thetaController.calculate(m_gyro.getRotation2d().getRadians(), holdAngle);
+      rot = AutoConstants.AUTO_THETA_CONTROLLER.calculate(m_gyro.getRotation2d().getRadians(), holdAngle);
     }
     var swerveModuleStates =
         kDriveKinematics.toSwerveModuleStates(

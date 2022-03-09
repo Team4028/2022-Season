@@ -12,6 +12,9 @@ import frc.robot.subsystems.DriveSubsystem;
 public class XDrive extends CommandBase {
   /** Creates a new XDrive. */
   private DriveSubsystem m_drive = DriveSubsystem.get_instance();
+  /**
+   * Turns Swerve Module Wheels to an "X" Position in order to resist pushing and hold position
+   */
   public XDrive() {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(m_drive);

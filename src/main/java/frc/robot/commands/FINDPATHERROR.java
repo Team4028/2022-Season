@@ -21,6 +21,10 @@ public class FINDPATHERROR extends CommandBase {
   private double totalMeasurements;
   private double totalError;
   private double initTime;
+  /**
+   * Outputs the average error of robot's actual position from planned trajectory position to SmartDashboard
+   * @param traj Trajectory being followed by the parallel SwerveControllerCommand
+   */
   public FINDPATHERROR(Trajectory traj) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.traj = traj;

@@ -14,7 +14,9 @@ import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 
 import static frc.robot.Constants.AutoConstants.*;
 
-/** Add your docs here. */
+/**
+ * Class containing all Auton Trajectories
+*/
 public class Trajectories {
     private static Trajectories _instance;
     public static Trajectories get_instance(){
@@ -23,7 +25,11 @@ public class Trajectories {
         }
         return _instance;
     }
-    public Trajectory getaTestArcTrajectory = TrajectoryGenerator.generateTrajectory(new Pose2d(),
+
+    /**
+     * Simple prototype trajectory for testing
+     */
+    public Trajectory getTestArcTrajectory = TrajectoryGenerator.generateTrajectory(new Pose2d(),
     List.of(
       new Translation2d(1,1),
       new Translation2d(2,-1)
@@ -31,6 +37,11 @@ public class Trajectories {
     new Pose2d(3, 0, Rotation2d.fromDegrees(180)),
     AutonTrajectoryConfig);
 
+    //TODO: Write actual paths
+    /**
+     * Trajectory for first part of prototype Auton sequence
+     * @return Trajectory that acquires first ball
+     */
     public Trajectory getTestCompFirstBall(){
         return TrajectoryGenerator.generateTrajectory(
         List.of(new Pose2d(0.0,0.0,new Rotation2d(0)),
@@ -38,11 +49,10 @@ public class Trajectories {
         AutonTrajectoryConfig);
     }
 
-    // public static final Trajectory TestCompTurnFirstShoot = TrajectoryGenerator.generateTrajectory(
-    // List.of(new Pose2d(1.19, -0.12, Rotation2d.fromDegrees(0)),
-    // new Pose2d(1.19, -0.12, Rotation2d.fromDegrees(180))),
-    // AutonTrajectoryConfig);
-
+    /**
+     * Trajectory for second part of prototype Auton sequence
+     * @return Trajectory that acquires second ball
+     */
     public Trajectory getTestCompSecondBall(){
         return TrajectoryGenerator.generateTrajectory(
         List.of(new Pose2d(1.19, -0.12, Rotation2d.fromDegrees(0)),
@@ -50,6 +60,11 @@ public class Trajectories {
         AutonTrajectoryConfig);
     }
 
+    //TODO: Investigate weird behavior at start of return path
+    /**
+     * Trajectory for third (and final) part of prototype Auton sequence
+     * @return Trajectory that returns robot to shooting range
+     */
     public Trajectory getTestCompReturnShoot(){
         return TrajectoryGenerator.generateTrajectory(
         List.of(new Pose2d(4.18, -2.13, Rotation2d.fromDegrees(10)),
