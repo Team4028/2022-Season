@@ -4,21 +4,7 @@
 
 package frc.robot.subsystems;
 
-import static frc.robot.Constants.DriveConstants.i_kFrontLeftDriveMotorPort;
-import static frc.robot.Constants.DriveConstants.i_kFrontLeftEncoderCan;
-import static frc.robot.Constants.DriveConstants.i_kFrontLeftTurningMotorPort;
-import static frc.robot.Constants.DriveConstants.i_kFrontRightDriveMotorPort;
-import static frc.robot.Constants.DriveConstants.i_kFrontRightEncoderCan;
-import static frc.robot.Constants.DriveConstants.i_kFrontRightTurningMotorPort;
-import static frc.robot.Constants.DriveConstants.i_kRearLeftDriveMotorPort;
-import static frc.robot.Constants.DriveConstants.i_kRearLeftEncoderCan;
-import static frc.robot.Constants.DriveConstants.i_kRearLeftTurningMotorPort;
-import static frc.robot.Constants.DriveConstants.i_kRearRightDriveMotorPort;
-import static frc.robot.Constants.DriveConstants.i_kRearRightEncoderCan;
-import static frc.robot.Constants.DriveConstants.i_kRearRightTurningMotorPort;
-import static frc.robot.Constants.DriveConstants.kDriveKinematics;
-import static frc.robot.Constants.DriveConstants.kGyroReversed;
-import static frc.robot.Constants.DriveConstants.kMaxSpeedMetersPerSecond;
+import static frc.robot.Constants.DriveConstants.*;
 
 import com.ctre.phoenix.sensors.WPI_Pigeon2;
 
@@ -38,13 +24,13 @@ import frc.robot.util;
 
 public class DriveSubsystem extends SubsystemBase {
   private static final double i_FRONT_LEFT_ANGLE_OFFSET = Math.toRadians(154.6);
-  private static final double i_FRONT_RIGHT_ANGLE_OFFSET = -Math.toRadians(169.3);
+  private static final double i_FRONT_RIGHT_ANGLE_OFFSET = -Math.toRadians(169.3 - 5);
   private static final double i_BACK_LEFT_ANGLE_OFFSET = Math.toRadians(31.3);
   private static final double i_BACK_RIGHT_ANGLE_OFFSET = Math.toRadians(199.1);
 
   private int holdAngleCounter = 0;
   private double holdAngle;
-  private boolean enableHoldAngle;
+  private boolean enableHoldAngle = false;
 
   private static DriveSubsystem _instance;
   public static final DriveSubsystem get_instance(){
@@ -54,28 +40,28 @@ public class DriveSubsystem extends SubsystemBase {
     return _instance;
   }
 
-      private final SwerveModuleCANTwoElectricBoogaloo m_frontLeft =
+      public final SwerveModuleCANTwoElectricBoogaloo m_frontLeft =
       new SwerveModuleCANTwoElectricBoogaloo(
           i_kFrontLeftDriveMotorPort,
           i_kFrontLeftTurningMotorPort,
           i_kFrontLeftEncoderCan,
           i_FRONT_LEFT_ANGLE_OFFSET);
 
-     private final SwerveModuleCANTwoElectricBoogaloo m_rearLeft =
+     public final SwerveModuleCANTwoElectricBoogaloo m_rearLeft =
       new SwerveModuleCANTwoElectricBoogaloo(
           i_kRearLeftDriveMotorPort,
           i_kRearLeftTurningMotorPort,
           i_kRearLeftEncoderCan,
           i_BACK_LEFT_ANGLE_OFFSET);
 
-     private final SwerveModuleCANTwoElectricBoogaloo m_frontRight =
+     public final SwerveModuleCANTwoElectricBoogaloo m_frontRight =
       new SwerveModuleCANTwoElectricBoogaloo(
           i_kFrontRightDriveMotorPort,
           i_kFrontRightTurningMotorPort,
           i_kFrontRightEncoderCan,
           i_FRONT_RIGHT_ANGLE_OFFSET);
 
-    private final SwerveModuleCANTwoElectricBoogaloo m_rearRight =
+    public final SwerveModuleCANTwoElectricBoogaloo m_rearRight =
       new SwerveModuleCANTwoElectricBoogaloo(
           i_kRearRightDriveMotorPort,
           i_kRearRightTurningMotorPort,
@@ -104,7 +90,7 @@ public class DriveSubsystem extends SubsystemBase {
         m_rearLeft.getState(),
         m_frontRight.getState(),
         m_rearRight.getState());
-
+    //TODO: Organized, comprehensive data for whole Drivetrain
     SmartDashboard.putNumber("X (Feet)", util.metersToFeet(m_odometry.getPoseMeters().getX()));
     SmartDashboard.putNumber("Y (Feet)", util.metersToFeet(m_odometry.getPoseMeters().getY()));
     SmartDashboard.putNumber("X (Metres)", m_odometry.getPoseMeters().getX());
@@ -114,6 +100,7 @@ public class DriveSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("FR Angle", m_frontRight.getState().angle.getDegrees());
     SmartDashboard.putNumber("RL Angle", m_rearLeft.getState().angle.getDegrees());
     SmartDashboard.putNumber("RR Angle", m_rearRight.getState().angle.getDegrees());
+    SmartDashboard.putBoolean("Hold Angle", enableHoldAngle);
   }
 
   /**
@@ -149,12 +136,12 @@ public class DriveSubsystem extends SubsystemBase {
     xSpeed *= speedScale * DriveConstants.i_kMaxSpeedMetersPerSecond;
     ySpeed *= speedScale * DriveConstants.i_kMaxSpeedMetersPerSecond;
     rot *= speedScale * DriveConstants.i_kMaxSpeedMetersPerSecond;
-    if (rot == 0){
-      if (holdAngleCounter < 1 && enableHoldAngle){
+    if (rot == 0 && enableHoldAngle){
+      if (holdAngleCounter < 1){
         holdAngleCounter++;
         holdAngle = m_gyro.getRotation2d().getRadians();
       }
-      rot = AutoConstants.AUTON_THETA_CONTROLLER.calculate(m_gyro.getRotation2d().getRadians(), holdAngle);
+      rot = -AutoConstants.AUTON_THETA_CONTROLLER.calculate(m_gyro.getRotation2d().getRadians(), holdAngle);
     }
     var swerveModuleStates =
         kDriveKinematics.toSwerveModuleStates(

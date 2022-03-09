@@ -7,6 +7,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.subsystems.DriveSubsystem;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -17,6 +18,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
   private RobotContainer m_robotContainer;
+  private int testtimer = 0;
 
 
   /**
@@ -39,6 +41,29 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+    if(testtimer < 201){
+      testtimer++;
+    }
+    if (testtimer == 50){
+      System.out.println("we are worse 1");
+      DriveSubsystem.get_instance().m_frontLeft.configDriveMotor();
+      DriveSubsystem.get_instance().m_frontLeft.configTurningMotor();
+    }
+    if (testtimer == 100){
+      System.out.println("we are worse 2");
+      DriveSubsystem.get_instance().m_frontRight.configDriveMotor();
+      DriveSubsystem.get_instance().m_frontRight.configTurningMotor();
+    }
+    if (testtimer == 150){
+      System.out.println("we are worse 3");
+      DriveSubsystem.get_instance().m_rearLeft.configDriveMotor();
+      DriveSubsystem.get_instance().m_rearLeft.configTurningMotor();
+    }
+    if (testtimer == 200){
+      System.out.println("we are worse 4");
+      DriveSubsystem.get_instance().m_rearRight.configDriveMotor();
+      DriveSubsystem.get_instance().m_rearRight.configTurningMotor();
+    }
     // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
     // commands, running already-scheduled commands, removing finished or interrupted commands,
     // and running subsystem periodic() methods.  This must be called from the robot's periodic

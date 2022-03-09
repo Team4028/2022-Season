@@ -7,7 +7,6 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -18,8 +17,6 @@ public class Infeed extends SubsystemBase {
   /** Creates a new SingulatorAndInfeed. */
   private TalonSRX _infeedMotor;
   private CANSparkMax _singulatorMotor;
-  private CANSparkMax _neoLeft;
-  private CANSparkMax _neoRight;
   private static Infeed _instance = new Infeed();
   public static Infeed get_instance() {
    return _instance;
@@ -27,13 +24,6 @@ public class Infeed extends SubsystemBase {
   public Infeed() {
     _infeedMotor = new TalonSRX(SubsystemConstants.INFEED_MOTOR_ID);
     _singulatorMotor = new CANSparkMax(SubsystemConstants.SINGULATOR_MOTOR_ID, MotorType.kBrushless);
-    _neoLeft = new CANSparkMax(SubsystemConstants.INFEED_LEFT_NEO_ID, MotorType.kBrushless);
-    _neoRight = new CANSparkMax(SubsystemConstants.INFEED_RIGHT_NEO_ID, MotorType.kBrushless);
-    _neoRight.follow(_neoLeft, true);
-    _neoLeft.setSmartCurrentLimit(20);
-    _neoRight.setSmartCurrentLimit(20);
-    _neoLeft.setIdleMode(IdleMode.kBrake);
-    _neoRight.setIdleMode(IdleMode.kBrake);
  
   }
   public void runInfeedSingulatorMotors(double mult){
@@ -45,16 +35,6 @@ public class Infeed extends SubsystemBase {
   public void stopInfeedSingulatorMotors(){
     _infeedMotor.set(ControlMode.PercentOutput, 0);
     _singulatorMotor.set(0);
-  }
-
-  public void liftInfeed(){
-    _neoLeft.set(VBusConstants.kInfeedUp);
-  }
-  public void downInfeed(){
-    _neoLeft.set(VBusConstants.kInfeedDown);
-  }
-  public void holdInfeed(){
-    _neoLeft.set(0.0);
   }
 
   @Override

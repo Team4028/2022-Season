@@ -48,12 +48,12 @@ public class Shooter extends SubsystemBase {
 
     _l = Limelight.getInstance();
 
-    _front.configFactoryDefault();
-    _back.configFactoryDefault();
-    _kicker.configFactoryDefault();
+    // _front.configFactoryDefault();
+    // _back.configFactoryDefault();
+    // _kicker.configFactoryDefault();
 
     _angle.restoreFactoryDefaults();
-    _angle.setSmartCurrentLimit(20);
+    _angle.setSmartCurrentLimit(10);
     
     _angleEnc = _angle.getEncoder();
     // TODO: setting position using amperage
@@ -106,6 +106,10 @@ public class Shooter extends SubsystemBase {
 
   public void kick() {
     _kicker.set(ControlMode.PercentOutput, VBusConstants.kKicker);
+  }
+
+  public void testSpinAngleMotor(){
+    _angle.set(-0.1);
   }
 
   public void stopKicker() {
@@ -161,7 +165,7 @@ public class Shooter extends SubsystemBase {
     }
     accept = !accept;
     SmartDashboard.putString("Accept Limelight Mode", (accept ? "Accept Limelight" : "Reset to Default"));
-    // TODO: better naming
+    // .3
   }
 
   public static Shooter getInstance() {
@@ -172,5 +176,6 @@ public class Shooter extends SubsystemBase {
   public void periodic() {
     update();
     // This method will be called once per scheduler run
+    //System.out.println(_angle.getOutputCurrent());
   }
 }
