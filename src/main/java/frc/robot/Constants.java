@@ -29,7 +29,6 @@ public final class Constants {
   public static final class DriveConstants {
 
     public static final boolean MK4I = true;
-    public static final boolean isNAVX = false;
     public static final double BASE_SPEED_SCALE = 0.25;
 
     public static final int kFrontLeftDriveMotorPort = 1;
@@ -69,14 +68,8 @@ public final class Constants {
         new Translation2d(-kWheelBase / 2, kTrackWidth / 2),
         new Translation2d(-kWheelBase / 2, -kTrackWidth / 2));
 
-    public static final boolean kGyroReversed = false; // true for mk2 chassis
+    public static final boolean kGyroReversed = false;
 
-    // These are example values only - DO NOT USE THESE FOR YOUR OWN ROBOT!
-    // These characterization values MUST be determined either experimentally or
-    // theoretically
-    // for *your* robot's drive.
-    // The SysId tool provides a convenient method for obtaining these values for
-    // your robot.
     public static final double ksVolts = 0.798;
     public static final double kvVoltSecondsPerMeter = 2.35;
     public static final double kaVoltSecondsSquaredPerMeter = 0.30;
@@ -155,22 +148,21 @@ public final class Constants {
     public static final double kPXController = 2.0;
     public static final double kPYController = kPXController;
     public static final double kPThetaController = 3.5;
-    public static final double kMaxAngularSpeedRadiansPerSecond = kMaxSpeedMetersPerSecond /
+    public static final double MAX_ANGULAR_SPEED_RADIANS_PER_SECOND = kMaxSpeedMetersPerSecond /
         Math.hypot(DriveConstants.kTrackWidth / 2.0, DriveConstants.kWheelBase / 2.0);
-    public static final double kMaxAngularSpeedRadiansPerSecondSquared = kMaxAngularSpeedRadiansPerSecond;
+    public static final double MAX_ANGULAR_SPEED_RADIANS_PER_SECOND_SQUARED = MAX_ANGULAR_SPEED_RADIANS_PER_SECOND;
 
     // Constraint for the motion profilied robot angle controller
     public static final TrapezoidProfile.Constraints kThetaControllerConstraints =
         new TrapezoidProfile.Constraints(
-            kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
+            MAX_ANGULAR_SPEED_RADIANS_PER_SECOND, MAX_ANGULAR_SPEED_RADIANS_PER_SECOND_SQUARED);
 
-    public static final ProfiledPIDController AUTO_THETA_CONTROLLER = new ProfiledPIDController(
+    public static final ProfiledPIDController AUTON_THETA_CONTROLLER = new ProfiledPIDController(
         AutoConstants.kPThetaController, 0, 0, AutoConstants.kThetaControllerConstraints);
 
     public static final TrajectoryConfig AutonTrajectoryConfig = new TrajectoryConfig(
         AutoConstants.kMaxSpeedMetersPerSecond,
         AutoConstants.kMaxAccelerationMetersPerSecondSquared)
-            // Add kinematics to ensure max speed is actually obeyed
             .setKinematics(DriveConstants.kDriveKinematics);
     public static final PIDController AUTON_X_CONTROLLER = new PIDController(AutoConstants.kPXController, 0, 0);
     public static final PIDController AUTON_Y_CONTROLLER = new PIDController(AutoConstants.kPYController, 0, 0);

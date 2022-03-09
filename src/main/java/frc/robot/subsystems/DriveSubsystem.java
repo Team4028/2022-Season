@@ -21,7 +21,6 @@ import static frc.robot.Constants.DriveConstants.kGyroReversed;
 import static frc.robot.Constants.DriveConstants.kMaxSpeedMetersPerSecond;
 
 import com.ctre.phoenix.sensors.WPI_Pigeon2;
-import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -29,7 +28,6 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -86,7 +84,7 @@ public class DriveSubsystem extends SubsystemBase {
 
   // The gyro sensor
   // private final Pigeon2 m_pigeon = new Pigeon2(1);
-  private final Gyro m_gyro = DriveConstants.isNAVX? new AHRS(SPI.Port.kMXP): new WPI_Pigeon2(DriveConstants.pigeonCan);
+  private final Gyro m_gyro = new WPI_Pigeon2(DriveConstants.pigeonCan);
 
   // Odometry class for tracking robot pose
   SwerveDriveOdometry m_odometry =
@@ -156,7 +154,7 @@ public class DriveSubsystem extends SubsystemBase {
         holdAngleCounter++;
         holdAngle = m_gyro.getRotation2d().getRadians();
       }
-      rot = AutoConstants.AUTO_THETA_CONTROLLER.calculate(m_gyro.getRotation2d().getRadians(), holdAngle);
+      rot = AutoConstants.AUTON_THETA_CONTROLLER.calculate(m_gyro.getRotation2d().getRadians(), holdAngle);
     }
     var swerveModuleStates =
         kDriveKinematics.toSwerveModuleStates(

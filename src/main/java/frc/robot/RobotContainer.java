@@ -71,7 +71,7 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    AutoConstants.AUTO_THETA_CONTROLLER.enableContinuousInput(-Math.PI, Math.PI);
+    AutoConstants.AUTON_THETA_CONTROLLER.enableContinuousInput(-Math.PI, Math.PI);
     // Configure the button bindings
     _RunInfeedSingulatorMotors = new RunInfeedSingulatorMotors();
     _wait = new WaitCommand(1.0);
@@ -151,7 +151,7 @@ public class RobotContainer {
     DriveConstants.kDriveKinematics,
     AutoConstants.AUTON_X_CONTROLLER,
     AutoConstants.AUTON_Y_CONTROLLER,
-    AutoConstants.AUTO_THETA_CONTROLLER,
+    AutoConstants.AUTON_THETA_CONTROLLER,
     m_robotDrive::setModuleStates,
     m_robotDrive)
     .andThen(new InstantCommand(() -> m_robotDrive.drive(0, 0, 0, true)));
