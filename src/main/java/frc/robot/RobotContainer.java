@@ -114,8 +114,8 @@ public class RobotContainer {
       m_operatorController.right_bumper.whenPressed(new IncrementShooterIndex());
       m_operatorController.left_stick_button.whenPressed(new ToggleAdjustmentStyle());
       m_operatorController.right_stick_button.whenPressed(new AcceptLimelightDistance());
-      m_driverController.y.whenActive(new RunCommand(() -> Shooter.getInstance().runShooterMotorsVbus(0.37), Shooter.getInstance()));
-      m_driverController.y.whenReleased(new RunCommand(() -> Shooter.getInstance().runShooterMotorsVbus(0.0), Shooter.getInstance()));
+      m_driverController.y.whenActive(new RunCommand(() -> Shooter.getInstance().runShooterMotorsVbus(), Shooter.getInstance()));
+      m_driverController.y.whenReleased(new RunCommand(() -> Shooter.getInstance().stop(), Shooter.getInstance()));
       m_driverController.back.whenPressed(new InstantCommand(() -> Infeed.get_instance().toggleInfeedUp()));
 // ======== BELOW IMPORTED FROM MK4 CHASSIS ========
       /*m_driverController.left_bumper.whenPressed(new InstantCommand(() -> 

@@ -242,5 +242,9 @@ public final class Constants {
       public static double kD = 0.002;
       public static double kMax = 17000;
     }
+
+    public static final class Angle {
+      public static double kP = 0.1;
+    }
   }
 }

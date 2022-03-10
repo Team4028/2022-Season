@@ -10,6 +10,8 @@ import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxPIDController;
+import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -30,11 +32,12 @@ public class Shooter extends SubsystemBase {
 
   private CANSparkMax _angle;
   private RelativeEncoder _angleEnc;
+  private SparkMaxPIDController _anglePid;
   
   private Limelight _l;
   private ShooterTable _st = ShooterTable.getPrimaryTable();
   double limelightDistance, shooterIndex = IndexConstants.kIndexDefault;
-  boolean fineAdjustment = false, accept = true;
+  boolean fineAdjustment = false, accept = true, currentReached = false;
 
   private static Shooter _instance = new Shooter();
 
@@ -44,6 +47,7 @@ public class Shooter extends SubsystemBase {
     _kicker = new TalonFX(SubsystemConstants.KICKER_MOTOR_ID);
 
     _angle = new CANSparkMax(SubsystemConstants.ANGLE_MOTOR_ID, MotorType.kBrushless);
+    _angle.setInverted(true);
 
     _back.setInverted(false);
     _front.setInverted(false);
@@ -62,6 +66,9 @@ public class Shooter extends SubsystemBase {
     // TODO: setting position using amperage
     _angleEnc.setPosition(0.);
     // _angle.getOutputCurrent();
+
+    _anglePid = _angle.getPIDController();
+    _anglePid.setP(PIDConstants.Angle.kP);
 
     _front.config_kF(0, PIDConstants.Front.kF);
     _front.config_kP(0, PIDConstants.Front.kP);
@@ -96,24 +103,39 @@ public class Shooter extends SubsystemBase {
     SmartDashboard.putNumber(key, val);
   }
 
-  public void runShooterMotorsVbus(double vbus){
-    _front.set(ControlMode.PercentOutput, vbus);
-    _back.set(ControlMode.PercentOutput, vbus);
-    _kicker.set(ControlMode.PercentOutput, vbus);
+  public void zeroAngleMotor() {
+    if (!currentReached) {
+      _angle.set(0.1);
+      System.out.println(_angle.getOutputCurrent());
+      if (_angle.getOutputCurrent() > 5.) {
+        currentReached = true;
+        _angleEnc.setPosition(0.);
+      }
+    } else {
+      _angle.set(0.);
+    }
+  }
+
+  public boolean isCurrentReached() {
+    return currentReached;
+  }
+
+  public void runShooterMotorsVbus(){
+    ShooterTableEntry entry = ShooterTable.getPrimaryTable().CalcShooterValues(shooterIndex);
+    _front.set(ControlMode.PercentOutput, entry.ShooterFrontRPM / 100.);
+    _back.set(ControlMode.PercentOutput, entry.ShooterBackRPM / 100.);
+    _kicker.set(ControlMode.PercentOutput, VBusConstants.kKicker);
+
+    _anglePid.setReference(entry.ActuatorVal, ControlType.kPosition);
   }
 
   public void runShooterMotors() {
     ShooterTableEntry entry = ShooterTable.getPrimaryTable().CalcShooterValues(shooterIndex);
     _front.set(ControlMode.Velocity, util.toFalconVelocity(entry.ShooterFrontRPM));
     _back.set(ControlMode.Velocity, util.toFalconVelocity(entry.ShooterBackRPM));
+    _kicker.set(ControlMode.PercentOutput, VBusConstants.kKicker);
 
-    if (_angleEnc.getPosition() - EncoderConstants.kAngleThreshold > entry.ActuatorVal) {
-      _angle.set(-VBusConstants.kAngle);
-    } else if (_angleEnc.getPosition() + EncoderConstants.kAngleThreshold < entry.ActuatorVal) {
-      _angle.set(VBusConstants.kAngle);
-    } else {
-      _angle.set(0.);
-    }
+    _anglePid.setReference(entry.ActuatorVal, ControlType.kPosition);
   }
 
   public void kick() {
