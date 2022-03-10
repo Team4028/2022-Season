@@ -37,7 +37,7 @@ public class Shooter extends SubsystemBase {
   private Limelight _l;
   private ShooterTable _st = ShooterTable.getPrimaryTable();
   double limelightDistance, shooterIndex = IndexConstants.kIndexDefault;
-  boolean fineAdjustment = false, accept = true, currentReached = false;
+  boolean fineAdjustment = false, accept = true;
 
   private static Shooter _instance = new Shooter();
 
@@ -47,7 +47,6 @@ public class Shooter extends SubsystemBase {
     _kicker = new TalonFX(SubsystemConstants.KICKER_MOTOR_ID);
 
     _angle = new CANSparkMax(SubsystemConstants.ANGLE_MOTOR_ID, MotorType.kBrushless);
-    _angle.setInverted(true);
 
     _back.setInverted(false);
     _front.setInverted(false);
@@ -61,11 +60,10 @@ public class Shooter extends SubsystemBase {
 
     _angle.restoreFactoryDefaults();
     _angle.setSmartCurrentLimit(10);
+    _angle.setInverted(true);
     
     _angleEnc = _angle.getEncoder();
-    // TODO: setting position using amperage
     _angleEnc.setPosition(0.);
-    // _angle.getOutputCurrent();
 
     _anglePid = _angle.getPIDController();
     _anglePid.setP(PIDConstants.Angle.kP);
@@ -87,14 +85,14 @@ public class Shooter extends SubsystemBase {
     put("Shooter Index", shooterIndex);
     ShooterTableEntry e = _st.CalcShooterValues(shooterIndex);
     SmartDashboard.putString("Shot", e.Description);
-    // put("Shot Front RPM", e.ShooterFrontRPM);
-    // put("Shot Back RPM", e.ShooterBackRPM);
-    // put("Actuator Value", e.ActuatorVal);
+    put("Shot Front RPM", e.ShooterFrontRPM);
+    put("Shot Back RPM", e.ShooterBackRPM);
+    put("Actuator Value", e.ActuatorVal);
 
-    // put("Front Error", util.toFalconRPM(_front.getClosedLoopError()));
-    // put("Back Error", util.toFalconRPM(_back.getClosedLoopError()));
-    // put("Front Motor RPM", util.toFalconRPM(_front.getSelectedSensorVelocity()));
-    // put("Back Motor RPM", util.toFalconRPM(_back.getSelectedSensorVelocity()));
+    put("Front Error", util.toFalconRPM(_front.getClosedLoopError()));
+    put("Back Error", util.toFalconRPM(_back.getClosedLoopError()));
+    put("Front Motor RPM", util.toFalconRPM(_front.getSelectedSensorVelocity()));
+    put("Back Motor RPM", util.toFalconRPM(_back.getSelectedSensorVelocity()));
 
     getLimelightDistance();
   }
@@ -103,28 +101,13 @@ public class Shooter extends SubsystemBase {
     SmartDashboard.putNumber(key, val);
   }
 
-  public void zeroAngleMotor() {
-    if (!currentReached) {
-      _angle.set(0.1);
-      System.out.println(_angle.getOutputCurrent());
-      if (_angle.getOutputCurrent() > 5.) {
-        currentReached = true;
-        _angleEnc.setPosition(0.);
-      }
-    } else {
-      _angle.set(0.);
-    }
-  }
-
-  public boolean isCurrentReached() {
-    return currentReached;
-  }
-
   public void runShooterMotorsVbus(){
     ShooterTableEntry entry = ShooterTable.getPrimaryTable().CalcShooterValues(shooterIndex);
     _front.set(ControlMode.PercentOutput, entry.ShooterFrontRPM / 100.);
     _back.set(ControlMode.PercentOutput, entry.ShooterBackRPM / 100.);
     _kicker.set(ControlMode.PercentOutput, VBusConstants.kKicker);
+
+    System.out.println(entry.ActuatorVal);
 
     _anglePid.setReference(entry.ActuatorVal, ControlType.kPosition);
   }
@@ -134,6 +117,8 @@ public class Shooter extends SubsystemBase {
     _front.set(ControlMode.Velocity, util.toFalconVelocity(entry.ShooterFrontRPM));
     _back.set(ControlMode.Velocity, util.toFalconVelocity(entry.ShooterBackRPM));
     _kicker.set(ControlMode.PercentOutput, VBusConstants.kKicker);
+
+    System.out.println(entry.ActuatorVal);
 
     _anglePid.setReference(entry.ActuatorVal, ControlType.kPosition);
   }

@@ -220,6 +220,7 @@ public class DriveSubsystem extends SubsystemBase {
 
   /** Zeroes the heading of the robot. */
   public void zeroHeading() {
+    m_gyro.reset();
     resetOdometry(new Pose2d(m_odometry.getPoseMeters().getX(), m_odometry.getPoseMeters().getY(), getGyroRotation2d()));
   }
 
