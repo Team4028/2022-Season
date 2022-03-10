@@ -6,6 +6,8 @@ package frc.robot.subsystems;
 
 import static frc.robot.Constants.DriveConstants.*;
 
+import com.ctre.phoenix.sensors.Pigeon2;
+import com.ctre.phoenix.sensors.PigeonIMU_StatusFrame;
 import com.ctre.phoenix.sensors.WPI_Pigeon2;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -31,6 +33,8 @@ public class DriveSubsystem extends SubsystemBase {
   private int holdAngleCounter = 0;
   private double holdAngle;
   private boolean enableHoldAngle = false;
+  private int testTimer = 0;
+  private int configWaitCycles = 50;
 
   private static DriveSubsystem _instance;
   public static final DriveSubsystem get_instance(){
@@ -70,26 +74,29 @@ public class DriveSubsystem extends SubsystemBase {
 
   // The gyro sensor
   // private final Pigeon2 m_pigeon = new Pigeon2(1);
-  private final Gyro m_gyro = new WPI_Pigeon2(DriveConstants.pigeonCan);
+  private final WPI_Pigeon2 m_gyro = new WPI_Pigeon2(DriveConstants.pigeonCan);
 
   // Odometry class for tracking robot pose
   SwerveDriveOdometry m_odometry =
-      new SwerveDriveOdometry(kDriveKinematics, m_gyro.getRotation2d());
+      new SwerveDriveOdometry(kDriveKinematics, getGyroRotation2d());
 
   /** Creates a new DriveSubsystem. */
   public DriveSubsystem() {
     zeroHeading();
+    //m_gyro.setStatusFramePeriod(PigeonIMU_StatusFrame.CondStatus_1_General, 50);
   }
 
   @Override
   public void periodic() {
     // Update the odometry in the periodic block
+    if (testTimer > 8 * configWaitCycles){
     m_odometry.update(
-        m_gyro.getRotation2d(),
+        getGyroRotation2d(),
         m_frontLeft.getState(),
         m_rearLeft.getState(),
         m_frontRight.getState(),
         m_rearRight.getState());
+    }
     //TODO: Organized, comprehensive data for whole Drivetrain
     SmartDashboard.putNumber("X (Feet)", util.metersToFeet(m_odometry.getPoseMeters().getX()));
     SmartDashboard.putNumber("Y (Feet)", util.metersToFeet(m_odometry.getPoseMeters().getY()));
@@ -101,6 +108,39 @@ public class DriveSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("RL Angle", m_rearLeft.getState().angle.getDegrees());
     SmartDashboard.putNumber("RR Angle", m_rearRight.getState().angle.getDegrees());
     SmartDashboard.putBoolean("Hold Angle", enableHoldAngle);
+
+    if(testTimer < 8 * configWaitCycles + 1){
+      testTimer++;
+    }
+    if (testTimer == configWaitCycles){
+      System.out.println("we are worse 1");
+      DriveSubsystem.get_instance().m_frontLeft.configDriveMotor();
+      
+    }else if (testTimer == 2 * configWaitCycles){
+      System.out.println("we are worse 2");
+      DriveSubsystem.get_instance().m_frontRight.configDriveMotor();
+      
+    }else if (testTimer == 3 * configWaitCycles){
+      System.out.println("we are worse 3");
+      DriveSubsystem.get_instance().m_rearLeft.configDriveMotor();
+
+    }else if (testTimer == 4 * configWaitCycles){
+      System.out.println("we are worse 4");
+      DriveSubsystem.get_instance().m_rearRight.configDriveMotor();
+      
+    } else if(testTimer == 5 * configWaitCycles){
+      DriveSubsystem.get_instance().m_frontLeft.configTurningMotor();
+      // m_frontLeft.configStatusFramePeriods();
+    }else if(testTimer == 6 * configWaitCycles){
+      DriveSubsystem.get_instance().m_rearRight.configTurningMotor();
+      // m_frontRight.configStatusFramePeriods();
+    }else if(testTimer == 7 * configWaitCycles){
+      DriveSubsystem.get_instance().m_frontRight.configTurningMotor();
+      // m_rearLeft.configStatusFramePeriods();
+    }else if(testTimer == 8 * configWaitCycles){
+      DriveSubsystem.get_instance().m_rearLeft.configTurningMotor();
+      // m_rearRight.configStatusFramePeriods();
+    }
   }
 
   /**
@@ -111,6 +151,9 @@ public class DriveSubsystem extends SubsystemBase {
   public Pose2d getPose() {
     return m_odometry.getPoseMeters();
   }
+  public Rotation2d getGyroRotation2d(){
+    return m_gyro.getRotation2d();
+  }
 
   /**
    * Resets the odometry to the specified pose.
@@ -118,7 +161,7 @@ public class DriveSubsystem extends SubsystemBase {
    * @param pose The pose to which to set the odometry.
    */
   public void resetOdometry(Pose2d pose) {
-    m_odometry.resetPosition(pose, m_gyro.getRotation2d());
+    m_odometry.resetPosition(pose, getGyroRotation2d());
     holdAngleCounter = 0;
   }
 
@@ -139,14 +182,14 @@ public class DriveSubsystem extends SubsystemBase {
     if (rot == 0 && enableHoldAngle){
       if (holdAngleCounter < 1){
         holdAngleCounter++;
-        holdAngle = m_gyro.getRotation2d().getRadians();
+        holdAngle = getGyroRotation2d().getRadians();
       }
-      rot = -AutoConstants.AUTON_THETA_CONTROLLER.calculate(m_gyro.getRotation2d().getRadians(), holdAngle);
+      rot = -AutoConstants.AUTON_THETA_CONTROLLER.calculate(getGyroRotation2d().getRadians(), holdAngle);
     }
     var swerveModuleStates =
         kDriveKinematics.toSwerveModuleStates(
             fieldRelative
-                ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, Rotation2d.fromDegrees((kGyroReversed ? -1.0 : 1.0) * m_gyro.getRotation2d().getDegrees()))
+                ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, Rotation2d.fromDegrees((kGyroReversed ? -1.0 : 1.0) * getGyroRotation2d().getDegrees()))
                 : new ChassisSpeeds(xSpeed, ySpeed, rot));
     SwerveDriveKinematics.desaturateWheelSpeeds(
         swerveModuleStates, DriveConstants.i_kMaxSpeedMetersPerSecond);
@@ -177,8 +220,7 @@ public class DriveSubsystem extends SubsystemBase {
 
   /** Zeroes the heading of the robot. */
   public void zeroHeading() {
-    m_gyro.reset();
-    resetOdometry(new Pose2d(0, 0, m_gyro.getRotation2d()));
+    resetOdometry(new Pose2d(m_odometry.getPoseMeters().getX(), m_odometry.getPoseMeters().getY(), getGyroRotation2d()));
   }
 
   public void setEnableHoldAngle(boolean enable){
@@ -194,15 +236,7 @@ public class DriveSubsystem extends SubsystemBase {
    * @return the robot's heading in degrees, from -180 to 180
    */
   public double getHeading() {
-    return m_gyro.getRotation2d().getDegrees();
+    return getGyroRotation2d().getDegrees();
   }
 
-  /**
-   * Returns the turn rate of the robot.
-   *
-   * @return The turn rate of the robot, in degrees per second
-   */
-  public double getTurnRate() {
-    return m_gyro.getRate() * (kGyroReversed ? -1.0 : 1.0);
-  }
 }

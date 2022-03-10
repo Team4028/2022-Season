@@ -18,7 +18,6 @@ import frc.robot.subsystems.DriveSubsystem;
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
   private RobotContainer m_robotContainer;
-  private int testtimer = 0;
 
 
   /**
@@ -29,7 +28,7 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
-    m_robotContainer = new RobotContainer();
+    m_robotContainer = RobotContainer.get_instance();
   }
 
   /**
@@ -41,29 +40,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    if(testtimer < 201){
-      testtimer++;
-    }
-    if (testtimer == 50){
-      System.out.println("we are worse 1");
-      DriveSubsystem.get_instance().m_frontLeft.configDriveMotor();
-      DriveSubsystem.get_instance().m_frontLeft.configTurningMotor();
-    }
-    if (testtimer == 100){
-      System.out.println("we are worse 2");
-      DriveSubsystem.get_instance().m_frontRight.configDriveMotor();
-      DriveSubsystem.get_instance().m_frontRight.configTurningMotor();
-    }
-    if (testtimer == 150){
-      System.out.println("we are worse 3");
-      DriveSubsystem.get_instance().m_rearLeft.configDriveMotor();
-      DriveSubsystem.get_instance().m_rearLeft.configTurningMotor();
-    }
-    if (testtimer == 200){
-      System.out.println("we are worse 4");
-      DriveSubsystem.get_instance().m_rearRight.configDriveMotor();
-      DriveSubsystem.get_instance().m_rearRight.configTurningMotor();
-    }
     // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
     // commands, running already-scheduled commands, removing finished or interrupted commands,
     // and running subsystem periodic() methods.  This must be called from the robot's periodic

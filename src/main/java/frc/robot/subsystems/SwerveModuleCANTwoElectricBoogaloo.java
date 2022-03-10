@@ -13,9 +13,7 @@ import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
-import com.ctre.phoenix.sensors.AbsoluteSensorRange;
 import com.ctre.phoenix.sensors.CANCoderStatusFrame;
-import com.ctre.phoenix.sensors.SensorInitializationStrategy;
 import com.ctre.phoenix.sensors.WPI_CANCoder;
 
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -84,18 +82,29 @@ public class SwerveModuleCANTwoElectricBoogaloo {
     }
 
   public void configTurningMotor(){
-    m_turningMotor.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, CAN_TIMEOUT_MS);
-    m_turningMotor.configSelectedFeedbackCoefficient(1.0);
+    //m_turningMotor.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, CAN_TIMEOUT_MS);
+    //m_turningMotor.configSelectedFeedbackCoefficient(1.0);
     m_turningMotor.setNeutralMode(NeutralMode.Brake);
     m_turningMotor.setInverted(true);
-    m_turningMotor.selectProfileSlot(0, 0);
-    m_turningMotor.setSelectedSensorPosition(m_turningEncoder.getAbsolutePosition() / 360.0 * i_integratedEncoderTicksPerModRev);
+    //m_turningMotor.selectProfileSlot(0, 0);
+    // m_turningMotor.setSelectedSensorPosition(m_turningEncoder.getAbsolutePosition() / 360.0 * i_integratedEncoderTicksPerModRev);
     m_turningMotor.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 20, 25, 1.0));
   }
   public void configDriveMotor(){
     m_driveMotor.setNeutralMode(NeutralMode.Brake);
     m_driveMotor.configVoltageCompSaturation(i_kNominalVoltage);
     m_driveMotor.enableVoltageCompensation(true);
+  }
+  public void configStatusFramePeriods(){
+    m_turningEncoder.setStatusFramePeriod(CANCoderStatusFrame.SensorData, 250);
+    m_turningMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_1_General, 20);
+    m_turningMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 20);
+    m_turningMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_4_AinTempVbat, 255);
+    m_driveMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_6_Misc, 255);
+    m_driveMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_1_General, 20);
+    m_driveMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 20);
+    m_driveMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_4_AinTempVbat, 255);
+    m_driveMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_6_Misc, 255);
   }
 
   /**

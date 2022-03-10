@@ -20,7 +20,6 @@ public class RunInfeedSingulatorMotors extends CommandBase {
   @Override
   public void initialize() {
     infeed.runInfeedSingulatorMotors(1);
-    System.out.println("init");
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -33,7 +32,6 @@ public class RunInfeedSingulatorMotors extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     infeed.stopInfeedSingulatorMotors();
-    System.out.println("stop");
   }
 
   // Returns true when the command should end.

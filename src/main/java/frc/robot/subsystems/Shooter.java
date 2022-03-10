@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.InvertType;
+import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
@@ -69,6 +70,9 @@ public class Shooter extends SubsystemBase {
     _back.config_kF(0, PIDConstants.Back.kF);
     _back.config_kP(0, PIDConstants.Back.kP);
     _back.config_kD(0, PIDConstants.Back.kD);
+
+    _front.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 250);
+    _back.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 250);
   }
 
   public void update() {
@@ -76,14 +80,14 @@ public class Shooter extends SubsystemBase {
     put("Shooter Index", shooterIndex);
     ShooterTableEntry e = _st.CalcShooterValues(shooterIndex);
     SmartDashboard.putString("Shot", e.Description);
-    put("Shot Front RPM", e.ShooterFrontRPM);
-    put("Shot Back RPM", e.ShooterBackRPM);
-    put("Actuator Value", e.ActuatorVal);
+    // put("Shot Front RPM", e.ShooterFrontRPM);
+    // put("Shot Back RPM", e.ShooterBackRPM);
+    // put("Actuator Value", e.ActuatorVal);
 
-    put("Front Error", util.toFalconRPM(_front.getClosedLoopError()));
-    put("Back Error", util.toFalconRPM(_back.getClosedLoopError()));
-    put("Front Motor RPM", util.toFalconRPM(_front.getSelectedSensorVelocity()));
-    put("Back Motor RPM", util.toFalconRPM(_back.getSelectedSensorVelocity()));
+    // put("Front Error", util.toFalconRPM(_front.getClosedLoopError()));
+    // put("Back Error", util.toFalconRPM(_back.getClosedLoopError()));
+    // put("Front Motor RPM", util.toFalconRPM(_front.getSelectedSensorVelocity()));
+    // put("Back Motor RPM", util.toFalconRPM(_back.getSelectedSensorVelocity()));
 
     getLimelightDistance();
   }
