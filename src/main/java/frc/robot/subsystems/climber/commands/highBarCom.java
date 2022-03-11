@@ -5,14 +5,14 @@
 package frc.robot.subsystems.climber.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.climber.subsystems.climb;
+import frc.robot.subsystems.climber.subsystems.traversalBarClimb;
 
 public class highBarCom extends CommandBase {
-  private climb _sub;
+  private traversalBarClimb _sub;
   /** Creates a new highBar. */
   public highBarCom() {
-    _sub = new climb();
-    climb.get_instance();
+    _sub = new traversalBarClimb();
+    traversalBarClimb.get_instance();
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
