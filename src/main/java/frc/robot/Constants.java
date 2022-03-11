@@ -178,8 +178,8 @@ public final class Constants {
     public static final int SINGULATOR_MOTOR_ID = 14;
     public static final int CONVEYOR_MOTOR_ID = 15;
     public static final int KICKER_MOTOR_ID = 16;
-    public static final int SHOOTER_FRONT_MOTOR_ID = 17;
-    public static final int SHOOTER_BACK_MOTOR_ID = 18;
+    public static final int SHOOTER_FRONT_MOTOR_ID = 18;
+    public static final int SHOOTER_BACK_MOTOR_ID = 17;
     public static final int ANGLE_MOTOR_ID = 16;
 
     // public static final int CLIMB_MOTOR_ID = 19; // this might need two motors
@@ -200,6 +200,10 @@ public final class Constants {
 
     public static final double kKicker = 0.5;
     public static final double kAngle = 0.1;
+
+    public static final double kShooterFrontDefault = 0.35;
+    public static final double kShooterBackDefault = 0.55;
+    public static final double kShooterHoodAngleRotDefault = 14.0;
   }
 
   public static final class EncoderConstants {

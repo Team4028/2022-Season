@@ -48,6 +48,9 @@ public class Limelight extends SubsystemBase {
   public void setLedMode(double mode){
     ledMode.forceSetDouble(mode);
   }
+  public void toggleLedMode(){
+    ledMode.forceSetDouble(Math.abs(ledMode.getDouble(0.0) - 1.0));
+  }
   public double getArea() {
     return ta.getDouble(0);
   }
@@ -89,9 +92,9 @@ public class Limelight extends SubsystemBase {
 
       double heightDelta = LimelightConstants.kTargetHeight -
                            LimelightConstants.kMountHeight;
-      double goalAngle = (LimelightConstants.kMountAngle + getX()) *
+      double goalAngle = (LimelightConstants.kMountAngle + getY()) *
                          (3.14159 / 180.);
-      double yawComp = getY() * (3.14159 / 180.);
+      double yawComp = getX() * (3.14159 / 180.);
 
 
       double dist = heightDelta /

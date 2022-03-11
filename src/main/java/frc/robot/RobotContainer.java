@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import java.time.Instant;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
@@ -12,6 +14,7 @@ import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.AcceptLimelightDistance;
+import frc.robot.commands.AutonTimer;
 import frc.robot.commands.DecrementShooterIndex;
 import frc.robot.commands.IncrementShooterIndex;
 import frc.robot.subsystems.DriveSubsystem;
@@ -20,6 +23,7 @@ import frc.robot.commands.ReverseInfeedAndConveyor;
 import frc.robot.commands.RunConveyorOneBall;
 import frc.robot.commands.RunConveyorTwoBall;
 import frc.robot.commands.RunShooterMotors;
+import frc.robot.commands.RunShooterMotorsVbus;
 import frc.robot.commands.ToggleAdjustmentStyle;
 import frc.robot.commands.ToggleCamera;
 import frc.robot.commands.RotateDrivetrainByAngle;
@@ -33,6 +37,7 @@ import frc.robot.commands.RotateDrivetrainByAngle;
 import frc.robot.commands.RunInfeedSingulatorMotors;
 import frc.robot.commands.XDrive;
 import frc.robot.subsystems.Infeed;
+import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Shooter;
 import frc.robot.utilities.Trajectories;
 // import frc.robot.subsystems.Shooter;
@@ -58,19 +63,21 @@ public class RobotContainer {
   private WaitCommand _wait;
   private static Trajectories _trajectories = Trajectories.get_instance();
 
-  public static final RobotContainer get_instance(){
-      if(_instance == null){
-          _instance = new RobotContainer();
-      }
-      return _instance;
+  public static final RobotContainer get_instance() {
+    if (_instance == null) {
+      _instance = new RobotContainer();
+    }
+    return _instance;
   }
-//   private final Shooter m_shooter = Shooter.getInstance();
+  // private final Shooter m_shooter = Shooter.getInstance();
 
   // Controller Setup
   private BeakXBoxController m_driverController = new BeakXBoxController(OIConstants.kDriverControllerPort);
   private BeakXBoxController m_operatorController = new BeakXBoxController(OIConstants.kOperatorControllerPort);
 
-  /** The container for the robot. Contains subsystems, OI devices, and commands. */
+  /**
+   * The container for the robot. Contains subsystems, OI devices, and commands.
+   */
   public RobotContainer() {
     AutoConstants.AUTON_THETA_CONTROLLER.enableContinuousInput(-Math.PI, Math.PI);
     // Configure the button bindings
@@ -79,87 +86,73 @@ public class RobotContainer {
     _wait.addRequirements(m_singulatorAndInfeed);
     configureButtonBindings();
 
-
     // Configure default commands
     m_robotDrive.setDefaultCommand(
         // The left stick controls translation of the robot.
         // Turning is controlled by the X axis of the right stick.
         new RunCommand(
-            () ->
-                m_robotDrive.drive(
-                    util.deadband(-m_driverController.getLeftYAxis()),
-                    util.deadband(-m_driverController.getLeftXAxis()),
-                    util.deadband(-m_driverController.getRightXAxis()),
-                    true),
+            () -> m_robotDrive.drive(
+                util.deadband(-m_driverController.getLeftYAxis()),
+                util.deadband(-m_driverController.getLeftXAxis()),
+                util.deadband(-m_driverController.getRightXAxis()),
+                true),
             m_robotDrive));
   }
 
   /**
-   * Use this method to define your button->command mappings. Buttons can be created by
-   * instantiating a {@link edu.wpi.first.wpilibj.GenericHID} or one of its subclasses ({@link
-   * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then calling passing it to a
+   * Use this method to define your button->command mappings. Buttons can be
+   * created by
+   * instantiating a {@link edu.wpi.first.wpilibj.GenericHID} or one of its
+   * subclasses ({@link
+   * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then calling
+   * passing it to a
    * {@link JoystickButton}.
    */
   private void configureButtonBindings() {
-      m_driverController.start.whenPressed(new InstantCommand(() -> m_robotDrive.zeroHeading()));
-      m_driverController.a.whenPressed(new ToggleCamera());
-      m_driverController.b.whenPressed(new InstantCommand(() -> Shooter.getInstance().testSpinAngleMotor()));
-      m_operatorController.y.toggleWhenPressed(new RunInfeedSingulatorMotors());
-      m_operatorController.b.whenPressed(new RunConveyorOneBall());
-      m_operatorController.x.toggleWhenPressed(new RunShooterMotors());
-      m_operatorController.a.whenPressed(new RunConveyorTwoBall());
-      m_operatorController.start.toggleWhenPressed(new RunConveyor());
-      m_operatorController.back.toggleWhenPressed(new ReverseInfeedAndConveyor());
-      m_operatorController.left_bumper.whenPressed(new DecrementShooterIndex());
-      m_operatorController.right_bumper.whenPressed(new IncrementShooterIndex());
-      m_operatorController.left_stick_button.whenPressed(new ToggleAdjustmentStyle());
-      m_operatorController.right_stick_button.whenPressed(new AcceptLimelightDistance());
-      m_driverController.y.whenActive(new RunCommand(() -> Shooter.getInstance().runShooterMotorsVbus(), Shooter.getInstance()));
-      m_driverController.y.whenReleased(new RunCommand(() -> Shooter.getInstance().stop(), Shooter.getInstance()));
-      m_driverController.back.whenPressed(new InstantCommand(() -> Infeed.get_instance().toggleInfeedUp()));
-// ======== BELOW IMPORTED FROM MK4 CHASSIS ========
-      /*m_driverController.left_bumper.whenPressed(new InstantCommand(() -> 
-      m_singulatorAndInfeed.liftInfeed())
-      .andThen(new WaitCommand(2.0))
-      .andThen(new InstantCommand(() -> m_singulatorAndInfeed.holdInfeed())));
-      m_driverController.right_bumper.whenPressed(new InstantCommand(() -> 
-      m_singulatorAndInfeed.downInfeed())
-      .andThen(new WaitCommand(1.0))
-      .andThen(new InstantCommand(() -> m_singulatorAndInfeed.holdInfeed())));*/
-      //m_driverController.y.toggleWhenPressed(_RunInfeedSingulatorMotors);
-      m_driverController.x.toggleWhenPressed(new XDrive());
-      m_driverController.left_bumper.whenPressed(new InstantCommand(() -> m_robotDrive.toggleEnableHoldAngle()));
-      // m_operatorController.y.toggleWhenPressed(_RunInfeedSingulatorMotors);
-      // m_operatorController.b.whenPressed(new RunConveyor());
-      // m_operatorController.x.toggleWhenPressed(new RunShooterMotors());
-      // m_operatorController.a.whenPressed(new RunConveyorTwoBall());
-      // m_operatorController.start.toggleWhenPressed(new RunConveyorOneBall());
-      // m_operatorController.back.toggleWhenPressed(new ReverseInfeedAndConveyor());
-      // m_operatorController.left_bumper.whenPressed(new DecrementShooterIndex());
-      // m_operatorController.right_bumper.whenPressed(new IncrementShooterIndex());
-      // m_operatorController.left_stick_button.whenPressed(new ToggleAdjustmentStyle());
-      // m_operatorController.right_stick_button.whenPressed(new AcceptLimelightDistance());
-// ======== END IMPORT ======== //
+    // ========= OPERATOR CONTROLLER =======
+    m_operatorController.y.toggleWhenPressed(new RunInfeedSingulatorMotors());
+    m_operatorController.b.whenPressed(new RunConveyorOneBall());
+    m_operatorController.x.toggleWhenPressed(new RunShooterMotorsVbus());
+    m_operatorController.a.whenPressed(new RunConveyorTwoBall());
+    m_operatorController.start.toggleWhenPressed(new RunConveyor());
+    m_operatorController.back.toggleWhenPressed(new ReverseInfeedAndConveyor());
+    m_operatorController.left_bumper.whenPressed(new DecrementShooterIndex());
+    m_operatorController.right_bumper.whenPressed(new IncrementShooterIndex());
+    m_operatorController.left_stick_button.whenPressed(new ToggleAdjustmentStyle());
+    m_operatorController.right_stick_button.whenPressed(new AcceptLimelightDistance());
+    //====================================
+
+    // ======== DRIVER CONTROLLER ========
+    m_driverController.back.whenPressed(new InstantCommand(() -> Infeed.get_instance().toggleInfeedUp()));
+    m_driverController.right_stick_button
+        .whenPressed(new RotateDrivetrainByAngle(Rotation2d.fromDegrees(-Limelight.getInstance().getX()), false));
+    m_driverController.x.toggleWhenPressed(new XDrive());
+    m_driverController.left_bumper.whenPressed(new InstantCommand(() -> m_robotDrive.toggleEnableHoldAngle()));
+    m_driverController.start.whenPressed(new InstantCommand(() -> m_robotDrive.zeroHeading()));
+    m_driverController.a.whenPressed(new InstantCommand(() -> Limelight.getInstance().toggleLedMode()));
+    // ===================================
   }
 
-  public double getRightTrigger(){
+  public double getRightTrigger() {
     return m_driverController.getRightTrigger();
   }
+
   /**
    * @param traj Trajectory to follow
-   * @return New SwerveControllerCommand - commands DriveSubsystem to follow given trajectory, then stop
+   * @return New SwerveControllerCommand - commands DriveSubsystem to follow given
+   *         trajectory, then stop
    */
-  private Command getSwerveControllerCommand(Trajectory traj){
+  private Command getSwerveControllerCommand(Trajectory traj) {
     return new SwerveControllerCommand(
-    traj,
-    m_robotDrive::getPose,
-    DriveConstants.kDriveKinematics,
-    AutoConstants.AUTON_X_CONTROLLER,
-    AutoConstants.AUTON_Y_CONTROLLER,
-    AutoConstants.AUTON_THETA_CONTROLLER,
-    m_robotDrive::setModuleStates,
-    m_robotDrive)
-    .andThen(new InstantCommand(() -> m_robotDrive.drive(0, 0, 0, true)));
+        traj,
+        m_robotDrive::getPose,
+        DriveConstants.kDriveKinematics,
+        AutoConstants.AUTON_X_CONTROLLER,
+        AutoConstants.AUTON_Y_CONTROLLER,
+        AutoConstants.AUTON_THETA_CONTROLLER,
+        m_robotDrive::setModuleStates,
+        m_robotDrive)
+            .andThen(new InstantCommand(() -> m_robotDrive.drive(0, 0, 0, true)));
   }
 
   /**
@@ -171,13 +164,16 @@ public class RobotContainer {
     // Create config for trajectory
     m_robotDrive.resetOdometry(new Pose2d(0, 0, new Rotation2d()));
     return getSwerveControllerCommand(_trajectories.getTestCompFirstBall())
-    .andThen(new RotateDrivetrainByAngle(Rotation2d.fromDegrees(180), true))
-    .andThen(new WaitCommand(2.0))
-    .andThen(getSwerveControllerCommand(_trajectories.getTestCompSecondBall()))
-    .andThen(new WaitCommand(1.5))
-    .andThen(getSwerveControllerCommand(_trajectories.getTestCompReturnShoot()))
-    .andThen(new WaitCommand(2.0))
-    .andThen(new InstantCommand(() -> System.out.println("AUTON FINISHED")));
+        .alongWith(new InstantCommand(() -> Infeed.get_instance().runInfeedSingulatorMotors(1.0)))
+        .andThen(new RotateDrivetrainByAngle(Rotation2d.fromDegrees(187), true))
+        .andThen(new RunShooterMotorsVbus().alongWith(new WaitCommand(0.25).andThen(new RunConveyor())).raceWith(new WaitCommand(1.25)))
+        .andThen(new InstantCommand(() -> Infeed.get_instance().stopInfeedSingulatorMotors()))
+        .deadlineWith(new AutonTimer());
+        // .andThen(getSwerveControllerCommand(_trajectories.getTestCompSecondBall()))
+        // .andThen(new WaitCommand(1.5))
+        // .andThen(getSwerveControllerCommand(_trajectories.getTestCompReturnShoot()))
+        // .andThen(new WaitCommand(2.0))
+        // .andThen(new InstantCommand(() -> System.out.println("AUTON FINISHED")));
   }
 
 }

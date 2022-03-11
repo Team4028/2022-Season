@@ -68,13 +68,18 @@ public class Shooter extends SubsystemBase {
     _anglePid = _angle.getPIDController();
     _anglePid.setP(PIDConstants.Angle.kP);
 
-    _front.config_kF(0, PIDConstants.Front.kF);
-    _front.config_kP(0, PIDConstants.Front.kP);
-    _front.config_kD(0, PIDConstants.Front.kD);
+    put("FrontVbus", VBusConstants.kShooterFrontDefault);
+    put("BackVbus", VBusConstants.kShooterBackDefault);
+    put("KickerVbus", VBusConstants.kKicker);
+    put("Hood Angle (rot)", VBusConstants.kShooterHoodAngleRotDefault);
 
-    _back.config_kF(0, PIDConstants.Back.kF);
-    _back.config_kP(0, PIDConstants.Back.kP);
-    _back.config_kD(0, PIDConstants.Back.kD);
+    // _front.config_kF(0, PIDConstants.Front.kF);
+    // _front.config_kP(0, PIDConstants.Front.kP);
+    // _front.config_kD(0, PIDConstants.Front.kD);
+
+    // _back.config_kF(0, PIDConstants.Back.kF);
+    // _back.config_kP(0, PIDConstants.Back.kP);
+    // _back.config_kD(0, PIDConstants.Back.kD);
 
     _front.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 250);
     _back.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 250);
@@ -89,10 +94,10 @@ public class Shooter extends SubsystemBase {
     put("Shot Back RPM", e.ShooterBackRPM);
     put("Actuator Value", e.ActuatorVal);
 
-    put("Front Error", util.toFalconRPM(_front.getClosedLoopError()));
-    put("Back Error", util.toFalconRPM(_back.getClosedLoopError()));
-    put("Front Motor RPM", util.toFalconRPM(_front.getSelectedSensorVelocity()));
-    put("Back Motor RPM", util.toFalconRPM(_back.getSelectedSensorVelocity()));
+    // put("Front Error", util.toFalconRPM(_front.getClosedLoopError()));
+    // put("Back Error", util.toFalconRPM(_back.getClosedLoopError()));
+    // put("Front Motor RPM", util.toFalconRPM(_front.getSelectedSensorVelocity()));
+    // put("Back Motor RPM", util.toFalconRPM(_back.getSelectedSensorVelocity()));
 
     getLimelightDistance();
   }
@@ -100,16 +105,23 @@ public class Shooter extends SubsystemBase {
   public void put(String key, double val) {
     SmartDashboard.putNumber(key, val);
   }
+  public double getNumber(String key, double defaultValue){
+    return SmartDashboard.getNumber(key, defaultValue);
+  }
 
   public void runShooterMotorsVbus(){
     ShooterTableEntry entry = ShooterTable.getPrimaryTable().CalcShooterValues(shooterIndex);
-    _front.set(ControlMode.PercentOutput, entry.ShooterFrontRPM / 100.);
-    _back.set(ControlMode.PercentOutput, entry.ShooterBackRPM / 100.);
-    _kicker.set(ControlMode.PercentOutput, VBusConstants.kKicker);
+    // _front.set(ControlMode.PercentOutput, entry.ShooterFrontRPM / 100.);
+    // _back.set(ControlMode.PercentOutput, entry.ShooterBackRPM / 100.);
+    // _kicker.set(ControlMode.PercentOutput, VBusConstants.kKicker);
+    _front.set(ControlMode.PercentOutput, SmartDashboard.getNumber("FrontVbus", VBusConstants.kShooterFrontDefault));
+    _back.set(ControlMode.PercentOutput, SmartDashboard.getNumber("BackVbus", VBusConstants.kShooterBackDefault));
+    _kicker.set(ControlMode.PercentOutput, SmartDashboard.getNumber("KickerVbus", VBusConstants.kKicker));
 
-    System.out.println(entry.ActuatorVal);
+    //System.out.println(entry.ActuatorVal);
 
-    _anglePid.setReference(entry.ActuatorVal, ControlType.kPosition);
+    // _anglePid.setReference(entry.ActuatorVal, ControlType.kPosition);
+    _anglePid.setReference(SmartDashboard.getNumber("Hood Angle (rot)", VBusConstants.kShooterHoodAngleRotDefault), ControlType.kPosition);
   }
 
   public void runShooterMotors() {
@@ -139,6 +151,7 @@ public class Shooter extends SubsystemBase {
     _front.set(ControlMode.PercentOutput, 0);
     _back.set(ControlMode.PercentOutput, 0);
     _kicker.set(ControlMode.PercentOutput, 0);
+    _angle.set(0.0);
   }
 
   public double index() {

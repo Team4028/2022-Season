@@ -29,11 +29,13 @@ public class RotateDrivetrainByAngle extends CommandBase {
     this.fieldRelative = fieldOriented;
     this.rotation = rotation;
 
+
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    thetaController.enableContinuousInput(-Math.PI, Math.PI);
     m_drive.drive(0, 0, thetaController.calculate(m_drive.getPose().getRotation().getRadians(),
     rotation.getRadians()), fieldRelative);
   }
@@ -54,6 +56,6 @@ public class RotateDrivetrainByAngle extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return rotation.minus(m_drive.getPose().getRotation()).getDegrees() < 1;
+    return Math.abs(rotation.minus(m_drive.getPose().getRotation()).getDegrees()) < 0.75;
   }
 }
