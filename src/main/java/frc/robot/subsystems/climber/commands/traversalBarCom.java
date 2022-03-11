@@ -5,27 +5,20 @@
 package frc.robot.subsystems.climber.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.climber.subsystems.climb;
 
-public class climbCom extends CommandBase {
-  private climb _sub;
-  /** Creates a new climbCom. */
-  public climbCom() {
-    _sub = new climb();
-    climb.get_instance();
+public class traversalBarCom extends CommandBase {
+  /** Creates a new traversalBarCom. */
+  public traversalBarCom() {
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {}
-  
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-    _sub.main();
-  }
+  public void execute() {}
 
   // Called once the command ends or is interrupted.
   @Override

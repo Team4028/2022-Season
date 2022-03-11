@@ -121,9 +121,6 @@ class extend1H extends State {
     getclassName();
     _i.resetEncoder();
     _i.setGrip(.7);
-
-
-
     
   }
 
@@ -131,10 +128,15 @@ class extend1H extends State {
     while (true) {
       System.out.println(_i.getEncoderPosition());
       if (_i.getEncoderPosition() > 20 ) {
-        _i.setGrip(0);
-        current = fire1H;
+        _i.setGripSol(true);
         return;
       }
+      if (_i.getEncoderPosition() > 100){
+        _i.setGrip(.0);
+        current = fire2H;
+        return;
+      }
+      
       if (!_i.isClosed()) {
         current = stop;
         return;
@@ -149,7 +151,7 @@ class extend1H extends State {
 
 }
 
-class fire1H extends State {
+/*  class fire1H extends State {
   void enter() {
     startTime = new Date().getTime();
     _i.setGripSol(true);
@@ -162,11 +164,11 @@ class fire1H extends State {
     while (true) {
       //System.out.println(_i.getEncoderPos());
       elapsedTime = new Date().getTime() - startTime;
-     /* if (_i.getEncoderPosition() < 60 ) {
+     if (_i.getEncoderPosition() < 60 ) {
         _i.setGrip(0);
         current = extend2H;
         return;
-      }*/
+      }
       if (!_i.isClosed()) {
         current = stop;
         return;
@@ -202,7 +204,7 @@ class extend2H extends State {
 
   }
 
-}
+} */
 
 class fire2H extends State {
   void enter() {
@@ -249,9 +251,15 @@ class retract2H extends State {
     while (true) {
       //System.out.println(_i.getEncoderPos());
       elapsedTime = new Date().getTime() - startTime;
+      if (_i.getEncoderPosition() > -10) {
+        _i.setTipSol(false);
+      }
+      if (_i.getEncoderPosition() > -20) {
+        _i.setTipSol(true);
+      }
       if (_i.getEncoderPosition() > -50) {
         _i.setGrip(0);
-        current = wait2H;
+        current = stop;
         return;
       }
       if (!_i.isClosed()) {
@@ -264,7 +272,7 @@ class retract2H extends State {
 
 }
 
-class wait2H extends State {
+/*class wait2H extends State {
   void enter() {
     startTime = new Date().getTime();
     _i.resetEncoder();
@@ -298,7 +306,7 @@ class wait2H extends State {
 
 }
 
-class retract3H extends State {
+/*class retract3H extends State {
   void enter() {
     startTime = new Date().getTime();
     _i.resetEncoder();
@@ -358,16 +366,13 @@ class wait3H extends State {
 
   }
 
-}
-class extend1T extends State {
+}*/
+/*class extend1T extends State {
   void enter() {
     startTime = new Date().getTime();
     getclassName();
     _i.resetEncoder();
     _i.setGrip(.7);
-
-
-
     
   }
 
@@ -375,10 +380,15 @@ class extend1T extends State {
     while (true) {
       System.out.println(_i.getEncoderPosition());
       if (_i.getEncoderPosition() > 20 ) {
-        _i.setGrip(0);
-        current = fire1H;
+        _i.setGripSol(true);
         return;
       }
+      if (_i.getEncoderPosition() > 100){
+        _i.setGrip(.0);
+        current = fire2T;
+        return;
+      }
+      
       if (!_i.isClosed()) {
         current = stop;
         return;
@@ -393,7 +403,7 @@ class extend1T extends State {
 
 }
 
-class fire1T extends State {
+/*  class fire1H extends State {
   void enter() {
     startTime = new Date().getTime();
     _i.setGripSol(true);
@@ -406,11 +416,11 @@ class fire1T extends State {
     while (true) {
       //System.out.println(_i.getEncoderPos());
       elapsedTime = new Date().getTime() - startTime;
-     /* if (_i.getEncoderPosition() < 60 ) {
+     if (_i.getEncoderPosition() < 60 ) {
         _i.setGrip(0);
         current = extend2H;
         return;
-      }*/
+      }
       if (!_i.isClosed()) {
         current = stop;
         return;
@@ -421,7 +431,7 @@ class fire1T extends State {
 
 }
 
-class extend2T extends State {
+class extend2H extends State {
   void enter() {
     startTime = new Date().getTime();
     _i.resetEncoder();
@@ -437,7 +447,7 @@ class extend2T extends State {
         _i.setGrip(0);
         current = fire2H;
         return;
-      }
+      } 
       if (!_i.isClosed()) {
         current = stop;
         return;
@@ -446,16 +456,16 @@ class extend2T extends State {
 
   }
 
-}
+} */
 
-class fire2T extends State {
+/*class fire2T extends State {
   void enter() {
 
     startTime = new Date().getTime();
     _i.resetEncoder();
     getclassName();
     _i.setGripSol(false);
-    current = retract2H;
+    current = retract2T;
   }
 
   void update() {
@@ -471,7 +481,7 @@ class fire2T extends State {
         
         return;
       }*/
-      if (!_i.isClosed()) {
+     /* if (!_i.isClosed()) {
         current = stop;
         return;
       }
@@ -481,11 +491,11 @@ class fire2T extends State {
 
 }
 
-class retract2T extends State {
+/*class retract2T extends State {
   void enter() {
     startTime = new Date().getTime();
     _i.resetEncoder();
-    _i.setGrip(-.7);
+    _i.setGrip(-7);
     getclassName();
   }
 
@@ -493,71 +503,15 @@ class retract2T extends State {
     while (true) {
       //System.out.println(_i.getEncoderPos());
       elapsedTime = new Date().getTime() - startTime;
+      if (_i.getEncoderPosition() > -10) {
+        _i.setTipSol(false);
+      }
+      if (_i.getEncoderPosition() > -20) {
+        _i.setTipSol(true);
+      }
       if (_i.getEncoderPosition() > -50) {
         _i.setGrip(0);
-        current = wait2H;
-        return;
-      }
-      if (!_i.isClosed()) {
-        current = stop;
-        return;
-      }
-    }
-
-  }
-
-}
-
-class wait2T extends State {
-  void enter() {
-    startTime = new Date().getTime();
-    _i.resetEncoder();
-    getclassName();
-    _i.setGrip(.25);
-
-  }
-
-  void update() {
-    while (true) {
-      elapsedTime = new Date().getTime() - startTime;
-     // System.out.println(_i.getEncoderPos());
-
-
-
-     // set until tippy is off of bar
-      if (_i.getEncoderPosition() > 15) {
-        _i.setGrip(0);
-        current = retract3H;
-        return;
-      }
-     
-  
-      if (!_i.isClosed()) {
-        current = stop;
-        return;
-      }
-    }
-
-  }
-
-}
-
-class retract3T extends State {
-  void enter() {
-    startTime = new Date().getTime();
-    _i.resetEncoder();
-    getclassName();
-    _i.setGrip(-.7);
-
-  }
-//sup
-  void update() {
-    while (true) {
-      //System.out.println(_i.getEncoderPos());
-      elapsedTime = new Date().getTime() - startTime;
-      if (_i.getEncoderPosition() > -50) {
-        _i.setGrip(0);
-        current = stop;
+        current = wait2T;
         return;
       }
       if (!_i.isClosed()) {
@@ -718,26 +672,26 @@ class stop extends State {
 
 
 
-public class climb {
+public class highBarClimb {
   public static void main() {
 
     State.retract1 = new retract1();
     State.extend1H = new extend1H();
-    State.fire1H = new fire1H();
-    State.extend2H = new extend2H();
+    //State.fire1H = new fire1H();
+    //State.extend2H = new extend2H();
     State.fire2H = new fire2H();
     State.retract2H = new retract2H();
     State.wait2H = new wait2H();
-    State.retract3H = new retract3H();
+    //State.retract3H = new retract3H();
     State.wait1 = new wait1();
     State.extend1H = new extend1T();
-    State.fire1H = new fire1T();
-    State.extend2H = new extend2T();
+    //State.fire1H = new fire1T();
+    //State.extend2H = new extend2T();
     State.fire2H = new fire2T();
     State.retract2H = new retract2T();
-    State.wait2H = new wait2T();
-    State.retract3H = new retract3T();
-    State.wait3H = new wait3H();
+    //State.wait2H = new wait2T();
+    //State.retract3H = new retract3T();
+    //State.wait3H = new wait3H();
     /*State.disengage1B = new disengage1B();
     State.pivot4B = new pivot4B();
     State.retract3A = new retract3A();
@@ -753,8 +707,8 @@ public class climb {
 
   }
   
-  public static climb get_instance() {
-    climb _instance = new climb();
+  public static highBarClimb get_instance() {
+    highBarClimb _instance = new highBarClimb();
     return _instance;
   }
 }
