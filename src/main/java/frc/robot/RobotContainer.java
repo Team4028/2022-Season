@@ -125,7 +125,7 @@ public class RobotContainer {
     // ======== DRIVER CONTROLLER ========
     m_driverController.back.whenPressed(new InstantCommand(() -> Infeed.get_instance().toggleInfeedUp()));
     m_driverController.right_stick_button
-        .whenPressed(new RotateDrivetrainByAngle(Rotation2d.fromDegrees(-Limelight.getInstance().getX()), false));
+        .whenPressed(new RotateDrivetrainByAngle(Rotation2d.fromDegrees(Limelight.getInstance().getX()), false));
     m_driverController.x.toggleWhenPressed(new XDrive());
     m_driverController.left_bumper.whenPressed(new InstantCommand(() -> m_robotDrive.toggleEnableHoldAngle()));
     m_driverController.start.whenPressed(new InstantCommand(() -> m_robotDrive.zeroHeading()));

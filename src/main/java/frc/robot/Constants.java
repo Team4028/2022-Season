@@ -178,8 +178,8 @@ public final class Constants {
     public static final int SINGULATOR_MOTOR_ID = 14;
     public static final int CONVEYOR_MOTOR_ID = 15;
     public static final int KICKER_MOTOR_ID = 16;
-    public static final int SHOOTER_FRONT_MOTOR_ID = 18;
-    public static final int SHOOTER_BACK_MOTOR_ID = 17;
+    public static final int SHOOTER_FRONT_MOTOR_ID = 17;
+    public static final int SHOOTER_BACK_MOTOR_ID = 18;
     public static final int ANGLE_MOTOR_ID = 16;
 
     // public static final int CLIMB_MOTOR_ID = 19; // this might need two motors
@@ -204,6 +204,7 @@ public final class Constants {
     public static final double kShooterFrontDefault = 0.35;
     public static final double kShooterBackDefault = 0.55;
     public static final double kShooterHoodAngleRotDefault = 14.0;
+    // 17 IS ABSOLUTE MAX
   }
 
   public static final class EncoderConstants {
@@ -222,8 +223,8 @@ public final class Constants {
 
   public static final class LimelightConstants {
     public static final double kTargetHeight = 88.; // 104 when
-    public static final double kMountHeight = 21.; // Might be something like 22. Hard to measure
-    public static final double kMountAngle = 44.25; // is 50 meta?
+    public static final double kMountHeight = 21.5; // Might be something like 22. Hard to measure
+    public static final double kMountAngle = 46; // is 50 meta?
   }
 
   public static final class VisionConstants {
@@ -237,14 +238,14 @@ public final class Constants {
       public static double kF = 0.05;
       public static double kP = 0.4;
       public static double kD = 0.002;
-      public static double kMax = 20400;
+      public static double kMax = 22000; //20400;
     }
 
     public static final class Back {
       public static double kF = 0.055;
       public static double kP = 0.1;
       public static double kD = 0.002;
-      public static double kMax = 17000;
+      public static double kMax = 22000; // 17000;
     }
 
     public static final class Angle {

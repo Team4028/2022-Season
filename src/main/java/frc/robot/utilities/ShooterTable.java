@@ -80,11 +80,14 @@ public class ShooterTable {
                 int shooterFrontCalculatedRPM = steBelow.ShooterFrontRPM + (int) (Math.round(shooterFrontAdj));
                 double shooterBackAdj = scaleFactor * (steAbove.ShooterBackRPM - steBelow.ShooterBackRPM);
                 int shooterBackCalculatedRPM = steBelow.ShooterBackRPM + (int) (Math.round(shooterBackAdj));
+                double kickerAdj = scaleFactor * (steAbove.KickerRPM - steBelow.KickerRPM);
+                int kickerCalculatedRPM = steBelow.KickerRPM + (int) (Math.round(kickerAdj));
+
             
                 double actuatorValue = steBelow.ActuatorVal + (scaleFactor * (steAbove.ActuatorVal - steBelow.ActuatorVal));
 
                 // build the return object
-                ste = new ShooterTableEntry(_indexCounter++, distanceInFeet, shooterFrontCalculatedRPM, shooterBackCalculatedRPM, actuatorValue, "Calculated value", false);
+                ste = new ShooterTableEntry(_indexCounter++, distanceInFeet, shooterFrontCalculatedRPM, shooterBackCalculatedRPM, kickerCalculatedRPM, actuatorValue, "Calculated value", false);
             }
         } else if (steAbove != null) {
             ste = steAbove;
@@ -184,13 +187,8 @@ public class ShooterTable {
         // primarytable.add(new ShooterTableEntry(_indexCounter++, 14., 40, 60, 0., "index 14", false));
         // primarytable.add(new ShooterTableEntry(_indexCounter++, 19., 40, 80, 0., "index 19", false)); 
 
-        primarytable.add(new ShooterTableEntry(_indexCounter++, 12.5, 35, 55, 14., "index 12.5", false));
-        //primarytable.add(new ShooterTableEntry(_indexCounter++, 11., 1250, 1120, 60., "Index 11", false));
-        
-
-        // 0.38 VBus + 1.4 ratio = close shot?
-
-
+        //primarytable.add(new ShooterTableEntry(_indexCounter++, 9, 25, 45, 50, 17., "index 9", false));
+        primarytable.add(new ShooterTableEntry(_indexCounter++, 12.5, 35, 55, 40, 14., "index 12.5", false));
         
 		return primarytable;
     }

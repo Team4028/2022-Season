@@ -111,17 +111,17 @@ public class Shooter extends SubsystemBase {
 
   public void runShooterMotorsVbus(){
     ShooterTableEntry entry = ShooterTable.getPrimaryTable().CalcShooterValues(shooterIndex);
-    // _front.set(ControlMode.PercentOutput, entry.ShooterFrontRPM / 100.);
-    // _back.set(ControlMode.PercentOutput, entry.ShooterBackRPM / 100.);
-    // _kicker.set(ControlMode.PercentOutput, VBusConstants.kKicker);
-    _front.set(ControlMode.PercentOutput, SmartDashboard.getNumber("FrontVbus", VBusConstants.kShooterFrontDefault));
-    _back.set(ControlMode.PercentOutput, SmartDashboard.getNumber("BackVbus", VBusConstants.kShooterBackDefault));
-    _kicker.set(ControlMode.PercentOutput, SmartDashboard.getNumber("KickerVbus", VBusConstants.kKicker));
+    _front.set(ControlMode.PercentOutput, entry.ShooterFrontRPM / 100.);
+    _back.set(ControlMode.PercentOutput, entry.ShooterBackRPM / 100.);
+    _kicker.set(ControlMode.PercentOutput, entry.KickerRPM / 100.);
+    // _front.set(ControlMode.PercentOutput, SmartDashboard.getNumber("FrontVbus", VBusConstants.kShooterFrontDefault));
+    // _back.set(ControlMode.PercentOutput, SmartDashboard.getNumber("BackVbus", VBusConstants.kShooterBackDefault));
+    // _kicker.set(ControlMode.PercentOutput, SmartDashboard.getNumber("KickerVbus", VBusConstants.kKicker));
 
     //System.out.println(entry.ActuatorVal);
 
-    // _anglePid.setReference(entry.ActuatorVal, ControlType.kPosition);
-    _anglePid.setReference(SmartDashboard.getNumber("Hood Angle (rot)", VBusConstants.kShooterHoodAngleRotDefault), ControlType.kPosition);
+    _anglePid.setReference(entry.ActuatorVal, ControlType.kPosition);
+    //_anglePid.setReference(SmartDashboard.getNumber("Hood Angle (rot)", VBusConstants.kShooterHoodAngleRotDefault), ControlType.kPosition);
   }
 
   public void runShooterMotors() {

@@ -49,7 +49,7 @@ public class Limelight extends SubsystemBase {
     ledMode.forceSetDouble(mode);
   }
   public void toggleLedMode(){
-    ledMode.forceSetDouble(Math.abs(ledMode.getDouble(0.0) - 1.0));
+    setLedMode(Math.abs(ledMode.getDouble(0.0) - 1.0));
   }
   public double getArea() {
     return ta.getDouble(0);
