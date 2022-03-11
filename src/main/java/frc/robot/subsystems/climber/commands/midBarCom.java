@@ -5,10 +5,14 @@
 package frc.robot.subsystems.climber.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.climber.subsystems.midBarClimb;
 
 public class midBarCom extends CommandBase {
   /** Creates a new midBar. */
+  private midBarClimb _sub;
   public midBarCom() {
+    _sub = new midBarClimb();
+    midBarClimb.get_instance();
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -18,7 +22,9 @@ public class midBarCom extends CommandBase {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    _sub.main();
+  }
 
   // Called once the command ends or is interrupted.
   @Override

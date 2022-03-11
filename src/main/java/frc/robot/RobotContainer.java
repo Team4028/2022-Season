@@ -28,6 +28,9 @@ import frc.robot.commands.RunShooterMotors;
 import frc.robot.commands.ToggleAdjustmentStyle;
 import frc.robot.commands.RunInfeedSingulatorMotors;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.climber.commands.highBarCom;
+import frc.robot.subsystems.climber.commands.midBarCom;
+import frc.robot.subsystems.climber.commands.traversalBarCom;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -79,6 +82,9 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
       m_driverController.start.whenPressed(new InstantCommand(() -> m_robotDrive.zeroHeading()));
+      m_driverController.a.whenPressed(new midBarCom());
+      m_driverController.b.whenPressed(new highBarCom());
+      m_driverController.y.whenPressed(new traversalBarCom());
       m_operatorController.y.toggleWhenPressed(new RunInfeedSingulatorMotors());
       m_operatorController.b.whenPressed(new RunConveyorOneBall());
       m_operatorController.x.toggleWhenPressed(new RunShooterMotors());
