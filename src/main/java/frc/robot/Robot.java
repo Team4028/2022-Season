@@ -41,7 +41,7 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
     _s = Shooter.getInstance();
-    
+    m_robotContainer.configureButtonBindings();
     
   }
 

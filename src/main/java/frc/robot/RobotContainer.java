@@ -80,7 +80,7 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then calling passing it to a
    * {@link JoystickButton}.
    */
-  private void configureButtonBindings() {
+  public void configureButtonBindings() {
       m_driverController.start.whenPressed(new InstantCommand(() -> m_robotDrive.zeroHeading()));
       m_driverController.a.whenPressed(new midBarCom());
       m_driverController.b.whenPressed(new highBarCom());
