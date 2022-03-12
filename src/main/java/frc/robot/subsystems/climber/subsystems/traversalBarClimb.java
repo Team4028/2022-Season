@@ -253,11 +253,21 @@ class retract2H extends State {
       elapsedTime = new Date().getTime() - startTime;
       if (_i.getEncoderPosition() > -10) {
         _i.setTipSol(false);
+        return;
       }
       if (_i.getEncoderPosition() > -20) {
         _i.setTipSol(true);
+        return;
       }
       if (_i.getEncoderPosition() > -50) {
+        _i.setGrip(.25);
+        return;
+      }
+      if (_i.getEncoderPosition() > -40) {
+        _i.setGrip(-.7);
+        return;
+      }
+      if (_i.getEncoderPosition() > -49) {
         _i.setGrip(0);
         current = wait2H;
         return;
@@ -505,13 +515,23 @@ class retract2T extends State {
       elapsedTime = new Date().getTime() - startTime;
       if (_i.getEncoderPosition() > -10) {
         _i.setTipSol(false);
+        return;
       }
       if (_i.getEncoderPosition() > -20) {
         _i.setTipSol(true);
+        return;
       }
       if (_i.getEncoderPosition() > -50) {
+        _i.setGrip(.25);
+        return;
+      }
+      if (_i.getEncoderPosition() > -40) {
+        _i.setGrip(-.7);
+        return;
+      }
+      if (_i.getEncoderPosition() > -49) {
         _i.setGrip(0);
-        current = wait2T;
+        current = stop;
         return;
       }
       if (!_i.isClosed()) {
