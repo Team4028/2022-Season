@@ -79,10 +79,10 @@ class retract1 extends State {
         current = wait1;
         return;
       }
-      if (!_i.isClosed()) {
+     /* if (!_i.isClosed()) {
         current = stop;
         return;
-      }
+      }*/
     }
 
   }
@@ -106,10 +106,10 @@ class wait1 extends State {
         current = extend1H;
         return;
       }
-      if (!_i.isClosed()) {
+     /* if (!_i.isClosed()) {
         current = stop;
         return;
-      }
+      }*/
     }
 
   }
@@ -137,10 +137,10 @@ class extend1H extends State {
         return;
       }
       
-      if (!_i.isClosed()) {
+     /* if (!_i.isClosed()) {
         current = stop;
         return;
-      }
+      }*/
 
 
 
@@ -231,10 +231,10 @@ class fire2H extends State {
         
         return;
       }*/
-      if (!_i.isClosed()) {
+     /* if (!_i.isClosed()) {
         current = stop;
         return;
-      }
+      }*/
     }
 
   }
@@ -274,10 +274,10 @@ class retract2H extends State {
         current = stop;
         return;
       }
-      if (!_i.isClosed()) {
+     /* if (!_i.isClosed()) {
         current = stop;
         return;
-      }
+      }*/
     }
 
   }

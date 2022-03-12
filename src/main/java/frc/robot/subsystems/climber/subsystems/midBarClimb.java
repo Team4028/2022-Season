@@ -79,10 +79,10 @@ class retract1 extends State {
         current = stop;
         return;
       }
-      if (!_i.isClosed()) {
+     /* if (!_i.isClosed()) {
         current = stop;
         return;
-      }
+      }*/
     }
 
   }
