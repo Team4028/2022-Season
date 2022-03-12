@@ -6,11 +6,14 @@ package frc.robot.utilities;
 
 import java.util.List;
 
+import com.ctre.phoenix.motion.TrajectoryPoint;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
+import edu.wpi.first.math.trajectory.TrajectoryUtil;
 
 import static frc.robot.Constants.AutoConstants.*;
 
@@ -55,8 +58,9 @@ public class Trajectories {
      */
     public Trajectory getTestCompSecondBall(){
         return TrajectoryGenerator.generateTrajectory(
-        List.of(new Pose2d(1.19, -0.12, Rotation2d.fromDegrees(0)),
-        new Pose2d(4.18, -2.13, Rotation2d.fromDegrees(10))),
+        new Pose2d(1.19, -0.12, Rotation2d.fromDegrees(187.0)),
+        List.of(new Translation2d(2.19, -2.00)),
+        new Pose2d(3.18, -2.13, Rotation2d.fromDegrees(10)),
         AutonTrajectoryConfig);
     }
 
@@ -67,8 +71,9 @@ public class Trajectories {
      */
     public Trajectory getTestCompReturnShoot(){
         return TrajectoryGenerator.generateTrajectory(
-        List.of(new Pose2d(4.18, -2.13, Rotation2d.fromDegrees(10)),
-        new Pose2d(1.16, -0.76, Rotation2d.fromDegrees(175))),
+            new Pose2d(3.18, -2.13, Rotation2d.fromDegrees(10)),
+            List.of(new Translation2d(2.19, -1.13)),
+        new Pose2d(1.19, -0.12, Rotation2d.fromDegrees(187)),
         AutonTrajectoryConfig);
     }
 

@@ -205,7 +205,7 @@ public final class Constants {
 
     public static final double kShooterFrontDefault = 0.35;
     public static final double kShooterBackDefault = 0.55;
-    public static final double kShooterHoodAngleRotDefault = 14.0;
+    public static final double kShooterHoodAngleRotDefault = 24.5;
     // 17 IS ABSOLUTE MAX
   }
 

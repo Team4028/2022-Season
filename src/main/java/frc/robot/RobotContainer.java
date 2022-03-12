@@ -24,6 +24,7 @@ import frc.robot.commands.RunConveyorOneBall;
 import frc.robot.commands.RunConveyorTwoBall;
 import frc.robot.commands.RunShooterMotors;
 import frc.robot.commands.RunShooterMotorsVbus;
+import frc.robot.commands.TestAutonCommand;
 import frc.robot.commands.ToggleAdjustmentStyle;
 import frc.robot.commands.ToggleCamera;
 import frc.robot.commands.RotateDrivetrainByAngle;
@@ -142,7 +143,7 @@ public class RobotContainer {
    * @return New SwerveControllerCommand - commands DriveSubsystem to follow given
    *         trajectory, then stop
    */
-  private Command getSwerveControllerCommand(Trajectory traj) {
+  public Command getSwerveControllerCommand(Trajectory traj) {
     return new SwerveControllerCommand(
         traj,
         m_robotDrive::getPose,
@@ -163,12 +164,13 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     // Create config for trajectory
     m_robotDrive.resetOdometry(new Pose2d(0, 0, new Rotation2d()));
-    return getSwerveControllerCommand(_trajectories.getTestCompFirstBall())
-        .alongWith(new InstantCommand(() -> Infeed.get_instance().runInfeedSingulatorMotors(1.0)))
-        .andThen(new RotateDrivetrainByAngle(Rotation2d.fromDegrees(187), true))
-        .andThen(new RunShooterMotorsVbus().alongWith(new WaitCommand(0.25).andThen(new RunConveyor())).raceWith(new WaitCommand(1.25)))
-        .andThen(new InstantCommand(() -> Infeed.get_instance().stopInfeedSingulatorMotors()))
-        .deadlineWith(new AutonTimer());
+    return new TestAutonCommand().deadlineWith(new AutonTimer());
+    // return getSwerveControllerCommand(_trajectories.getTestCompFirstBall())
+    //     .alongWith(new InstantCommand(() -> Infeed.get_instance().runInfeedSingulatorMotors(1.0)))
+    //     .andThen(new RotateDrivetrainByAngle(Rotation2d.fromDegrees(187), true))
+    //     .andThen(new RunShooterMotorsVbus().alongWith(new WaitCommand(0.25).andThen(new RunConveyor())).raceWith(new WaitCommand(1.25)))
+    //     .andThen(new InstantCommand(() -> Infeed.get_instance().stopInfeedSingulatorMotors()))
+    //     .deadlineWith(new AutonTimer());
         // .andThen(getSwerveControllerCommand(_trajectories.getTestCompSecondBall()))
         // .andThen(new WaitCommand(1.5))
         // .andThen(getSwerveControllerCommand(_trajectories.getTestCompReturnShoot()))
