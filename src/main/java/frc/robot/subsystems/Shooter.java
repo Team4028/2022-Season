@@ -94,10 +94,11 @@ public class Shooter extends SubsystemBase {
     put("Shot Back RPM", e.ShooterBackRPM);
     put("Actuator Value", e.ActuatorVal);
 
-    // put("Front Error", util.toFalconRPM(_front.getClosedLoopError()));
-    // put("Back Error", util.toFalconRPM(_back.getClosedLoopError()));
-    // put("Front Motor RPM", util.toFalconRPM(_front.getSelectedSensorVelocity()));
-    // put("Back Motor RPM", util.toFalconRPM(_back.getSelectedSensorVelocity()));
+    //put("Front Error", util.toFalconRPM(_front.getClosedLoopError()));
+    //put("Back Error", util.toFalconRPM(_back.getClosedLoopError()));
+    put("Front Motor RPM", util.toFalconRPM(_front.getSelectedSensorVelocity()));
+    put("Back Motor RPM", util.toFalconRPM(_back.getSelectedSensorVelocity()));
+    put("Kicker Motor RPM", util.toFalconRPM(_kicker.getSelectedSensorVelocity()));
 
     getLimelightDistance();
   }

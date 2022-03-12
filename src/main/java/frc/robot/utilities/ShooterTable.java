@@ -187,11 +187,12 @@ public class ShooterTable {
         // primarytable.add(new ShooterTableEntry(_indexCounter++, 14., 40, 60, 0., "index 14", false));
         // primarytable.add(new ShooterTableEntry(_indexCounter++, 19., 40, 80, 0., "index 19", false)); 
 
-        //6: primarytable.add(new ShooterTableEntry(_indexCounter++, 6., 40, 37, 40, 2., "close lob shot", false));
-        primarytable.add(new ShooterTableEntry(_indexCounter++, 7., 37, 35, 40, 2., "close lob shot AWESOME edition", false));
-        //primarytable.add(new ShooterTableEntry(_indexCounter++, 9, 25, 45, 50, 17., "index 9", false));
-        //primarytable.add(new ShooterTableEntry(_indexCounter++, 12.5, 35, 55, 40, 14., "index 12.5", false));
+        primarytable.add(new ShooterTableEntry(_indexCounter++, 7., 42 /* 1240 */, 35 /* 980 */, 40 /* 1060 */, 9., "close lob shot AWESOME edition", false));
+        primarytable.add(new ShooterTableEntry(_indexCounter++, 10., 33 /* 950 */, 48 /* 1400 */, 40 /* 1420 */, 18., "index 10", false));
+        primarytable.add(new ShooterTableEntry(_indexCounter++, 12.5, 35 /* 1000 */, 55 /* 1620 */, 40 /* 1060 */, 24.5, "index 12.5 (auton)", false));
+        primarytable.add(new ShooterTableEntry(_indexCounter++, 15, 38 /* 1100 */, 64 /* 1940 */, 40 /* 1060 */, 30., "index 15", false));
         
+        // 30 IS ABSOLUTE MAX ANGLE MOTOR VALUE
 		return primarytable;
     }
     
