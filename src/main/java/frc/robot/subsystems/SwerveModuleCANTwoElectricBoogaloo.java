@@ -72,8 +72,8 @@ public class SwerveModuleCANTwoElectricBoogaloo {
     //TODO: CAN Utilization issues
 
     //m_driveMotor.configSelectedFeedbackCoefficient(1);
-    // configMotorPID(m_turningMotor, 0, i_kPModuleTurningController, 0.0, 0.1);
-    // configMotorPID(m_driveMotor, 0, i_kPModuleDriveController, 0.0, 0.0);
+    configMotorPID(m_turningMotor, 0, i_kPModuleTurningController, 0.0, 0.1);
+    configMotorPID(m_driveMotor, 0, i_kPModuleDriveController, 0.0, 0.0);
     //System.out.println(m_turningMotor.getSelectedSensorPosition());
   }
 
@@ -96,7 +96,7 @@ public class SwerveModuleCANTwoElectricBoogaloo {
     m_driveMotor.enableVoltageCompensation(true);
   }
   public void configStatusFramePeriods(){
-    m_turningEncoder.setStatusFramePeriod(CANCoderStatusFrame.SensorData, 250);
+    m_turningEncoder.setStatusFramePeriod(CANCoderStatusFrame.SensorData, 100);
     m_turningMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_1_General, 20);
     m_turningMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 20);
     m_turningMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_4_AinTempVbat, 255);
