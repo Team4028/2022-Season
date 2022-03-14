@@ -53,6 +53,8 @@ public class SwerveModuleCANTwoElectricBoogaloo {
     //     m_turningEncoder.configSensorInitializationStrategy(SensorInitializationStrategy.BootToAbsolutePosition, CAN_TIMEOUT_MS);
     //     m_turningEncoder.configAbsoluteSensorRange(AbsoluteSensorRange.Unsigned_0_to_360);
     // }
+    m_turningMotor.configFactoryDefault();
+    m_driveMotor.configFactoryDefault();
 
     m_turningEncoder.configMagnetOffset(Math.toDegrees(turningMotorOffset));
     // m_turningMotor.setSensorPhase(false);
@@ -96,15 +98,15 @@ public class SwerveModuleCANTwoElectricBoogaloo {
     m_driveMotor.enableVoltageCompensation(true);
   }
   public void configStatusFramePeriods(){
-    m_turningEncoder.setStatusFramePeriod(CANCoderStatusFrame.SensorData, 100);
-    m_turningMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_1_General, 20);
-    m_turningMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 20);
-    m_turningMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_4_AinTempVbat, 255);
-    m_driveMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_6_Misc, 255);
-    m_driveMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_1_General, 20);
-    m_driveMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 20);
-    m_driveMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_4_AinTempVbat, 255);
-    m_driveMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_6_Misc, 255);
+    // m_turningEncoder.setStatusFramePeriod(CANCoderStatusFrame.SensorData, 100);
+    // m_turningMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_1_General, 20);
+    // m_turningMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 20);
+    // m_turningMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_4_AinTempVbat, 255);
+    // m_driveMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_6_Misc, 255);
+    // m_driveMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_1_General, 20);
+    // m_driveMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 20);
+    // m_driveMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_4_AinTempVbat, 255);
+    // m_driveMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_6_Misc, 255);
   }
 
   /**

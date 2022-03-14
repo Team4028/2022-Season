@@ -184,7 +184,7 @@ public class DriveSubsystem extends SubsystemBase {
         holdAngleCounter++;
         holdAngle = getGyroRotation2d().getRadians();
       }
-      rot = -AutoConstants.AUTON_THETA_CONTROLLER.calculate(getGyroRotation2d().getRadians(), holdAngle);
+      rot = AutoConstants.AUTON_THETA_CONTROLLER.calculate(getGyroRotation2d().getRadians(), holdAngle);
     }
     var swerveModuleStates =
         kDriveKinematics.toSwerveModuleStates(
