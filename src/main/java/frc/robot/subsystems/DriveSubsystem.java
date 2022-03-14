@@ -6,8 +6,6 @@ package frc.robot.subsystems;
 
 import static frc.robot.Constants.DriveConstants.*;
 
-import com.ctre.phoenix.sensors.Pigeon2;
-import com.ctre.phoenix.sensors.PigeonIMU_StatusFrame;
 import com.ctre.phoenix.sensors.WPI_Pigeon2;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -74,7 +72,7 @@ public class DriveSubsystem extends SubsystemBase {
 
   // The gyro sensor
   // private final Pigeon2 m_pigeon = new Pigeon2(1);
-  private final WPI_Pigeon2 m_gyro = new WPI_Pigeon2(DriveConstants.pigeonCan);
+  private final WPI_Pigeon2 m_gyro = new WPI_Pigeon2(DriveConstants.pigeonCan, DriveConstants.kCANivoreName);
 
   // Odometry class for tracking robot pose
   SwerveDriveOdometry m_odometry =
@@ -88,6 +86,10 @@ public class DriveSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
+    m_frontLeft.checkPowerFailure();
+    m_frontRight.checkPowerFailure();
+    m_rearLeft.checkPowerFailure();
+    m_rearRight.checkPowerFailure();
     // Update the odometry in the periodic block
     if (testTimer > 8 * configWaitCycles){
     m_odometry.update(
