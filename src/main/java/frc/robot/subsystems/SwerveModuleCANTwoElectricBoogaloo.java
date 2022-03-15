@@ -67,7 +67,7 @@ public class SwerveModuleCANTwoElectricBoogaloo {
     //     CAN_TIMEOUT_MS);
     m_turningEncoder.setStatusFramePeriod(
         CANCoderStatusFrame.SensorData,
-        10,
+        50,
         CAN_TIMEOUT_MS);
     // m_driveMotor.setStatusFramePeriod(
     //     StatusFrameEnhanced.Status_4_AinTempVbat,
