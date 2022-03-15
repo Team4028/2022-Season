@@ -19,7 +19,6 @@ import frc.robot.commands.DecrementShooterIndex;
 import frc.robot.commands.IncrementShooterIndex;
 import frc.robot.commands.ResetDefaultIndex;
 import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.commands.RunConveyor;
 import frc.robot.commands.ReverseInfeedAndConveyor;
 import frc.robot.commands.RunConveyorOneBall;
 import frc.robot.commands.RunConveyorTwoBall;

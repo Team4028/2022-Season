@@ -191,6 +191,7 @@ public final class Constants {
   }
 
   public static final class VBusConstants {
+    public static final double kConveyAll = 0.5;
     public static final double kConveyOne = 0.85; // op b
     public static final double kConveyTwo = 0.5; // op a
 
@@ -205,7 +206,7 @@ public final class Constants {
 
   public static final class EncoderConstants {
     public static final double kConveyOne = 20;
-    public static final double kConveyTwo = 50;
+    public static final double kConveyTwo = 60;
 
     public static final double kAngleThreshold = 0.1;
   }
