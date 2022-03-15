@@ -23,10 +23,10 @@ import frc.robot.RobotContainer;
 import frc.robot.util;
 
 public class DriveSubsystem extends SubsystemBase {
-  private static final double i_FRONT_LEFT_ANGLE_OFFSET = -Math.toRadians(206.3);//24.32 + 180.0);//154.6);
-  private static final double i_FRONT_RIGHT_ANGLE_OFFSET = -Math.toRadians(144.4);//336.0 - 180.0);//169.3 - 5);
-  private static final double i_BACK_LEFT_ANGLE_OFFSET = -Math.toRadians(327.7);//507.2 - 180.0);//31.3);
-  private static final double i_BACK_RIGHT_ANGLE_OFFSET = -Math.toRadians(160.9);//340.1 - 180.0);//199.1);
+  private static final double i_FRONT_LEFT_ANGLE_OFFSET = -Math.toRadians(318.9 - 180.0);//24.32 + 180.0);//154.6);
+  private static final double i_FRONT_RIGHT_ANGLE_OFFSET = -Math.toRadians(141.4 + 180.0);//336.0 - 180.0);//169.3 - 5);
+  private static final double i_BACK_LEFT_ANGLE_OFFSET = -Math.toRadians(287.1 - 180.0);//507.2 - 180.0);//31.3);
+  private static final double i_BACK_RIGHT_ANGLE_OFFSET = -Math.toRadians(53.6 + 180.0);//340.1 - 180.0);//199.1);
 
   private int holdAngleCounter = 0;
   private double holdAngle;
@@ -181,13 +181,6 @@ public class DriveSubsystem extends SubsystemBase {
     xSpeed *= speedScale * DriveConstants.i_kMaxSpeedMetersPerSecond;
     ySpeed *= speedScale * DriveConstants.i_kMaxSpeedMetersPerSecond;
     rot *= speedScale * DriveConstants.i_kMaxSpeedMetersPerSecond;
-    if (rot == 0 && enableHoldAngle){
-      if (holdAngleCounter < 1){
-        holdAngleCounter++;
-        holdAngle = getGyroRotation2d().getRadians();
-      }
-      rot = -AutoConstants.AUTON_THETA_CONTROLLER.calculate(getGyroRotation2d().getRadians(), holdAngle);
-    }
     var swerveModuleStates =
         kDriveKinematics.toSwerveModuleStates(
             fieldRelative
