@@ -37,7 +37,6 @@ public class Shooter extends SubsystemBase {
   private Limelight _l;
   private ShooterTable _st = ShooterTable.getPrimaryTable();
   double limelightDistance, shooterIndex = IndexConstants.kIndexDefault;
-  boolean fineAdjustment = false, accept = true;
 
   private static Shooter _instance = new Shooter();
 
@@ -70,7 +69,6 @@ public class Shooter extends SubsystemBase {
 
     put("FrontVbus", VBusConstants.kShooterFrontDefault);
     put("BackVbus", VBusConstants.kShooterBackDefault);
-    put("KickerVbus", VBusConstants.kKicker);
     put("Hood Angle (rot)", VBusConstants.kShooterHoodAngleRotDefault);
 
     // _front.config_kF(0, PIDConstants.Front.kF);
@@ -129,7 +127,7 @@ public class Shooter extends SubsystemBase {
     ShooterTableEntry entry = ShooterTable.getPrimaryTable().CalcShooterValues(shooterIndex);
     _front.set(ControlMode.Velocity, util.toFalconVelocity(entry.ShooterFrontRPM));
     _back.set(ControlMode.Velocity, util.toFalconVelocity(entry.ShooterBackRPM));
-    _kicker.set(ControlMode.PercentOutput, VBusConstants.kKicker);
+    _kicker.set(ControlMode.PercentOutput, entry.KickerRPM);
 
     System.out.println(entry.ActuatorVal);
 
@@ -137,7 +135,8 @@ public class Shooter extends SubsystemBase {
   }
 
   public void kick() {
-    _kicker.set(ControlMode.PercentOutput, VBusConstants.kKicker);
+    ShooterTableEntry entry = ShooterTable.getPrimaryTable().CalcShooterValues(shooterIndex);
+    _kicker.set(ControlMode.PercentOutput, entry.KickerRPM);
   }
 
   public void testSpinAngleMotor(){
@@ -159,29 +158,20 @@ public class Shooter extends SubsystemBase {
     return shooterIndex;
   }
 
-  public void incrementIndex() {
-    if (fineAdjustment) {
+  public void incrementIndex(boolean fine) {
+    if (fine) {
       shooterIndex += IndexConstants.kFineAdjustment;
     } else {
       shooterIndex += IndexConstants.kCoarseAdjustment;
     }
   }
 
-  public void decrementIndex() {
-    if (fineAdjustment) {
+  public void decrementIndex(boolean fine) {
+    if (fine) {
       shooterIndex -= IndexConstants.kFineAdjustment;
     } else {
       shooterIndex -= IndexConstants.kCoarseAdjustment;
     }
-  }
-
-  public void toggle() {
-    fineAdjustment = !fineAdjustment;
-  }
-
-  public boolean getFineAdjustment() {
-    SmartDashboard.putString("Adjustment Mode", (fineAdjustment ? "Fine" : "Coarse"));
-    return fineAdjustment;
   }
 
   public double getLimelightDistance() {
@@ -191,14 +181,11 @@ public class Shooter extends SubsystemBase {
   }
 
   public void acceptLimelight() {
-    if (accept) {
-      shooterIndex = limelightDistance; // TODO: round
-    } else {
-      shooterIndex = IndexConstants.kIndexDefault;
-    }
-    accept = !accept;
-    SmartDashboard.putString("Accept Limelight Mode", (accept ? "Accept Limelight" : "Reset to Default"));
-    // .3
+    shooterIndex = limelightDistance;
+  }
+
+  public void resetIndex() {
+    shooterIndex = IndexConstants.kIndexDefault;
   }
 
   public static Shooter getInstance() {

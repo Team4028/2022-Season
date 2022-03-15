@@ -5,7 +5,9 @@
 package frc.robot;
 
 
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.XboxController.Axis;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 public final class BeakXBoxController {
@@ -25,6 +27,9 @@ public final class BeakXBoxController {
     public JoystickButton left_stick_button;
     public JoystickButton right_stick_button;
 
+    public JoystickButton left_trigger;
+    public JoystickButton right_trigger;
+
     public BeakXBoxController(int port){
         controller = new XboxController(port);
         a = new JoystickButton(controller, 1);
@@ -38,6 +43,8 @@ public final class BeakXBoxController {
         left_stick_button = new JoystickButton(controller, 9);
         right_stick_button = new JoystickButton(controller, 10);
        
+        left_trigger = new JoystickButton(controller, 2);
+        right_trigger = new JoystickButton(controller, 3);
     }
 
     public double getLeftXAxis(){

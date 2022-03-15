@@ -10,9 +10,11 @@ import frc.robot.subsystems.Shooter;
 public class IncrementShooterIndex extends CommandBase {
   /** Creates a new IncrementShooterIndex. */
   private Shooter _s = Shooter.getInstance();
-  public IncrementShooterIndex() {
+  private boolean fine;
+  public IncrementShooterIndex(boolean fine) {
     addRequirements(_s);
     // Use addRequirements() here to declare subsystem dependencies.
+    this.fine = fine;
   }
 
   // Called when the command is initially scheduled.
@@ -22,7 +24,7 @@ public class IncrementShooterIndex extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    _s.incrementIndex();
+    _s.incrementIndex(fine);
   }
 
   // Called once the command ends or is interrupted.

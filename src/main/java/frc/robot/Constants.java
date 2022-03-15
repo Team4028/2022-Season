@@ -191,17 +191,11 @@ public final class Constants {
   }
 
   public static final class VBusConstants {
-    public static final double kConveyAll = 0.5; // op start
     public static final double kConveyOne = 0.85; // op b
     public static final double kConveyTwo = 0.5; // op a
 
     public static final double kInfeed = 0.6; // op y
     public static final double kSingulator = 0.5; // op y
-    public static final double kInfeedUp = 0.5;
-    public static final double kInfeedDown = -0.75;
-
-    public static final double kKicker = 0.5;
-    public static final double kAngle = 0.1;
 
     public static final double kShooterFrontDefault = 0.35;
     public static final double kShooterBackDefault = 0.55;
@@ -220,7 +214,7 @@ public final class Constants {
     public static final double kFineAdjustment = 0.5;
     public static final double kCoarseAdjustment = 1.;
 
-    public static final double kIndexDefault = 14.;
+    public static final double kIndexDefault = 12.5;
   }
 
   public static final class LimelightConstants {

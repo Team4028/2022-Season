@@ -17,6 +17,7 @@ import frc.robot.commands.AcceptLimelightDistance;
 import frc.robot.commands.AutonTimer;
 import frc.robot.commands.DecrementShooterIndex;
 import frc.robot.commands.IncrementShooterIndex;
+import frc.robot.commands.ResetDefaultIndex;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.commands.RunConveyor;
 import frc.robot.commands.ReverseInfeedAndConveyor;
@@ -25,8 +26,8 @@ import frc.robot.commands.RunConveyorTwoBall;
 import frc.robot.commands.RunShooterMotors;
 import frc.robot.commands.RunShooterMotorsVbus;
 import frc.robot.commands.TestAutonCommand;
-import frc.robot.commands.ToggleAdjustmentStyle;
 import frc.robot.commands.ToggleCamera;
+import frc.robot.commands.ToggleInfeedUp;
 import frc.robot.commands.RotateDrivetrainByAngle;
 // import frc.robot.commands.RunConveyorWithEncoder;
 // import frc.robot.commands.LiftInfeed;
@@ -59,7 +60,7 @@ public class RobotContainer {
   // The robot's subsystems
   private final DriveSubsystem m_robotDrive = DriveSubsystem.get_instance();
   private final Infeed m_singulatorAndInfeed = Infeed.get_instance();
-  private final RunInfeedSingulatorMotors _RunInfeedSingulatorMotors;
+  private final RunInfeedSingulatorMotors runInfeed;
   private static RobotContainer _instance;
   private WaitCommand _wait;
   private static Trajectories _trajectories = Trajectories.get_instance();
@@ -82,7 +83,7 @@ public class RobotContainer {
   public RobotContainer() {
     AutoConstants.AUTON_THETA_CONTROLLER.enableContinuousInput(-Math.PI, Math.PI);
     // Configure the button bindings
-    _RunInfeedSingulatorMotors = new RunInfeedSingulatorMotors();
+    runInfeed = new RunInfeedSingulatorMotors();
     _wait = new WaitCommand(1.0);
     _wait.addRequirements(m_singulatorAndInfeed);
     configureButtonBindings();
@@ -111,26 +112,30 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     // ========= OPERATOR CONTROLLER =======
-    m_operatorController.y.toggleWhenPressed(new RunInfeedSingulatorMotors());
+    m_operatorController.a.whenPressed(new RunConveyorTwoBall());
     m_operatorController.b.whenPressed(new RunConveyorOneBall());
     m_operatorController.x.toggleWhenPressed(new RunShooterMotorsVbus());
-    m_operatorController.a.whenPressed(new RunConveyorTwoBall());
-    m_operatorController.start.toggleWhenPressed(new RunConveyor());
+    m_operatorController.y.toggleWhenPressed(runInfeed);
     m_operatorController.back.toggleWhenPressed(new ReverseInfeedAndConveyor());
-    m_operatorController.left_bumper.whenPressed(new DecrementShooterIndex());
-    m_operatorController.right_bumper.whenPressed(new IncrementShooterIndex());
-    m_operatorController.left_stick_button.whenPressed(new ToggleAdjustmentStyle());
+    m_operatorController.left_bumper.whenPressed(new DecrementShooterIndex(false));
+    m_operatorController.right_bumper.whenPressed(new IncrementShooterIndex(false));
+    m_operatorController.left_trigger.whenPressed(new DecrementShooterIndex(true));
+    m_operatorController.right_trigger.whenPressed(new IncrementShooterIndex(true));
+    m_operatorController.left_stick_button.whenPressed(new ResetDefaultIndex());
     m_operatorController.right_stick_button.whenPressed(new AcceptLimelightDistance());
     //====================================
 
     // ======== DRIVER CONTROLLER ========
-    m_driverController.back.whenPressed(new InstantCommand(() -> Infeed.get_instance().toggleInfeedUp()));
-    m_driverController.right_stick_button
-        .whenPressed(new RotateDrivetrainByAngle(Rotation2d.fromDegrees(Limelight.getInstance().getX()), false));
-    m_driverController.x.toggleWhenPressed(new XDrive());
-    m_driverController.left_bumper.whenPressed(new InstantCommand(() -> m_robotDrive.toggleEnableHoldAngle()));
-    m_driverController.start.whenPressed(new InstantCommand(() -> m_robotDrive.zeroHeading()));
     m_driverController.a.whenPressed(new InstantCommand(() -> Limelight.getInstance().toggleLedMode()));
+    m_driverController.b.whenPressed(new InstantCommand(() -> m_robotDrive.toggleEnableHoldAngle()));
+    m_driverController.x.toggleWhenPressed(new XDrive());
+    m_driverController.y.toggleWhenPressed(runInfeed);
+    m_driverController.start.whenPressed(new InstantCommand(() -> m_robotDrive.zeroHeading()));
+    m_driverController.left_bumper.whenPressed(new ReverseInfeedAndConveyor());
+    m_driverController.right_bumper.whenPressed(new ToggleInfeedUp());
+    m_driverController.left_trigger.whenActive(runInfeed);
+    m_driverController.right_stick_button
+        .whenPressed(new RotateDrivetrainByAngle(Rotation2d.fromDegrees(Limelight.getInstance().getX() + 15.8), false));
     // ===================================
   }
 
