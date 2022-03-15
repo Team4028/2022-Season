@@ -14,6 +14,7 @@ import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.sensors.CANCoderStatusFrame;
+import com.ctre.phoenix.sensors.SensorInitializationStrategy;
 import com.ctre.phoenix.sensors.WPI_CANCoder;
 
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -53,9 +54,9 @@ public class SwerveModuleCANTwoElectricBoogaloo {
     //     m_turningEncoder.configSensorInitializationStrategy(SensorInitializationStrategy.BootToAbsolutePosition, CAN_TIMEOUT_MS);
     //     m_turningEncoder.configAbsoluteSensorRange(AbsoluteSensorRange.Unsigned_0_to_360);
     // }
-    // m_turningEncoder.configFactoryDefault();
-    // m_turningMotor.configFactoryDefault();
-    // m_driveMotor.configFactoryDefault();
+    m_turningEncoder.configFactoryDefault();
+    m_turningMotor.configFactoryDefault();
+    m_driveMotor.configFactoryDefault();
 
     m_turningEncoder.configMagnetOffset(Math.toDegrees(turningMotorOffset));
     // m_turningMotor.setSensorPhase(false);
@@ -64,10 +65,10 @@ public class SwerveModuleCANTwoElectricBoogaloo {
     //     StatusFrameEnhanced.Status_1_General,
     //     STATUS_FRAME_GENERAL_PERIOD_MS,
     //     CAN_TIMEOUT_MS);
-    // m_turningEncoder.setStatusFramePeriod(
-    //     CANCoderStatusFrame.SensorData,
-    //     STATUS_FRAME_GENERAL_PERIOD_MS,
-    //     CAN_TIMEOUT_MS);
+    m_turningEncoder.setStatusFramePeriod(
+        CANCoderStatusFrame.SensorData,
+        10,
+        CAN_TIMEOUT_MS);
     // m_driveMotor.setStatusFramePeriod(
     //     StatusFrameEnhanced.Status_4_AinTempVbat,
     //     STATUS_FRAME_GENERAL_PERIOD_MS,
@@ -87,6 +88,7 @@ public class SwerveModuleCANTwoElectricBoogaloo {
   public void configTurningMotor(){
     //m_turningMotor.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, CAN_TIMEOUT_MS);
     //m_turningMotor.configSelectedFeedbackCoefficient(1.0);
+    m_turningEncoder.configSensorInitializationStrategy(SensorInitializationStrategy.BootToAbsolutePosition);
     m_turningEncoder.setPositionToAbsolute();
     m_turningMotor.setNeutralMode(NeutralMode.Brake);
     m_turningMotor.setInverted(true);
