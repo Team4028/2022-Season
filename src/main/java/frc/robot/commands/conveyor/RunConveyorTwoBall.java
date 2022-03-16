@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands;
+package frc.robot.commands.conveyor;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.EncoderConstants;
@@ -10,10 +10,10 @@ import frc.robot.Constants.VBusConstants;
 import frc.robot.subsystems.Conveyor;
 
 
-public class RunConveyorOneBall extends CommandBase {
+public class RunConveyorTwoBall extends CommandBase {
   private Conveyor conveyor = Conveyor.get_instance();
-  /** Creates a new RunWithEncoder. */
-  public RunConveyorOneBall() {
+  /** Creates a new RunWithEncoderA. */
+  public RunConveyorTwoBall() {
     addRequirements(conveyor);
     // Use addRequirements() here to declare subsystem dependencies.
   }
@@ -23,13 +23,13 @@ public class RunConveyorOneBall extends CommandBase {
   public void initialize() {
     conveyor.resetEncoder();
     conveyor.setIsTargetReached();
-    conveyor.runConveyorMotorWithEncoder(EncoderConstants.kConveyOne, VBusConstants.kConveyOne);
+    conveyor.runConveyorMotorWithEncoder(EncoderConstants.kConveyTwo, VBusConstants.kConveyTwo);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    conveyor.runConveyorMotorWithEncoder(EncoderConstants.kConveyOne, VBusConstants.kConveyOne);
+    conveyor.runConveyorMotorWithEncoder(EncoderConstants.kConveyTwo, VBusConstants.kConveyTwo);
   }
 
   // Called once the command ends or is interrupted.

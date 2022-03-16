@@ -2,40 +2,36 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands;
+package frc.robot.commands.infeed;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Infeed;
 
-public class RunShooterMotors extends CommandBase {
-  private Shooter shooter = Shooter.getInstance();
-  /** Creates a new ToggleFiveAndSix. */
-  public RunShooterMotors() {
-  addRequirements(Shooter.getInstance());
+public class ToggleInfeedUp extends CommandBase {
+  private Infeed infeed = Infeed.get_instance();
+  /** Creates a new ToggleInfeedUp. */
+  public ToggleInfeedUp() {
     // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(infeed);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-    shooter.runShooterMotors();
-  }
+  public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    shooter.runShooterMotors();
+    infeed.toggleInfeedUp();
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-    shooter.stop();
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return true;
   }
 }

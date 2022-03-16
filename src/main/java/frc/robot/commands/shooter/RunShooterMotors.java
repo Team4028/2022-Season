@@ -2,42 +2,35 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands;
+package frc.robot.commands.shooter;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants.VBusConstants;
-import frc.robot.subsystems.Conveyor;
-import frc.robot.subsystems.Infeed;
+import frc.robot.subsystems.Shooter;
 
-public class ReverseInfeedAndConveyor extends CommandBase {
-  /** Creates a new ReverseInfeedAndConveyor. */
-  private Conveyor _Con = Conveyor.get_instance();
-  private Infeed _Infeed = Infeed.get_instance();
-  public ReverseInfeedAndConveyor() {
+public class RunShooterMotors extends CommandBase {
+  private Shooter shooter = Shooter.getInstance();
+  /** Creates a new ToggleFiveAndSix. */
+  public RunShooterMotors() {
+  addRequirements(Shooter.getInstance());
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(_Con);
-    addRequirements(_Infeed);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    _Con.runConveyorMotor(-VBusConstants.kConveyAll);
-    _Infeed.runInfeedSingulatorMotors(-0.5);
+    shooter.runShooterMotors();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    _Con.runConveyorMotor(-VBusConstants.kConveyAll);
-    _Infeed.runInfeedSingulatorMotors(-1);
+    shooter.runShooterMotors();
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    _Con.stopConveyorMotor();
-    _Infeed.stopInfeedSingulatorMotors();
+    shooter.stop();
   }
 
   // Returns true when the command should end.

@@ -2,31 +2,33 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands;
+package frc.robot.commands.chassis;
 
-import edu.wpi.first.math.trajectory.Trajectory;
-import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.RobotContainer;
-import frc.robot.Constants.DriveConstants;
 import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.utilities.Trajectories;
 
-public class PathFirstBallCommand extends CommandBase {
+public class XDrive extends CommandBase {
+  /** Creates a new XDrive. */
   private DriveSubsystem m_drive = DriveSubsystem.get_instance();
-  private Trajectories _trajectories = Trajectories.get_instance();
-  private Trajectory _firstBallTrajectory = _trajectories.getTestCompFirstBall();
-  private Command swerveControllerCommand;
-  /** Creates a new PathFirstBallCommand. */
-  public PathFirstBallCommand() {
+  /**
+   * Turns Swerve Module Wheels to an "X" Position in order to resist pushing and hold position
+   */
+  public XDrive() {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(m_drive);
-    swerveControllerCommand = RobotContainer.get_instance().getSwerveControllerCommand(_firstBallTrajectory);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    m_drive.setModuleStates(new SwerveModuleState[]{
+      new SwerveModuleState(0.0, Rotation2d.fromDegrees(45.0)),
+      new SwerveModuleState(0.0, Rotation2d.fromDegrees(-45.0)),
+      new SwerveModuleState(0.0, Rotation2d.fromDegrees(-45.0)),
+      new SwerveModuleState(0.0, Rotation2d.fromDegrees(45.0))
+    });
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -35,7 +37,9 @@ public class PathFirstBallCommand extends CommandBase {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+
+  }
 
   // Returns true when the command should end.
   @Override
