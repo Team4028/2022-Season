@@ -8,6 +8,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.SubsystemConstants;
 
@@ -34,11 +35,14 @@ public class Conveyor extends SubsystemBase {
 
 
   public void runConveyorMotor(double vbus){
+    SmartDashboard.putBoolean("Conveyor/Running", true);
+    SmartDashboard.putNumber("Conveyor/Vbus", vbus);
     _conveyorMotor.set(vbus);
   }
 
   public void stopConveyorMotor(){
     _conveyorMotor.set(0);
+    SmartDashboard.putBoolean("Conveyor/Running", false);
   }
 
   public void runConveyorMotorWithEncoder(double target, double vbus){

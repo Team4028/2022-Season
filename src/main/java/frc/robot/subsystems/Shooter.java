@@ -90,6 +90,7 @@ public class Shooter extends SubsystemBase {
     SmartDashboard.putString("Shot", e.Description);
     put("Shot Front RPM", e.ShooterFrontRPM);
     put("Shot Back RPM", e.ShooterBackRPM);
+    put("Shot Kicker RPM", e.KickerRPM);
     put("Actuator Value", e.ActuatorVal);
 
     //put("Front Error", util.toFalconRPM(_front.getClosedLoopError()));
@@ -97,6 +98,7 @@ public class Shooter extends SubsystemBase {
     put("Front Motor RPM", util.toFalconRPM(_front.getSelectedSensorVelocity()));
     put("Back Motor RPM", util.toFalconRPM(_back.getSelectedSensorVelocity()));
     put("Kicker Motor RPM", util.toFalconRPM(_kicker.getSelectedSensorVelocity()));
+    put("Angle", _angleEnc.getPosition());
 
     getLimelightDistance();
   }
