@@ -36,6 +36,7 @@ public class RotateDrivetrainByAngle extends CommandBase {
   @Override
   public void initialize() {
     thetaController.enableContinuousInput(-Math.PI, Math.PI);
+    
     m_drive.drive(0, 0, thetaController.calculate(m_drive.getPose().getRotation().getRadians(),
     rotation.getRadians()), fieldRelative);
   }

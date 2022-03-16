@@ -35,12 +35,10 @@ public class Conveyor extends SubsystemBase {
 
   public void runConveyorMotor(double vbus){
     _conveyorMotor.set(vbus);
-    Shooter.getInstance().kick();
   }
 
   public void stopConveyorMotor(){
     _conveyorMotor.set(0);
-    Shooter.getInstance().stopKicker();
   }
 
   public void runConveyorMotorWithEncoder(double target, double vbus){

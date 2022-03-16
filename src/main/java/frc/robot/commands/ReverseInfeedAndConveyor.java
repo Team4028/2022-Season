@@ -23,7 +23,7 @@ public class ReverseInfeedAndConveyor extends CommandBase {
   @Override
   public void initialize() {
     _Con.runConveyorMotor(-VBusConstants.kConveyAll);
-    _Infeed.runInfeedSingulatorMotors(-1);
+    _Infeed.runInfeedSingulatorMotors(-0.5);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

@@ -45,6 +45,7 @@ import frc.robot.utilities.Trajectories;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -118,8 +119,8 @@ public class RobotContainer {
     m_operatorController.back.toggleWhenPressed(new ReverseInfeedAndConveyor());
     m_operatorController.left_bumper.whenPressed(new DecrementShooterIndex(false));
     m_operatorController.right_bumper.whenPressed(new IncrementShooterIndex(false));
-    m_operatorController.left_trigger.whenPressed(new DecrementShooterIndex(true));
-    m_operatorController.right_trigger.whenPressed(new IncrementShooterIndex(true));
+    m_operatorController.left_trigger.whenActive(new DecrementShooterIndex(true));
+    m_operatorController.right_trigger.whenActive(new IncrementShooterIndex(true));
     m_operatorController.left_stick_button.whenPressed(new ResetDefaultIndex());
     m_operatorController.right_stick_button.whenPressed(new AcceptLimelightDistance());
     //====================================
@@ -130,11 +131,11 @@ public class RobotContainer {
     m_driverController.x.toggleWhenPressed(new XDrive());
     m_driverController.y.toggleWhenPressed(runInfeed);
     m_driverController.start.whenPressed(new InstantCommand(() -> m_robotDrive.zeroHeading()));
-    m_driverController.left_bumper.whenPressed(new ReverseInfeedAndConveyor());
+    m_driverController.left_bumper.toggleWhenPressed(new ReverseInfeedAndConveyor());
     m_driverController.right_bumper.whenPressed(new ToggleInfeedUp());
-    m_driverController.left_trigger.whenActive(runInfeed);
+    m_driverController.left_trigger.whileActiveContinuous(runInfeed);
     m_driverController.right_stick_button
-        .whenPressed(new RotateDrivetrainByAngle(Rotation2d.fromDegrees(Limelight.getInstance().getX() + 15.8), false));
+        .whenPressed(new RotateDrivetrainByAngle(Rotation2d.fromDegrees(Limelight.getInstance().getX()), false));
     // ===================================
   }
 

@@ -12,6 +12,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.BeakXBoxController;
 import frc.robot.Constants.SubsystemConstants;
 import frc.robot.Constants.VBusConstants;
 
@@ -32,7 +33,11 @@ public class Infeed extends SubsystemBase {
  
   }
   public void runInfeedSingulatorMotors(double mult){
-    _infeedMotor.set(ControlMode.PercentOutput, mult * VBusConstants.kInfeed);
+    if (!_solenoid.get()) {
+      _infeedMotor.set(ControlMode.PercentOutput, mult * VBusConstants.kInfeed);
+    } else {
+      _infeedMotor.set(ControlMode.PercentOutput, 0.);
+    }
     _singulatorMotor.set(mult * VBusConstants.kSingulator);
   }
   

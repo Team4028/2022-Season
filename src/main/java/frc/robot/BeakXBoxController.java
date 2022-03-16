@@ -8,7 +8,9 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Axis;
+import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 public final class BeakXBoxController {
 
@@ -27,8 +29,8 @@ public final class BeakXBoxController {
     public JoystickButton left_stick_button;
     public JoystickButton right_stick_button;
 
-    public JoystickButton left_trigger;
-    public JoystickButton right_trigger;
+    public Trigger left_trigger;
+    public Trigger right_trigger;
 
     public BeakXBoxController(int port){
         controller = new XboxController(port);
@@ -43,8 +45,8 @@ public final class BeakXBoxController {
         left_stick_button = new JoystickButton(controller, 9);
         right_stick_button = new JoystickButton(controller, 10);
        
-        left_trigger = new JoystickButton(controller, 2);
-        right_trigger = new JoystickButton(controller, 3);
+        left_trigger = new Trigger(controller, HAND.LEFT);
+        right_trigger = new Trigger(controller, HAND.RIGHT);
     }
 
     public double getLeftXAxis(){
@@ -70,6 +72,77 @@ public final class BeakXBoxController {
 
     public double getRightTrigger(){
         return controller.getRawAxis(3);
+    }
+    
+    public static enum HAND {
+        LEFT, RIGHT
+    }
+
+    public static class Trigger extends Button {
+        /* Instance Values */
+        private final   XboxController parent;
+        private final   HAND        hand;
+        
+        private         double      deadZone;
+        private         double      sensitivity;
+
+        /**
+         * Constructor
+         * @param joystick
+         * @param hand
+         */
+        public Trigger(final XboxController joystick, final HAND hand) {
+            /* Initialize */
+            this.parent         = joystick;
+            this.hand           = hand;
+            this.sensitivity    = 0.1;
+        }
+
+        /* Extended Methods */
+        @Override
+        public boolean get() {
+            return getX() > sensitivity;
+        }
+
+        /* Get Methods */
+        /**
+         * getHand
+         * @return Trigger hand
+         * 
+         * See which side of the controller this trigger is
+         */
+        public HAND getHand() {
+            return hand;
+        }
+
+        /**
+         * 0 = Not pressed
+         * 1 = Completely pressed
+         * @return How far its pressed
+         */
+        public double getX() {
+            final double rawInput;
+    
+            if (hand == HAND.LEFT) {
+                rawInput = parent.getRawAxis(2);
+            } else {
+               rawInput = parent.getRawAxis(3);
+            }
+
+            return rawInput;
+        }
+
+        public double getY() {
+            return getX();	// Triggers have one dimensional movement. Use getX() instead
+        }
+
+        /**
+         * How far you need to press this trigger to activate a button press
+         * @param number
+         */
+        public void setTriggerSensitivity(double number) {
+            this.sensitivity = number;
+        }
     }
 
    
