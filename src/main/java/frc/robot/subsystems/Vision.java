@@ -14,19 +14,18 @@ public class Vision extends SubsystemBase {
   private static Vision _instance = new Vision();
   /** Creates a new Vision. */
   public Vision() {
-    System.out.println("BRUH");
     UsbCamera cam = CameraServer.startAutomaticCapture();
     cam.setResolution(160, 120);
   }
 
   public void toggleCam() {
-    System.out.println(SmartDashboard.getString("CamSelection", " "));
+    System.out.println(SmartDashboard.getString("CamSelection", ""));
     System.out.println(VisionConstants.kCamera1Url);
     if (SmartDashboard.getString("CamSelection", " ").compareTo(VisionConstants.kCamera1Url) == 0) {
-      System.out.println("setting Camera 2");
+      System.out.println("setting Primary Camera");
       SmartDashboard.putString("CamSelection", VisionConstants.kCamera2Url);
     } else {
-      System.out.println("setting Camera 1");
+      System.out.println("setting Climber Camera");
       SmartDashboard.putString("CamSelection", VisionConstants.kCamera1Url);
     }
   }

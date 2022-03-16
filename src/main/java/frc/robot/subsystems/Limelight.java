@@ -31,12 +31,13 @@ public class Limelight extends SubsystemBase {
   private NetworkTableEntry tvert = entry("tvert");
   private NetworkTableEntry ty = entry("ty");
   private NetworkTableEntry ts = entry("ts");
+  private NetworkTableEntry stream = entry("stream");
   private NetworkTableEntry ledMode = entry("ledMode");
   private NetworkTableEntry pipeline = entry("pipeline");
 
   /** Creates a new Limelight. */
   public Limelight() {
-    setPipeline(0);
+    setPipeline(2);
   }
 
   public double getX() {

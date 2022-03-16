@@ -136,6 +136,7 @@ public class RobotContainer {
     m_driverController.left_trigger.whileActiveContinuous(runInfeed);
     m_driverController.right_stick_button
         .whenPressed(new RotateDrivetrainByAngle(Rotation2d.fromDegrees(Limelight.getInstance().getX()), false));
+    m_driverController.left_stick_button.whenPressed(new ToggleCamera());
     // ===================================
   }
 
