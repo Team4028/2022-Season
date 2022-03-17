@@ -151,12 +151,15 @@ public class RobotContainer {
         m_robotDrive).deadlineWith(new AutonTimer())
             .andThen(new InstantCommand(() -> m_robotDrive.drive(0, 0, 0, true)));
   }
+  //TODO: Add real Autons because these are just paths rn
   private void initAutonChooser(){
-    _autonChooser.setDefaultOption("Path Planner path first ball", getPathPlannerSwerveControllerCommand(_testfirstballacq));
-    _autonChooser.addOption("Path Planner path second ball",
-    getPathPlannerSwerveControllerCommand(
-    PathPlanner.loadPath("testLoadingZoneacq", AutoConstants.kMaxSpeedMetersPerSecond, AutoConstants.kMaxAccelerationMetersPerSecondSquared)));
-    _autonChooser.addOption("WPI Trajectory", getSwerveControllerCommand(_trajectories.getTestCompFirstBall()));
+    _autonChooser.setDefaultOption("FourBall_AcquireFirst", getPathPlannerSwerveControllerCommand(_trajectories.FourBall_AcquireFirstCargo()));
+    _autonChooser.addOption("FourBall_AcquireLoadingZoneCargo", getPathPlannerSwerveControllerCommand(_trajectories.FourBall_AcquireLoadingZoneCargo()));
+    _autonChooser.addOption("FourBall_ReturnToShoot", getPathPlannerSwerveControllerCommand(_trajectories.FourBall_ReturnToShoot()));
+    _autonChooser.addOption("FiveBall_AcquireFirstBall", getPathPlannerSwerveControllerCommand(_trajectories.FiveBall_AcquireFirstCargo()));
+    _autonChooser.addOption("FiveBall_AcquireSecondCargo", getPathPlannerSwerveControllerCommand(_trajectories.FiveBall_AcquireSecondCargo()));
+    _autonChooser.addOption("FiveBall_AcquireLoadingZoneCargo", getPathPlannerSwerveControllerCommand(_trajectories.FiveBall_AcquireLoadingZoneCargo()));
+    _autonChooser.addOption("FiveBall_ReturnToShoot", getPathPlannerSwerveControllerCommand(_trajectories.FiveBall_ReturnToShoot()));
   }
   
 

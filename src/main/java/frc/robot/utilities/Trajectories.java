@@ -7,6 +7,8 @@ package frc.robot.utilities;
 import java.util.List;
 
 import com.ctre.phoenix.motion.TrajectoryPoint;
+import com.pathplanner.lib.PathPlanner;
+import com.pathplanner.lib.PathPlannerTrajectory;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -14,6 +16,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.math.trajectory.TrajectoryUtil;
+import frc.robot.Constants.AutoConstants;
 
 import static frc.robot.Constants.AutoConstants.*;
 
@@ -30,53 +33,73 @@ public class Trajectories {
     }
 
     /**
-     * Simple prototype trajectory for testing
+     * @return Path from start to first ball
      */
-    public Trajectory getTestArcTrajectory = TrajectoryGenerator.generateTrajectory(new Pose2d(),
-    List.of(
-      new Translation2d(1,1),
-      new Translation2d(2,-1)
-    ),
-    new Pose2d(3, 0, Rotation2d.fromDegrees(180)),
-    AutonTrajectoryConfig);
-
-    //TODO: Write actual paths
-    /**
-     * Trajectory for first part of prototype Auton sequence
-     * @return Trajectory that acquires first ball
-     */
-    public Trajectory getTestCompFirstBall(){
-        return TrajectoryGenerator.generateTrajectory(
-        List.of(new Pose2d(0.0,0.0,new Rotation2d(0)),
-        new Pose2d(1.19, -0.12, Rotation2d.fromDegrees(0))),
-        AutonTrajectoryConfig);
+    public PathPlannerTrajectory FourBall_AcquireFirstCargo(){
+        return PathPlanner.loadPath(
+            "FourBall_AcquireFirstCargo",
+        AutoConstants.kMaxSpeedMetersPerSecond,
+        AutoConstants.kMaxAccelerationMetersPerSecondSquared
+        );
     }
-
     /**
-     * Trajectory for second part of prototype Auton sequence
-     * @return Trajectory that acquires second ball
+     * @return Path from first cargo to Loading Zone to infeed two cargo
      */
-    public Trajectory getTestCompSecondBall(){
-        return TrajectoryGenerator.generateTrajectory(
-        new Pose2d(1.19, -0.12, Rotation2d.fromDegrees(187.0)),
-        List.of(new Translation2d(2.19, -2.00)),
-        new Pose2d(3.18, -2.13, Rotation2d.fromDegrees(10)),
-        AutonTrajectoryConfig);
+    public PathPlannerTrajectory FourBall_AcquireLoadingZoneCargo(){
+        return PathPlanner.loadPath(
+            "FourBall_AcquireLoadingZoneCargo",
+        AutoConstants.kMaxSpeedMetersPerSecond,
+        AutoConstants.kMaxAccelerationMetersPerSecondSquared
+        );
     }
-
-    //TODO: Investigate weird behavior at start of return path
     /**
-     * Trajectory for third (and final) part of prototype Auton sequence
-     * @return Trajectory that returns robot to shooting range
+     * @return Path from Loading Zone to sweet spot for shot
      */
-    public Trajectory getTestCompReturnShoot(){
-        return TrajectoryGenerator.generateTrajectory(
-            new Pose2d(3.18, -2.13, Rotation2d.fromDegrees(10)),
-            List.of(new Translation2d(2.19, -1.13)),
-        new Pose2d(1.19, -0.12, Rotation2d.fromDegrees(187)),
-        AutonTrajectoryConfig);
+    public PathPlannerTrajectory FourBall_ReturnToShoot(){
+        return PathPlanner.loadPath(
+            "FourBall_ReturnToShoot",
+        AutoConstants.kMaxSpeedMetersPerSecond,
+        AutoConstants.kMaxAccelerationMetersPerSecondSquared
+        );
     }
-
-
-
+    /**
+     * @return Path from start to first cargo then to shot spot (just behind second cargo)
+     */
+    public PathPlannerTrajectory FiveBall_AcquireFirstCargo(){
+        return PathPlanner.loadPath(
+            "FiveBall_AcquireFirstCargo",
+        AutoConstants.kMaxSpeedMetersPerSecond,
+        AutoConstants.kMaxAccelerationMetersPerSecondSquared
+        );
+    }
+    /**
+     * @return Path from first cargo to second cargo (short path ~ a foot forward)
+     */
+    public PathPlannerTrajectory FiveBall_AcquireSecondCargo(){
+        return PathPlanner.loadPath(
+            "FiveBall_AcquireSecondCargo",
+        AutoConstants.kMaxSpeedMetersPerSecond,
+        AutoConstants.kMaxAccelerationMetersPerSecondSquared
+        );
+    }
+    /**
+     * @return Path from second cargo to Loading Zone
+     */
+    public PathPlannerTrajectory FiveBall_AcquireLoadingZoneCargo(){
+        return PathPlanner.loadPath(
+            "FiveBall_AcquireLoadingZoneCargo",
+        AutoConstants.kMaxSpeedMetersPerSecond,
+        AutoConstants.kMaxAccelerationMetersPerSecondSquared
+        );
+    }
+    /**
+     * @return Path from Loading Zone to sweet spot shot
+     */
+    public PathPlannerTrajectory FiveBall_ReturnToShoot(){
+        return PathPlanner.loadPath(
+            "FiveBall_ReturnToShoot",
+        AutoConstants.kMaxSpeedMetersPerSecond,
+        AutoConstants.kMaxAccelerationMetersPerSecondSquared
+        );
+    }
 }
