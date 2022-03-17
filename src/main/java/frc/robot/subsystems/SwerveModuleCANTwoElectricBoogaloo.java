@@ -139,7 +139,7 @@ public class SwerveModuleCANTwoElectricBoogaloo {
    * @param desiredState Desired state with speed and angle.
    */
   public void setDesiredState(SwerveModuleState desiredState) {
-    RezeroTurningMotorEncoder();
+    //RezeroTurningMotorEncoder();
     // Optimize the reference state to avoid spinning further than 90 degrees
     SwerveModuleState state =
         optimize(SwerveModuleState.optimize(desiredState, new Rotation2d(getTurningEncoderRadians())), new Rotation2d(getTurningEncoderRadians()));
@@ -198,13 +198,14 @@ while(Math.abs(delta.getDegrees()) > 90.0){
   return new SwerveModuleState(desiredState.speedMetersPerSecond, desiredState.angle);
 
 }
-private void RezeroTurningMotorEncoder(){
-  if(resetIterations <11){
-    if(resetIterations == 10){
-    m_turningMotor.setSelectedSensorPosition(m_turningEncoder.getAbsolutePosition() / 360.0 * i_integratedEncoderTicksPerModRev);
-    System.out.println("we are bad" + Integer.toString(dub));
-    }
-    resetIterations++;
-  }
+public void RezeroTurningMotorEncoder(){
+  // if(resetIterations <11){
+  //   if(resetIterations == 10){
+  //   m_turningMotor.setSelectedSensorPosition(m_turningEncoder.getAbsolutePosition() / 360.0 * i_integratedEncoderTicksPerModRev);
+  //   System.out.println("we are bad" + Integer.toString(dub));
+  //   }
+  //   resetIterations++;
+  // }
+  m_turningMotor.setSelectedSensorPosition(m_turningEncoder.getAbsolutePosition() / 360.0 * i_integratedEncoderTicksPerModRev);
 }
 }

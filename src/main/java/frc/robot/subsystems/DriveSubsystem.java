@@ -80,7 +80,7 @@ public class DriveSubsystem extends SubsystemBase {
 
   /** Creates a new DriveSubsystem. */
   public DriveSubsystem() {
-    zeroHeading();
+    //zeroHeading();
     //m_gyro.setStatusFramePeriod(PigeonIMU_StatusFrame.CondStatus_1_General, 50);
   }
 
@@ -117,6 +117,7 @@ public class DriveSubsystem extends SubsystemBase {
     if (testTimer == configWaitCycles){
       System.out.println("we are worse 1");
       DriveSubsystem.get_instance().m_frontLeft.configDriveMotor();
+      zeroHeading();
       
     }else if (testTimer == 2 * configWaitCycles){
       System.out.println("we are worse 2");
@@ -132,6 +133,7 @@ public class DriveSubsystem extends SubsystemBase {
       
     } else if(testTimer == 5 * configWaitCycles){
       DriveSubsystem.get_instance().m_frontLeft.configTurningMotor();
+      //resetModuleHeadingControllers();
       // m_frontLeft.configStatusFramePeriods();
     }else if(testTimer == 6 * configWaitCycles){
       DriveSubsystem.get_instance().m_rearRight.configTurningMotor();
@@ -154,7 +156,7 @@ public class DriveSubsystem extends SubsystemBase {
     return m_odometry.getPoseMeters();
   }
   public Rotation2d getGyroRotation2d(){
-    return m_gyro.getRotation2d();
+    return Rotation2d.fromDegrees((kGyroReversed ? -1.0 : 1.0) * m_gyro.getRotation2d().getDegrees());
   }
 
   /**
@@ -184,7 +186,7 @@ public class DriveSubsystem extends SubsystemBase {
     var swerveModuleStates =
         kDriveKinematics.toSwerveModuleStates(
             fieldRelative
-                ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, Rotation2d.fromDegrees((kGyroReversed ? -1.0 : 1.0) * getGyroRotation2d().getDegrees()))
+                ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, Rotation2d.fromDegrees(m_odometry.getPoseMeters().getRotation().getDegrees()))
                 : new ChassisSpeeds(xSpeed, ySpeed, rot));
     SwerveDriveKinematics.desaturateWheelSpeeds(
         swerveModuleStates, DriveConstants.i_kMaxSpeedMetersPerSecond);
@@ -212,11 +214,17 @@ public class DriveSubsystem extends SubsystemBase {
     m_frontRight.resetEncoders();
     m_rearRight.resetEncoders();
   }
+  private void resetModuleHeadingControllers(){
+    DriveSubsystem.get_instance().m_frontLeft.RezeroTurningMotorEncoder();
+    DriveSubsystem.get_instance().m_frontRight.RezeroTurningMotorEncoder();
+    DriveSubsystem.get_instance().m_rearLeft.RezeroTurningMotorEncoder();
+    DriveSubsystem.get_instance().m_rearRight.RezeroTurningMotorEncoder();
+  }
 
   /** Zeroes the heading of the robot. */
   public void zeroHeading() {
-    m_gyro.reset();
-    resetOdometry(new Pose2d(m_odometry.getPoseMeters().getX(), m_odometry.getPoseMeters().getY(), getGyroRotation2d()));
+    resetModuleHeadingControllers();
+    m_odometry.resetPosition(new Pose2d(), getGyroRotation2d());
   }
 
   public void setEnableHoldAngle(boolean enable){

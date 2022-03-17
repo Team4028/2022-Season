@@ -4,12 +4,19 @@
 
 package frc.robot;
 
+import java.nio.file.Path;
 import java.time.Instant;
+
+import com.pathplanner.lib.PathPlanner;
+import com.pathplanner.lib.PathPlannerTrajectory;
+import com.pathplanner.lib.commands.PPSwerveControllerCommand;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
@@ -45,8 +52,9 @@ public class RobotContainer {
   // The robot's subsystems
   private final DriveSubsystem m_robotDrive = DriveSubsystem.get_instance();
   private static RobotContainer _instance;
-  private WaitCommand _wait;
   private static Trajectories _trajectories = Trajectories.get_instance();
+  private SendableChooser<Command> _autonChooser = new SendableChooser<Command>();
+  PathPlannerTrajectory _testfirstballacq;
 
   public static final RobotContainer get_instance() {
     if (_instance == null) {
@@ -65,9 +73,13 @@ public class RobotContainer {
    */
   public RobotContainer() {
     AutoConstants.AUTON_THETA_CONTROLLER.enableContinuousInput(-Math.PI, Math.PI);
+    _testfirstballacq = PathPlanner.loadPath("testfirstballacq",
+    AutoConstants.kMaxSpeedMetersPerSecond, AutoConstants.kMaxAccelerationMetersPerSecondSquared);
     // Configure the button bindings
-    _wait = new WaitCommand(1.0);
     configureButtonBindings();
+    //Init Auton Chooser
+    initAutonChooser();
+    SmartDashboard.putData(_autonChooser);
 
     // Configure default commands
     m_robotDrive.setDefaultCommand(
@@ -124,9 +136,29 @@ public class RobotContainer {
         AutoConstants.AUTON_Y_CONTROLLER,
         AutoConstants.AUTON_THETA_CONTROLLER,
         m_robotDrive::setModuleStates,
-        m_robotDrive)
+        m_robotDrive).deadlineWith(new AutonTimer())
             .andThen(new InstantCommand(() -> m_robotDrive.drive(0, 0, 0, true)));
   }
+  public Command getPathPlannerSwerveControllerCommand(PathPlannerTrajectory traj) {
+    return new PPSwerveControllerCommand(
+        traj,
+        m_robotDrive::getPose,
+        DriveConstants.kDriveKinematics,
+        AutoConstants.AUTON_X_CONTROLLER,
+        AutoConstants.AUTON_Y_CONTROLLER,
+        AutoConstants.AUTON_THETA_CONTROLLER,
+        m_robotDrive::setModuleStates,
+        m_robotDrive).deadlineWith(new AutonTimer())
+            .andThen(new InstantCommand(() -> m_robotDrive.drive(0, 0, 0, true)));
+  }
+  private void initAutonChooser(){
+    _autonChooser.setDefaultOption("Path Planner path first ball", getPathPlannerSwerveControllerCommand(_testfirstballacq));
+    _autonChooser.addOption("Path Planner path second ball",
+    getPathPlannerSwerveControllerCommand(
+    PathPlanner.loadPath("testLoadingZoneacq", AutoConstants.kMaxSpeedMetersPerSecond, AutoConstants.kMaxAccelerationMetersPerSecondSquared)));
+    _autonChooser.addOption("WPI Trajectory", getSwerveControllerCommand(_trajectories.getTestCompFirstBall()));
+  }
+  
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
@@ -135,11 +167,9 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // Create config for trajectory
-    m_robotDrive.resetOdometry(new Pose2d(0, 0, new Rotation2d()));
-    return new InstantCommand();
-    // return getSwerveControllerCommand(_trajectories.getTestCompFirstBall())
-    //     .alongWith(new InstantCommand(() -> Infeed.get_instance().runInfeedSingulatorMotors(1.0)))
-    //     .andThen(new RotateDrivetrainByAngle(Rotation2d.fromDegrees(187), true))
+    // m_robotDrive.resetOdometry(new Pose2d());
+    m_robotDrive.resetOdometry(_testfirstballacq.getInitialPose());
+    return _autonChooser.getSelected();
   }
 
 }
