@@ -250,4 +250,35 @@ public final class Constants {
       public static double kP = 0.1;
     }
   }
+
+  public static final class ControllerConstants {
+    public static final double kDeadband                   = 0.05;  // Jiggle room for the thumbsticks
+    public static final double kSensitivity                = 0.1;
+    public static final double kTriggerDeadband            = 0.01; // Jiggle room for the triggers
+    public static final double kTriggerSensitivity         = 0.6;  // If the trigger is beyond this limit, say it has been pressed
+
+    /* Button Mappings */
+    public static final class Buttons {
+      public static final int    kA                          = 1;
+      public static final int    kB                          = 2;
+      public static final int    kX                          = 3;
+      public static final int    kY                          = 4;
+      public static final int    kLB                         = 5;
+      public static final int    kRB                         = 6;
+      public static final int    kBack                       = 7;
+      public static final int    kStart                      = 8;
+      public static final int    kLS                         = 9;
+      public static final int    kRS                         = 10;
+    }
+    
+    /* Axis Mappings */
+    public static final class Axes {
+      public static final int    kLeftX                      = 0;
+      public static final int    kLeftY                      = 1;
+      public static final int    kLeftTrigger                = 2;
+      public static final int    kRightTrigger               = 3;
+      public static final int    kRightX                     = 4;
+      public static final int    kRightY                     = 5;
+    }
+  }
 }

@@ -4,8 +4,6 @@
 
 package frc.robot;
 
-import java.time.Instant;
-
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
@@ -27,18 +25,15 @@ import frc.robot.commands.shooter.AcceptLimelightDistance;
 import frc.robot.commands.shooter.DecrementShooterIndex;
 import frc.robot.commands.shooter.IncrementShooterIndex;
 import frc.robot.commands.shooter.ResetDefaultIndex;
-import frc.robot.commands.shooter.RunShooterMotors;
 import frc.robot.commands.shooter.RunShooterMotorsVbus;
 import frc.robot.commands.vision.ToggleCamera;
 import frc.robot.subsystems.Infeed;
 import frc.robot.subsystems.Limelight;
-import frc.robot.subsystems.Shooter;
 import frc.robot.utilities.Trajectories;
 // import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
-import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -110,12 +105,12 @@ public class RobotContainer {
     m_operatorController.x.toggleWhenPressed(new RunShooterMotorsVbus());
     m_operatorController.y.toggleWhenPressed(runInfeed);
     m_operatorController.back.toggleWhenPressed(new ReverseInfeedAndConveyor());
-    m_operatorController.left_bumper.whenPressed(new DecrementShooterIndex(false));
-    m_operatorController.right_bumper.whenPressed(new IncrementShooterIndex(false));
-    m_operatorController.left_trigger.whenActive(new DecrementShooterIndex(true));
-    m_operatorController.right_trigger.whenActive(new IncrementShooterIndex(true));
-    m_operatorController.left_stick_button.whenPressed(new ResetDefaultIndex());
-    m_operatorController.right_stick_button.whenPressed(new AcceptLimelightDistance());
+    m_operatorController.lb.whenPressed(new DecrementShooterIndex(false));
+    m_operatorController.rb.whenPressed(new IncrementShooterIndex(false));
+    m_operatorController.lt.whenActive(new DecrementShooterIndex(true));
+    m_operatorController.rt.whenActive(new IncrementShooterIndex(true));
+    m_operatorController.ls.whenPressed(new ResetDefaultIndex());
+    m_operatorController.rs.whenPressed(new AcceptLimelightDistance());
     //====================================
 
     // ======== DRIVER CONTROLLER ========
@@ -124,12 +119,12 @@ public class RobotContainer {
     m_driverController.x.toggleWhenPressed(new XDrive());
     m_driverController.y.toggleWhenPressed(runInfeed);
     m_driverController.start.whenPressed(new InstantCommand(() -> m_robotDrive.zeroHeading()));
-    m_driverController.left_bumper.toggleWhenPressed(new ReverseInfeedAndConveyor());
-    m_driverController.right_bumper.whenPressed(new ToggleInfeedUp());
-    m_driverController.left_trigger.whileActiveContinuous(runInfeed);
-    m_driverController.right_stick_button
+    m_driverController.lb.toggleWhenPressed(new ReverseInfeedAndConveyor());
+    m_driverController.rb.whenPressed(new ToggleInfeedUp());
+    m_driverController.lt.whileActiveContinuous(runInfeed);
+    m_driverController.rs
         .whenPressed(new RotateDrivetrainByAngle(Rotation2d.fromDegrees(Limelight.getInstance().getX()), false));
-    m_driverController.left_stick_button.whenPressed(new ToggleCamera());
+    m_driverController.ls.whenPressed(new ToggleCamera());
     // ===================================
   }
 

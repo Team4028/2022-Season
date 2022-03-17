@@ -38,6 +38,7 @@ public class Limelight extends SubsystemBase {
   /** Creates a new Limelight. */
   public Limelight() {
     setPipeline(2);
+    setPictureInPicture(2);
   }
 
   public double getX() {
@@ -76,6 +77,10 @@ public class Limelight extends SubsystemBase {
 
   public void setPipeline(double pipe) {
     pipeline.setDouble(pipe);
+  }
+
+  public void setPictureInPicture(double mode) {
+    stream.setDouble(mode);
   }
 
   public boolean getHasTarget() {

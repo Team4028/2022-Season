@@ -17,7 +17,6 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.util;
-import frc.robot.Constants.EncoderConstants;
 import frc.robot.Constants.IndexConstants;
 import frc.robot.Constants.PIDConstants;
 import frc.robot.Constants.SubsystemConstants;
@@ -118,8 +117,6 @@ public class Shooter extends SubsystemBase {
     // _front.set(ControlMode.PercentOutput, SmartDashboard.getNumber("FrontVbus", VBusConstants.kShooterFrontDefault));
     // _back.set(ControlMode.PercentOutput, SmartDashboard.getNumber("BackVbus", VBusConstants.kShooterBackDefault));
     // _kicker.set(ControlMode.PercentOutput, SmartDashboard.getNumber("KickerVbus", VBusConstants.kKicker));
-
-    //System.out.println(entry.ActuatorVal);
 
     _anglePid.setReference(entry.ActuatorVal, ControlType.kPosition);
     //_anglePid.setReference(SmartDashboard.getNumber("Hood Angle (rot)", VBusConstants.kShooterHoodAngleRotDefault), ControlType.kPosition);
