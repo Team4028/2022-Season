@@ -211,17 +211,22 @@ public final class Constants {
     public static final double kAngleThreshold = 0.1;
   }
 
-  public static final class IndexConstants {
+  public static final class ShooterConstants {
     public static final double kFineAdjustment = 0.5;
     public static final double kCoarseAdjustment = 1.;
 
     public static final double kIndexDefault = 12.5;
+
+    public static final double kMaxAllowedAngle = 30.;
+
+    public static final boolean kIsVBus = true;
+    public static final boolean kIsRealGoal = false;
   }
 
   public static final class LimelightConstants {
-    public static final double kTargetHeight = 88.; // 104 when
-    public static final double kMountHeight = 21.5; // Might be something like 22. Hard to measure
-    public static final double kMountAngle = 46; // is 50 meta?
+    public static final double kTargetHeight = ShooterConstants.kIsRealGoal ? 104. : 88.;
+    public static final double kMountHeight = 21.5;
+    public static final double kMountAngle = 46;
   }
 
   public static final class VisionConstants {
@@ -252,7 +257,7 @@ public final class Constants {
   }
 
   public static final class ControllerConstants {
-    public static final double kDeadband                   = 0.05;  // Jiggle room for the thumbsticks
+    public static final double kDeadband                   = 0.05; // Jiggle room for the thumbsticks
     public static final double kSensitivity                = 0.1;
     public static final double kTriggerDeadband            = 0.01; // Jiggle room for the triggers
     public static final double kTriggerSensitivity         = 0.6;  // If the trigger is beyond this limit, say it has been pressed

@@ -6,6 +6,7 @@ package frc.robot.utilities;
 import java.util.Iterator;
 import java.util.LinkedList;
 
+import frc.robot.Constants.ShooterConstants;
 
 /**
  * Add your docs here.
@@ -83,8 +84,10 @@ public class ShooterTable {
                 double kickerAdj = scaleFactor * (steAbove.KickerRPM - steBelow.KickerRPM);
                 int kickerCalculatedRPM = steBelow.KickerRPM + (int) (Math.round(kickerAdj));
 
-            
                 double actuatorValue = steBelow.ActuatorVal + (scaleFactor * (steAbove.ActuatorVal - steBelow.ActuatorVal));
+                if (actuatorValue > ShooterConstants.kMaxAllowedAngle) {
+                    actuatorValue = ShooterConstants.kMaxAllowedAngle;
+                }
 
                 // build the return object
                 ste = new ShooterTableEntry(_indexCounter++, distanceInFeet, shooterFrontCalculatedRPM, shooterBackCalculatedRPM, kickerCalculatedRPM, actuatorValue, "Calculated value", false);
@@ -187,21 +190,35 @@ public class ShooterTable {
         // primarytable.add(new ShooterTableEntry(_indexCounter++, 14., 40, 60, 0., "index 14", false));
         // primarytable.add(new ShooterTableEntry(_indexCounter++, 19., 40, 80, 0., "index 19", false)); 
 
-        // === HQ GOAL === //
-        primarytable.add(new ShooterTableEntry(_indexCounter++, 7., 42 /* 1240 */, 35 /* 980 */, 40 /* 1060 */, 9., "close lob", false));
-        primarytable.add(new ShooterTableEntry(_indexCounter++, 10., 33 /* 950 */, 48 /* 1400 */, 40 /* 1420 */, 18., "index 10", false));
-        primarytable.add(new ShooterTableEntry(_indexCounter++, 12.5, 35 /* 1000 */, 55 /* 1620 */, 40 /* 1060 */, 24.5, "index 12.5", false));
-        primarytable.add(new ShooterTableEntry(_indexCounter++, 15, 38 /* 1100 */, 64 /* 1940 */, 40 /* 1060 */, 30., "index 15", false));
-
-        // === REAL GOAL === //
-        // primarytable.add(new ShooterTableEntry(_indexCounter++, 7., 40 /* 1190 */, 50 /* 1520 */, 40 /* 1060 */, 7., "close lob", false));
-        // primarytable.add(new ShooterTableEntry(_indexCounter++, 10., 33 /* 950 */, 48 /* 1400 */, 40 /* 1420 */, 18., "index 10", false));
-        // primarytable.add(new ShooterTableEntry(_indexCounter++, 12.5, 41 /* 1230 */, 61 /* 1900 */, 40 /* 1060 */, 22, "index 12.5", false));
-        // primarytable.add(new ShooterTableEntry(_indexCounter++, 15, 38 /* 1100 */, 64 /* 1940 */, 40 /* 1060 */, 30., "index 15", false));
-        // primarytable.add(new ShooterTableEntry(_indexCounter++, 19, 50 /* 1520 */, 75 /* 2360 */, 40 /* 1060 */, 30., "index 19", false));
-
+        if (ShooterConstants.kIsRealGoal) {
+            if (ShooterConstants.kIsVBus) {
+                primarytable.add(new ShooterTableEntry(_indexCounter++, 7., 40 /* 1190 */, 50 /* 1520 */, 40 /* 1060 */, 7., "close lob", false));
+                primarytable.add(new ShooterTableEntry(_indexCounter++, 10., 33 /* 950 */, 48 /* 1400 */, 40 /* 1060 */, 18., "index 10", false));
+                primarytable.add(new ShooterTableEntry(_indexCounter++, 12.5, 41 /* 1230 */, 61 /* 1900 */, 40 /* 1060 */, 22, "index 12.5", false));
+                primarytable.add(new ShooterTableEntry(_indexCounter++, 15, 38 /* 1100 */, 64 /* 1940 */, 40 /* 1060 */, 30., "index 15", false));
+                primarytable.add(new ShooterTableEntry(_indexCounter++, 19, 50 /* 1520 */, 75 /* 2360 */, 40 /* 1060 */, 30., "index 19", false));        
+            } else {
+                primarytable.add(new ShooterTableEntry(_indexCounter++, 7., 1190, 1520, 1060, 7., "close lob", false));
+                primarytable.add(new ShooterTableEntry(_indexCounter++, 10., 950, 1400, 1060, 18., "index 10", false));
+                primarytable.add(new ShooterTableEntry(_indexCounter++, 12.5, 1230, 1900, 1060, 22, "index 12.5", false));
+                primarytable.add(new ShooterTableEntry(_indexCounter++, 15, 1100, 1940, 1060, 30., "index 15", false));
+                primarytable.add(new ShooterTableEntry(_indexCounter++, 19, 1520, 2360, 1060, 30., "index 19", false));        
+            }
+        } else {
+            if (ShooterConstants.kIsVBus) {
+                primarytable.add(new ShooterTableEntry(_indexCounter++, 7., 42 /* 1240 */, 35 /* 980 */, 40 /* 1060 */, 9., "close lob", false));
+                primarytable.add(new ShooterTableEntry(_indexCounter++, 10., 33 /* 950 */, 48 /* 1400 */, 40 /* 1420 */, 18., "index 10", false));
+                primarytable.add(new ShooterTableEntry(_indexCounter++, 12.5, 35 /* 1000 */, 55 /* 1620 */, 40 /* 1060 */, 24.5, "index 12.5", false));
+                primarytable.add(new ShooterTableEntry(_indexCounter++, 15, 38 /* 1100 */, 64 /* 1940 */, 40 /* 1060 */, 30., "index 15", false));        
+            } else {
+                primarytable.add(new ShooterTableEntry(_indexCounter++, 7., 1240, 980, 1060, 9., "close lob", false));
+                primarytable.add(new ShooterTableEntry(_indexCounter++, 10., 950, 1400, 1060, 18., "index 10", false));
+                primarytable.add(new ShooterTableEntry(_indexCounter++, 12.5, 1000, 1620, 1060, 24.5, "index 12.5", false));
+                primarytable.add(new ShooterTableEntry(_indexCounter++, 15, 1100, 1940, 1060, 30., "index 15", false));
         
-        // 30 IS ABSOLUTE MAX ANGLE MOTOR VALUE
+            }
+        }
+        
 		return primarytable;
     }
     

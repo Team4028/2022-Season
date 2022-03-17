@@ -17,7 +17,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.util;
-import frc.robot.Constants.IndexConstants;
+import frc.robot.Constants.ShooterConstants;
 import frc.robot.Constants.PIDConstants;
 import frc.robot.Constants.SubsystemConstants;
 import frc.robot.Constants.VBusConstants;
@@ -35,7 +35,7 @@ public class Shooter extends SubsystemBase {
   
   private Limelight _l;
   private ShooterTable _st = ShooterTable.getPrimaryTable();
-  double limelightDistance, shooterIndex = IndexConstants.kIndexDefault;
+  double limelightDistance, shooterIndex = ShooterConstants.kIndexDefault;
 
   private static Shooter _instance = new Shooter();
 
@@ -159,17 +159,17 @@ public class Shooter extends SubsystemBase {
 
   public void incrementIndex(boolean fine) {
     if (fine) {
-      shooterIndex += IndexConstants.kFineAdjustment;
+      shooterIndex += ShooterConstants.kFineAdjustment;
     } else {
-      shooterIndex += IndexConstants.kCoarseAdjustment;
+      shooterIndex += ShooterConstants.kCoarseAdjustment;
     }
   }
 
   public void decrementIndex(boolean fine) {
     if (fine) {
-      shooterIndex -= IndexConstants.kFineAdjustment;
+      shooterIndex -= ShooterConstants.kFineAdjustment;
     } else {
-      shooterIndex -= IndexConstants.kCoarseAdjustment;
+      shooterIndex -= ShooterConstants.kCoarseAdjustment;
     }
   }
 
@@ -184,7 +184,7 @@ public class Shooter extends SubsystemBase {
   }
 
   public void resetIndex() {
-    shooterIndex = IndexConstants.kIndexDefault;
+    shooterIndex = ShooterConstants.kIndexDefault;
   }
 
   public static Shooter getInstance() {
