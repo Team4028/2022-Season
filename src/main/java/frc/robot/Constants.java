@@ -221,7 +221,7 @@ public final class Constants {
     public static final double kFineAdjustment = 0.5;
     public static final double kCoarseAdjustment = 1.;
 
-    public static final double kIndexDefault = 14.;
+    public static final double kIndexDefault = 12.;
   }
 
   public static final class LimelightConstants {
