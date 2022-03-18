@@ -14,13 +14,11 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.wpilibj.interfaces.Gyro;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.RobotContainer;
-import frc.robot.util;
 
 public class DriveSubsystem extends SubsystemBase {
   private static final double i_FRONT_LEFT_ANGLE_OFFSET = -Math.toRadians(318.9 - 180.0);//24.32 + 180.0);//154.6);
@@ -86,10 +84,6 @@ public class DriveSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    m_frontLeft.checkPowerFailure();
-    m_frontRight.checkPowerFailure();
-    m_rearLeft.checkPowerFailure();
-    m_rearRight.checkPowerFailure();
     // Update the odometry in the periodic block
     if (testTimer > 8 * configWaitCycles){
     m_odometry.update(
@@ -100,8 +94,8 @@ public class DriveSubsystem extends SubsystemBase {
         m_rearRight.getState());
     }
     //TODO: Organized, comprehensive data for whole Drivetrain
-    SmartDashboard.putNumber("X (Feet)", util.metersToFeet(m_odometry.getPoseMeters().getX()));
-    SmartDashboard.putNumber("Y (Feet)", util.metersToFeet(m_odometry.getPoseMeters().getY()));
+    SmartDashboard.putNumber("X (Feet)", Units.metersToFeet(m_odometry.getPoseMeters().getX()));
+    SmartDashboard.putNumber("Y (Feet)", Units.metersToFeet(m_odometry.getPoseMeters().getY()));
     SmartDashboard.putNumber("X (Metres)", m_odometry.getPoseMeters().getX());
     SmartDashboard.putNumber("Y (Metres)", m_odometry.getPoseMeters().getY());
     SmartDashboard.putNumber("Heading (Deg)", m_odometry.getPoseMeters().getRotation().getDegrees());
@@ -111,6 +105,7 @@ public class DriveSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("RR Angle", m_rearRight.getState().angle.getDegrees());
     SmartDashboard.putBoolean("Hold Angle", enableHoldAngle);
 
+    //TODO: Fix this/ remove if possible
     if(testTimer < 8 * configWaitCycles + 1){
       testTimer++;
     }
@@ -118,32 +113,23 @@ public class DriveSubsystem extends SubsystemBase {
       System.out.println("we are worse 1");
       DriveSubsystem.get_instance().m_frontLeft.configDriveMotor();
       zeroHeading();
-      
     }else if (testTimer == 2 * configWaitCycles){
       System.out.println("we are worse 2");
       DriveSubsystem.get_instance().m_frontRight.configDriveMotor();
-      
     }else if (testTimer == 3 * configWaitCycles){
       System.out.println("we are worse 3");
       DriveSubsystem.get_instance().m_rearLeft.configDriveMotor();
-
     }else if (testTimer == 4 * configWaitCycles){
       System.out.println("we are worse 4");
       DriveSubsystem.get_instance().m_rearRight.configDriveMotor();
-      
     } else if(testTimer == 5 * configWaitCycles){
       DriveSubsystem.get_instance().m_frontLeft.configTurningMotor();
-      //resetModuleHeadingControllers();
-      // m_frontLeft.configStatusFramePeriods();
     }else if(testTimer == 6 * configWaitCycles){
       DriveSubsystem.get_instance().m_rearRight.configTurningMotor();
-      // m_frontRight.configStatusFramePeriods();
     }else if(testTimer == 7 * configWaitCycles){
       DriveSubsystem.get_instance().m_frontRight.configTurningMotor();
-      // m_rearLeft.configStatusFramePeriods();
     }else if(testTimer == 8 * configWaitCycles){
       DriveSubsystem.get_instance().m_rearLeft.configTurningMotor();
-      // m_rearRight.configStatusFramePeriods();
     }
   }
 

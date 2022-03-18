@@ -9,7 +9,6 @@ import static frc.robot.Constants.MK4IModuleConstants.*;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
@@ -26,12 +25,8 @@ public class SwerveModuleCANTwoElectricBoogaloo {
   private final WPI_TalonFX m_turningMotor;
   private final WPI_CANCoder m_turningEncoder;
 
-  private final int STATUS_FRAME_GENERAL_PERIOD_MS = 250;
   private final int CAN_TIMEOUT_MS = 250;
-  int dub;
-
-
-  private int resetIterations = 0;
+  private int dub;
 
   /**
    * Constructs a SwerveModuleCANTwoElectricBoogaloo.
@@ -49,36 +44,17 @@ public class SwerveModuleCANTwoElectricBoogaloo {
     m_turningEncoder = new WPI_CANCoder(CANEncoderPort, DriveConstants.kCANivoreName);
     dub = CANEncoderPort;
 
-    //m_turningEncoder.setPositionToAbsolute();
-    // if(m_turningEncoder.configGetSensorInitializationStrategy() != SensorInitializationStrategy.BootToAbsolutePosition){
-    //     m_turningEncoder.configSensorInitializationStrategy(SensorInitializationStrategy.BootToAbsolutePosition, CAN_TIMEOUT_MS);
-    //     m_turningEncoder.configAbsoluteSensorRange(AbsoluteSensorRange.Unsigned_0_to_360);
-    // }
     m_turningEncoder.configFactoryDefault();
     m_turningMotor.configFactoryDefault();
     m_driveMotor.configFactoryDefault();
 
     m_turningEncoder.configMagnetOffset(Math.toDegrees(turningMotorOffset));
-    // m_turningMotor.setSensorPhase(false);
-    // m_turningMotor.configAllowableClosedloopError(0, i_kTurningMotorAllowableClosedLoopError, CAN_TIMEOUT_MS);
-    // m_turningMotor.setStatusFramePeriod(
-    //     StatusFrameEnhanced.Status_1_General,
-    //     STATUS_FRAME_GENERAL_PERIOD_MS,
-    //     CAN_TIMEOUT_MS);
     m_turningEncoder.setStatusFramePeriod(
         CANCoderStatusFrame.SensorData,
         50,
         CAN_TIMEOUT_MS);
-    // m_driveMotor.setStatusFramePeriod(
-    //     StatusFrameEnhanced.Status_4_AinTempVbat,
-    //     STATUS_FRAME_GENERAL_PERIOD_MS,
-    //     CAN_TIMEOUT_MS);
-    //TODO: CAN Utilization issues
-
-    //m_driveMotor.configSelectedFeedbackCoefficient(1);
     configMotorPID(m_turningMotor, 0, i_kPModuleTurningController, 0.0, 0.1);
     configMotorPID(m_driveMotor, 0, i_kPModuleDriveController, 0.0, 0.0);
-    //System.out.println(m_turningMotor.getSelectedSensorPosition());
   }
 
   private double getTurningEncoderRadians(){
@@ -86,13 +62,13 @@ public class SwerveModuleCANTwoElectricBoogaloo {
     }
 
   public void configTurningMotor(){
-    //m_turningMotor.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, CAN_TIMEOUT_MS);
-    //m_turningMotor.configSelectedFeedbackCoefficient(1.0);
+    m_turningMotor.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, CAN_TIMEOUT_MS);
+    m_turningMotor.configSelectedFeedbackCoefficient(1.0);
     m_turningEncoder.configSensorInitializationStrategy(SensorInitializationStrategy.BootToAbsolutePosition);
     m_turningEncoder.setPositionToAbsolute();
     m_turningMotor.setNeutralMode(NeutralMode.Brake);
     m_turningMotor.setInverted(true);
-    //m_turningMotor.selectProfileSlot(0, 0);
+    m_turningMotor.selectProfileSlot(0, 0);
     m_turningMotor.setSelectedSensorPosition(m_turningEncoder.getAbsolutePosition() / 360.0 * i_integratedEncoderTicksPerModRev);
     m_turningMotor.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 20, 25, 1.0));
   }
@@ -112,17 +88,6 @@ public class SwerveModuleCANTwoElectricBoogaloo {
     m_driveMotor.configVoltageCompSaturation(i_kNominalVoltage);
     m_driveMotor.enableVoltageCompensation(true);
   }
-  public void configStatusFramePeriods(){
-    // m_turningEncoder.setStatusFramePeriod(CANCoderStatusFrame.SensorData, 100);
-    // m_turningMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_1_General, 20);
-    // m_turningMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 20);
-    // m_turningMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_4_AinTempVbat, 255);
-    // m_driveMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_6_Misc, 255);
-    // m_driveMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_1_General, 20);
-    // m_driveMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 20);
-    // m_driveMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_4_AinTempVbat, 255);
-    // m_driveMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_6_Misc, 255);
-  }
 
   /**
    * Returns the current state of the module.
@@ -139,7 +104,6 @@ public class SwerveModuleCANTwoElectricBoogaloo {
    * @param desiredState Desired state with speed and angle.
    */
   public void setDesiredState(SwerveModuleState desiredState) {
-    //RezeroTurningMotorEncoder();
     // Optimize the reference state to avoid spinning further than 90 degrees
     SwerveModuleState state =
         optimize(SwerveModuleState.optimize(desiredState, new Rotation2d(getTurningEncoderRadians())), new Rotation2d(getTurningEncoderRadians()));
@@ -148,6 +112,7 @@ public class SwerveModuleCANTwoElectricBoogaloo {
     final double feedForward =
         DriveConstants.driveTrainFeedforward.calculate(state.speedMetersPerSecond) / i_kNominalVoltage;
 
+    //TODO:Add feedforward/pid back once characterized
     // m_driveMotor.set(ControlMode.Velocity,
     // state.speedMetersPerSecond / 10.0 / i_kDriveEncoderDistancePerPulse,
     // DemandType.ArbitraryFeedForward,
@@ -199,13 +164,6 @@ while(Math.abs(delta.getDegrees()) > 90.0){
 
 }
 public void RezeroTurningMotorEncoder(){
-  // if(resetIterations <11){
-  //   if(resetIterations == 10){
-  //   m_turningMotor.setSelectedSensorPosition(m_turningEncoder.getAbsolutePosition() / 360.0 * i_integratedEncoderTicksPerModRev);
-  //   System.out.println("we are bad" + Integer.toString(dub));
-  //   }
-  //   resetIterations++;
-  // }
   m_turningMotor.setSelectedSensorPosition(m_turningEncoder.getAbsolutePosition() / 360.0 * i_integratedEncoderTicksPerModRev);
 }
 }

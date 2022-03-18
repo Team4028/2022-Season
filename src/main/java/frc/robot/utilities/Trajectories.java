@@ -4,20 +4,8 @@
 
 package frc.robot.utilities;
 
-import java.util.List;
-
-import com.ctre.phoenix.motion.TrajectoryPoint;
 import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
-
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.trajectory.Trajectory;
-import edu.wpi.first.math.trajectory.TrajectoryGenerator;
-import edu.wpi.first.math.trajectory.TrajectoryUtil;
-import frc.robot.Constants.AutoConstants;
-
 import static frc.robot.Constants.AutoConstants.*;
 
 /**
@@ -38,8 +26,8 @@ public class Trajectories {
     public PathPlannerTrajectory FourBall_AcquireFirstCargo(){
         return PathPlanner.loadPath(
             "FourBall_AcquireFirstCargo",
-        AutoConstants.kMaxSpeedMetersPerSecond,
-        AutoConstants.kMaxAccelerationMetersPerSecondSquared
+        kMaxSpeedMetersPerSecond,
+        kMaxAccelerationMetersPerSecondSquared
         );
     }
     /**
@@ -48,8 +36,8 @@ public class Trajectories {
     public PathPlannerTrajectory FourBall_AcquireLoadingZoneCargo(){
         return PathPlanner.loadPath(
             "FourBall_AcquireLoadingZoneCargo",
-        AutoConstants.kMaxSpeedMetersPerSecond,
-        AutoConstants.kMaxAccelerationMetersPerSecondSquared
+        kMaxSpeedMetersPerSecond,
+        kMaxAccelerationMetersPerSecondSquared
         );
     }
     /**
@@ -58,8 +46,8 @@ public class Trajectories {
     public PathPlannerTrajectory FourBall_ReturnToShoot(){
         return PathPlanner.loadPath(
             "FourBall_ReturnToShoot",
-        AutoConstants.kMaxSpeedMetersPerSecond,
-        AutoConstants.kMaxAccelerationMetersPerSecondSquared
+        kMaxSpeedMetersPerSecond,
+        kMaxAccelerationMetersPerSecondSquared
         );
     }
     /**
@@ -68,8 +56,8 @@ public class Trajectories {
     public PathPlannerTrajectory FiveBall_AcquireFirstCargo(){
         return PathPlanner.loadPath(
             "FiveBall_AcquireFirstCargo",
-        AutoConstants.kMaxSpeedMetersPerSecond,
-        AutoConstants.kMaxAccelerationMetersPerSecondSquared
+        kMaxSpeedMetersPerSecond,
+        kMaxAccelerationMetersPerSecondSquared
         );
     }
     /**
@@ -78,8 +66,8 @@ public class Trajectories {
     public PathPlannerTrajectory FiveBall_AcquireSecondCargo(){
         return PathPlanner.loadPath(
             "FiveBall_AcquireSecondCargo",
-        AutoConstants.kMaxSpeedMetersPerSecond,
-        AutoConstants.kMaxAccelerationMetersPerSecondSquared
+        kMaxSpeedMetersPerSecond,
+        kMaxAccelerationMetersPerSecondSquared
         );
     }
     /**
@@ -88,8 +76,8 @@ public class Trajectories {
     public PathPlannerTrajectory FiveBall_AcquireLoadingZoneCargo(){
         return PathPlanner.loadPath(
             "FiveBall_AcquireLoadingZoneCargo",
-        AutoConstants.kMaxSpeedMetersPerSecond,
-        AutoConstants.kMaxAccelerationMetersPerSecondSquared
+        kMaxSpeedMetersPerSecond,
+        kMaxAccelerationMetersPerSecondSquared
         );
     }
     /**
@@ -98,8 +86,8 @@ public class Trajectories {
     public PathPlannerTrajectory FiveBall_ReturnToShoot(){
         return PathPlanner.loadPath(
             "FiveBall_ReturnToShoot",
-        AutoConstants.kMaxSpeedMetersPerSecond,
-        AutoConstants.kMaxAccelerationMetersPerSecondSquared
+        kMaxSpeedMetersPerSecond,
+        kMaxAccelerationMetersPerSecondSquared
         );
     }
 }
