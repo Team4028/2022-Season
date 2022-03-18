@@ -10,6 +10,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.CurrentConstants;
 import frc.robot.Constants.SubsystemConstants;
 
 public class Conveyor extends SubsystemBase {
@@ -26,7 +27,7 @@ public class Conveyor extends SubsystemBase {
 
   public Conveyor() {
     _conveyorMotor = new CANSparkMax(SubsystemConstants.CONVEYOR_MOTOR_ID, MotorType.kBrushless);
-    _conveyorMotor.setSmartCurrentLimit(20);
+    _conveyorMotor.setSmartCurrentLimit(CurrentConstants.kConveyor);
     _enc = _conveyorMotor.getEncoder();
     _enc.setPosition(0);
     _conveyorMotor.setInverted(true);

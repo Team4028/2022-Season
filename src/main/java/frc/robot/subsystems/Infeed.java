@@ -30,7 +30,7 @@ public class Infeed extends SubsystemBase {
   public Infeed() {
     _infeedMotor = new TalonSRX(SubsystemConstants.INFEED_MOTOR_ID);
     _singulatorMotor = new CANSparkMax(SubsystemConstants.SINGULATOR_MOTOR_ID, MotorType.kBrushless);
-    _solenoid = new Solenoid(PneumaticsModuleType.CTREPCM, 0);
+    _solenoid = new Solenoid(PneumaticsModuleType.CTREPCM, SubsystemConstants.INFEED_SOLENOID_ID);
 
   }
 

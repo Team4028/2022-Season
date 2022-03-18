@@ -180,12 +180,17 @@ public final class Constants {
     public static final int KICKER_MOTOR_ID = 16;
     public static final int SHOOTER_FRONT_MOTOR_ID = 17;
     public static final int SHOOTER_BACK_MOTOR_ID = 18;
-    public static final int ANGLE_MOTOR_ID = 16;
+    public static final int ANGLE_MOTOR_ID = 19;
 
-    // public static final int CLIMB_MOTOR_ID = 19; // this might need two motors
+    public static final int CLIMBER_LEFT_MOTOR_ID = 20;
+    public static final int CLIMBER_RIGHT_MOTOR_ID = 21;
 
     public static final int TOF1_SENSOR_ID = 420;
     public static final int TOF2_SENSOR_ID = 69;
+
+    public static final int INFEED_SOLENOID_ID = 0;
+    public static final int GRIPPY_SOLENOID_ID = 1;
+    public static final int TIPPY_SOLENOID_ID = 2;
   }
 
   public static final class VBusConstants {
@@ -199,7 +204,8 @@ public final class Constants {
     public static final double kShooterFrontDefault = 0.35;
     public static final double kShooterBackDefault = 0.55;
     public static final double kShooterHoodAngleRotDefault = 24.5;
-    // 17 IS ABSOLUTE MAX
+    
+    public static final double kClimberSlowDrop = 0.25;
   }
 
   public static final class EncoderConstants {
@@ -285,5 +291,11 @@ public final class Constants {
       public static final int kRightX = 4;
       public static final int kRightY = 5;
     }
+  }
+
+  public static final class CurrentConstants {
+    public static final int kClimber = 60;
+    public static final int kConveyor = 20;
+    public static final int kAngle = 10;
   }
 }
