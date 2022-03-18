@@ -46,14 +46,14 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
  */
 public class RobotContainer {
   // The robot's subsystems
-  private final DriveSubsystem m_robotDrive = DriveSubsystem.get_instance();
-  private final Infeed m_singulatorAndInfeed = Infeed.get_instance();
+  private final DriveSubsystem m_robotDrive = DriveSubsystem.getInstance();
+  private final Infeed m_singulatorAndInfeed = Infeed.getInstance();
   private final RunInfeedSingulatorMotors runInfeed;
   private static RobotContainer _instance;
   private WaitCommand _wait;
-  private static Trajectories _trajectories = Trajectories.get_instance();
+  private static Trajectories _trajectories = Trajectories.getInstance();
 
-  public static final RobotContainer get_instance() {
+  public static final RobotContainer getInstance() {
     if (_instance == null) {
       _instance = new RobotContainer();
     }
@@ -82,9 +82,9 @@ public class RobotContainer {
         // Turning is controlled by the X axis of the right stick.
         new RunCommand(
             () -> m_robotDrive.drive(
-                util.deadband(-m_driverController.getLeftYAxis()),
-                util.deadband(-m_driverController.getLeftXAxis()),
-                util.deadband(-m_driverController.getRightXAxis()),
+                -m_driverController.getLeftYAxis(),
+                -m_driverController.getLeftXAxis(),
+                -m_driverController.getRightXAxis(),
                 true),
             m_robotDrive));
   }
@@ -111,7 +111,7 @@ public class RobotContainer {
     m_operatorController.rt.whenActive(new IncrementShooterIndex(true));
     m_operatorController.ls.whenPressed(new ResetDefaultIndex());
     m_operatorController.rs.whenPressed(new AcceptLimelightDistance());
-    //====================================
+    // ====================================
 
     // ======== DRIVER CONTROLLER ========
     m_driverController.a.whenPressed(new InstantCommand(() -> Limelight.getInstance().toggleLedMode()));
@@ -160,16 +160,20 @@ public class RobotContainer {
     m_robotDrive.resetOdometry(new Pose2d(0, 0, new Rotation2d()));
     return new TestAutonCommand().deadlineWith(new AutonTimer());
     // return getSwerveControllerCommand(_trajectories.getTestCompFirstBall())
-    //     .alongWith(new InstantCommand(() -> Infeed.get_instance().runInfeedSingulatorMotors(1.0)))
-    //     .andThen(new RotateDrivetrainByAngle(Rotation2d.fromDegrees(187), true))
-    //     .andThen(new RunShooterMotorsVbus().alongWith(new WaitCommand(0.25).andThen(new RunConveyor())).raceWith(new WaitCommand(1.25)))
-    //     .andThen(new InstantCommand(() -> Infeed.get_instance().stopInfeedSingulatorMotors()))
-    //     .deadlineWith(new AutonTimer());
-        // .andThen(getSwerveControllerCommand(_trajectories.getTestCompSecondBall()))
-        // .andThen(new WaitCommand(1.5))
-        // .andThen(getSwerveControllerCommand(_trajectories.getTestCompReturnShoot()))
-        // .andThen(new WaitCommand(2.0))
-        // .andThen(new InstantCommand(() -> System.out.println("AUTON FINISHED")));
+    // .alongWith(new InstantCommand(() ->
+    // Infeed.getInstance().runInfeedSingulatorMotors(1.0)))
+    // .andThen(new RotateDrivetrainByAngle(Rotation2d.fromDegrees(187), true))
+    // .andThen(new RunShooterMotorsVbus().alongWith(new
+    // WaitCommand(0.25).andThen(new RunConveyor())).raceWith(new
+    // WaitCommand(1.25)))
+    // .andThen(new InstantCommand(() ->
+    // Infeed.getInstance().stopInfeedSingulatorMotors()))
+    // .deadlineWith(new AutonTimer());
+    // .andThen(getSwerveControllerCommand(_trajectories.getTestCompSecondBall()))
+    // .andThen(new WaitCommand(1.5))
+    // .andThen(getSwerveControllerCommand(_trajectories.getTestCompReturnShoot()))
+    // .andThen(new WaitCommand(2.0))
+    // .andThen(new InstantCommand(() -> System.out.println("AUTON FINISHED")));
   }
 
 }

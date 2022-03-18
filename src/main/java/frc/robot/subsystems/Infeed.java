@@ -22,17 +22,19 @@ public class Infeed extends SubsystemBase {
   private CANSparkMax _singulatorMotor;
   private Solenoid _solenoid;
   private static Infeed _instance = new Infeed();
-  private double infeedvbus = 0;
-  public static Infeed get_instance() {
-   return _instance;
+
+  public static Infeed getInstance() {
+    return _instance;
   }
+
   public Infeed() {
     _infeedMotor = new TalonSRX(SubsystemConstants.INFEED_MOTOR_ID);
     _singulatorMotor = new CANSparkMax(SubsystemConstants.SINGULATOR_MOTOR_ID, MotorType.kBrushless);
     _solenoid = new Solenoid(PneumaticsModuleType.CTREPCM, 0);
- 
+
   }
-  public void runInfeedSingulatorMotors(double mult){
+
+  public void runInfeedSingulatorMotors(double mult) {
     if (!_solenoid.get()) {
       _infeedMotor.set(ControlMode.PercentOutput, mult * VBusConstants.kInfeed);
       SmartDashboard.putBoolean("Infeed/Running", true);
@@ -45,8 +47,8 @@ public class Infeed extends SubsystemBase {
     SmartDashboard.putBoolean("Singulator/Running", true);
     SmartDashboard.putNumber("Singulator/Vbus", mult * VBusConstants.kInfeed);
   }
-  
-  public void stopInfeedSingulatorMotors(){
+
+  public void stopInfeedSingulatorMotors() {
     _infeedMotor.set(ControlMode.PercentOutput, 0);
     _singulatorMotor.set(0);
     SmartDashboard.putBoolean("Infeed/Running", false);
@@ -54,11 +56,7 @@ public class Infeed extends SubsystemBase {
 
   }
 
-  public void toggleInfeedRun(){
-    _infeedMotor.set(ControlMode.PercentOutput, Math.abs(Math.abs(infeedvbus) - VBusConstants.kInfeed));
-  }
-
-  public void toggleInfeedUp(){
+  public void toggleInfeedUp() {
     _solenoid.toggle();
   }
 

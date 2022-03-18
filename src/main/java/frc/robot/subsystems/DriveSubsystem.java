@@ -22,10 +22,10 @@ import frc.robot.RobotContainer;
 import frc.robot.util;
 
 public class DriveSubsystem extends SubsystemBase {
-  private static final double i_FRONT_LEFT_ANGLE_OFFSET = -Math.toRadians(206.3);//24.32 + 180.0);//154.6);
-  private static final double i_FRONT_RIGHT_ANGLE_OFFSET = -Math.toRadians(144.4);//336.0 - 180.0);//169.3 - 5);
-  private static final double i_BACK_LEFT_ANGLE_OFFSET = -Math.toRadians(327.7);//507.2 - 180.0);//31.3);
-  private static final double i_BACK_RIGHT_ANGLE_OFFSET = -Math.toRadians(160.9);//340.1 - 180.0);//199.1);
+  private static final double i_FRONT_LEFT_ANGLE_OFFSET = -Math.toRadians(206.3);// 24.32 + 180.0);//154.6);
+  private static final double i_FRONT_RIGHT_ANGLE_OFFSET = -Math.toRadians(144.4);// 336.0 - 180.0);//169.3 - 5);
+  private static final double i_BACK_LEFT_ANGLE_OFFSET = -Math.toRadians(327.7);// 507.2 - 180.0);//31.3);
+  private static final double i_BACK_RIGHT_ANGLE_OFFSET = -Math.toRadians(160.9);// 340.1 - 180.0);//199.1);
 
   private int holdAngleCounter = 0;
   private double holdAngle;
@@ -34,67 +34,63 @@ public class DriveSubsystem extends SubsystemBase {
   private int configWaitCycles = 50;
 
   private static DriveSubsystem _instance;
-  public static final DriveSubsystem get_instance(){
-    if (_instance == null){
+
+  public static final DriveSubsystem getInstance() {
+    if (_instance == null) {
       _instance = new DriveSubsystem();
     }
     return _instance;
   }
 
-      public final SwerveModuleCANTwoElectricBoogaloo m_frontLeft =
-      new SwerveModuleCANTwoElectricBoogaloo(
-          i_kFrontLeftDriveMotorPort,
-          i_kFrontLeftTurningMotorPort,
-          i_kFrontLeftEncoderCan,
-          i_FRONT_LEFT_ANGLE_OFFSET);
+  public final SwerveModuleCANTwoElectricBoogaloo m_frontLeft = new SwerveModuleCANTwoElectricBoogaloo(
+      i_kFrontLeftDriveMotorPort,
+      i_kFrontLeftTurningMotorPort,
+      i_kFrontLeftEncoderCan,
+      i_FRONT_LEFT_ANGLE_OFFSET);
 
-     public final SwerveModuleCANTwoElectricBoogaloo m_rearLeft =
-      new SwerveModuleCANTwoElectricBoogaloo(
-          i_kRearLeftDriveMotorPort,
-          i_kRearLeftTurningMotorPort,
-          i_kRearLeftEncoderCan,
-          i_BACK_LEFT_ANGLE_OFFSET);
+  public final SwerveModuleCANTwoElectricBoogaloo m_rearLeft = new SwerveModuleCANTwoElectricBoogaloo(
+      i_kRearLeftDriveMotorPort,
+      i_kRearLeftTurningMotorPort,
+      i_kRearLeftEncoderCan,
+      i_BACK_LEFT_ANGLE_OFFSET);
 
-     public final SwerveModuleCANTwoElectricBoogaloo m_frontRight =
-      new SwerveModuleCANTwoElectricBoogaloo(
-          i_kFrontRightDriveMotorPort,
-          i_kFrontRightTurningMotorPort,
-          i_kFrontRightEncoderCan,
-          i_FRONT_RIGHT_ANGLE_OFFSET);
+  public final SwerveModuleCANTwoElectricBoogaloo m_frontRight = new SwerveModuleCANTwoElectricBoogaloo(
+      i_kFrontRightDriveMotorPort,
+      i_kFrontRightTurningMotorPort,
+      i_kFrontRightEncoderCan,
+      i_FRONT_RIGHT_ANGLE_OFFSET);
 
-    public final SwerveModuleCANTwoElectricBoogaloo m_rearRight =
-      new SwerveModuleCANTwoElectricBoogaloo(
-          i_kRearRightDriveMotorPort,
-          i_kRearRightTurningMotorPort,
-          i_kRearRightEncoderCan,
-          i_BACK_RIGHT_ANGLE_OFFSET);
+  public final SwerveModuleCANTwoElectricBoogaloo m_rearRight = new SwerveModuleCANTwoElectricBoogaloo(
+      i_kRearRightDriveMotorPort,
+      i_kRearRightTurningMotorPort,
+      i_kRearRightEncoderCan,
+      i_BACK_RIGHT_ANGLE_OFFSET);
 
   // The gyro sensor
   // private final Pigeon2 m_pigeon = new Pigeon2(1);
   private final WPI_Pigeon2 m_gyro = new WPI_Pigeon2(DriveConstants.pigeonCan);
 
   // Odometry class for tracking robot pose
-  SwerveDriveOdometry m_odometry =
-      new SwerveDriveOdometry(kDriveKinematics, getGyroRotation2d());
+  SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(kDriveKinematics, getGyroRotation2d());
 
   /** Creates a new DriveSubsystem. */
   public DriveSubsystem() {
     zeroHeading();
-    //m_gyro.setStatusFramePeriod(PigeonIMU_StatusFrame.CondStatus_1_General, 50);
+    // m_gyro.setStatusFramePeriod(PigeonIMU_StatusFrame.CondStatus_1_General, 50);
   }
 
   @Override
   public void periodic() {
     // Update the odometry in the periodic block
-    if (testTimer > 8 * configWaitCycles){
-    m_odometry.update(
-        getGyroRotation2d(),
-        m_frontLeft.getState(),
-        m_rearLeft.getState(),
-        m_frontRight.getState(),
-        m_rearRight.getState());
+    if (testTimer > 8 * configWaitCycles) {
+      m_odometry.update(
+          getGyroRotation2d(),
+          m_frontLeft.getState(),
+          m_rearLeft.getState(),
+          m_frontRight.getState(),
+          m_rearRight.getState());
     }
-    //TODO: Organized, comprehensive data for whole Drivetrain
+    // TODO: Organized, comprehensive data for whole Drivetrain
     SmartDashboard.putNumber("X (Feet)", util.metersToFeet(m_odometry.getPoseMeters().getX()));
     SmartDashboard.putNumber("Y (Feet)", util.metersToFeet(m_odometry.getPoseMeters().getY()));
     SmartDashboard.putNumber("X (Metres)", m_odometry.getPoseMeters().getX());
@@ -106,36 +102,36 @@ public class DriveSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("RR Angle", m_rearRight.getState().angle.getDegrees());
     SmartDashboard.putBoolean("Hold Angle", enableHoldAngle);
 
-    if(testTimer < 8 * configWaitCycles + 1){
+    if (testTimer < 8 * configWaitCycles + 1) {
       testTimer++;
     }
-    if (testTimer == configWaitCycles){
+    if (testTimer == configWaitCycles) {
       System.out.println("we are worse 1");
-      DriveSubsystem.get_instance().m_frontLeft.configDriveMotor();
-      
-    }else if (testTimer == 2 * configWaitCycles){
-      System.out.println("we are worse 2");
-      DriveSubsystem.get_instance().m_frontRight.configDriveMotor();
-      
-    }else if (testTimer == 3 * configWaitCycles){
-      System.out.println("we are worse 3");
-      DriveSubsystem.get_instance().m_rearLeft.configDriveMotor();
+      DriveSubsystem.getInstance().m_frontLeft.configDriveMotor();
 
-    }else if (testTimer == 4 * configWaitCycles){
+    } else if (testTimer == 2 * configWaitCycles) {
+      System.out.println("we are worse 2");
+      DriveSubsystem.getInstance().m_frontRight.configDriveMotor();
+
+    } else if (testTimer == 3 * configWaitCycles) {
+      System.out.println("we are worse 3");
+      DriveSubsystem.getInstance().m_rearLeft.configDriveMotor();
+
+    } else if (testTimer == 4 * configWaitCycles) {
       System.out.println("we are worse 4");
-      DriveSubsystem.get_instance().m_rearRight.configDriveMotor();
-      
-    } else if(testTimer == 5 * configWaitCycles){
-      DriveSubsystem.get_instance().m_frontLeft.configTurningMotor();
+      DriveSubsystem.getInstance().m_rearRight.configDriveMotor();
+
+    } else if (testTimer == 5 * configWaitCycles) {
+      DriveSubsystem.getInstance().m_frontLeft.configTurningMotor();
       // m_frontLeft.configStatusFramePeriods();
-    }else if(testTimer == 6 * configWaitCycles){
-      DriveSubsystem.get_instance().m_rearRight.configTurningMotor();
+    } else if (testTimer == 6 * configWaitCycles) {
+      DriveSubsystem.getInstance().m_rearRight.configTurningMotor();
       // m_frontRight.configStatusFramePeriods();
-    }else if(testTimer == 7 * configWaitCycles){
-      DriveSubsystem.get_instance().m_frontRight.configTurningMotor();
+    } else if (testTimer == 7 * configWaitCycles) {
+      DriveSubsystem.getInstance().m_frontRight.configTurningMotor();
       // m_rearLeft.configStatusFramePeriods();
-    }else if(testTimer == 8 * configWaitCycles){
-      DriveSubsystem.get_instance().m_rearLeft.configTurningMotor();
+    } else if (testTimer == 8 * configWaitCycles) {
+      DriveSubsystem.getInstance().m_rearLeft.configTurningMotor();
       // m_rearRight.configStatusFramePeriods();
     }
   }
@@ -148,7 +144,8 @@ public class DriveSubsystem extends SubsystemBase {
   public Pose2d getPose() {
     return m_odometry.getPoseMeters();
   }
-  public Rotation2d getGyroRotation2d(){
+
+  public Rotation2d getGyroRotation2d() {
     return m_gyro.getRotation2d();
   }
 
@@ -165,29 +162,31 @@ public class DriveSubsystem extends SubsystemBase {
   /**
    * Method to drive the robot using joystick info.
    *
-   * @param xSpeed Speed of the robot in the x direction (forward).
-   * @param ySpeed Speed of the robot in the y direction (sideways).
-   * @param rot Angular rate of the robot.
-   * @param fieldRelative Whether the provided x and y speeds are relative to the field.
+   * @param xSpeed        Speed of the robot in the x direction (forward).
+   * @param ySpeed        Speed of the robot in the y direction (sideways).
+   * @param rot           Angular rate of the robot.
+   * @param fieldRelative Whether the provided x and y speeds are relative to the
+   *                      field.
    */
   @SuppressWarnings("ParameterName")
   public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
-    double speedScale = DriveConstants.BASE_SPEED_SCALE + RobotContainer.get_instance().getRightTrigger() * (1 - DriveConstants.BASE_SPEED_SCALE);
+    double speedScale = DriveConstants.BASE_SPEED_SCALE
+        + RobotContainer.getInstance().getRightTrigger() * (1 - DriveConstants.BASE_SPEED_SCALE);
     xSpeed *= speedScale * DriveConstants.i_kMaxSpeedMetersPerSecond;
     ySpeed *= speedScale * DriveConstants.i_kMaxSpeedMetersPerSecond;
     rot *= speedScale * DriveConstants.i_kMaxSpeedMetersPerSecond;
-    if (rot == 0 && enableHoldAngle){
-      if (holdAngleCounter < 1){
+    if (rot == 0 && enableHoldAngle) {
+      if (holdAngleCounter < 1) {
         holdAngleCounter++;
         holdAngle = getGyroRotation2d().getRadians();
       }
       rot = AutoConstants.AUTON_THETA_CONTROLLER.calculate(getGyroRotation2d().getRadians(), holdAngle);
     }
-    var swerveModuleStates =
-        kDriveKinematics.toSwerveModuleStates(
-            fieldRelative
-                ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, Rotation2d.fromDegrees((kGyroReversed ? -1.0 : 1.0) * getGyroRotation2d().getDegrees()))
-                : new ChassisSpeeds(xSpeed, ySpeed, rot));
+    var swerveModuleStates = kDriveKinematics.toSwerveModuleStates(
+        fieldRelative
+            ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot,
+                Rotation2d.fromDegrees((kGyroReversed ? -1.0 : 1.0) * getGyroRotation2d().getDegrees()))
+            : new ChassisSpeeds(xSpeed, ySpeed, rot));
     SwerveDriveKinematics.desaturateWheelSpeeds(
         swerveModuleStates, DriveConstants.i_kMaxSpeedMetersPerSecond);
     setModuleStates(swerveModuleStates);
@@ -218,13 +217,15 @@ public class DriveSubsystem extends SubsystemBase {
   /** Zeroes the heading of the robot. */
   public void zeroHeading() {
     m_gyro.reset();
-    resetOdometry(new Pose2d(m_odometry.getPoseMeters().getX(), m_odometry.getPoseMeters().getY(), getGyroRotation2d()));
+    resetOdometry(
+        new Pose2d(m_odometry.getPoseMeters().getX(), m_odometry.getPoseMeters().getY(), getGyroRotation2d()));
   }
 
-  public void setEnableHoldAngle(boolean enable){
+  public void setEnableHoldAngle(boolean enable) {
     enableHoldAngle = enable;
   }
-  public void toggleEnableHoldAngle(){
+
+  public void toggleEnableHoldAngle() {
     enableHoldAngle = !enableHoldAngle;
   }
 

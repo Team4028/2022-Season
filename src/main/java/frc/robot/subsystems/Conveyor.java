@@ -19,12 +19,11 @@ public class Conveyor extends SubsystemBase {
   private RelativeEncoder _enc;
   private double encoderOffset = 0;
   private static Conveyor _instance = new Conveyor();
-  
-  
-  public static Conveyor get_instance() {
+
+  public static Conveyor getInstance() {
     return _instance;
   }
-  
+
   public Conveyor() {
     _conveyorMotor = new CANSparkMax(SubsystemConstants.CONVEYOR_MOTOR_ID, MotorType.kBrushless);
     _conveyorMotor.setSmartCurrentLimit(20);
@@ -33,47 +32,43 @@ public class Conveyor extends SubsystemBase {
     _conveyorMotor.setInverted(true);
   }
 
-
-  public void runConveyorMotor(double vbus){
+  public void runConveyorMotor(double vbus) {
     SmartDashboard.putBoolean("Conveyor/Running", true);
     SmartDashboard.putNumber("Conveyor/Vbus", vbus);
     _conveyorMotor.set(vbus);
   }
 
-  public void stopConveyorMotor(){
+  public void stopConveyorMotor() {
     _conveyorMotor.set(0);
     SmartDashboard.putBoolean("Conveyor/Running", false);
   }
 
-  public void runConveyorMotorWithEncoder(double target, double vbus){
+  public void runConveyorMotorWithEncoder(double target, double vbus) {
     // isTargetReached = false;
     // System.out.println("runConveyorMotorWithEncoder On" + _enc.getPosition());
-    if (getEncoderPosition() >= target /*&& !isTargetReached*/)
-    {
+    if (getEncoderPosition() >= target /* && !isTargetReached */) {
       // System.out.println("Encoder Value " +_enc.getPosition());
       stopConveyorMotor();
       resetEncoder();
       isTargetReached = true;
-    }
-    else{
+    } else {
       runConveyorMotor(vbus);
     }
   }
 
-  public double getEncoderPosition()
-  {
+  public double getEncoderPosition() {
     return (_enc.getPosition() - encoderOffset);
   }
-  
-  public void resetEncoder(){
+
+  public void resetEncoder() {
     encoderOffset = _enc.getPosition();
   }
 
-  public void setIsTargetReached(){
+  public void setIsTargetReached() {
     isTargetReached = false;
   }
 
-  public boolean getIsTargetReached(){
+  public boolean getIsTargetReached() {
     return isTargetReached;
   }
 

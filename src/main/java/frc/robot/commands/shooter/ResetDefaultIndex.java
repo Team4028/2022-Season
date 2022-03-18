@@ -9,6 +9,7 @@ import frc.robot.subsystems.Shooter;
 
 public class ResetDefaultIndex extends CommandBase {
   private Shooter shooter = Shooter.getInstance();
+
   /** Creates a new ResetDefaultIndex. */
   public ResetDefaultIndex() {
     // Use addRequirements() here to declare subsystem dependencies.

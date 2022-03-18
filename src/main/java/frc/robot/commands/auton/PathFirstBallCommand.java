@@ -13,15 +13,15 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.utilities.Trajectories;
 
 public class PathFirstBallCommand extends CommandBase {
-  private DriveSubsystem m_drive = DriveSubsystem.get_instance();
-  private Trajectories _trajectories = Trajectories.get_instance();
+  private DriveSubsystem m_drive = DriveSubsystem.getInstance();
+  private Trajectories _trajectories = Trajectories.getInstance();
   private Trajectory _firstBallTrajectory = _trajectories.getTestCompFirstBall();
   private Command swerveControllerCommand;
   /** Creates a new PathFirstBallCommand. */
   public PathFirstBallCommand() {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(m_drive);
-    swerveControllerCommand = RobotContainer.get_instance().getSwerveControllerCommand(_firstBallTrajectory);
+    swerveControllerCommand = RobotContainer.getInstance().getSwerveControllerCommand(_firstBallTrajectory);
   }
 
   // Called when the command is initially scheduled.

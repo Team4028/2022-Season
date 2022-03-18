@@ -11,7 +11,7 @@ import frc.robot.subsystems.Conveyor;
 
 
 public class RunConveyorOneBall extends CommandBase {
-  private Conveyor conveyor = Conveyor.get_instance();
+  private Conveyor conveyor = Conveyor.getInstance();
   /** Creates a new RunWithEncoder. */
   public RunConveyorOneBall() {
     addRequirements(conveyor);

@@ -10,7 +10,7 @@ import frc.robot.subsystems.Infeed;
 
 public class RunInfeedSingulatorMotors extends CommandBase {
   /** Creates a new ToggleOneAndTwo. */
-  private Infeed infeed = Infeed.get_instance();
+  private Infeed infeed = Infeed.getInstance();
   public RunInfeedSingulatorMotors() {
     addRequirements(infeed);
     // Use addRequirements() here to declare subsystem dependencies.

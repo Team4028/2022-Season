@@ -25,7 +25,7 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-  //TODO: Better organization of Constants class
+  // TODO: Better organization of Constants class
   public static final class DriveConstants {
 
     public static final boolean MK4I = true;
@@ -124,7 +124,6 @@ public final class Constants {
     public static final double i_kDriveEncoderCountsPerWheelRev = (50.0 / 14.0) * (17.0 / 27.0) * (45.0 / 15.0)
         * 2048.0;
 
-
     public static final double i_kPModuleTurningController = 0.2;
 
     public static final double i_kPModuleDriveController = 0.13367;
@@ -155,9 +154,8 @@ public final class Constants {
     public static final double MAX_ANGULAR_SPEED_RADIANS_PER_SECOND_SQUARED = MAX_ANGULAR_SPEED_RADIANS_PER_SECOND;
 
     // Constraint for the motion profilied robot angle controller
-    public static final TrapezoidProfile.Constraints kThetaControllerConstraints =
-        new TrapezoidProfile.Constraints(
-            MAX_ANGULAR_SPEED_RADIANS_PER_SECOND, MAX_ANGULAR_SPEED_RADIANS_PER_SECOND_SQUARED);
+    public static final TrapezoidProfile.Constraints kThetaControllerConstraints = new TrapezoidProfile.Constraints(
+        MAX_ANGULAR_SPEED_RADIANS_PER_SECOND, MAX_ANGULAR_SPEED_RADIANS_PER_SECOND_SQUARED);
 
     public static final ProfiledPIDController AUTON_THETA_CONTROLLER = new ProfiledPIDController(
         AutoConstants.kPThetaController, 0, 0, AutoConstants.kThetaControllerConstraints);
@@ -231,8 +229,9 @@ public final class Constants {
 
   public static final class VisionConstants {
     public static final String kCamera1Url = "http://10.40.28.2:1181/stream.mjpg";
-    public static final String kCamera2Url = "http://limelight.local:5800/stream.mjpg"; // Limelight's stream: PiP with Climber cam
-                                                                                    // as main, LL in corner
+    public static final String kCamera2Url = "http://limelight.local:5800/stream.mjpg"; // Limelight's stream: PiP with
+                                                                                        // Climber cam
+    // as main, LL in corner
   }
 
   public static final class PIDConstants {
@@ -241,7 +240,7 @@ public final class Constants {
       public static double kF = 0.05;
       public static double kP = 0.4;
       public static double kD = 0.002;
-      public static double kMax = 22000; //20400;
+      public static double kMax = 22000; // 20400;
     }
 
     public static final class Back {
@@ -257,33 +256,34 @@ public final class Constants {
   }
 
   public static final class ControllerConstants {
-    public static final double kDeadband                   = 0.05; // Jiggle room for the thumbsticks
-    public static final double kSensitivity                = 0.1;
-    public static final double kTriggerDeadband            = 0.01; // Jiggle room for the triggers
-    public static final double kTriggerSensitivity         = 0.6;  // If the trigger is beyond this limit, say it has been pressed
+    public static final double kDeadband = 0.05; // Jiggle room for the thumbsticks
+    public static final double kSensitivity = 0.05;
+    public static final double kTriggerDeadband = 0.01; // Jiggle room for the triggers
+    public static final double kTriggerSensitivity = 0.6; // If the trigger is beyond this limit, say it has been
+                                                          // pressed
 
     /* Button Mappings */
     public static final class Buttons {
-      public static final int    kA                          = 1;
-      public static final int    kB                          = 2;
-      public static final int    kX                          = 3;
-      public static final int    kY                          = 4;
-      public static final int    kLB                         = 5;
-      public static final int    kRB                         = 6;
-      public static final int    kBack                       = 7;
-      public static final int    kStart                      = 8;
-      public static final int    kLS                         = 9;
-      public static final int    kRS                         = 10;
+      public static final int kA = 1;
+      public static final int kB = 2;
+      public static final int kX = 3;
+      public static final int kY = 4;
+      public static final int kLB = 5;
+      public static final int kRB = 6;
+      public static final int kBack = 7;
+      public static final int kStart = 8;
+      public static final int kLS = 9;
+      public static final int kRS = 10;
     }
-    
+
     /* Axis Mappings */
     public static final class Axes {
-      public static final int    kLeftX                      = 0;
-      public static final int    kLeftY                      = 1;
-      public static final int    kLeftTrigger                = 2;
-      public static final int    kRightTrigger               = 3;
-      public static final int    kRightX                     = 4;
-      public static final int    kRightY                     = 5;
+      public static final int kLeftX = 0;
+      public static final int kLeftY = 1;
+      public static final int kLeftTrigger = 2;
+      public static final int kRightTrigger = 3;
+      public static final int kRightX = 4;
+      public static final int kRightY = 5;
     }
   }
 }

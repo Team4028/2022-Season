@@ -9,9 +9,10 @@ import frc.robot.subsystems.Shooter;
 
 public class RunShooterMotors extends CommandBase {
   private Shooter shooter = Shooter.getInstance();
-  /** Creates a new ToggleFiveAndSix. */
+
+  /** Creates a new RunShooterMotors. */
   public RunShooterMotors() {
-  addRequirements(Shooter.getInstance());
+    addRequirements(Shooter.getInstance());
     // Use addRequirements() here to declare subsystem dependencies.
   }
 

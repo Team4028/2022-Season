@@ -24,12 +24,13 @@ public class SwerveModule {
   private final AnalogInput m_turningEncoder;
 
   private double turningMotorOffset;
-  private final PIDController m_turningPIDController = new PIDController(ModuleConstants.kPModuleTurningController, 0, 0.0001);
+  private final PIDController m_turningPIDController = new PIDController(ModuleConstants.kPModuleTurningController, 0,
+      0.0001);
 
   /**
    * Constructs a SwerveModule.
    *
-   * @param driveMotorChannel ID for the drive motor.
+   * @param driveMotorChannel   ID for the drive motor.
    * @param turningMotorChannel ID for the turning motor.
    */
   public SwerveModule(
@@ -40,7 +41,7 @@ public class SwerveModule {
     m_driveMotor = new CANSparkMax(driveMotorChannel, MotorType.kBrushless);
     m_turningMotor = new CANSparkMax(turningMotorChannel, MotorType.kBrushless);
     this.turningMotorOffset = turningMotorOffset;
-  
+
     m_turningEncoder = new AnalogInput(analogEncoderPort);
 
     m_driveEncoder = m_driveMotor.getEncoder();
@@ -48,14 +49,15 @@ public class SwerveModule {
     m_turningPIDController.enableContinuousInput(-Math.PI, Math.PI);
   }
 
-  private double getTurningEncoderRadians(){
-    double angle = (1.0 - m_turningEncoder.getVoltage() / RobotController.getVoltage5V()) * 2.0 * Math.PI + turningMotorOffset;
+  private double getTurningEncoderRadians() {
+    double angle = (1.0 - m_turningEncoder.getVoltage() / RobotController.getVoltage5V()) * 2.0 * Math.PI
+        + turningMotorOffset;
     angle %= 2.0 * Math.PI;
     if (angle < 0.0) {
-        angle += 2.0 * Math.PI;
+      angle += 2.0 * Math.PI;
     }
     return angle;
-    }
+  }
 
   /**
    * Returns the current state of the module.
@@ -73,15 +75,12 @@ public class SwerveModule {
    */
   public void setDesiredState(SwerveModuleState desiredState) {
     // Optimize the reference state to avoid spinning further than 90 degrees
-    SwerveModuleState state =
-        SwerveModuleState.optimize(desiredState, new Rotation2d(getTurningEncoderRadians()));
+    SwerveModuleState state = SwerveModuleState.optimize(desiredState, new Rotation2d(getTurningEncoderRadians()));
 
-    final double driveOutput =
-        state.speedMetersPerSecond;
+    final double driveOutput = state.speedMetersPerSecond;
 
     // Calculate the turning motor output from the turning PID controller.
-    final var turnOutput =
-        m_turningPIDController.calculate(getTurningEncoderRadians(), state.angle.getRadians());
+    final var turnOutput = m_turningPIDController.calculate(getTurningEncoderRadians(), state.angle.getRadians());
 
     // Calculate the turning motor output from the turning PID controller.
     m_driveMotor.set(driveOutput);

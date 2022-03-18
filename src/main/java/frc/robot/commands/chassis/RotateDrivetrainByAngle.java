@@ -12,7 +12,7 @@ import frc.robot.subsystems.DriveSubsystem;
 
 public class RotateDrivetrainByAngle extends CommandBase {
   /** Creates a new RotateDrivetrainByAngle. */
-  private DriveSubsystem m_drive = DriveSubsystem.get_instance();
+  private DriveSubsystem m_drive = DriveSubsystem.getInstance();
   private Rotation2d rotation;
   private boolean fieldRelative;
   private ProfiledPIDController thetaController =

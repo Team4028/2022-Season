@@ -32,7 +32,7 @@ public class Shooter extends SubsystemBase {
   private CANSparkMax _angle;
   private RelativeEncoder _angleEnc;
   private SparkMaxPIDController _anglePid;
-  
+
   private Limelight _l;
   private ShooterTable _st = ShooterTable.getPrimaryTable();
   double limelightDistance, shooterIndex = ShooterConstants.kIndexDefault;
@@ -59,7 +59,7 @@ public class Shooter extends SubsystemBase {
     _angle.restoreFactoryDefaults();
     _angle.setSmartCurrentLimit(10);
     _angle.setInverted(true);
-    
+
     _angleEnc = _angle.getEncoder();
     _angleEnc.setPosition(0.);
 
@@ -92,8 +92,8 @@ public class Shooter extends SubsystemBase {
     put("Shot Kicker RPM", e.KickerRPM);
     put("Actuator Value", e.ActuatorVal);
 
-    //put("Front Error", util.toFalconRPM(_front.getClosedLoopError()));
-    //put("Back Error", util.toFalconRPM(_back.getClosedLoopError()));
+    // put("Front Error", util.toFalconRPM(_front.getClosedLoopError()));
+    // put("Back Error", util.toFalconRPM(_back.getClosedLoopError()));
     put("Front Motor RPM", util.toFalconRPM(_front.getSelectedSensorVelocity()));
     put("Back Motor RPM", util.toFalconRPM(_back.getSelectedSensorVelocity()));
     put("Kicker Motor RPM", util.toFalconRPM(_kicker.getSelectedSensorVelocity()));
@@ -105,21 +105,26 @@ public class Shooter extends SubsystemBase {
   public void put(String key, double val) {
     SmartDashboard.putNumber(key, val);
   }
-  public double getNumber(String key, double defaultValue){
+
+  public double getNumber(String key, double defaultValue) {
     return SmartDashboard.getNumber(key, defaultValue);
   }
 
-  public void runShooterMotorsVbus(){
+  public void runShooterMotorsVbus() {
     ShooterTableEntry entry = ShooterTable.getPrimaryTable().CalcShooterValues(shooterIndex);
     _front.set(ControlMode.PercentOutput, entry.ShooterFrontRPM / 100.);
     _back.set(ControlMode.PercentOutput, entry.ShooterBackRPM / 100.);
     _kicker.set(ControlMode.PercentOutput, entry.KickerRPM / 100.);
-    // _front.set(ControlMode.PercentOutput, SmartDashboard.getNumber("FrontVbus", VBusConstants.kShooterFrontDefault));
-    // _back.set(ControlMode.PercentOutput, SmartDashboard.getNumber("BackVbus", VBusConstants.kShooterBackDefault));
-    // _kicker.set(ControlMode.PercentOutput, SmartDashboard.getNumber("KickerVbus", VBusConstants.kKicker));
+    // _front.set(ControlMode.PercentOutput, SmartDashboard.getNumber("FrontVbus",
+    // VBusConstants.kShooterFrontDefault));
+    // _back.set(ControlMode.PercentOutput, SmartDashboard.getNumber("BackVbus",
+    // VBusConstants.kShooterBackDefault));
+    // _kicker.set(ControlMode.PercentOutput, SmartDashboard.getNumber("KickerVbus",
+    // VBusConstants.kKicker));
 
     _anglePid.setReference(entry.ActuatorVal, ControlType.kPosition);
-    //_anglePid.setReference(SmartDashboard.getNumber("Hood Angle (rot)", VBusConstants.kShooterHoodAngleRotDefault), ControlType.kPosition);
+    // _anglePid.setReference(SmartDashboard.getNumber("Hood Angle (rot)",
+    // VBusConstants.kShooterHoodAngleRotDefault), ControlType.kPosition);
   }
 
   public void runShooterMotors() {
@@ -138,7 +143,7 @@ public class Shooter extends SubsystemBase {
     _kicker.set(ControlMode.PercentOutput, entry.KickerRPM);
   }
 
-  public void testSpinAngleMotor(){
+  public void testSpinAngleMotor() {
     _angle.set(-0.1);
   }
 
@@ -195,6 +200,6 @@ public class Shooter extends SubsystemBase {
   public void periodic() {
     update();
     // This method will be called once per scheduler run
-    //System.out.println(_angle.getOutputCurrent());
+    // System.out.println(_angle.getOutputCurrent());
   }
 }

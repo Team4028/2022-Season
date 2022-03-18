@@ -10,7 +10,7 @@ import frc.robot.subsystems.Conveyor;
 
 
 public class RunConveyor extends CommandBase {
-  private Conveyor conveyor = Conveyor.get_instance();
+  private Conveyor conveyor = Conveyor.getInstance();
   /** Creates a new ToggleThree. */
   public RunConveyor() {
     addRequirements(conveyor);

@@ -12,8 +12,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.LimelightConstants;
 
 public class Limelight extends SubsystemBase {
-  //private Motor _m = Motor.getInstance();
-
   private int distEstIters = 0;
   private double distEst, distEstTotal;
 
@@ -44,33 +42,43 @@ public class Limelight extends SubsystemBase {
   public double getX() {
     return tx.getDouble(0);
   }
-  public double getLedMode(){
+
+  public double getLedMode() {
     return ledMode.getDouble(0);
   }
-  public void setLedMode(double mode){
+
+  public void setLedMode(double mode) {
     ledMode.forceSetDouble(mode);
   }
-  public void toggleLedMode(){
+
+  public void toggleLedMode() {
     setLedMode(Math.abs(ledMode.getDouble(0.0) - 1.0));
   }
+
   public double getArea() {
     return ta.getDouble(0);
   }
+
   public double getBoxShortLength() {
     return tshort.getDouble(0);
   }
-  public double getBoxLongLength(){
+
+  public double getBoxLongLength() {
     return tlong.getDouble(0);
   }
-  public double getHorBoxLength(){
+
+  public double getHorBoxLength() {
     return thor.getDouble(0);
   }
-  public double getVertBoxLength(){
+
+  public double getVertBoxLength() {
     return tvert.getDouble(0);
   }
+
   public double getSkew() {
     return ts.getDouble(0);
   }
+
   public double getY() {
     return ty.getDouble(0);
   }
@@ -97,21 +105,20 @@ public class Limelight extends SubsystemBase {
       }
 
       double heightDelta = LimelightConstants.kTargetHeight -
-                           LimelightConstants.kMountHeight;
+          LimelightConstants.kMountHeight;
       double goalAngle = (LimelightConstants.kMountAngle + getY()) *
-                         (3.14159 / 180.);
+          (3.14159 / 180.);
       double yawComp = getX() * (3.14159 / 180.);
 
-
       double dist = heightDelta /
-                    (Math.tan(goalAngle) *
-                    Math.cos(yawComp));
+          (Math.tan(goalAngle) *
+              Math.cos(yawComp));
 
       distEstTotal += (dist + 23 + 26);
       distEstIters++;
     }
     return distEst;
- }
+  }
 
   public void putTargetValues() {
     put("Target X Offset", entry("tx").getDouble(0.));

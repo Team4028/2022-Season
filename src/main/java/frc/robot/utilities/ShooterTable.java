@@ -3,6 +3,7 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.utilities;
+
 import java.util.Iterator;
 import java.util.LinkedList;
 
@@ -14,13 +15,11 @@ import frc.robot.Constants.ShooterConstants;
 public class ShooterTable {
 
     private static ShooterTable _primary = new ShooterTable(true);
-    //private static ShooterTable _secondary = new ShooterTable(false);
-	
-	public static ShooterTable getPrimaryTable() {
-		return _primary;
-    }
+    // private static ShooterTable _secondary = new ShooterTable(false);
 
-    
+    public static ShooterTable getPrimaryTable() {
+        return _primary;
+    }
 
     private int _indexCounter;
     private int _currentIndex = 0;
@@ -28,30 +27,26 @@ public class ShooterTable {
 
     private LinkedList<ShooterTableEntry> _Table = null;
 
-    private ShooterTable(boolean isPrimary)
-    {
+    private ShooterTable(boolean isPrimary) {
         _Table = isPrimary ? LoadPrimaryTable() : LoadSecondaryTable();
         _currentIndex = 1;
 
-		Iterator<ShooterTableEntry> itr = _Table.iterator();
-		while(itr.hasNext()) {
+        Iterator<ShooterTableEntry> itr = _Table.iterator();
+        while (itr.hasNext()) {
             ste = itr.next();
-        }	
+        }
     }
-    
-    public ShooterTableEntry CalcShooterValues (double distanceInFeet)
-	{
-		ShooterTableEntry steBelow = null;
-		ShooterTableEntry steAbove = null;
-		ShooterTableEntry steCurrent = null;
-		
-		
-		Iterator<ShooterTableEntry> itr = _Table.iterator();
-		while(itr.hasNext()) {
-			steCurrent = itr.next();
-			
-			
-			if (steCurrent.DistanceInFeet < distanceInFeet) {
+
+    public ShooterTableEntry CalcShooterValues(double distanceInFeet) {
+        ShooterTableEntry steBelow = null;
+        ShooterTableEntry steAbove = null;
+        ShooterTableEntry steCurrent = null;
+
+        Iterator<ShooterTableEntry> itr = _Table.iterator();
+        while (itr.hasNext()) {
+            steCurrent = itr.next();
+
+            if (steCurrent.DistanceInFeet < distanceInFeet) {
                 steBelow = steCurrent;
                 continue;
             }
@@ -69,7 +64,7 @@ public class ShooterTable {
         }
 
         if (steBelow != null && steAbove != null) {
-            if (steBelow.DistanceInFeet == steAbove.DistanceInFeet){
+            if (steBelow.DistanceInFeet == steAbove.DistanceInFeet) {
                 ste = steAbove;
             } else {
                 // find the scale factor which is how far we are between the below & above ste
@@ -84,13 +79,15 @@ public class ShooterTable {
                 double kickerAdj = scaleFactor * (steAbove.KickerRPM - steBelow.KickerRPM);
                 int kickerCalculatedRPM = steBelow.KickerRPM + (int) (Math.round(kickerAdj));
 
-                double actuatorValue = steBelow.ActuatorVal + (scaleFactor * (steAbove.ActuatorVal - steBelow.ActuatorVal));
+                double actuatorValue = steBelow.ActuatorVal
+                        + (scaleFactor * (steAbove.ActuatorVal - steBelow.ActuatorVal));
                 if (actuatorValue > ShooterConstants.kMaxAllowedAngle) {
                     actuatorValue = ShooterConstants.kMaxAllowedAngle;
                 }
 
                 // build the return object
-                ste = new ShooterTableEntry(_indexCounter++, distanceInFeet, shooterFrontCalculatedRPM, shooterBackCalculatedRPM, kickerCalculatedRPM, actuatorValue, "Calculated value", false);
+                ste = new ShooterTableEntry(_indexCounter++, distanceInFeet, shooterFrontCalculatedRPM,
+                        shooterBackCalculatedRPM, kickerCalculatedRPM, actuatorValue, "Calculated value", false);
             }
         } else if (steAbove != null) {
             ste = steAbove;
@@ -121,118 +118,153 @@ public class ShooterTable {
         return _Table.get(_currentIndex);
     }
 
-   
-    
-	//============================================================================================
-	// properties follow
-	//============================================================================================
-	
-	public Boolean get_IsAtUpperEntry() {
-		if (_currentIndex == _Table.size() - 1){
-			return true; 
-		} else {
-			return false;
-		}
-	}
-	
-	public Boolean get_IsAtLowerEntry() {
-		if (_currentIndex == 0){
-			return true;
-		} else {
-			return false;
-		}
-	}
-	
-	//============================================================================================
-	// helpers follow
-	//============================================================================================
-	// create a linked list
-	private LinkedList<ShooterTableEntry> LoadPrimaryTable() {
+    // ============================================================================================
+    // properties follow
+    // ============================================================================================
 
-		LinkedList<ShooterTableEntry> primarytable = new LinkedList<ShooterTableEntry>();
-		
+    public Boolean get_IsAtUpperEntry() {
+        if (_currentIndex == _Table.size() - 1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public Boolean get_IsAtLowerEntry() {
+        if (_currentIndex == 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    // ============================================================================================
+    // helpers follow
+    // ============================================================================================
+    // create a linked list
+    private LinkedList<ShooterTableEntry> LoadPrimaryTable() {
+
+        LinkedList<ShooterTableEntry> primarytable = new LinkedList<ShooterTableEntry>();
+
         _indexCounter = 0;
-        
-		//======================================================================================
-		//									Position	feet Stg1  
-		//======================================================================================
+
+        // ======================================================================================
+        // Position feet Stg1
+        // ======================================================================================
         // primarytable.add(new ShooterTableEntry(_indexCounter++, 11.5, 2600, .28));
-        // primarytable.add(new ShooterTableEntry(_indexCounter++, 13.38, 3110, .28)); //30 //2910|33 //34
-        // primarytable.add(new ShooterTableEntry(_indexCounter++, 18.5, 3400, .33)); //3400|33  //36 //3200|39 //41
-        //primarytable.add(new ShooterTableEntry(_indexCounter++, 15.0, 2600, .28)); //3907|37 //40 //3707|43 //44
-        //primarytable.add(new ShooterTableEntry(_indexCounter++, 17.0, 2910, .28));
-       // primarytable.add(new ShooterTableEntry(_indexCounter++, 20.0, 3003, .35)); // 03/10
+        // primarytable.add(new ShooterTableEntry(_indexCounter++, 13.38, 3110, .28));
+        // //30 //2910|33 //34
+        // primarytable.add(new ShooterTableEntry(_indexCounter++, 18.5, 3400, .33));
+        // //3400|33 //36 //3200|39 //41
+        // primarytable.add(new ShooterTableEntry(_indexCounter++, 15.0, 2600, .28));
+        // //3907|37 //40 //3707|43 //44
+        // primarytable.add(new ShooterTableEntry(_indexCounter++, 17.0, 2910, .28));
+        // primarytable.add(new ShooterTableEntry(_indexCounter++, 20.0, 3003, .35)); //
+        // 03/10
         // primarytable.add(new ShooterTableEntry(_indexCounter++, 20.0, 2910, .28));
 
-        // primarytable.add(new ShooterTableEntry(_indexCounter++, 27.5, 4228, .38)); //41 //4028|44
-        // primarytable.add(new ShooterTableEntry(_indexCounter++,  38, 4300, .48)); 
-        // primarytable.add(new ShooterTableEntry(_indexCounter++,  42, 4400, .50));
+        // primarytable.add(new ShooterTableEntry(_indexCounter++, 27.5, 4228, .38));
+        // //41 //4028|44
+        // primarytable.add(new ShooterTableEntry(_indexCounter++, 38, 4300, .48));
+        // primarytable.add(new ShooterTableEntry(_indexCounter++, 42, 4400, .50));
 
+        // primarytable.add(new ShooterTableEntry(_indexCounter, 9., 4000, 4400, 60., "9
+        // foot example shot", false));
+        // primarytable.add(new ShooterTableEntry(_indexCounter, 11., 4100, 4500, 60.,
+        // "11 foot example shot", false));
+        /*
+         * primarytable.add(new ShooterTableEntry(_indexCounter++, 10., 1390, 1180, 60.,
+         * "Index 10", false));
+         * primarytable.add(new ShooterTableEntry(_indexCounter++, 11., 1455, 1215, 60.,
+         * "Index 11", false));
+         * primarytable.add(new ShooterTableEntry(_indexCounter++, 12., 1510, 1250, 60.,
+         * "Index 12", false));
+         * primarytable.add(new ShooterTableEntry(_indexCounter++, 13., 1420, 1550, 60.,
+         * "Index 13", false));
+         * primarytable.add(new ShooterTableEntry(_indexCounter++, 14., 1320, 1750, 60.,
+         * "Index 14", false));
+         * primarytable.add(new ShooterTableEntry(_indexCounter++, 15., 1220, 1950, 60.,
+         * "Index 15", false));
+         * primarytable.add(new ShooterTableEntry(_indexCounter++, 16., 1140, 2140, 60.,
+         * "Index 16", false));
+         * primarytable.add(new ShooterTableEntry(_indexCounter++, 17., 1365, 1180, 60.,
+         * "Index 17", false));
+         * primarytable.add(new ShooterTableEntry(_indexCounter++, 18., 1365, 1180, 60.,
+         * "Index 18", false));
+         */
 
-        // primarytable.add(new ShooterTableEntry(_indexCounter, 9., 4000, 4400, 60., "9 foot example shot", false));
-        // primarytable.add(new ShooterTableEntry(_indexCounter, 11., 4100, 4500, 60., "11 foot example shot", false));
-        /*primarytable.add(new ShooterTableEntry(_indexCounter++, 10., 1390, 1180, 60., "Index 10", false));
-        primarytable.add(new ShooterTableEntry(_indexCounter++, 11., 1455, 1215, 60., "Index 11", false));
-        primarytable.add(new ShooterTableEntry(_indexCounter++, 12., 1510, 1250, 60., "Index 12", false));
-        primarytable.add(new ShooterTableEntry(_indexCounter++, 13., 1420, 1550, 60., "Index 13", false));
-        primarytable.add(new ShooterTableEntry(_indexCounter++, 14., 1320, 1750, 60., "Index 14", false));
-        primarytable.add(new ShooterTableEntry(_indexCounter++, 15., 1220, 1950, 60., "Index 15", false));
-        primarytable.add(new ShooterTableEntry(_indexCounter++, 16., 1140, 2140, 60., "Index 16", false));
-        primarytable.add(new ShooterTableEntry(_indexCounter++, 17., 1365, 1180, 60., "Index 17", false));
-        primarytable.add(new ShooterTableEntry(_indexCounter++, 18., 1365, 1180, 60., "Index 18", false));*/
+        /*
+         * primarytable.add(new ShooterTableEntry(_indexCounter++, 11., 1320, 1740,
+         * 110., "Index 11", false));
+         * primarytable.add(new ShooterTableEntry(_indexCounter++, 14., 1320, 2340,
+         * 140., "Index 14", false));
+         * primarytable.add(new ShooterTableEntry(_indexCounter++, 19., 1475, 2575,
+         * 190., "Index 19", false));
+         */
 
-        /*primarytable.add(new ShooterTableEntry(_indexCounter++, 11., 1320, 1740, 110., "Index 11", false));
-        primarytable.add(new ShooterTableEntry(_indexCounter++, 14., 1320, 2340, 140., "Index 14", false));
-        primarytable.add(new ShooterTableEntry(_indexCounter++, 19., 1475, 2575, 190., "Index 19", false));*/
-
-        //primarytable.add(new ShooterTableEntry(_indexCounter++, 7., 35, 50, 7.0, "index 7", false));
-        //primarytable.add(new ShooterTableEntry(_indexCounter++, 11., 45, 45, 14.0, "index 11", false));
-        // primarytable.add(new ShooterTableEntry(_indexCounter++, 14., 40, 60, 0., "index 14", false));
-        // primarytable.add(new ShooterTableEntry(_indexCounter++, 19., 40, 80, 0., "index 19", false)); 
+        // primarytable.add(new ShooterTableEntry(_indexCounter++, 7., 35, 50, 7.0,
+        // "index 7", false));
+        // primarytable.add(new ShooterTableEntry(_indexCounter++, 11., 45, 45, 14.0,
+        // "index 11", false));
+        // primarytable.add(new ShooterTableEntry(_indexCounter++, 14., 40, 60, 0.,
+        // "index 14", false));
+        // primarytable.add(new ShooterTableEntry(_indexCounter++, 19., 40, 80, 0.,
+        // "index 19", false));
 
         if (ShooterConstants.kIsRealGoal) {
             if (ShooterConstants.kIsVBus) {
-                primarytable.add(new ShooterTableEntry(_indexCounter++, 7., 40 /* 1190 */, 50 /* 1520 */, 40 /* 1060 */, 7., "close lob", false));
-                primarytable.add(new ShooterTableEntry(_indexCounter++, 10., 33 /* 950 */, 48 /* 1400 */, 40 /* 1060 */, 18., "index 10", false));
-                primarytable.add(new ShooterTableEntry(_indexCounter++, 12.5, 41 /* 1230 */, 61 /* 1900 */, 40 /* 1060 */, 22, "index 12.5", false));
-                primarytable.add(new ShooterTableEntry(_indexCounter++, 15, 38 /* 1100 */, 64 /* 1940 */, 40 /* 1060 */, 30., "index 15", false));
-                primarytable.add(new ShooterTableEntry(_indexCounter++, 19, 50 /* 1520 */, 75 /* 2360 */, 40 /* 1060 */, 30., "index 19", false));        
+                primarytable.add(new ShooterTableEntry(_indexCounter++, 7., 40 /* 1190 */, 50 /* 1520 */, 40 /* 1060 */,
+                        7., "close lob", false));
+                primarytable.add(new ShooterTableEntry(_indexCounter++, 10., 33 /* 950 */, 48 /* 1400 */, 40 /* 1060 */,
+                        18., "index 10", false));
+                primarytable.add(new ShooterTableEntry(_indexCounter++, 12.5, 41 /* 1230 */, 61 /* 1900 */,
+                        40 /* 1060 */, 22, "index 12.5", false));
+                primarytable.add(new ShooterTableEntry(_indexCounter++, 15, 38 /* 1100 */, 64 /* 1940 */, 40 /* 1060 */,
+                        30., "index 15", false));
+                primarytable.add(new ShooterTableEntry(_indexCounter++, 19, 50 /* 1520 */, 75 /* 2360 */, 40 /* 1060 */,
+                        30., "index 19", false));
             } else {
                 primarytable.add(new ShooterTableEntry(_indexCounter++, 7., 1190, 1520, 1060, 7., "close lob", false));
                 primarytable.add(new ShooterTableEntry(_indexCounter++, 10., 950, 1400, 1060, 18., "index 10", false));
-                primarytable.add(new ShooterTableEntry(_indexCounter++, 12.5, 1230, 1900, 1060, 22, "index 12.5", false));
+                primarytable
+                        .add(new ShooterTableEntry(_indexCounter++, 12.5, 1230, 1900, 1060, 22, "index 12.5", false));
                 primarytable.add(new ShooterTableEntry(_indexCounter++, 15, 1100, 1940, 1060, 30., "index 15", false));
-                primarytable.add(new ShooterTableEntry(_indexCounter++, 19, 1520, 2360, 1060, 30., "index 19", false));        
+                primarytable.add(new ShooterTableEntry(_indexCounter++, 19, 1520, 2360, 1060, 30., "index 19", false));
             }
         } else {
             if (ShooterConstants.kIsVBus) {
-                primarytable.add(new ShooterTableEntry(_indexCounter++, 7., 42 /* 1240 */, 35 /* 980 */, 40 /* 1060 */, 9., "close lob", false));
-                primarytable.add(new ShooterTableEntry(_indexCounter++, 10., 33 /* 950 */, 48 /* 1400 */, 40 /* 1420 */, 18., "index 10", false));
-                primarytable.add(new ShooterTableEntry(_indexCounter++, 12.5, 35 /* 1000 */, 55 /* 1620 */, 40 /* 1060 */, 24.5, "index 12.5", false));
-                primarytable.add(new ShooterTableEntry(_indexCounter++, 15, 38 /* 1100 */, 64 /* 1940 */, 40 /* 1060 */, 30., "index 15", false));        
+                primarytable.add(new ShooterTableEntry(_indexCounter++, 7., 42 /* 1240 */, 35 /* 980 */, 40 /* 1060 */,
+                        9., "close lob", false));
+                primarytable.add(new ShooterTableEntry(_indexCounter++, 10., 33 /* 950 */, 48 /* 1400 */, 40 /* 1420 */,
+                        18., "index 10", false));
+                primarytable.add(new ShooterTableEntry(_indexCounter++, 12.5, 35 /* 1000 */, 55 /* 1620 */,
+                        40 /* 1060 */, 24.5, "index 12.5", false));
+                primarytable.add(new ShooterTableEntry(_indexCounter++, 15, 38 /* 1100 */, 64 /* 1940 */, 40 /* 1060 */,
+                        30., "index 15", false));
             } else {
                 primarytable.add(new ShooterTableEntry(_indexCounter++, 7., 1240, 980, 1060, 9., "close lob", false));
                 primarytable.add(new ShooterTableEntry(_indexCounter++, 10., 950, 1400, 1060, 18., "index 10", false));
-                primarytable.add(new ShooterTableEntry(_indexCounter++, 12.5, 1000, 1620, 1060, 24.5, "index 12.5", false));
+                primarytable
+                        .add(new ShooterTableEntry(_indexCounter++, 12.5, 1000, 1620, 1060, 24.5, "index 12.5", false));
                 primarytable.add(new ShooterTableEntry(_indexCounter++, 15, 1100, 1940, 1060, 30., "index 15", false));
-        
+
             }
         }
-        
-		return primarytable;
+
+        return primarytable;
     }
-    
+
     private LinkedList<ShooterTableEntry> LoadSecondaryTable() {
 
-		LinkedList<ShooterTableEntry> secondarytable = new LinkedList<ShooterTableEntry>();
-		
-		_indexCounter = 0;
-		//======================================================================================
-		//									Position	feet Stg1  
-		//======================================================================================
-		//secondarytable.add(new ShooterTableEntry(_indexCounter++,  25, 2910, .33));
-        //secondarytable.add(new ShooterTableEntry(_indexCounter++,  27, 2910, .33));
-        //secondarytable.add(new ShooterTableEntry(_indexCounter++,  29, 2910, .33));
-		return secondarytable;
-	}
+        LinkedList<ShooterTableEntry> secondarytable = new LinkedList<ShooterTableEntry>();
+
+        _indexCounter = 0;
+        // ======================================================================================
+        // Position feet Stg1
+        // ======================================================================================
+        // secondarytable.add(new ShooterTableEntry(_indexCounter++, 25, 2910, .33));
+        // secondarytable.add(new ShooterTableEntry(_indexCounter++, 27, 2910, .33));
+        // secondarytable.add(new ShooterTableEntry(_indexCounter++, 29, 2910, .33));
+        return secondarytable;
+    }
 }

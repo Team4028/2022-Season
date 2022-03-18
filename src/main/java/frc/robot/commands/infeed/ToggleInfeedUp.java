@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Infeed;
 
 public class ToggleInfeedUp extends CommandBase {
-  private Infeed infeed = Infeed.get_instance();
+  private Infeed infeed = Infeed.getInstance();
   /** Creates a new ToggleInfeedUp. */
   public ToggleInfeedUp() {
     // Use addRequirements() here to declare subsystem dependencies.

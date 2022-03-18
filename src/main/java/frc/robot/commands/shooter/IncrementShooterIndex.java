@@ -11,6 +11,7 @@ public class IncrementShooterIndex extends CommandBase {
   /** Creates a new IncrementShooterIndex. */
   private Shooter _s = Shooter.getInstance();
   private boolean fine;
+
   public IncrementShooterIndex(boolean fine) {
     addRequirements(_s);
     // Use addRequirements() here to declare subsystem dependencies.

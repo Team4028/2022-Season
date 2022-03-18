@@ -12,6 +12,7 @@ import frc.robot.Constants.VisionConstants;
 
 public class Vision extends SubsystemBase {
   private static Vision _instance = new Vision();
+
   /** Creates a new Vision. */
   public Vision() {
     UsbCamera cam = CameraServer.startAutomaticCapture();
@@ -30,10 +31,11 @@ public class Vision extends SubsystemBase {
     }
   }
 
-  public static Vision getInstance(){
+  public static Vision getInstance() {
     return _instance;
   }
-    @Override
+
+  @Override
   public void periodic() {
     // This method will be called once per scheduler run
   }

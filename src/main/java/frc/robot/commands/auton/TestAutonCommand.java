@@ -21,13 +21,13 @@ import frc.robot.utilities.Trajectories;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class TestAutonCommand extends SequentialCommandGroup {
   /** Creates a new TestAutonCommand. */
-  private Trajectories _trajectories = Trajectories.get_instance();
-  private RobotContainer _rc = RobotContainer.get_instance();
+  private Trajectories _trajectories = Trajectories.getInstance();
+  private RobotContainer _rc = RobotContainer.getInstance();
   public TestAutonCommand() {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(_rc.getSwerveControllerCommand(_trajectories.getTestCompFirstBall())
-    .alongWith(new InstantCommand(() -> Infeed.get_instance().runInfeedSingulatorMotors(1.0))),
+    .alongWith(new InstantCommand(() -> Infeed.getInstance().runInfeedSingulatorMotors(1.0))),
     new RotateDrivetrainByAngle(Rotation2d.fromDegrees(187.0), true)
     .alongWith(new InstantCommand(() -> Shooter.getInstance().runShooterMotorsVbus())),
     new RunConveyor().withTimeout(1.0).andThen(new InstantCommand(() -> Shooter.getInstance().stop())),

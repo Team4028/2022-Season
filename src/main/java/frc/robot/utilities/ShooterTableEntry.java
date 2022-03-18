@@ -5,31 +5,28 @@
 package frc.robot.utilities;
 
 public class ShooterTableEntry {
-    public final int Index;
+	public final int Index;
 	public final double DistanceInFeet;
 	public final int ShooterFrontRPM;
-    public final int ShooterBackRPM;
+	public final int ShooterBackRPM;
 	public final int KickerRPM;
 	public final double ActuatorVal;
-    public final String Description;
-    public final boolean IsDefault; 
+	public final String Description;
+	public final boolean IsDefault;
 
-	
-
-
-	//============================================================================================
+	// ============================================================================================
 	// constructors follow
-	//============================================================================================
-	public ShooterTableEntry(int index, double distanceInFeet, int shooterFrontRPM, int shooterBackRPM, int kickerRPM, double actuatorValue, String description, boolean isDefault) {
+	// ============================================================================================
+	public ShooterTableEntry(int index, double distanceInFeet, int shooterFrontRPM, int shooterBackRPM, int kickerRPM,
+			double actuatorValue, String description, boolean isDefault) {
 		Index = index;
 		DistanceInFeet = distanceInFeet;
 		ShooterFrontRPM = shooterFrontRPM;
-        ShooterBackRPM = shooterBackRPM;
+		ShooterBackRPM = shooterBackRPM;
 		KickerRPM = kickerRPM;
 		ActuatorVal = actuatorValue;
-        Description = description;
-        IsDefault = isDefault;
+		Description = description;
+		IsDefault = isDefault;
 	}
-	
 
 }

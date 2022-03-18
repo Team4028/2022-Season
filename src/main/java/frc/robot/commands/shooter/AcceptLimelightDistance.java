@@ -9,6 +9,7 @@ import frc.robot.subsystems.Shooter;
 
 public class AcceptLimelightDistance extends CommandBase {
   private Shooter _s = Shooter.getInstance();
+
   /** Creates a new AcceptLimelightDistance. */
   public AcceptLimelightDistance() {
     // Use addRequirements() here to declare subsystem dependencies.

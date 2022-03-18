@@ -22,14 +22,14 @@ public class RotateDriveTrain extends ProfiledPIDCommand {
         // The ProfiledPIDController used by the command
         AutoConstants.AUTON_THETA_CONTROLLER,
         // This should return the measurement
-        () -> DriveSubsystem.get_instance().getPose().getRotation().getRadians(),
+        () -> DriveSubsystem.getInstance().getPose().getRotation().getRadians(),
         // This should return the goal (can also be a constant)
-        () -> DriveSubsystem.get_instance().getPose().getRotation().minus(rotation).getRadians(),
+        () -> DriveSubsystem.getInstance().getPose().getRotation().minus(rotation).getRadians(),
         // This uses the output
         (output, setpoint) -> {
           // Use the output (and setpoint, if desired) here
         });
-        addRequirements(Limelight.getInstance(), DriveSubsystem.get_instance());
+        addRequirements(Limelight.getInstance(), DriveSubsystem.getInstance());
     // Use addRequirements() here to declare subsystem dependencies.
     // Configure additional PID options by calling `getController` here.
   }

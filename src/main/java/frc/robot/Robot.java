@@ -29,7 +29,7 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
-    m_robotContainer = RobotContainer.get_instance();
+    m_robotContainer = RobotContainer.getInstance();
     UsbCamera cam = CameraServer.startAutomaticCapture();
     cam.setResolution(160, 120);
   }

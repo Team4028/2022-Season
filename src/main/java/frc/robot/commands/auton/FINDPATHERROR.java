@@ -45,7 +45,7 @@ public class FINDPATHERROR extends CommandBase {
     timeElapsed = Timer.getFPGATimestamp() - initTime;
     if(iterations == 50){
       demandPosM = traj.sample(timeElapsed).poseMeters.getTranslation();
-      actualPosM = DriveSubsystem.get_instance().getPose().getTranslation();
+      actualPosM = DriveSubsystem.getInstance().getPose().getTranslation();
       double err = demandPosM.getDistance(actualPosM);
       SmartDashboard.putNumber("Current Err: " , Math.abs(err));
       totalMeasurements++;
