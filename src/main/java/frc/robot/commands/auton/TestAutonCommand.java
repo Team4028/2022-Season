@@ -4,6 +4,8 @@
 
 package frc.robot.commands.auton;
 
+import java.time.Instant;
+
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -26,6 +28,7 @@ public class TestAutonCommand extends SequentialCommandGroup {
   public TestAutonCommand() {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
+<<<<<<< HEAD:src/main/java/frc/robot/commands/auton/TestAutonCommand.java
     addCommands(_rc.getSwerveControllerCommand(_trajectories.getTestCompFirstBall())
     .alongWith(new InstantCommand(() -> Infeed.getInstance().runInfeedSingulatorMotors(1.0))),
     new RotateDrivetrainByAngle(Rotation2d.fromDegrees(187.0), true)
@@ -36,6 +39,19 @@ public class TestAutonCommand extends SequentialCommandGroup {
     _rc.getSwerveControllerCommand(_trajectories.getTestCompReturnShoot())
     .alongWith(new WaitCommand(0.5).andThen(new InstantCommand(() -> Shooter.getInstance().runShooterMotors()))),
     new RunConveyor().withTimeout(1.5)
+=======
+    addCommands(
+      _rc.getPathPlannerSwerveControllerCommand(_trajectories.FourBall_AcquireFirstCargo()).alongWith(new InstantCommand(() -> Infeed.get_instance().toggleInfeedRun())),
+      new RotateDrivetrainByAngle(Rotation2d.fromDegrees(-165), true).alongWith(new InstantCommand(() -> Shooter.getInstance().runShooterMotorsVbus())),
+      new WaitCommand(1.0).deadlineWith(new RunConveyor()),
+      new InstantCommand(() -> Shooter.getInstance().stop()),
+      _rc.getPathPlannerSwerveControllerCommand(_trajectories.FourBall_AcquireLoadingZoneCargo()),
+      new WaitCommand(2.0),
+      _rc.getPathPlannerSwerveControllerCommand(_trajectories.FourBall_ReturnToShoot()).alongWith(new WaitCommand(0.5).andThen(new InstantCommand(() -> Shooter.getInstance().runShooterMotorsVbus())),
+      new WaitCommand(1.0).deadlineWith(new RunConveyor()),
+      new InstantCommand(() -> Shooter.getInstance().stop()),
+      new InstantCommand(() -> Infeed.get_instance().toggleInfeedRun()))
+>>>>>>> CompChassis:src/main/java/frc/robot/commands/TestAutonCommand.java
     );
   }
 }
