@@ -130,6 +130,10 @@ public class SwerveModuleCANTwoElectricBoogaloo {
     setHeading(state.angle.getDegrees());
   }
 
+  private SwerveModuleState optimize(SwerveModuleState optimize, Rotation2d rotation2d) {
+    return null;
+  }
+
   public void configMotorPID(WPI_TalonFX talon, int slotIdx, double p, double i, double d) {
     talon.config_kP(slotIdx, p, CAN_TIMEOUT_MS);
     talon.config_kI(slotIdx, i, CAN_TIMEOUT_MS);

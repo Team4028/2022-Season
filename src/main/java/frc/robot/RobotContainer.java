@@ -54,7 +54,7 @@ public class RobotContainer {
   private final Infeed m_singulatorAndInfeed = Infeed.getInstance();
   private final RunInfeedSingulatorMotors runInfeed;
   private static RobotContainer _instance;
-  private static Trajectories _trajectories = Trajectories.get_instance();
+  private static Trajectories _trajectories = Trajectories.getInstance();
   private SendableChooser<Command> _autonChooser = new SendableChooser<Command>();
   PathPlannerTrajectory _testfirstballacq;
 
@@ -78,7 +78,7 @@ public class RobotContainer {
     _testfirstballacq = PathPlanner.loadPath("testfirstballacq",
     AutoConstants.kMaxSpeedMetersPerSecond, AutoConstants.kMaxAccelerationMetersPerSecondSquared);
     // Configure the button bindings
-    _RunInfeedSingulatorMotors = new RunInfeedSingulatorMotors();
+    runInfeed = new RunInfeedSingulatorMotors();
     configureButtonBindings();
     //Init Auton Chooser
     initAutonChooser();

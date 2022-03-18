@@ -108,25 +108,25 @@ public class DriveSubsystem extends SubsystemBase {
     }
     if (testTimer == configWaitCycles) {
       System.out.println("we are worse 1");
-      DriveSubsystem.get_instance().m_frontLeft.configDriveMotor();
+      DriveSubsystem.getInstance().m_frontLeft.configDriveMotor();
       zeroHeading();
     }else if (testTimer == 2 * configWaitCycles){
       System.out.println("we are worse 2");
-      DriveSubsystem.get_instance().m_frontRight.configDriveMotor();
+      DriveSubsystem.getInstance().m_frontRight.configDriveMotor();
     }else if (testTimer == 3 * configWaitCycles){
       System.out.println("we are worse 3");
-      DriveSubsystem.get_instance().m_rearLeft.configDriveMotor();
+      DriveSubsystem.getInstance().m_rearLeft.configDriveMotor();
     }else if (testTimer == 4 * configWaitCycles){
       System.out.println("we are worse 4");
-      DriveSubsystem.get_instance().m_rearRight.configDriveMotor();
+      DriveSubsystem.getInstance().m_rearRight.configDriveMotor();
     } else if(testTimer == 5 * configWaitCycles){
-      DriveSubsystem.get_instance().m_frontLeft.configTurningMotor();
+      DriveSubsystem.getInstance().m_frontLeft.configTurningMotor();
     }else if(testTimer == 6 * configWaitCycles){
-      DriveSubsystem.get_instance().m_rearRight.configTurningMotor();
+      DriveSubsystem.getInstance().m_rearRight.configTurningMotor();
     }else if(testTimer == 7 * configWaitCycles){
-      DriveSubsystem.get_instance().m_frontRight.configTurningMotor();
+      DriveSubsystem.getInstance().m_frontRight.configTurningMotor();
     }else if(testTimer == 8 * configWaitCycles){
-      DriveSubsystem.get_instance().m_rearLeft.configTurningMotor();
+      DriveSubsystem.getInstance().m_rearLeft.configTurningMotor();
     }
   }
 
@@ -207,10 +207,10 @@ public class DriveSubsystem extends SubsystemBase {
     m_rearRight.resetEncoders();
   }
   private void resetModuleHeadingControllers(){
-    DriveSubsystem.get_instance().m_frontLeft.RezeroTurningMotorEncoder();
-    DriveSubsystem.get_instance().m_frontRight.RezeroTurningMotorEncoder();
-    DriveSubsystem.get_instance().m_rearLeft.RezeroTurningMotorEncoder();
-    DriveSubsystem.get_instance().m_rearRight.RezeroTurningMotorEncoder();
+    DriveSubsystem.getInstance().m_frontLeft.RezeroTurningMotorEncoder();
+    DriveSubsystem.getInstance().m_frontRight.RezeroTurningMotorEncoder();
+    DriveSubsystem.getInstance().m_rearLeft.RezeroTurningMotorEncoder();
+    DriveSubsystem.getInstance().m_rearRight.RezeroTurningMotorEncoder();
   }
 
   /** Zeroes the heading of the robot. */
