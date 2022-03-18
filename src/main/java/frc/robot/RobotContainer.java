@@ -4,10 +4,21 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.PathPlanner;
+import com.pathplanner.lib.PathPlannerTrajectory;
+import com.pathplanner.lib.commands.PPSwerveControllerCommand;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+// import frc.robot.subsystems.Shooter;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
@@ -30,13 +41,6 @@ import frc.robot.commands.vision.ToggleCamera;
 import frc.robot.subsystems.Infeed;
 import frc.robot.subsystems.Limelight;
 import frc.robot.utilities.Trajectories;
-// import frc.robot.subsystems.Shooter;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.RunCommand;
-import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /*
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -50,8 +54,9 @@ public class RobotContainer {
   private final Infeed m_singulatorAndInfeed = Infeed.getInstance();
   private final RunInfeedSingulatorMotors runInfeed;
   private static RobotContainer _instance;
-  private WaitCommand _wait;
-  private static Trajectories _trajectories = Trajectories.getInstance();
+  private static Trajectories _trajectories = Trajectories.get_instance();
+  private SendableChooser<Command> _autonChooser = new SendableChooser<Command>();
+  PathPlannerTrajectory _testfirstballacq;
 
   public static final RobotContainer getInstance() {
     if (_instance == null) {
@@ -70,11 +75,14 @@ public class RobotContainer {
    */
   public RobotContainer() {
     AutoConstants.AUTON_THETA_CONTROLLER.enableContinuousInput(-Math.PI, Math.PI);
+    _testfirstballacq = PathPlanner.loadPath("testfirstballacq",
+    AutoConstants.kMaxSpeedMetersPerSecond, AutoConstants.kMaxAccelerationMetersPerSecondSquared);
     // Configure the button bindings
-    runInfeed = new RunInfeedSingulatorMotors();
-    _wait = new WaitCommand(1.0);
-    _wait.addRequirements(m_singulatorAndInfeed);
+    _RunInfeedSingulatorMotors = new RunInfeedSingulatorMotors();
     configureButtonBindings();
+    //Init Auton Chooser
+    initAutonChooser();
+    SmartDashboard.putData(_autonChooser);
 
     // Configure default commands
     m_robotDrive.setDefaultCommand(
@@ -132,13 +140,8 @@ public class RobotContainer {
     return m_driverController.getRightTrigger();
   }
 
-  /**
-   * @param traj Trajectory to follow
-   * @return New SwerveControllerCommand - commands DriveSubsystem to follow given
-   *         trajectory, then stop
-   */
-  public Command getSwerveControllerCommand(Trajectory traj) {
-    return new SwerveControllerCommand(
+  public Command getPathPlannerSwerveControllerCommand(PathPlannerTrajectory traj) {
+    return new PPSwerveControllerCommand(
         traj,
         m_robotDrive::getPose,
         DriveConstants.kDriveKinematics,
@@ -146,9 +149,20 @@ public class RobotContainer {
         AutoConstants.AUTON_Y_CONTROLLER,
         AutoConstants.AUTON_THETA_CONTROLLER,
         m_robotDrive::setModuleStates,
-        m_robotDrive)
+        m_robotDrive).deadlineWith(new AutonTimer())
             .andThen(new InstantCommand(() -> m_robotDrive.drive(0, 0, 0, true)));
   }
+  //TODO: Add real Autons because these are just paths rn
+  private void initAutonChooser(){
+    _autonChooser.setDefaultOption("FourBall_AcquireFirst", getPathPlannerSwerveControllerCommand(_trajectories.FourBall_AcquireFirstCargo()));
+    _autonChooser.addOption("FourBall_AcquireLoadingZoneCargo", getPathPlannerSwerveControllerCommand(_trajectories.FourBall_AcquireLoadingZoneCargo()));
+    _autonChooser.addOption("FourBall_ReturnToShoot", getPathPlannerSwerveControllerCommand(_trajectories.FourBall_ReturnToShoot()));
+    _autonChooser.addOption("FiveBall_AcquireFirstBall", getPathPlannerSwerveControllerCommand(_trajectories.FiveBall_AcquireFirstCargo()));
+    _autonChooser.addOption("FiveBall_AcquireSecondCargo", getPathPlannerSwerveControllerCommand(_trajectories.FiveBall_AcquireSecondCargo()));
+    _autonChooser.addOption("FiveBall_AcquireLoadingZoneCargo", getPathPlannerSwerveControllerCommand(_trajectories.FiveBall_AcquireLoadingZoneCargo()));
+    _autonChooser.addOption("FiveBall_ReturnToShoot", getPathPlannerSwerveControllerCommand(_trajectories.FiveBall_ReturnToShoot()));
+  }
+  
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
@@ -157,7 +171,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // Create config for trajectory
-    m_robotDrive.resetOdometry(new Pose2d(0, 0, new Rotation2d()));
+    m_robotDrive.resetOdometry(_trajectories.FourBall_AcquireFirstCargo().getInitialPose());
     return new TestAutonCommand().deadlineWith(new AutonTimer());
     // return getSwerveControllerCommand(_trajectories.getTestCompFirstBall())
     // .alongWith(new InstantCommand(() ->

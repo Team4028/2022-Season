@@ -11,6 +11,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.math.util.Units;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide
@@ -60,9 +61,9 @@ public final class Constants {
 
     public static final String kCANivoreName = "DriveSubsystem";
 
-    public static final double kTrackWidth = util.inchesToMeters(23.75 - 2);
+    public static final double kTrackWidth = Units.inchesToMeters(21.75);
     // Distance between centers of right and left wheels on robot
-    public static final double kWheelBase = util.inchesToMeters(25.75 - 2);
+    public static final double kWheelBase = Units.inchesToMeters(23.75);
     // Distance between front and back wheels on robot
     public static final SwerveDriveKinematics kDriveKinematics = new SwerveDriveKinematics(
         new Translation2d(kWheelBase / 2, kTrackWidth / 2),
@@ -81,8 +82,8 @@ public final class Constants {
         kvVoltSecondsPerMeter,
         kaVoltSecondsSquaredPerMeter);
 
-    public static final double kMaxSpeedMetersPerSecond = util.feetToMeters(12.0);
-    public static final double i_kMaxSpeedMetersPerSecond = util.feetToMeters(16.3);
+    public static final double kMaxSpeedMetersPerSecond = Units.feetToMeters(12.0);
+    public static final double i_kMaxSpeedMetersPerSecond = Units.feetToMeters(16.3);
   }
 
   public static final class ModuleConstants {
@@ -90,7 +91,7 @@ public final class Constants {
     public static final double kMaxModuleAngularAccelerationRadiansPerSecondSquared = 2 * Math.PI;
 
     public static final int kEncoderCPR = 42;
-    public static final double kWheelDiameterMeters = util.inchesToMeters(4.0);
+    public static final double kWheelDiameterMeters = Units.inchesToMeters(4.0);
     public static final double kDriveEncoderDistancePerPulse =
         // Assumes the encoders are directly mounted on the wheel shafts
         (kWheelDiameterMeters * Math.PI) * (1.0 / (60.0 / 15.0) / (20.0 / 24.0) / (40.0 / 16.0));
@@ -116,7 +117,7 @@ public final class Constants {
     public static final double i_integratedEncoderTicksPerModRev = 2048 * (150.0 / 7.0);
 
     public static final int i_kEncoderCPR = 4096;
-    public static final double i_kWheelDiameterMeters = util.inchesToMeters(4.0);
+    public static final double i_kWheelDiameterMeters = Units.inchesToMeters(4.0);
     public static final double i_kDriveEncoderDistancePerPulse =
         // Assumes the encoders are directly mounted on the wheel shafts
         (i_kWheelDiameterMeters * Math.PI) * (1.0 / (50.0 / 14.0) / (17.0 / 27.0) / (45.0 / 15.0)) / 2048.0;
@@ -143,8 +144,8 @@ public final class Constants {
   }
 
   public static final class AutoConstants {
-    public static final double kMaxSpeedMetersPerSecond = util.feetToMeters(16.3);
-    public static final double kMaxAccelerationMetersPerSecondSquared = util.feetToMeters(16.3);
+    public static final double kMaxSpeedMetersPerSecond = Units.feetToMeters(16.3);
+    public static final double kMaxAccelerationMetersPerSecondSquared = Units.feetToMeters(16.3);
 
     public static final double kPXController = 2.0;
     public static final double kPYController = kPXController;
