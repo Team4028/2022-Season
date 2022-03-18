@@ -29,12 +29,12 @@ public class TestAutonCommand extends SequentialCommandGroup {
     addCommands(_rc.getSwerveControllerCommand(_trajectories.getTestCompFirstBall())
     .alongWith(new InstantCommand(() -> Infeed.getInstance().runInfeedSingulatorMotors(1.0))),
     new RotateDrivetrainByAngle(Rotation2d.fromDegrees(187.0), true)
-    .alongWith(new InstantCommand(() -> Shooter.getInstance().runShooterMotorsVbus())),
+    .alongWith(new InstantCommand(() -> Shooter.getInstance().runShooterMotors())),
     new RunConveyor().withTimeout(1.0).andThen(new InstantCommand(() -> Shooter.getInstance().stop())),
     _rc.getSwerveControllerCommand(_trajectories.getTestCompSecondBall()),
     new WaitCommand(2.0),
     _rc.getSwerveControllerCommand(_trajectories.getTestCompReturnShoot())
-    .alongWith(new WaitCommand(0.5).andThen(new InstantCommand(() -> Shooter.getInstance().runShooterMotorsVbus()))),
+    .alongWith(new WaitCommand(0.5).andThen(new InstantCommand(() -> Shooter.getInstance().runShooterMotors()))),
     new RunConveyor().withTimeout(1.5)
     );
   }
