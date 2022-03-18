@@ -8,6 +8,7 @@ import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.commands.PPSwerveControllerCommand;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -16,11 +17,25 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
+import frc.robot.commands.AcceptLimelightDistance;
 import frc.robot.commands.AutonTimer;
+import frc.robot.commands.DecrementShooterIndex;
+import frc.robot.commands.IncrementShooterIndex;
+import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.commands.RunConveyor;
+import frc.robot.commands.ReverseInfeedAndConveyor;
+import frc.robot.commands.RunConveyorOneBall;
+import frc.robot.commands.RunConveyorTwoBall;
+import frc.robot.commands.RunShooterMotors;
+import frc.robot.commands.RunShooterMotorsVbus;
+import frc.robot.commands.TestAutonCommand;
+import frc.robot.commands.ToggleAdjustmentStyle;
+import frc.robot.commands.ToggleCamera;
 import frc.robot.commands.RotateDrivetrainByAngle;
 // import frc.robot.commands.RunConveyorWithEncoder;
 // import frc.robot.commands.LiftInfeed;
@@ -29,9 +44,11 @@ import frc.robot.commands.RotateDrivetrainByAngle;
 // import frc.robot.commands.RunConveyorTwoBall;
 // import frc.robot.commands.RunShooterMotors;
 // import frc.robot.commands.ToggleFineAdjustment;
+import frc.robot.commands.RunInfeedSingulatorMotors;
 import frc.robot.commands.XDrive;
-import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.Infeed;
 import frc.robot.subsystems.Limelight;
+import frc.robot.subsystems.Shooter;
 import frc.robot.utilities.Trajectories;
 
 /*
@@ -43,6 +60,8 @@ import frc.robot.utilities.Trajectories;
 public class RobotContainer {
   // The robot's subsystems
   private final DriveSubsystem m_robotDrive = DriveSubsystem.get_instance();
+  private final Infeed m_singulatorAndInfeed = Infeed.get_instance();
+  private final RunInfeedSingulatorMotors _RunInfeedSingulatorMotors;
   private static RobotContainer _instance;
   private static Trajectories _trajectories = Trajectories.get_instance();
   private SendableChooser<Command> _autonChooser = new SendableChooser<Command>();
@@ -68,6 +87,7 @@ public class RobotContainer {
     _testfirstballacq = PathPlanner.loadPath("testfirstballacq",
     AutoConstants.kMaxSpeedMetersPerSecond, AutoConstants.kMaxAccelerationMetersPerSecondSquared);
     // Configure the button bindings
+    _RunInfeedSingulatorMotors = new RunInfeedSingulatorMotors();
     configureButtonBindings();
     //Init Auton Chooser
     initAutonChooser();
@@ -97,10 +117,20 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     // ========= OPERATOR CONTROLLER =======
+    m_operatorController.y.toggleWhenPressed(new RunInfeedSingulatorMotors());
+    m_operatorController.b.whenPressed(new RunConveyorOneBall());
+    m_operatorController.x.toggleWhenPressed(new RunShooterMotorsVbus());
+    m_operatorController.a.whenPressed(new RunConveyorTwoBall());
+    m_operatorController.start.toggleWhenPressed(new RunConveyor());
+    m_operatorController.back.toggleWhenPressed(new ReverseInfeedAndConveyor());
+    m_operatorController.left_bumper.whenPressed(new DecrementShooterIndex());
+    m_operatorController.right_bumper.whenPressed(new IncrementShooterIndex());
+    m_operatorController.left_stick_button.whenPressed(new ToggleAdjustmentStyle());
+    m_operatorController.right_stick_button.whenPressed(new AcceptLimelightDistance());
     //====================================
 
     // ======== DRIVER CONTROLLER ========
-    // m_driverController.back.whenPressed(new InstantCommand(() -> Infeed.get_instance().toggleInfeedUp()));
+    m_driverController.back.whenPressed(new InstantCommand(() -> Infeed.get_instance().toggleInfeedUp()));
     m_driverController.right_stick_button
         .whenPressed(new RotateDrivetrainByAngle(Rotation2d.fromDegrees(Limelight.getInstance().getX()), false));
     m_driverController.x.toggleWhenPressed(new XDrive());
@@ -145,9 +175,19 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // Create config for trajectory
-    // m_robotDrive.resetOdometry(new Pose2d());
-    m_robotDrive.resetOdometry(_testfirstballacq.getInitialPose());
-    return _autonChooser.getSelected();
+    m_robotDrive.resetOdometry(_trajectories.FourBall_AcquireFirstCargo().getInitialPose());
+    return new TestAutonCommand().deadlineWith(new AutonTimer());
+    // return getSwerveControllerCommand(_trajectories.getTestCompFirstBall())
+    //     .alongWith(new InstantCommand(() -> Infeed.get_instance().runInfeedSingulatorMotors(1.0)))
+    //     .andThen(new RotateDrivetrainByAngle(Rotation2d.fromDegrees(187), true))
+    //     .andThen(new RunShooterMotorsVbus().alongWith(new WaitCommand(0.25).andThen(new RunConveyor())).raceWith(new WaitCommand(1.25)))
+    //     .andThen(new InstantCommand(() -> Infeed.get_instance().stopInfeedSingulatorMotors()))
+    //     .deadlineWith(new AutonTimer());
+        // .andThen(getSwerveControllerCommand(_trajectories.getTestCompSecondBall()))
+        // .andThen(new WaitCommand(1.5))
+        // .andThen(getSwerveControllerCommand(_trajectories.getTestCompReturnShoot()))
+        // .andThen(new WaitCommand(2.0))
+        // .andThen(new InstantCommand(() -> System.out.println("AUTON FINISHED")));
   }
 
 }

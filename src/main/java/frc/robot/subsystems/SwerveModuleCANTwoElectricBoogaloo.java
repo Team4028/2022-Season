@@ -62,10 +62,8 @@ public class SwerveModuleCANTwoElectricBoogaloo {
     }
 
   public void configTurningMotor(){
-    m_turningMotor.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, CAN_TIMEOUT_MS);
-    m_turningMotor.configSelectedFeedbackCoefficient(1.0);
-    m_turningEncoder.configSensorInitializationStrategy(SensorInitializationStrategy.BootToAbsolutePosition);
-    m_turningEncoder.setPositionToAbsolute();
+    //m_turningMotor.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, CAN_TIMEOUT_MS);
+    //m_turningMotor.configSelectedFeedbackCoefficient(1.0);
     m_turningMotor.setNeutralMode(NeutralMode.Brake);
     m_turningMotor.setInverted(true);
     m_turningMotor.selectProfileSlot(0, 0);
@@ -87,6 +85,18 @@ public class SwerveModuleCANTwoElectricBoogaloo {
     m_driveMotor.setNeutralMode(NeutralMode.Brake);
     m_driveMotor.configVoltageCompSaturation(i_kNominalVoltage);
     m_driveMotor.enableVoltageCompensation(true);
+  }
+  public void configStatusFramePeriods(){
+
+    // m_turningEncoder.setStatusFramePeriod(CANCoderStatusFrame.SensorData, 100);
+    // m_turningMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_1_General, 20);
+    // m_turningMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 20);
+    // m_turningMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_4_AinTempVbat, 255);
+    // m_driveMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_6_Misc, 255);
+    // m_driveMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_1_General, 20);
+    // m_driveMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 20);
+    // m_driveMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_4_AinTempVbat, 255);
+    // m_driveMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_6_Misc, 255);
   }
 
   /**

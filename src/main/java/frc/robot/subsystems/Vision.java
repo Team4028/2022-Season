@@ -4,7 +4,6 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.VisionConstants;
@@ -12,9 +11,7 @@ import frc.robot.Constants.VisionConstants;
 public class Vision extends SubsystemBase {
   private static Vision _instance = new Vision();
   /** Creates a new Vision. */
-  public Vision() {
-    CameraServer.startAutomaticCapture();
-  }
+  public Vision() {}
 
   public void toggleCam() {
     System.out.println(SmartDashboard.getString("CamSelection", " "));
