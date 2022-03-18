@@ -70,13 +70,15 @@ public class Shooter extends SubsystemBase {
     put("BackVbus", VBusConstants.kShooterBackDefault);
     put("Hood Angle (rot)", VBusConstants.kShooterHoodAngleRotDefault);
 
-    // _front.config_kF(0, PIDConstants.Front.kF);
-    // _front.config_kP(0, PIDConstants.Front.kP);
-    // _front.config_kD(0, PIDConstants.Front.kD);
+    if (!ShooterConstants.kIsVBus) {
+      _front.config_kF(0, PIDConstants.Front.kF);
+      _front.config_kP(0, PIDConstants.Front.kP);
+      _front.config_kD(0, PIDConstants.Front.kD);
 
-    // _back.config_kF(0, PIDConstants.Back.kF);
-    // _back.config_kP(0, PIDConstants.Back.kP);
-    // _back.config_kD(0, PIDConstants.Back.kD);
+      _back.config_kF(0, PIDConstants.Back.kF);
+      _back.config_kP(0, PIDConstants.Back.kP);
+      _back.config_kD(0, PIDConstants.Back.kD);
+    }
 
     _front.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 250);
     _back.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 250);
@@ -109,31 +111,27 @@ public class Shooter extends SubsystemBase {
   public double getNumber(String key, double defaultValue) {
     return SmartDashboard.getNumber(key, defaultValue);
   }
+  // _front.set(ControlMode.PercentOutput, SmartDashboard.getNumber("FrontVbus",
+  // VBusConstants.kShooterFrontDefault));
+  // _back.set(ControlMode.PercentOutput, SmartDashboard.getNumber("BackVbus",
+  // VBusConstants.kShooterBackDefault));
+  // _kicker.set(ControlMode.PercentOutput, SmartDashboard.getNumber("KickerVbus",
+  // VBusConstants.kKicker));
 
-  public void runShooterMotorsVbus() {
-    ShooterTableEntry entry = ShooterTable.getPrimaryTable().CalcShooterValues(shooterIndex);
-    _front.set(ControlMode.PercentOutput, entry.ShooterFrontRPM / 100.);
-    _back.set(ControlMode.PercentOutput, entry.ShooterBackRPM / 100.);
-    _kicker.set(ControlMode.PercentOutput, entry.KickerRPM / 100.);
-    // _front.set(ControlMode.PercentOutput, SmartDashboard.getNumber("FrontVbus",
-    // VBusConstants.kShooterFrontDefault));
-    // _back.set(ControlMode.PercentOutput, SmartDashboard.getNumber("BackVbus",
-    // VBusConstants.kShooterBackDefault));
-    // _kicker.set(ControlMode.PercentOutput, SmartDashboard.getNumber("KickerVbus",
-    // VBusConstants.kKicker));
-
-    _anglePid.setReference(entry.ActuatorVal, ControlType.kPosition);
-    // _anglePid.setReference(SmartDashboard.getNumber("Hood Angle (rot)",
-    // VBusConstants.kShooterHoodAngleRotDefault), ControlType.kPosition);
-  }
+  // _anglePid.setReference(SmartDashboard.getNumber("Hood Angle (rot)",
+  // VBusConstants.kShooterHoodAngleRotDefault), ControlType.kPosition);
 
   public void runShooterMotors() {
     ShooterTableEntry entry = ShooterTable.getPrimaryTable().CalcShooterValues(shooterIndex);
-    _front.set(ControlMode.Velocity, util.toFalconVelocity(entry.ShooterFrontRPM));
-    _back.set(ControlMode.Velocity, util.toFalconVelocity(entry.ShooterBackRPM));
-    _kicker.set(ControlMode.PercentOutput, entry.KickerRPM);
-
-    System.out.println(entry.ActuatorVal);
+    if (ShooterConstants.kIsVBus) {
+      _front.set(ControlMode.PercentOutput, entry.ShooterFrontRPM / 100.);
+      _back.set(ControlMode.PercentOutput, entry.ShooterBackRPM / 100.);
+      _kicker.set(ControlMode.PercentOutput, entry.KickerRPM / 100.);
+    } else {
+      _front.set(ControlMode.Velocity, util.toFalconVelocity(entry.ShooterFrontRPM));
+      _back.set(ControlMode.Velocity, util.toFalconVelocity(entry.ShooterBackRPM));
+      _kicker.set(ControlMode.Velocity, util.toFalconVelocity(entry.KickerRPM));
+    }
 
     _anglePid.setReference(entry.ActuatorVal, ControlType.kPosition);
   }

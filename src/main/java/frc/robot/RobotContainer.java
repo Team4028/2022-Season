@@ -25,7 +25,7 @@ import frc.robot.commands.shooter.AcceptLimelightDistance;
 import frc.robot.commands.shooter.DecrementShooterIndex;
 import frc.robot.commands.shooter.IncrementShooterIndex;
 import frc.robot.commands.shooter.ResetDefaultIndex;
-import frc.robot.commands.shooter.RunShooterMotorsVbus;
+import frc.robot.commands.shooter.RunShooterMotors;
 import frc.robot.commands.vision.ToggleCamera;
 import frc.robot.subsystems.Infeed;
 import frc.robot.subsystems.Limelight;
@@ -102,7 +102,7 @@ public class RobotContainer {
     // ========= OPERATOR CONTROLLER =======
     m_operatorController.a.whenPressed(new RunConveyorTwoBall());
     m_operatorController.b.whenPressed(new RunConveyorOneBall());
-    m_operatorController.x.toggleWhenPressed(new RunShooterMotorsVbus());
+    m_operatorController.x.toggleWhenPressed(new RunShooterMotors());
     m_operatorController.y.toggleWhenPressed(runInfeed);
     m_operatorController.back.toggleWhenPressed(new ReverseInfeedAndConveyor());
     m_operatorController.lb.whenPressed(new DecrementShooterIndex(false));
