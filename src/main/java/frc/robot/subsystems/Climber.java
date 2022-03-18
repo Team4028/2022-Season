@@ -12,7 +12,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.CurrentConstants;
+import frc.robot.Constants.CurrentLimitConstants;
 import frc.robot.Constants.SubsystemConstants;
 import frc.robot.Constants.VBusConstants;
 
@@ -42,8 +42,8 @@ public class Climber extends SubsystemBase {
     _left.restoreFactoryDefaults();
     _right.restoreFactoryDefaults();
 
-    _left.setSmartCurrentLimit(CurrentConstants.kClimber);
-    _right.setSmartCurrentLimit(CurrentConstants.kClimber);
+    _left.setSmartCurrentLimit(CurrentLimitConstants.kClimber);
+    _right.setSmartCurrentLimit(CurrentLimitConstants.kClimber);
 
     _left.setIdleMode(IdleMode.kBrake);
     _right.setIdleMode(IdleMode.kBrake);

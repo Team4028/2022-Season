@@ -18,7 +18,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.util;
 import frc.robot.Constants.ShooterConstants;
-import frc.robot.Constants.CurrentConstants;
+import frc.robot.Constants.CurrentLimitConstants;
 import frc.robot.Constants.PIDConstants;
 import frc.robot.Constants.SubsystemConstants;
 import frc.robot.Constants.VBusConstants;
@@ -58,7 +58,7 @@ public class Shooter extends SubsystemBase {
     // _kicker.configFactoryDefault();
 
     _angle.restoreFactoryDefaults();
-    _angle.setSmartCurrentLimit(CurrentConstants.kAngle);
+    _angle.setSmartCurrentLimit(CurrentLimitConstants.kAngle);
     _angle.setInverted(true);
 
     _angleEnc = _angle.getEncoder();
