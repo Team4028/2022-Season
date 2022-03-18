@@ -39,9 +39,9 @@ public class SwerveModuleCANTwoElectricBoogaloo {
       int turningMotorChannel,
       int CANEncoderPort,
       double turningMotorOffset) {
-    m_driveMotor = new WPI_TalonFX(driveMotorChannel);
-    m_turningMotor = new WPI_TalonFX(turningMotorChannel);
-    m_turningEncoder = new WPI_CANCoder(CANEncoderPort);
+    m_driveMotor = new WPI_TalonFX(driveMotorChannel, DriveConstants.kCANivoreName);
+    m_turningMotor = new WPI_TalonFX(turningMotorChannel, DriveConstants.kCANivoreName);
+    m_turningEncoder = new WPI_CANCoder(CANEncoderPort, DriveConstants.kCANivoreName);
     dub = CANEncoderPort;
 
     m_turningEncoder.configFactoryDefault();
@@ -71,8 +71,18 @@ public class SwerveModuleCANTwoElectricBoogaloo {
     m_turningMotor.setSelectedSensorPosition(m_turningEncoder.getAbsolutePosition() / 360.0 * i_integratedEncoderTicksPerModRev);
     m_turningMotor.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 20, 25, 1.0));
   }
-
-  public void configDriveMotor() {
+  public void checkPowerFailure(){
+    if(m_driveMotor.hasResetOccurred()){
+      System.out.println("Drive Motor" + Integer.toString(m_driveMotor.getDeviceID()));
+    }
+    if(m_turningMotor.hasResetOccurred()){
+      System.out.println("Turning Motor" + Integer.toString(m_turningMotor.getDeviceID()));
+    }
+    if(m_turningEncoder.hasResetOccurred()){
+      System.out.println("CANcoder" + Integer.toString(m_turningEncoder.getDeviceID()));
+    }
+  }
+  public void configDriveMotor(){
     m_driveMotor.setNeutralMode(NeutralMode.Brake);
     m_driveMotor.configVoltageCompSaturation(i_kNominalVoltage);
     m_driveMotor.enableVoltageCompensation(true);
@@ -80,18 +90,13 @@ public class SwerveModuleCANTwoElectricBoogaloo {
   public void configStatusFramePeriods(){
 
     // m_turningEncoder.setStatusFramePeriod(CANCoderStatusFrame.SensorData, 100);
-    // m_turningMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_1_General,
-    // 20);
-    // m_turningMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0,
-    // 20);
-    // m_turningMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_4_AinTempVbat,
-    // 255);
+    // m_turningMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_1_General, 20);
+    // m_turningMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 20);
+    // m_turningMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_4_AinTempVbat, 255);
     // m_driveMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_6_Misc, 255);
     // m_driveMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_1_General, 20);
-    // m_driveMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0,
-    // 20);
-    // m_driveMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_4_AinTempVbat,
-    // 255);
+    // m_driveMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 20);
+    // m_driveMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_4_AinTempVbat, 255);
     // m_driveMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_6_Misc, 255);
   }
 

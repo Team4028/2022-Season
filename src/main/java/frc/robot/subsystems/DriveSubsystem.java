@@ -68,7 +68,7 @@ public class DriveSubsystem extends SubsystemBase {
 
   // The gyro sensor
   // private final Pigeon2 m_pigeon = new Pigeon2(1);
-  private final WPI_Pigeon2 m_gyro = new WPI_Pigeon2(DriveConstants.pigeonCan);
+  private final WPI_Pigeon2 m_gyro = new WPI_Pigeon2(DriveConstants.pigeonCan, DriveConstants.kCANivoreName);
 
   // Odometry class for tracking robot pose
   SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(kDriveKinematics, getGyroRotation2d());

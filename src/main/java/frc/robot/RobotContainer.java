@@ -22,11 +22,14 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
+import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.commands.auton.AutonTimer;
 import frc.robot.commands.auton.TestAutonCommand;
 import frc.robot.commands.chassis.RotateDrivetrainByAngle;
 import frc.robot.commands.chassis.XDrive;
+import frc.robot.commands.climber.HighBarClimb;
+import frc.robot.commands.climber.TraversalBarClimb;
 import frc.robot.commands.conveyor.ReverseInfeedAndConveyor;
 import frc.robot.commands.conveyor.RunConveyorOneBall;
 import frc.robot.commands.conveyor.RunConveyorTwoBall;
@@ -90,7 +93,7 @@ public class RobotContainer {
         // Turning is controlled by the X axis of the right stick.
         new RunCommand(
             () -> m_robotDrive.drive(
-                -m_driverController.getLeftYAxis(),
+                m_driverController.getLeftYAxis(),
                 -m_driverController.getLeftXAxis(),
                 -m_driverController.getRightXAxis(),
                 true),
@@ -112,6 +115,7 @@ public class RobotContainer {
     m_operatorController.b.whenPressed(new RunConveyorOneBall());
     m_operatorController.x.toggleWhenPressed(new RunShooterMotors());
     m_operatorController.y.toggleWhenPressed(runInfeed);
+    m_operatorController.start.whenPressed(new HighBarClimb());
     m_operatorController.back.toggleWhenPressed(new ReverseInfeedAndConveyor());
     m_operatorController.lb.whenPressed(new DecrementShooterIndex(false));
     m_operatorController.rb.whenPressed(new IncrementShooterIndex(false));
@@ -134,6 +138,28 @@ public class RobotContainer {
         .whenPressed(new RotateDrivetrainByAngle(Rotation2d.fromDegrees(Limelight.getInstance().getX()), false));
     m_driverController.ls.whenPressed(new ToggleCamera());
     // ===================================
+
+    // ======== TEMP. CLIMBER CONTROLLER
+    BeakXBoxController climberController = new BeakXBoxController(2);
+    Climber climber = Climber.getInstance();
+    climberController.a.whenPressed(new InstantCommand(() -> climber.toggleTippySolenoid()));
+    climberController.lb.whileHeld(new InstantCommand(() -> climber.leftMotorForward(.8)));
+    climberController.lb.whenReleased(new InstantCommand(() -> climber.leftMotorOff()));
+    climberController.start.whileHeld(new InstantCommand(() -> climber.rightMotorBackward(-.8)));
+    climberController.start.whenReleased(new InstantCommand(() -> climber.rightMotorOff()));
+
+    climberController.y.whileHeld(new InstantCommand(() -> climber.leftMotorForward(.8)).alongWith(new InstantCommand(() -> climber.rightMotorForward(.8))));
+    climberController.y.whenReleased(new InstantCommand(() -> climber.leftMotorOff()).alongWith(new InstantCommand(() -> climber.rightMotorOff())));
+    climberController.x.whileHeld(new InstantCommand(() -> climber.leftMotorBackward(-.8)).alongWith(new InstantCommand(() -> climber.rightMotorBackward(-.8))));
+    climberController.x.whenReleased(new InstantCommand(() -> climber.leftMotorOff()).alongWith(new InstantCommand(() -> climber.rightMotorOff())));
+    
+    climberController.b.whenPressed(new InstantCommand(() -> climber.toggleGrippySolenoid()));
+    climberController.rb.whileHeld(new InstantCommand(() -> climber.rightMotorForward(.8)));
+    climberController.rb.whenReleased(new InstantCommand(() -> climber.rightMotorOff()));
+    climberController.back.whileHeld(new InstantCommand(() -> climber.leftMotorBackward(-.8)));
+    climberController.back.whenReleased(new InstantCommand(() -> climber.leftMotorOff()));
+    climberController.ls.whenPressed(new TraversalBarClimb());
+    climberController.rs.whenPressed(new HighBarClimb());
   }
 
   public double getRightTrigger() {
