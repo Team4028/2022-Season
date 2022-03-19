@@ -217,7 +217,8 @@ public final class Constants {
 
     public static final double kMaxAllowedAngle = 30.;
 
-    public static final boolean kIsVBus = true;
+    public static final boolean kIsBangBang = true;
+    public static final boolean kIsVBus = false; // these two can NOT be both true, but both can be false!
     public static final boolean kIsRealGoal = false;
   }
 
@@ -238,15 +239,15 @@ public final class Constants {
     // TODO: more damping
     public static final class Front {
       public static double kF = 0.05;
-      public static double kP = 0.4;
-      public static double kD = 0.002;
+      public static double kP = ShooterConstants.kIsBangBang ? Double.POSITIVE_INFINITY : 0.4;
+      public static double kD = ShooterConstants.kIsBangBang ? 0. : 0.002;
       public static double kMax = 22000; // 20400;
     }
 
     public static final class Back {
-      public static double kF = 0.055;
-      public static double kP = 0.1;
-      public static double kD = 0.002;
+      public static double kF = 0.05;
+      public static double kP = ShooterConstants.kIsBangBang ? Double.POSITIVE_INFINITY : 0.1;
+      public static double kD = ShooterConstants.kIsBangBang ? 0. : 0.002;
       public static double kMax = 22000; // 17000;
     }
 
