@@ -135,9 +135,6 @@ public class SwerveModuleCANTwoElectricBoogaloo {
     setHeading(state.angle.getDegrees());
   }
 
-  private SwerveModuleState optimize(SwerveModuleState optimize, Rotation2d rotation2d) {
-    return null;
-  }
 
   public void configMotorPID(WPI_TalonFX talon, int slotIdx, double p, double i, double d) {
     talon.config_kP(slotIdx, p, CAN_TIMEOUT_MS);
@@ -162,6 +159,22 @@ public class SwerveModuleCANTwoElectricBoogaloo {
     } else if (newAngleDemand - currentSensorPosition < -180.1) {
       newAngleDemand += 360.0;
     }
+    
+}
+public static SwerveModuleState optimize(
+  SwerveModuleState desiredState, Rotation2d currentAngle) {
+var delta = desiredState.angle.minus(currentAngle);
+while(Math.abs(delta.getDegrees()) > 90.0){
+  desiredState =   new SwerveModuleState(
+    -desiredState.speedMetersPerSecond,
+    Rotation2d.fromDegrees(
+      delta.getDegrees() < 90.0?
+      delta.getDegrees() + 180.0:
+      delta.getDegrees() - 180.0
+    ));
+  delta = desiredState.angle.minus(currentAngle);
+}
+  return new SwerveModuleState(desiredState.speedMetersPerSecond, desiredState.angle);
 
 }
 public void RezeroTurningMotorEncoder(){
