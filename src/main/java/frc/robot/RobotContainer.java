@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.AutoConstants;
@@ -31,6 +32,7 @@ import frc.robot.commands.chassis.XDrive;
 import frc.robot.commands.climber.HighBarClimb;
 import frc.robot.commands.climber.TraversalBarClimb;
 import frc.robot.commands.conveyor.ReverseInfeedAndConveyor;
+import frc.robot.commands.conveyor.RunConveyor;
 import frc.robot.commands.conveyor.RunConveyorOneBall;
 import frc.robot.commands.conveyor.RunConveyorTwoBall;
 import frc.robot.commands.infeed.RunInfeedSingulatorMotors;
@@ -112,7 +114,7 @@ public class RobotContainer {
     m_operatorController.b.whenPressed(new RunConveyorOneBall());
     m_operatorController.x.toggleWhenPressed(new RunShooterMotors());
     m_operatorController.y.toggleWhenPressed(runInfeed);
-    m_operatorController.start.whenPressed(new HighBarClimb());
+    //m_operatorController.start.whenPressed(new HighBarClimb());
     m_operatorController.back.toggleWhenPressed(new ReverseInfeedAndConveyor());
     m_operatorController.lb.whenPressed(new DecrementShooterIndex(false));
     m_operatorController.rb.whenPressed(new IncrementShooterIndex(false));
@@ -120,6 +122,7 @@ public class RobotContainer {
     m_operatorController.rt.whenActive(new IncrementShooterIndex(true));
     m_operatorController.ls.whenPressed(new ResetDefaultIndex());
     m_operatorController.rs.whenPressed(new AcceptLimelightDistance());
+    m_operatorController.start.toggleWhenPressed(new RunConveyor());
     // ====================================
 
     // ======== DRIVER CONTROLLER ========
@@ -164,7 +167,7 @@ public class RobotContainer {
   }
 
   public Command getPathPlannerSwerveControllerCommand(PathPlannerTrajectory traj) {
-    return new PPSwerveControllerCommand(
+    return new SwerveControllerCommand(
         traj,
         m_robotDrive::getPose,
         DriveConstants.kDriveKinematics,
@@ -172,7 +175,7 @@ public class RobotContainer {
         AutoConstants.AUTON_Y_CONTROLLER,
         AutoConstants.AUTON_THETA_CONTROLLER,
         m_robotDrive::setModuleStates,
-        m_robotDrive).deadlineWith(new AutonTimer())
+        m_robotDrive)
             .andThen(new InstantCommand(() -> m_robotDrive.drive(0, 0, 0, true)));
   }
   //TODO: Add real Autons because these are just paths rn

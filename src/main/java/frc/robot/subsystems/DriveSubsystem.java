@@ -23,7 +23,7 @@ import frc.robot.RobotContainer;
 
 public class DriveSubsystem extends SubsystemBase {
   private static final double i_FRONT_LEFT_ANGLE_OFFSET = -Math.toRadians(206.3);// 24.32 + 180.0);//154.6);
-  private static final double i_FRONT_RIGHT_ANGLE_OFFSET = -Math.toRadians(144.4);// 336.0 - 180.0);//169.3 - 5);
+  private static final double i_FRONT_RIGHT_ANGLE_OFFSET = -Math.toRadians(144.4 - 9.0);// 336.0 - 180.0);//169.3 - 5);
   private static final double i_BACK_LEFT_ANGLE_OFFSET = -Math.toRadians(327.7);// 507.2 - 180.0);//31.3);
   private static final double i_BACK_RIGHT_ANGLE_OFFSET = -Math.toRadians(160.9);// 340.1 - 180.0);//199.1);
 
@@ -192,7 +192,7 @@ public class DriveSubsystem extends SubsystemBase {
    */
   public void setModuleStates(SwerveModuleState[] desiredStates) {
     SwerveDriveKinematics.desaturateWheelSpeeds(
-        desiredStates, kMaxSpeedMetersPerSecond);
+        desiredStates, i_kMaxSpeedMetersPerSecond);
     m_frontLeft.setDesiredState(desiredStates[0]);
     m_frontRight.setDesiredState(desiredStates[1]);
     m_rearLeft.setDesiredState(desiredStates[2]);

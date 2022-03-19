@@ -127,11 +127,11 @@ public class SwerveModuleCANTwoElectricBoogaloo {
         / i_kNominalVoltage;
 
     //TODO:Add feedforward/pid back once characterized
-    // m_driveMotor.set(ControlMode.Velocity,
-    // state.speedMetersPerSecond / 10.0 / i_kDriveEncoderDistancePerPulse,
-    // DemandType.ArbitraryFeedForward,
-    // feedForward);
-    m_driveMotor.set(ControlMode.PercentOutput, state.speedMetersPerSecond / DriveConstants.i_kMaxSpeedMetersPerSecond);
+    m_driveMotor.set(ControlMode.Velocity,
+    state.speedMetersPerSecond / 10.0 / i_kDriveEncoderDistancePerPulse,
+    DemandType.ArbitraryFeedForward,
+    feedForward);
+    // m_driveMotor.set(ControlMode.PercentOutput, state.speedMetersPerSecond / DriveConstants.i_kMaxSpeedMetersPerSecond);
     setHeading(state.angle.getDegrees());
   }
 
@@ -159,7 +159,7 @@ public class SwerveModuleCANTwoElectricBoogaloo {
     } else if (newAngleDemand - currentSensorPosition < -180.1) {
       newAngleDemand += 360.0;
     }
-    
+    m_turningMotor.set(ControlMode.Position, newAngleDemand / 360.0 * i_integratedEncoderTicksPerModRev);
 }
 public static SwerveModuleState optimize(
   SwerveModuleState desiredState, Rotation2d currentAngle) {

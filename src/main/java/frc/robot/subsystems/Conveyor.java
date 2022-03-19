@@ -30,7 +30,7 @@ public class Conveyor extends SubsystemBase {
     _conveyorMotor.setSmartCurrentLimit(CurrentLimitConstants.kConveyor);
     _enc = _conveyorMotor.getEncoder();
     _enc.setPosition(0);
-    _conveyorMotor.setInverted(true);
+    _conveyorMotor.setInverted(false);
   }
 
   public void runConveyorMotor(double vbus) {

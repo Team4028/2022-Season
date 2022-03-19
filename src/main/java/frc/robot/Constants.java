@@ -196,7 +196,7 @@ public final class Constants {
 
   public static final class VBusConstants {
     public static final double kConveyAll = 0.5;
-    public static final double kConveyOne = 0.85; // op b
+    public static final double kConveyOne = 0.5;//0.85; // op b
     public static final double kConveyTwo = 0.5; // op a
 
     public static final double kInfeed = 0.6; // op y
@@ -220,7 +220,7 @@ public final class Constants {
     public static final double kFineAdjustment = 0.5;
     public static final double kCoarseAdjustment = 1.;
 
-    public static final double kIndexDefault = 12.5;
+    public static final double kIndexDefault = 13.5;
 
     public static final double kMaxAllowedAngle = 30.;
 
