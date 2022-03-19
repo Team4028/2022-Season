@@ -6,6 +6,8 @@ package frc.robot.subsystems;
 
 import static frc.robot.Constants.DriveConstants.*;
 
+import java.util.List;
+
 import com.ctre.phoenix.sensors.WPI_Pigeon2;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -15,6 +17,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive.WheelSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.AutoConstants;
@@ -32,6 +35,7 @@ public class DriveSubsystem extends SubsystemBase {
   private boolean enableHoldAngle = false;
   private int testTimer = 0;
   private int configWaitCycles = 50;
+  private WheelSpeeds _WheelSpeeds = new WheelSpeeds();
 
   private static DriveSubsystem _instance;
 
@@ -199,6 +203,7 @@ public class DriveSubsystem extends SubsystemBase {
     m_rearRight.setDesiredState(desiredStates[3]);
   }
 
+
   /** Resets the drive encoders to currently read a position of 0. */
   public void resetEncoders() {
     m_frontLeft.resetEncoders();
@@ -217,6 +222,23 @@ public class DriveSubsystem extends SubsystemBase {
   public void zeroHeading() {
     resetModuleHeadingControllers();
     m_odometry.resetPosition(new Pose2d(), getGyroRotation2d());
+  }
+
+  public double getDriveXVelocity(){
+    return kDriveKinematics.toChassisSpeeds(
+      m_frontLeft.getState(),
+      m_frontRight.getState(),
+      m_rearLeft.getState(),
+      m_rearRight.getState()
+    ).vxMetersPerSecond;
+  }
+  public double getDriveYVelocity(){
+    return kDriveKinematics.toChassisSpeeds(
+      m_frontLeft.getState(),
+      m_frontRight.getState(),
+      m_rearLeft.getState(),
+      m_rearRight.getState()
+    ).vxMetersPerSecond;
   }
 
   public void setEnableHoldAngle(boolean enable) {

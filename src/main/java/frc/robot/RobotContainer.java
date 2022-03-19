@@ -197,7 +197,8 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // Create config for trajectory
-    m_robotDrive.resetOdometry(_trajectories.FourBall_AcquireFirstCargo().getInitialPose());
+    m_robotDrive.resetOdometry(new Pose2d(_trajectories.FourBall_AcquireFirstCargo().getInitialState().poseMeters.getTranslation(),
+    _trajectories.FourBall_AcquireFirstCargo().getInitialState().holonomicRotation));
     return new TestAutonCommand().deadlineWith(new AutonTimer());
     // return getSwerveControllerCommand(_trajectories.getTestCompFirstBall())
     // .alongWith(new InstantCommand(() ->
