@@ -59,7 +59,6 @@ public class RobotContainer {
   private static RobotContainer _instance;
   private static Trajectories _trajectories = Trajectories.getInstance();
   private SendableChooser<Command> _autonChooser = new SendableChooser<Command>();
-  PathPlannerTrajectory _testfirstballacq;
 
   public static final RobotContainer getInstance() {
     if (_instance == null) {
@@ -78,8 +77,6 @@ public class RobotContainer {
    */
   public RobotContainer() {
     AutoConstants.AUTON_THETA_CONTROLLER.enableContinuousInput(-Math.PI, Math.PI);
-    _testfirstballacq = PathPlanner.loadPath("testfirstballacq",
-    AutoConstants.kMaxSpeedMetersPerSecond, AutoConstants.kMaxAccelerationMetersPerSecondSquared);
     // Configure the button bindings
     runInfeed = new RunInfeedSingulatorMotors();
     configureButtonBindings();
