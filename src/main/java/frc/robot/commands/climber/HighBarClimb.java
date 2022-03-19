@@ -10,15 +10,15 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 public class HighBarClimb extends SequentialCommandGroup {
   /** Add your docs here. */
   public HighBarClimb() {
-    addCommands(new MoveArm(-.8, 8), 
+    addCommands(new MoveArm(-.8, -35), 
     new WaitCommand(.25),
-    new MoveArm(0.25, 45), 
+    new MoveArm(0.25, 3), 
     new WaitCommand(.25), 
-    new MoveArm(0.8, 60),  
+    new MoveArm(0.8, 15),  
     new WaitCommand(.5), 
     new ToggleGrippy(),  
     new WaitCommand(3), 
-    new MoveArm(0.8, 180),  
+    new MoveArm(0.8, 105),  
     new WaitCommand(1),  
     new ToggleGrippy(),  
     new WaitCommand(1), 
