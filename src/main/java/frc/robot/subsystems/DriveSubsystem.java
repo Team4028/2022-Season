@@ -169,9 +169,9 @@ public class DriveSubsystem extends SubsystemBase {
   public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
     double speedScale = DriveConstants.BASE_SPEED_SCALE
         + RobotContainer.getInstance().getRightTrigger() * (1 - DriveConstants.BASE_SPEED_SCALE);
-    // xSpeed *= speedScale * DriveConstants.i_kMaxSpeedMetersPerSecond;
-    // ySpeed *= speedScale * DriveConstants.i_kMaxSpeedMetersPerSecond;
-    // rot *= speedScale * DriveConstants.i_kMaxSpeedMetersPerSecond;
+    xSpeed *= speedScale * DriveConstants.i_kMaxSpeedMetersPerSecond;
+    ySpeed *= speedScale * DriveConstants.i_kMaxSpeedMetersPerSecond;
+    rot *= speedScale * DriveConstants.i_kMaxSpeedMetersPerSecond;
     if (rot == 0 && enableHoldAngle) {
       if (holdAngleCounter < 1) {
         holdAngleCounter++;
