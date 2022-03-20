@@ -32,7 +32,7 @@ public class TestAutonCommand extends SequentialCommandGroup {
       new WaitCommand(0.2),
       _rc.getPathPlannerSwerveControllerCommand(_trajectories.FourBall_AcquireFirstCargo()).alongWith(new InstantCommand(() -> Infeed.getInstance().runInfeedSingulatorMotors(1.0))),
       new WaitCommand(0.5),
-      new RotateDrivetrainByAngle(Rotation2d.fromDegrees(-165), true).alongWith(new InstantCommand(() -> Shooter.getInstance().runShooterMotors())),
+      new RotateDrivetrainByAngle(() -> Rotation2d.fromDegrees(-165), true).alongWith(new InstantCommand(() -> Shooter.getInstance().runShooterMotors())),
       new WaitCommand(2.0).deadlineWith(new RunConveyor()),
       _rc.getPathPlannerSwerveControllerCommand(_trajectories.FourBall_AcquireLoadingZoneCargo()).alongWith(new WaitCommand(0.5).andThen(new InstantCommand(() -> Shooter.getInstance().stop()))),
       new WaitCommand(2.0),

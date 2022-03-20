@@ -4,6 +4,8 @@
 
 package frc.robot.commands.chassis;
 
+import java.util.function.Supplier;
+
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -24,11 +26,11 @@ public class RotateDrivetrainByAngle extends CommandBase {
    * @param rotation Demanded rotation
    * @param fieldOriented If true, rotates to given rotation for field, if false, rotates rotation for robot
    */
-  public RotateDrivetrainByAngle(Rotation2d rotation, boolean fieldOriented) {
+  public RotateDrivetrainByAngle(Supplier<Rotation2d> rotation, boolean fieldOriented) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(m_drive);
     this.fieldRelative = fieldOriented;
-    this.rotation = rotation;
+    this.rotation = rotation.get();
     
 
 
@@ -56,6 +58,7 @@ public class RotateDrivetrainByAngle extends CommandBase {
     m_drive.drive(0, 0, 0, fieldRelative);
     System.out.println("rotate drive train angle command");
   }
+  
 
   // Returns true when the command should end.
   @Override

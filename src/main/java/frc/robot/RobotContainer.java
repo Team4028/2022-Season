@@ -28,6 +28,7 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.commands.auton.AutonTimer;
 import frc.robot.commands.auton.TestAutonCommand;
 import frc.robot.commands.chassis.RotateDrivetrainByAngle;
+import frc.robot.commands.chassis.RotateDrivetrainByLimelightAngle;
 import frc.robot.commands.chassis.XDrive;
 import frc.robot.commands.climber.HighBarClimb;
 import frc.robot.commands.climber.TraversalBarClimb;
@@ -135,7 +136,7 @@ public class RobotContainer {
     m_driverController.rb.whenPressed(new ToggleInfeedUp());
     m_driverController.lt.whileActiveContinuous(runInfeed);
     m_driverController.rs
-        .whenPressed(new RotateDrivetrainByAngle(Rotation2d.fromDegrees(Limelight.getInstance().getX()), false));
+        .toggleWhenPressed(new RotateDrivetrainByLimelightAngle());
     m_driverController.ls.whenPressed(new ToggleCamera());
     // ===================================
 

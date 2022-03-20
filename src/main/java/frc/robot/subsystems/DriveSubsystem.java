@@ -25,8 +25,8 @@ import frc.robot.Constants.DriveConstants;
 import frc.robot.RobotContainer;
 
 public class DriveSubsystem extends SubsystemBase {
-  private static final double i_FRONT_LEFT_ANGLE_OFFSET = -Math.toRadians(205.1);//206.3);// 24.32 + 180.0);//154.6);
-  private static final double i_FRONT_RIGHT_ANGLE_OFFSET = -Math.toRadians(117.3);//128.8);//144.4 - 9.0);// 336.0 - 180.0);//169.3 - 5);
+  private static final double i_FRONT_LEFT_ANGLE_OFFSET = -Math.toRadians(1.3 + 180.);//206.3);// 24.32 + 180.0);//154.6);
+  private static final double i_FRONT_RIGHT_ANGLE_OFFSET = -Math.toRadians(87);//128.8);//144.4 - 9.0);// 336.0 - 180.0);//169.3 - 5);
   private static final double i_BACK_LEFT_ANGLE_OFFSET = -Math.toRadians(327.7);//327.7);// 507.2 - 180.0);//31.3);
   private static final double i_BACK_RIGHT_ANGLE_OFFSET = -Math.toRadians(160.9);//160.9);// 340.1 - 180.0);//199.1);
 

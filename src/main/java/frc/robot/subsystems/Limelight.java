@@ -42,6 +42,10 @@ public class Limelight extends SubsystemBase {
   public double getX() {
     return tx.getDouble(0);
   }
+  public double getXForRot(){
+    System.out.println("getting tx for rot comm");
+    return tx.getDouble(0.0);
+  }
 
   public double getLedMode() {
     return ledMode.getDouble(0);
