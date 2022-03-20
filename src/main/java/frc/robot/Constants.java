@@ -133,7 +133,7 @@ public final class Constants {
 
     public static final double i_kNominalVoltage = 12.0;
 
-    public static final double i_kTurningMotorAllowableClosedLoopError = 10.0;
+    public static final double i_kTurningMotorAllowableClosedLoopError = 20.0;
 
     public static final double kModuleMaxSpeedTurningRadiansPerSecond = 16 * Math.PI;
     public static final double kModuleMaxAccelerationTurningRadiansPerSecondSquared = 256 * Math.PI;
@@ -211,7 +211,7 @@ public final class Constants {
 
   public static final class EncoderConstants {
     public static final double kConveyOne = 20;
-    public static final double kConveyTwo = 60;
+    public static final double kConveyTwo = 80;
 
     public static final double kAngleThreshold = 0.1;
   }

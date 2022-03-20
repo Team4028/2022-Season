@@ -37,22 +37,22 @@ public class Infeed extends SubsystemBase {
   public void runInfeedSingulatorMotors(double mult) {
     if (_solenoid.get()) {
       _infeedMotor.set(ControlMode.PercentOutput, mult * VBusConstants.kInfeed);
-      SmartDashboard.putBoolean("Infeed/Running", true);
-      SmartDashboard.putNumber("Infeed/Vbus", mult * VBusConstants.kInfeed);
+      // SmartDashboard.putBoolean("Infeed/Running", true);
+      // SmartDashboard.putNumber("Infeed/Vbus", mult * VBusConstants.kInfeed);
     } else {
       _infeedMotor.set(ControlMode.PercentOutput, 0.);
-      SmartDashboard.putBoolean("Infeed/Running", false);
+      // SmartDashboard.putBoolean("Infeed/Running", false);
     }
     _singulatorMotor.set(mult * VBusConstants.kSingulator);
-    SmartDashboard.putBoolean("Singulator/Running", true);
-    SmartDashboard.putNumber("Singulator/Vbus", mult * VBusConstants.kInfeed);
+  //   SmartDashboard.putBoolean("Singulator/Running", true);
+  //   SmartDashboard.putNumber("Singulator/Vbus", mult * VBusConstants.kInfeed);
   }
 
   public void stopInfeedSingulatorMotors() {
     _infeedMotor.set(ControlMode.PercentOutput, 0);
     _singulatorMotor.set(0);
-    SmartDashboard.putBoolean("Infeed/Running", false);
-    SmartDashboard.putBoolean("Singulator/Running", false);
+    // SmartDashboard.putBoolean("Infeed/Running", false);
+    // SmartDashboard.putBoolean("Singulator/Running", false);
 
   }
 

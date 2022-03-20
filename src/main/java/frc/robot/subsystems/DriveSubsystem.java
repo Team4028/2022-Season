@@ -104,7 +104,7 @@ public class DriveSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("FR Angle", m_frontRight.getState().angle.getDegrees());
     SmartDashboard.putNumber("RL Angle", m_rearLeft.getState().angle.getDegrees());
     SmartDashboard.putNumber("RR Angle", m_rearRight.getState().angle.getDegrees());
-    SmartDashboard.putBoolean("Hold Angle", enableHoldAngle);
+    //SmartDashboard.putBoolean("Hold Angle", enableHoldAngle);
 
     //TODO: Fix this/ remove if possible
     if(testTimer < 8 * configWaitCycles + 1){
