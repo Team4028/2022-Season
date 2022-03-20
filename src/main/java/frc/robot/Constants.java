@@ -183,7 +183,7 @@ public final class Constants {
     public static final int KICKER_MOTOR_ID = 16;
     public static final int SHOOTER_FRONT_MOTOR_ID = 17;
     public static final int SHOOTER_BACK_MOTOR_ID = 18;
-    public static final int ANGLE_MOTOR_ID = 16;
+    public static final int ANGLE_MOTOR_ID = 19;
 
     // public static final int CLIMB_MOTOR_ID = 19; // this might need two motors
 
