@@ -54,11 +54,12 @@ public class RotateDrivetrainByAngle extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     m_drive.drive(0, 0, 0, fieldRelative);
+    System.out.println("rotate drive train angle command");
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return Math.abs(rotinit.rotateBy(rotation).minus(m_drive.getPose().getRotation()).getDegrees()) < 0.75;
+    return Math.abs(rotinit.rotateBy(rotation).minus(m_drive.getPose().getRotation()).getDegrees()) < 1.5;
   }
 }

@@ -19,9 +19,12 @@ public class Conveyor extends SubsystemBase {
   private boolean isTargetReached = false;
   private RelativeEncoder _enc;
   private double encoderOffset = 0;
-  private static Conveyor _instance = new Conveyor();
+  private static Conveyor _instance;
 
   public static Conveyor getInstance() {
+    if (_instance ==null){
+      _instance = new Conveyor();
+    }
     return _instance;
   }
 
@@ -34,9 +37,10 @@ public class Conveyor extends SubsystemBase {
   }
 
   public void runConveyorMotor(double vbus) {
-    SmartDashboard.putBoolean("Conveyor/Running", true);
-    SmartDashboard.putNumber("Conveyor/Vbus", vbus);
+    //SmartDashboard.putBoolean("Conveyor/Running", true);
+    //SmartDashboard.putNumber("Conveyor/Vbus", vbus);
     _conveyorMotor.set(vbus);
+    System.out.println("setting conveyor motor");
   }
 
   public void stopConveyorMotor() {

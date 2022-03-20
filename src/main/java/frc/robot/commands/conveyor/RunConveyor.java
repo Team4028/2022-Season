@@ -27,6 +27,7 @@ public class RunConveyor extends CommandBase {
   @Override
   public void execute() {
     conveyor.runConveyorMotor(VBusConstants.kConveyAll);
+    System.out.println("running conveyor");
   }
 
   // Called once the command ends or is interrupted.
