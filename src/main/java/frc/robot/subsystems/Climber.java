@@ -49,6 +49,9 @@ public class Climber extends SubsystemBase {
     _left.setIdleMode(IdleMode.kBrake);
     _right.setIdleMode(IdleMode.kBrake);
 
+    _left.setOpenLoopRampRate(0.1);
+    _right.setOpenLoopRampRate(0.1);
+
     _leftEncoder = _left.getEncoder();
     _rightEncoder = _right.getEncoder();
 
@@ -147,5 +150,7 @@ public class Climber extends SubsystemBase {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("Left Climber", _leftEncoder.getPosition());
     SmartDashboard.putNumber("Right Climber", _rightEncoder.getPosition());
+    SmartDashboard.putNumber("Right Climber Current", _right.getOutputCurrent());
+    SmartDashboard.putNumber("Left Climber Current", _left.getOutputCurrent());
   }
 }
