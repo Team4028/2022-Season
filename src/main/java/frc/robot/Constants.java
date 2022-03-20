@@ -180,7 +180,7 @@ public final class Constants {
     public static final int KICKER_MOTOR_ID = 16;
     public static final int SHOOTER_FRONT_MOTOR_ID = 17;
     public static final int SHOOTER_BACK_MOTOR_ID = 18;
-    public static final int ANGLE_MOTOR_ID = 16;
+    public static final int ANGLE_MOTOR_ID = 19;
 
     // public static final int CLIMB_MOTOR_ID = 19; // this might need two motors
 
@@ -238,6 +238,11 @@ public final class Constants {
   public static final class PIDConstants {
     // TODO: more damping
     public static final class Front {
+      public static double kS = 0.66587;
+      public static double kV = 0.21427;
+      public static double kA = 0.006243;
+      public static SimpleMotorFeedforward kFeedforward = new SimpleMotorFeedforward(kS, kV, kA);
+
       public static double kF = 0.05;
       public static double kP = ShooterConstants.kIsBangBang ? Double.POSITIVE_INFINITY : 0.4;
       public static double kD = ShooterConstants.kIsBangBang ? 0. : 0.002;
@@ -245,6 +250,11 @@ public final class Constants {
     }
 
     public static final class Back {
+      public static double kS = 0.606;
+      public static double kV = 0.10788;
+      public static double kA = 0.0047129;
+      public static SimpleMotorFeedforward kFeedforward = new SimpleMotorFeedforward(kS, kV, kA);
+
       public static double kF = 0.05;
       public static double kP = ShooterConstants.kIsBangBang ? Double.POSITIVE_INFINITY : 0.1;
       public static double kD = ShooterConstants.kIsBangBang ? 0. : 0.002;
