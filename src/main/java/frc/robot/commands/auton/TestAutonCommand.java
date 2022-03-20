@@ -4,11 +4,12 @@
 
 package frc.robot.commands.auton;
 
+import java.time.Instant;
+
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.Robot;
 import frc.robot.RobotContainer;
 import frc.robot.commands.chassis.RotateDrivetrainByAngle;
 import frc.robot.commands.conveyor.RunConveyor;
@@ -26,16 +27,19 @@ public class TestAutonCommand extends SequentialCommandGroup {
   public TestAutonCommand() {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    addCommands(_rc.getSwerveControllerCommand(_trajectories.getTestCompFirstBall())
-    .alongWith(new InstantCommand(() -> Infeed.getInstance().runInfeedSingulatorMotors(1.0))),
-    new RotateDrivetrainByAngle(Rotation2d.fromDegrees(187.0), true)
-    .alongWith(new InstantCommand(() -> Shooter.getInstance().runShooterMotors())),
-    new RunConveyor().withTimeout(1.0).andThen(new InstantCommand(() -> Shooter.getInstance().stop())),
-    _rc.getSwerveControllerCommand(_trajectories.getTestCompSecondBall()),
-    new WaitCommand(2.0),
-    _rc.getSwerveControllerCommand(_trajectories.getTestCompReturnShoot())
-    .alongWith(new WaitCommand(0.5).andThen(new InstantCommand(() -> Shooter.getInstance().runShooterMotors()))),
-    new RunConveyor().withTimeout(1.5)
+    addCommands(
+      new InstantCommand(() -> Infeed.getInstance().setInfeedDown()),
+      new WaitCommand(0.2),
+      _rc.getPathPlannerSwerveControllerCommand(_trajectories.FourBall_AcquireFirstCargo()).alongWith(new InstantCommand(() -> Infeed.getInstance().runInfeedSingulatorMotors(1.0))),
+      new WaitCommand(0.5),
+      new RotateDrivetrainByAngle(Rotation2d.fromDegrees(-165), true).alongWith(new InstantCommand(() -> Shooter.getInstance().runShooterMotors())),
+      new WaitCommand(2.0).deadlineWith(new RunConveyor()),
+      _rc.getPathPlannerSwerveControllerCommand(_trajectories.FourBall_AcquireLoadingZoneCargo()).alongWith(new WaitCommand(0.5).andThen(new InstantCommand(() -> Shooter.getInstance().stop()))),
+      new WaitCommand(2.0),
+      _rc.getPathPlannerSwerveControllerCommand(_trajectories.FourBall_ReturnToShoot()).alongWith(new WaitCommand(0.5).andThen(new InstantCommand(() -> Shooter.getInstance().runShooterMotors()))),
+      new WaitCommand(2.0).deadlineWith(new RunConveyor()),
+      new WaitCommand(0.5).andThen(new InstantCommand(() -> Shooter.getInstance().stop())),
+      new InstantCommand(() -> Infeed.getInstance().stopInfeedSingulatorMotors())
     );
   }
 }

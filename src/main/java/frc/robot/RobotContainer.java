@@ -4,19 +4,35 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.PathPlanner;
+import com.pathplanner.lib.PathPlannerTrajectory;
+import com.pathplanner.lib.commands.PPSwerveControllerCommand;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+// import frc.robot.subsystems.Shooter;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
+import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.commands.auton.AutonTimer;
 import frc.robot.commands.auton.TestAutonCommand;
 import frc.robot.commands.chassis.RotateDrivetrainByAngle;
 import frc.robot.commands.chassis.XDrive;
+import frc.robot.commands.climber.HighBarClimb;
+import frc.robot.commands.climber.TraversalBarClimb;
 import frc.robot.commands.conveyor.ReverseInfeedAndConveyor;
+import frc.robot.commands.conveyor.RunConveyor;
 import frc.robot.commands.conveyor.RunConveyorOneBall;
 import frc.robot.commands.conveyor.RunConveyorTwoBall;
 import frc.robot.commands.infeed.RunInfeedSingulatorMotors;
@@ -30,13 +46,6 @@ import frc.robot.commands.vision.ToggleCamera;
 import frc.robot.subsystems.Infeed;
 import frc.robot.subsystems.Limelight;
 import frc.robot.utilities.Trajectories;
-// import frc.robot.subsystems.Shooter;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.RunCommand;
-import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /*
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -50,8 +59,8 @@ public class RobotContainer {
   private final Infeed m_singulatorAndInfeed = Infeed.getInstance();
   private final RunInfeedSingulatorMotors runInfeed;
   private static RobotContainer _instance;
-  private WaitCommand _wait;
   private static Trajectories _trajectories = Trajectories.getInstance();
+  private SendableChooser<Command> _autonChooser = new SendableChooser<Command>();
 
   public static final RobotContainer getInstance() {
     if (_instance == null) {
@@ -72,9 +81,10 @@ public class RobotContainer {
     AutoConstants.AUTON_THETA_CONTROLLER.enableContinuousInput(-Math.PI, Math.PI);
     // Configure the button bindings
     runInfeed = new RunInfeedSingulatorMotors();
-    _wait = new WaitCommand(1.0);
-    _wait.addRequirements(m_singulatorAndInfeed);
     configureButtonBindings();
+    //Init Auton Chooser
+    initAutonChooser();
+    SmartDashboard.putData(_autonChooser);
 
     // Configure default commands
     m_robotDrive.setDefaultCommand(
@@ -82,7 +92,7 @@ public class RobotContainer {
         // Turning is controlled by the X axis of the right stick.
         new RunCommand(
             () -> m_robotDrive.drive(
-                -m_driverController.getLeftYAxis(),
+                m_driverController.getLeftYAxis(),
                 -m_driverController.getLeftXAxis(),
                 -m_driverController.getRightXAxis(),
                 true),
@@ -104,6 +114,7 @@ public class RobotContainer {
     m_operatorController.b.whenPressed(new RunConveyorOneBall());
     m_operatorController.x.toggleWhenPressed(new RunShooterMotors());
     m_operatorController.y.toggleWhenPressed(runInfeed);
+    //m_operatorController.start.whenPressed(new HighBarClimb());
     m_operatorController.back.toggleWhenPressed(new ReverseInfeedAndConveyor());
     m_operatorController.lb.whenPressed(new DecrementShooterIndex(false));
     m_operatorController.rb.whenPressed(new IncrementShooterIndex(false));
@@ -111,6 +122,7 @@ public class RobotContainer {
     m_operatorController.rt.whenActive(new IncrementShooterIndex(true));
     m_operatorController.ls.whenPressed(new ResetDefaultIndex());
     m_operatorController.rs.whenPressed(new AcceptLimelightDistance());
+    m_operatorController.start.toggleWhenPressed(new RunConveyor());
     // ====================================
 
     // ======== DRIVER CONTROLLER ========
@@ -126,18 +138,35 @@ public class RobotContainer {
         .whenPressed(new RotateDrivetrainByAngle(Rotation2d.fromDegrees(Limelight.getInstance().getX()), false));
     m_driverController.ls.whenPressed(new ToggleCamera());
     // ===================================
+
+    // ======== TEMP. CLIMBER CONTROLLER
+    BeakXBoxController climberController = new BeakXBoxController(2);
+    Climber climber = Climber.getInstance();
+    climberController.a.whenPressed(new InstantCommand(() -> climber.toggleTippySolenoid()));
+    climberController.lb.whileHeld(new InstantCommand(() -> climber.leftMotorForward(.8)));
+    climberController.lb.whenReleased(new InstantCommand(() -> climber.leftMotorOff()));
+    climberController.start.whileHeld(new InstantCommand(() -> climber.rightMotorBackward(-.8)));
+    climberController.start.whenReleased(new InstantCommand(() -> climber.rightMotorOff()));
+
+    climberController.y.whileHeld(new InstantCommand(() -> climber.leftMotorForward(.8)).alongWith(new InstantCommand(() -> climber.rightMotorForward(.8))));
+    climberController.y.whenReleased(new InstantCommand(() -> climber.leftMotorOff()).alongWith(new InstantCommand(() -> climber.rightMotorOff())));
+    climberController.x.whileHeld(new InstantCommand(() -> climber.leftMotorBackward(-.8)).alongWith(new InstantCommand(() -> climber.rightMotorBackward(-.8))));
+    climberController.x.whenReleased(new InstantCommand(() -> climber.leftMotorOff()).alongWith(new InstantCommand(() -> climber.rightMotorOff())));
+    
+    climberController.b.whenPressed(new InstantCommand(() -> climber.toggleGrippySolenoid()));
+    climberController.rb.whileHeld(new InstantCommand(() -> climber.rightMotorForward(.8)));
+    climberController.rb.whenReleased(new InstantCommand(() -> climber.rightMotorOff()));
+    climberController.back.whileHeld(new InstantCommand(() -> climber.leftMotorBackward(-.8)));
+    climberController.back.whenReleased(new InstantCommand(() -> climber.leftMotorOff()));
+    climberController.ls.whenPressed(new TraversalBarClimb());
+    climberController.rs.whenPressed(new HighBarClimb());
   }
 
   public double getRightTrigger() {
     return m_driverController.getRightTrigger();
   }
 
-  /**
-   * @param traj Trajectory to follow
-   * @return New SwerveControllerCommand - commands DriveSubsystem to follow given
-   *         trajectory, then stop
-   */
-  public Command getSwerveControllerCommand(Trajectory traj) {
+  public Command getPathPlannerSwerveControllerCommand(PathPlannerTrajectory traj) {
     return new SwerveControllerCommand(
         traj,
         m_robotDrive::getPose,
@@ -149,6 +178,17 @@ public class RobotContainer {
         m_robotDrive)
             .andThen(new InstantCommand(() -> m_robotDrive.drive(0, 0, 0, true)));
   }
+  //TODO: Add real Autons because these are just paths rn
+  private void initAutonChooser(){
+    _autonChooser.setDefaultOption("FourBall_AcquireFirst", getPathPlannerSwerveControllerCommand(_trajectories.FourBall_AcquireFirstCargo()));
+    _autonChooser.addOption("FourBall_AcquireLoadingZoneCargo", getPathPlannerSwerveControllerCommand(_trajectories.FourBall_AcquireLoadingZoneCargo()));
+    _autonChooser.addOption("FourBall_ReturnToShoot", getPathPlannerSwerveControllerCommand(_trajectories.FourBall_ReturnToShoot()));
+    _autonChooser.addOption("FiveBall_AcquireFirstBall", getPathPlannerSwerveControllerCommand(_trajectories.FiveBall_AcquireFirstCargo()));
+    _autonChooser.addOption("FiveBall_AcquireSecondCargo", getPathPlannerSwerveControllerCommand(_trajectories.FiveBall_AcquireSecondCargo()));
+    _autonChooser.addOption("FiveBall_AcquireLoadingZoneCargo", getPathPlannerSwerveControllerCommand(_trajectories.FiveBall_AcquireLoadingZoneCargo()));
+    _autonChooser.addOption("FiveBall_ReturnToShoot", getPathPlannerSwerveControllerCommand(_trajectories.FiveBall_ReturnToShoot()));
+  }
+  
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
@@ -157,7 +197,8 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // Create config for trajectory
-    m_robotDrive.resetOdometry(new Pose2d(0, 0, new Rotation2d()));
+    m_robotDrive.resetOdometry(new Pose2d(_trajectories.FourBall_AcquireFirstCargo().getInitialState().poseMeters.getTranslation(),
+    _trajectories.FourBall_AcquireFirstCargo().getInitialState().holonomicRotation));
     return new TestAutonCommand().deadlineWith(new AutonTimer());
     // return getSwerveControllerCommand(_trajectories.getTestCompFirstBall())
     // .alongWith(new InstantCommand(() ->

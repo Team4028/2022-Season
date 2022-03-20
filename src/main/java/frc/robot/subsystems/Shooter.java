@@ -13,12 +13,14 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.ControlType;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.util;
 import frc.robot.Constants.ShooterConstants;
+import frc.robot.Constants.CurrentLimitConstants;
 import frc.robot.Constants.PIDConstants;
 import frc.robot.Constants.SubsystemConstants;
 import frc.robot.Constants.VBusConstants;
@@ -72,8 +74,9 @@ public class Shooter extends SubsystemBase {
     // _kicker.configFactoryDefault();
 
     _angle.restoreFactoryDefaults();
-    _angle.setSmartCurrentLimit(10);
+    _angle.setSmartCurrentLimit(CurrentLimitConstants.kAngle);
     _angle.setInverted(true);
+    _angle.setIdleMode(IdleMode.kCoast);
 
     _angleEnc = _angle.getEncoder();
     _angleEnc.setPosition(0.);

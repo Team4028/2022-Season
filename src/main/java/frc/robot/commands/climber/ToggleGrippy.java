@@ -2,23 +2,23 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.auton;
+package frc.robot.commands.climber;
 
-import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.Climber;
 
-public class AutonTimer extends CommandBase {
-  /** Creates a new AutonTimer. */
-  double _init;
-  public AutonTimer() {
+public class ToggleGrippy extends CommandBase {
+  private Climber climber = Climber.getInstance();
+  /** Creates a new ToggleGrippySoliniod. */
+  public ToggleGrippy() {
     // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(climber);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    _init = Timer.getFPGATimestamp();
+    climber.toggleGrippySolenoid();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -27,13 +27,11 @@ public class AutonTimer extends CommandBase {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-    // SmartDashboard.putNumber("Auton Time", Timer.getFPGATimestamp() - _init);
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return true;
   }
 }

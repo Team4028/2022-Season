@@ -10,6 +10,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.CurrentLimitConstants;
 import frc.robot.Constants.SubsystemConstants;
 
 public class Conveyor extends SubsystemBase {
@@ -18,29 +19,33 @@ public class Conveyor extends SubsystemBase {
   private boolean isTargetReached = false;
   private RelativeEncoder _enc;
   private double encoderOffset = 0;
-  private static Conveyor _instance = new Conveyor();
+  private static Conveyor _instance;
 
   public static Conveyor getInstance() {
+    if (_instance ==null){
+      _instance = new Conveyor();
+    }
     return _instance;
   }
 
   public Conveyor() {
     _conveyorMotor = new CANSparkMax(SubsystemConstants.CONVEYOR_MOTOR_ID, MotorType.kBrushless);
-    _conveyorMotor.setSmartCurrentLimit(20);
+    _conveyorMotor.setSmartCurrentLimit(CurrentLimitConstants.kConveyor);
     _enc = _conveyorMotor.getEncoder();
     _enc.setPosition(0);
-    _conveyorMotor.setInverted(true);
+    _conveyorMotor.setInverted(false);
   }
 
   public void runConveyorMotor(double vbus) {
-    SmartDashboard.putBoolean("Conveyor/Running", true);
-    SmartDashboard.putNumber("Conveyor/Vbus", vbus);
+    // SmartDashboard.putBoolean("Conveyor/Running", true);
+    // SmartDashboard.putNumber("Conveyor/Vbus", vbus);
     _conveyorMotor.set(vbus);
+    System.out.println("setting conveyor motor");
   }
 
   public void stopConveyorMotor() {
     _conveyorMotor.set(0);
-    SmartDashboard.putBoolean("Conveyor/Running", false);
+    // SmartDashboard.putBoolean("Conveyor/Running", false);
   }
 
   public void runConveyorMotorWithEncoder(double target, double vbus) {
