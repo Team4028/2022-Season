@@ -47,7 +47,7 @@ public class FINDPATHERROR extends CommandBase {
       demandPosM = traj.sample(timeElapsed).poseMeters.getTranslation();
       actualPosM = DriveSubsystem.getInstance().getPose().getTranslation();
       double err = demandPosM.getDistance(actualPosM);
-      SmartDashboard.putNumber("Current Err: " , Math.abs(err));
+      //SmartDashboard.putNumber("Current Err: " , Math.abs(err));
       totalMeasurements++;
       totalError += Math.abs(err);
       iterations = 0;
@@ -58,7 +58,7 @@ public class FINDPATHERROR extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    SmartDashboard.putNumber("Average Err: ", totalError / totalMeasurements);
+    //SmartDashboard.putNumber("Average Err: ", totalError / totalMeasurements);
   }
 
   // Returns true when the command should end.

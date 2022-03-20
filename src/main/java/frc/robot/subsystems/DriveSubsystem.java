@@ -91,16 +91,16 @@ public class DriveSubsystem extends SubsystemBase {
           m_rearRight.getState());
     }
     // TODO: Organized, comprehensive data for whole Drivetrain
-    SmartDashboard.putNumber("X (Feet)", util.metersToFeet(m_odometry.getPoseMeters().getX()));
+    /*SmartDashboard.putNumber("X (Feet)", util.metersToFeet(m_odometry.getPoseMeters().getX()));
     SmartDashboard.putNumber("Y (Feet)", util.metersToFeet(m_odometry.getPoseMeters().getY()));
     SmartDashboard.putNumber("X (Metres)", m_odometry.getPoseMeters().getX());
     SmartDashboard.putNumber("Y (Metres)", m_odometry.getPoseMeters().getY());
-    SmartDashboard.putNumber("Heading (Deg)", m_odometry.getPoseMeters().getRotation().getDegrees());
+    SmartDashboard.putNumber("Heading (Deg)", m_odometry.getPoseMeters().getRotation().getDegrees());*/
     SmartDashboard.putNumber("FL Angle", m_frontLeft.getState().angle.getDegrees());
     SmartDashboard.putNumber("FR Angle", m_frontRight.getState().angle.getDegrees());
     SmartDashboard.putNumber("RL Angle", m_rearLeft.getState().angle.getDegrees());
     SmartDashboard.putNumber("RR Angle", m_rearRight.getState().angle.getDegrees());
-    SmartDashboard.putBoolean("Hold Angle", enableHoldAngle);
+    //SmartDashboard.putBoolean("Hold Angle", enableHoldAngle);
 
     if (testTimer < 8 * configWaitCycles + 1) {
       testTimer++;
