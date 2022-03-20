@@ -25,10 +25,10 @@ import frc.robot.Constants.DriveConstants;
 import frc.robot.RobotContainer;
 
 public class DriveSubsystem extends SubsystemBase {
-  private static final double i_FRONT_LEFT_ANGLE_OFFSET = -Math.toRadians(206.3);// 24.32 + 180.0);//154.6);
-  private static final double i_FRONT_RIGHT_ANGLE_OFFSET = -Math.toRadians(144.4 - 9.0);// 336.0 - 180.0);//169.3 - 5);
-  private static final double i_BACK_LEFT_ANGLE_OFFSET = -Math.toRadians(327.7);// 507.2 - 180.0);//31.3);
-  private static final double i_BACK_RIGHT_ANGLE_OFFSET = -Math.toRadians(160.9);// 340.1 - 180.0);//199.1);
+  private static final double i_FRONT_LEFT_ANGLE_OFFSET = -Math.toRadians(205.1);//206.3);// 24.32 + 180.0);//154.6);
+  private static final double i_FRONT_RIGHT_ANGLE_OFFSET = -Math.toRadians(128.8);//144.4 - 9.0);// 336.0 - 180.0);//169.3 - 5);
+  private static final double i_BACK_LEFT_ANGLE_OFFSET = -Math.toRadians(327.7);//327.7);// 507.2 - 180.0);//31.3);
+  private static final double i_BACK_RIGHT_ANGLE_OFFSET = -Math.toRadians(160.9);//160.9);// 340.1 - 180.0);//199.1);
 
   private int holdAngleCounter = 0;
   private double holdAngle;
@@ -169,9 +169,9 @@ public class DriveSubsystem extends SubsystemBase {
   public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
     double speedScale = DriveConstants.BASE_SPEED_SCALE
         + RobotContainer.getInstance().getRightTrigger() * (1 - DriveConstants.BASE_SPEED_SCALE);
-    xSpeed *= speedScale * DriveConstants.i_kMaxSpeedMetersPerSecond;
-    ySpeed *= speedScale * DriveConstants.i_kMaxSpeedMetersPerSecond;
-    rot *= speedScale * DriveConstants.i_kMaxSpeedMetersPerSecond;
+    // xSpeed *= speedScale * DriveConstants.i_kMaxSpeedMetersPerSecond;
+    // ySpeed *= speedScale * DriveConstants.i_kMaxSpeedMetersPerSecond;
+    // rot *= speedScale * DriveConstants.i_kMaxSpeedMetersPerSecond;
     if (rot == 0 && enableHoldAngle) {
       if (holdAngleCounter < 1) {
         holdAngleCounter++;
@@ -185,7 +185,7 @@ public class DriveSubsystem extends SubsystemBase {
                 ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, Rotation2d.fromDegrees(m_odometry.getPoseMeters().getRotation().getDegrees()))
                 : new ChassisSpeeds(xSpeed, ySpeed, rot));
     SwerveDriveKinematics.desaturateWheelSpeeds(
-        swerveModuleStates, DriveConstants.i_kMaxSpeedMetersPerSecond);
+        swerveModuleStates, 1.0);
     setModuleStates(swerveModuleStates);
   }
 
@@ -196,7 +196,7 @@ public class DriveSubsystem extends SubsystemBase {
    */
   public void setModuleStates(SwerveModuleState[] desiredStates) {
     SwerveDriveKinematics.desaturateWheelSpeeds(
-        desiredStates, i_kMaxSpeedMetersPerSecond);
+        desiredStates, 1.0);
     m_frontLeft.setDesiredState(desiredStates[0]);
     m_frontRight.setDesiredState(desiredStates[1]);
     m_rearLeft.setDesiredState(desiredStates[2]);

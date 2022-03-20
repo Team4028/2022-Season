@@ -73,9 +73,9 @@ public final class Constants {
 
     public static final boolean kGyroReversed = false;
 
-    public static final double ksVolts = 0.798;
-    public static final double kvVoltSecondsPerMeter = 2.35;
-    public static final double kaVoltSecondsSquaredPerMeter = 0.30;
+    public static final double ksVolts = (0.209 + 0.227 + 0.222) / 3.0;//0.798;
+    public static final double kvVoltSecondsPerMeter = (2.3 + 2.27 + 2.27) / 3.0;//2.35;
+    public static final double kaVoltSecondsSquaredPerMeter = (0.30 + 0.25 + 0.33) / 3.0;//0.30;
 
     public static final SimpleMotorFeedforward driveTrainFeedforward = new SimpleMotorFeedforward(
         ksVolts,
@@ -127,7 +127,7 @@ public final class Constants {
 
     public static final double i_kPModuleTurningController = 0.2;
 
-    public static final double i_kPModuleDriveController = 0.13367;
+    public static final double i_kPModuleDriveController = (0.10 + 0.024 + 0.045) / 3.0; //AVG of 3 Characterization runs
 
     public static final double i_kEncoderCountsPerModuleRev = (150.0 / 7.0) * 2048.0;
 
