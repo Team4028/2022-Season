@@ -31,13 +31,14 @@ public class Infeed extends SubsystemBase {
     _infeedMotor = new TalonSRX(SubsystemConstants.INFEED_MOTOR_ID);
     _singulatorMotor = new CANSparkMax(SubsystemConstants.SINGULATOR_MOTOR_ID, MotorType.kBrushless);
     _solenoid = new Solenoid(PneumaticsModuleType.CTREPCM, SubsystemConstants.INFEED_SOLENOID_ID);
+    _infeedMotor.configFactoryDefault();
     _infeedMotor.setInverted(true);
     _singulatorMotor.setInverted(false);
 
   }
 
   public void runInfeedSingulatorMotors(double mult) {
-    if (!_solenoid.get()) {
+    if (true) {
       _infeedMotor.set(ControlMode.PercentOutput, mult * VBusConstants.kInfeed);
       // SmartDashboard.putBoolean("Infeed/Running", true);
       // SmartDashboard.putNumber("Infeed/Vbus", mult * VBusConstants.kInfeed);
