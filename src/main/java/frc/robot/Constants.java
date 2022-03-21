@@ -127,7 +127,7 @@ public final class Constants {
 
     public static final double i_kPModuleTurningController = 0.2;
 
-    public static final double i_kPModuleDriveController = (0.10 + 0.024 + 0.045) / 3.0; //AVG of 3 Characterization runs
+    public static final double i_kPModuleDriveController = 0.14; //From best run on practice chassis
 
     public static final double i_kEncoderCountsPerModuleRev = (150.0 / 7.0) * 2048.0;
 
@@ -147,7 +147,7 @@ public final class Constants {
     public static final double kMaxSpeedMetersPerSecond = Units.feetToMeters(16.3);
     public static final double kMaxAccelerationMetersPerSecondSquared = Units.feetToMeters(16.3);
 
-    public static final double kPXController = 2.0;
+    public static final double kPXController = 0.0;
     public static final double kPYController = kPXController;
     public static final double kPThetaController = 3.5;
     public static final double MAX_ANGULAR_SPEED_RADIANS_PER_SECOND = kMaxSpeedMetersPerSecond /

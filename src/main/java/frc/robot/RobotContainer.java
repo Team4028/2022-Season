@@ -168,7 +168,7 @@ public class RobotContainer {
   }
 
   public Command getPathPlannerSwerveControllerCommand(PathPlannerTrajectory traj) {
-    return new SwerveControllerCommand(
+    return new PPSwerveControllerCommand(
         traj,
         m_robotDrive::getPose,
         DriveConstants.kDriveKinematics,
