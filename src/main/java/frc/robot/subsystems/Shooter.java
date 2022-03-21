@@ -69,9 +69,9 @@ public class Shooter extends SubsystemBase {
     _anglePid = _angle.getPIDController();
     _anglePid.setP(PIDConstants.Angle.kP);
 
-    put("FrontVbus", VBusConstants.kShooterFrontDefault);
-    put("BackVbus", VBusConstants.kShooterBackDefault);
-    put("Hood Angle (rot)", VBusConstants.kShooterHoodAngleRotDefault);
+    // put("FrontVbus", VBusConstants.kShooterFrontDefault);
+    // put("BackVbus", VBusConstants.kShooterBackDefault);
+    // put("Hood Angle (rot)", VBusConstants.kShooterHoodAngleRotDefault);
 
     if (!ShooterConstants.kIsVBus) {
       _front.config_kF(0, PIDConstants.Front.kF);
