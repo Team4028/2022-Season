@@ -14,7 +14,7 @@ public class DecrementShooterIndex extends CommandBase {
 
   public DecrementShooterIndex(boolean fine) {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(_s);
+    //addRequirements(_s);
     this.fine = fine;
   }
 

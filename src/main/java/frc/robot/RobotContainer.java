@@ -4,12 +4,9 @@
 
 package frc.robot;
 
-import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
-import com.pathplanner.lib.commands.PPSwerveControllerCommand;
 
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -18,7 +15,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
@@ -27,7 +23,6 @@ import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.commands.auton.AutonTimer;
 import frc.robot.commands.auton.TestAutonCommand;
-import frc.robot.commands.chassis.RotateDrivetrainByAngle;
 import frc.robot.commands.chassis.RotateDrivetrainByLimelightAngle;
 import frc.robot.commands.chassis.XDrive;
 import frc.robot.commands.climber.HighBarClimb;
@@ -44,7 +39,7 @@ import frc.robot.commands.shooter.IncrementShooterIndex;
 import frc.robot.commands.shooter.ResetDefaultIndex;
 import frc.robot.commands.shooter.RunShooterMotors;
 import frc.robot.commands.vision.ToggleCamera;
-import frc.robot.subsystems.Infeed;
+import frc.robot.commands.vision.ToggleLEDMode;
 import frc.robot.subsystems.Limelight;
 import frc.robot.utilities.Trajectories;
 
@@ -57,7 +52,6 @@ import frc.robot.utilities.Trajectories;
 public class RobotContainer {
   // The robot's subsystems
   private final DriveSubsystem m_robotDrive = DriveSubsystem.getInstance();
-  private final Infeed m_singulatorAndInfeed = Infeed.getInstance();
   private final RunInfeedSingulatorMotors runInfeed;
   private static RobotContainer _instance;
   private static Trajectories _trajectories = Trajectories.getInstance();
@@ -127,7 +121,7 @@ public class RobotContainer {
     // ====================================
 
     // ======== DRIVER CONTROLLER ========
-    m_driverController.a.whenPressed(new InstantCommand(() -> Limelight.getInstance().toggleLedMode()));
+    m_driverController.a.whenPressed(new ToggleLEDMode());
     m_driverController.b.whenPressed(new InstantCommand(() -> m_robotDrive.toggleEnableHoldAngle()));
     m_driverController.x.toggleWhenPressed(new XDrive());
     m_driverController.y.toggleWhenPressed(runInfeed);
@@ -135,8 +129,7 @@ public class RobotContainer {
     m_driverController.lb.toggleWhenPressed(new ReverseInfeedAndConveyor());
     m_driverController.rb.whenPressed(new ToggleInfeedUp());
     m_driverController.lt.whileActiveContinuous(runInfeed);
-    m_driverController.rs
-        .toggleWhenPressed(new RotateDrivetrainByLimelightAngle());
+    m_driverController.rs.toggleWhenPressed(new RotateDrivetrainByLimelightAngle());
     m_driverController.ls.whenPressed(new ToggleCamera());
     // ===================================
 

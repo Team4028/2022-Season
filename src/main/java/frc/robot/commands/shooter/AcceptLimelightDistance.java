@@ -13,7 +13,7 @@ public class AcceptLimelightDistance extends CommandBase {
   /** Creates a new AcceptLimelightDistance. */
   public AcceptLimelightDistance() {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(_s);
+    //addRequirements(_s);
   }
 
   // Called when the command is initially scheduled.

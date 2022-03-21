@@ -220,11 +220,11 @@ public final class Constants {
     public static final double kFineAdjustment = 0.5;
     public static final double kCoarseAdjustment = 1.;
 
-    public static final double kIndexDefault = 13.5;
+    public static final double kIndexDefault = 12.5;
 
     public static final double kMaxAllowedAngle = 30.;
 
-    public static final boolean kIsVBus = true;
+    public static final boolean kIsVBus = false;
     public static final boolean kIsRealGoal = false;
   }
 
@@ -243,16 +243,16 @@ public final class Constants {
   public static final class PIDConstants {
     // TODO: more damping
     public static final class Front {
-      public static double kF = 0.05;
-      public static double kP = 0.4;
-      public static double kD = 0.002;
+      public static double kF = 0.047;
+      public static double kP = 0.1;
+      public static double kD = 0.12;
       public static double kMax = 22000; // 20400;
     }
 
     public static final class Back {
-      public static double kF = 0.055;
+      public static double kF = 0.047;
       public static double kP = 0.1;
-      public static double kD = 0.002;
+      public static double kD = 0.12;
       public static double kMax = 22000; // 17000;
     }
 
