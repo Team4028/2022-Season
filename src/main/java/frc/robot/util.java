@@ -6,9 +6,6 @@ package frc.robot;
 
 /** Add your docs here. */
 public final class util {
-    public static double deadband(double input){
-        return Math.abs(input) < 0.05? 0.0:input;
-    }
     public static double toFalconRPM(double velocity) {
         return velocity * 600 / 4096;
     }
@@ -16,5 +13,4 @@ public final class util {
     public static double toFalconVelocity(double rpm) {
         return rpm * 4096 / 600;
     }
-
 }

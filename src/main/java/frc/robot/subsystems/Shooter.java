@@ -22,7 +22,6 @@ import frc.robot.Constants.ShooterConstants;
 import frc.robot.Constants.CurrentLimitConstants;
 import frc.robot.Constants.PIDConstants;
 import frc.robot.Constants.SubsystemConstants;
-import frc.robot.Constants.VBusConstants;
 import frc.robot.utilities.ShooterTable;
 import frc.robot.utilities.ShooterTableEntry;
 

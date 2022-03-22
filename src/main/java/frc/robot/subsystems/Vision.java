@@ -15,8 +15,8 @@ public class Vision extends SubsystemBase {
 
   /** Creates a new Vision. */
   public Vision() {
-    UsbCamera cam = CameraServer.startAutomaticCapture();
-    cam.setResolution(160, 120);
+    // UsbCamera cam = CameraServer.startAutomaticCapture();
+    // cam.setResolution(80, 60);
   }
 
   public void toggleCam() {

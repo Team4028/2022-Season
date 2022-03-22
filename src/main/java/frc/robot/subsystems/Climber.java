@@ -107,8 +107,8 @@ public class Climber extends SubsystemBase {
   }
 
   public void slowDrop() {
-    _right.set(VBusConstants.kClimberSlowDrop);
-    _left.set(VBusConstants.kClimberSlowDrop);
+    _right.set(-VBusConstants.kClimberSlow);
+    _left.set(-VBusConstants.kClimberSlow);
     System.out.println((_leftEncoder.getPosition() - leftEncoderOffset));
   }
 

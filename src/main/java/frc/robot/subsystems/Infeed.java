@@ -32,10 +32,11 @@ public class Infeed extends SubsystemBase {
     _singulatorMotor = new CANSparkMax(SubsystemConstants.SINGULATOR_MOTOR_ID, MotorType.kBrushless);
     _solenoid = new Solenoid(PneumaticsModuleType.CTREPCM, SubsystemConstants.INFEED_SOLENOID_ID);
 
+    _infeedMotor.setInverted(true);
   }
 
   public void runInfeedSingulatorMotors(double mult) {
-    if (_solenoid.get()) {
+    if (true) {//_solenoid.get()) {
       _infeedMotor.set(ControlMode.PercentOutput, mult * VBusConstants.kInfeed);
       // SmartDashboard.putBoolean("Infeed/Running", true);
       // SmartDashboard.putNumber("Infeed/Vbus", mult * VBusConstants.kInfeed);

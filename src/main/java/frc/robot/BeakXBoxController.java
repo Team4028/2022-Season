@@ -40,16 +40,16 @@ public final class BeakXBoxController {
         left_stick = new Thumbstick(controller, HAND.LEFT);
         right_stick = new Thumbstick(controller, HAND.RIGHT);
 
-        a = new JoystickButton(controller, 1);
-        b = new JoystickButton(controller, 2);
-        x = new JoystickButton(controller, 3);
-        y = new JoystickButton(controller, 4);
-        lb = new JoystickButton(controller, 5);
-        rb = new JoystickButton(controller, 6);
-        back = new JoystickButton(controller, 7);
-        start = new JoystickButton(controller, 8);
-        ls = new JoystickButton(controller, 9);
-        rs = new JoystickButton(controller, 10);
+        a = new JoystickButton(controller, Buttons.kA);
+        b = new JoystickButton(controller, Buttons.kB);
+        x = new JoystickButton(controller, Buttons.kX);
+        y = new JoystickButton(controller, Buttons.kY);
+        lb = new JoystickButton(controller, Buttons.kLB);
+        rb = new JoystickButton(controller, Buttons.kRB);
+        back = new JoystickButton(controller, Buttons.kBack);
+        start = new JoystickButton(controller, Buttons.kStart);
+        ls = new JoystickButton(controller, Buttons.kLS);
+        rs = new JoystickButton(controller, Buttons.kRS);
 
         lt = new Trigger(controller, HAND.LEFT);
         rt = new Trigger(controller, HAND.RIGHT);
@@ -65,7 +65,6 @@ public final class BeakXBoxController {
 
     public double getRightXAxis() {
         return right_stick.getX();
-
     }
 
     public double getRightYAxis() {
@@ -81,7 +80,8 @@ public final class BeakXBoxController {
     }
 
     public static enum HAND {
-        LEFT, RIGHT
+        LEFT,
+        RIGHT
     }
 
     public static class Thumbstick extends Button {

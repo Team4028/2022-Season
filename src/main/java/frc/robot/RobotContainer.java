@@ -25,6 +25,7 @@ import frc.robot.commands.auton.AutonTimer;
 import frc.robot.commands.auton.TestAutonCommand;
 import frc.robot.commands.chassis.RotateDrivetrainByLimelightAngle;
 import frc.robot.commands.chassis.XDrive;
+import frc.robot.commands.climber.GrippyUp;
 import frc.robot.commands.climber.HighBarClimb;
 import frc.robot.commands.climber.TraversalBarClimb;
 import frc.robot.commands.conveyor.ReverseInfeedAndConveyor;
@@ -40,7 +41,6 @@ import frc.robot.commands.shooter.ResetDefaultIndex;
 import frc.robot.commands.shooter.RunShooterMotors;
 import frc.robot.commands.vision.ToggleCamera;
 import frc.robot.commands.vision.ToggleLEDMode;
-import frc.robot.subsystems.Limelight;
 import frc.robot.utilities.Trajectories;
 
 /*
@@ -117,7 +117,7 @@ public class RobotContainer {
     m_operatorController.rt.whenActive(new IncrementShooterIndex(true));
     m_operatorController.ls.whenPressed(new ResetDefaultIndex());
     m_operatorController.rs.whenPressed(new AcceptLimelightDistance());
-    m_operatorController.start.toggleWhenPressed(new RunConveyor());
+    m_operatorController.start.toggleWhenPressed(new ToggleInfeedUp());
     // ====================================
 
     // ======== DRIVER CONTROLLER ========
@@ -136,7 +136,7 @@ public class RobotContainer {
     // ======== TEMP. CLIMBER CONTROLLER
     BeakXBoxController climberController = new BeakXBoxController(2);
     Climber climber = Climber.getInstance();
-    climberController.a.whenPressed(new InstantCommand(() -> climber.toggleTippySolenoid()));
+    // climberController.a.whenPressed(new InstantCommand(() -> climber.toggleTippySolenoid()));
     climberController.lb.whileHeld(new InstantCommand(() -> climber.leftMotorForward(.8)));
     climberController.lb.whenReleased(new InstantCommand(() -> climber.leftMotorOff()));
     climberController.start.whileHeld(new InstantCommand(() -> climber.rightMotorBackward(-.8)));
@@ -152,6 +152,8 @@ public class RobotContainer {
     climberController.rb.whenReleased(new InstantCommand(() -> climber.rightMotorOff()));
     climberController.back.whileHeld(new InstantCommand(() -> climber.leftMotorBackward(-.8)));
     climberController.back.whenReleased(new InstantCommand(() -> climber.leftMotorOff()));
+
+    climberController.a.whenPressed(new GrippyUp());
     climberController.ls.whenPressed(new TraversalBarClimb());
     climberController.rs.whenPressed(new HighBarClimb());
   }
