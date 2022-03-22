@@ -12,6 +12,7 @@ import com.ctre.phoenix.sensors.WPI_Pigeon2;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
@@ -26,10 +27,10 @@ import frc.robot.RobotContainer;
 
 public class DriveSubsystem extends SubsystemBase {
   //COMPETITION CHASSIS VALUES
-  private static final double i_FRONT_LEFT_ANGLE_OFFSET = -Math.toRadians(139.6);//206.3);//24.32 + 180.0);//154.6);
-  private static final double i_FRONT_RIGHT_ANGLE_OFFSET = -Math.toRadians(322);//144.4);//336.0 - 180.0);//169.3 - 5);
-  private static final double i_BACK_LEFT_ANGLE_OFFSET = -Math.toRadians(107);//327.7);//507.2 - 180.0);//31.3);
-  private static final double i_BACK_RIGHT_ANGLE_OFFSET = -Math.toRadians(234.5);//160.9);//340.1 - 180.0);//199.1);
+  private static final double i_FRONT_LEFT_ANGLE_OFFSET = -Math.toRadians(139.5);//139.6);//206.3);//24.32 + 180.0);//154.6);
+  private static final double i_FRONT_RIGHT_ANGLE_OFFSET = -Math.toRadians(322.3);//144.4);//336.0 - 180.0);//169.3 - 5);
+  private static final double i_BACK_LEFT_ANGLE_OFFSET = -Math.toRadians(105.7);//107);//327.7);//507.2 - 180.0);//31.3);
+  private static final double i_BACK_RIGHT_ANGLE_OFFSET = -Math.toRadians(233.9);//234.5);//160.9);//340.1 - 180.0);//199.1);
 
   private int holdAngleCounter = 0;
   private double holdAngle;
@@ -37,6 +38,7 @@ public class DriveSubsystem extends SubsystemBase {
   private int testTimer = 0;
   private int configWaitCycles = 50;
   private WheelSpeeds _WheelSpeeds = new WheelSpeeds();
+  private Rotation2d zeroAbsoluteCompassHeading;
 
   private static DriveSubsystem _instance;
 
@@ -132,6 +134,7 @@ public class DriveSubsystem extends SubsystemBase {
       DriveSubsystem.getInstance().m_frontRight.configTurningMotor();
     }else if(testTimer == 8 * configWaitCycles){
       DriveSubsystem.getInstance().m_rearLeft.configTurningMotor();
+      zeroHeading();
     }
   }
 
@@ -146,6 +149,24 @@ public class DriveSubsystem extends SubsystemBase {
   public Rotation2d getGyroRotation2d(){
     return Rotation2d.fromDegrees((kGyroReversed ? -1.0 : 1.0) * m_gyro.getRotation2d().getDegrees());
   }
+  //TODO: Verify experimental odometry resetting
+  public Rotation2d getAbsoluteGyro(){
+    return Rotation2d.fromDegrees(m_gyro.getAbsoluteCompassHeading()).minus(zeroAbsoluteCompassHeading);
+  }
+  public void zeroAbsoluteCompassHeading(){
+    zeroAbsoluteCompassHeading = Rotation2d.fromDegrees(m_gyro.getAbsoluteCompassHeading()).minus(m_odometry.getPoseMeters().getRotation());
+  }
+  /**
+   * Be sure Limelight is aligned fairly well, robot is not moving
+   * If using Limelight distance used for shooter tables, be sure to SUBTRACT 14.5 Inches from that distance
+   * @param visionDistanceMeters Distance from center of goal to center of robot
+   */
+  public void resetOdometryWithVision(double visionDistanceMeters){
+    Pose2d visionCurrentPose = new Pose2d(new Translation2d(Units.inchesToMeters(324.0), Units.inchesToMeters(162.0))
+    .minus(new Translation2d(visionDistanceMeters, getAbsoluteGyro())), getGyroRotation2d());
+    m_odometry.resetPosition(visionCurrentPose, getGyroRotation2d());
+  }
+  //////
 
   /**
    * Resets the odometry to the specified pose.
