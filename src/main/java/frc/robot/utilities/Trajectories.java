@@ -24,7 +24,7 @@ public class Trajectories {
     /**
      * @return Path from start to first ball
      */
-    public PathPlannerTrajectory FourBall_AcquireFirstCargo(){
+    public static PathPlannerTrajectory FourBall_AcquireFirstCargo(){
         return PathPlanner.loadPath(
             "FourBall_AcquireFirstCargo",
         kMaxSpeedMetersPerSecond,
@@ -34,7 +34,7 @@ public class Trajectories {
     /**
      * @return Path from first cargo to Loading Zone to infeed two cargo
      */
-    public PathPlannerTrajectory FourBall_AcquireLoadingZoneCargo(){
+    public static PathPlannerTrajectory FourBall_AcquireLoadingZoneCargo(){
         return PathPlanner.loadPath(
             "FourBall_AcquireLoadingZoneCargo",
         kMaxSpeedMetersPerSecond,
@@ -44,17 +44,17 @@ public class Trajectories {
     /**
      * @return Path from Loading Zone to sweet spot for shot
      */
-    public PathPlannerTrajectory FourBall_ReturnToShoot(){
+    public static PathPlannerTrajectory FourBall_ReturnToShoot(){
         return PathPlanner.loadPath(
             "FourBall_ReturnToShoot",
-        kMaxSpeedMetersPerSecond,
+        kMaxSpeedMetersPerSecond * 0.65,
         kMaxAccelerationMetersPerSecondSquared
         );
     }
     /**
      * @return Path from start to first cargo then to shot spot (just behind second cargo)
      */
-    public PathPlannerTrajectory FiveBall_AcquireFirstCargo(){
+    public static PathPlannerTrajectory FiveBall_AcquireFirstCargo(){
         return PathPlanner.loadPath(
             "FiveBall_AcquireFirstCargo",
         kMaxSpeedMetersPerSecond,
@@ -64,7 +64,7 @@ public class Trajectories {
     /**
      * @return Path from first cargo to second cargo (short path ~ a foot forward)
      */
-    public PathPlannerTrajectory FiveBall_AcquireSecondCargo(){
+    public static PathPlannerTrajectory FiveBall_AcquireSecondCargo(){
         return PathPlanner.loadPath(
             "FiveBall_AcquireSecondCargo",
         kMaxSpeedMetersPerSecond,
@@ -74,7 +74,7 @@ public class Trajectories {
     /**
      * @return Path from second cargo to Loading Zone
      */
-    public PathPlannerTrajectory FiveBall_AcquireLoadingZoneCargo(){
+    public static PathPlannerTrajectory FiveBall_AcquireLoadingZoneCargo(){
         return PathPlanner.loadPath(
             "FiveBall_AcquireLoadingZoneCargo",
         kMaxSpeedMetersPerSecond,
@@ -84,7 +84,7 @@ public class Trajectories {
     /**
      * @return Path from Loading Zone to sweet spot shot
      */
-    public PathPlannerTrajectory FiveBall_ReturnToShoot(){
+    public static PathPlannerTrajectory FiveBall_ReturnToShoot(){
         return PathPlanner.loadPath(
             "FiveBall_ReturnToShoot",
         kMaxSpeedMetersPerSecond,

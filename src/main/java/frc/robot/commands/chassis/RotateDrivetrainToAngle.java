@@ -5,53 +5,53 @@
 package frc.robot.commands.chassis;
 
 import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.ProfiledPIDCommand;
-import frc.robot.Robot;
-import frc.robot.RobotContainer;
-import frc.robot.util;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.Limelight;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class RotateDrivetrainByLimelightAngle extends ProfiledPIDCommand {
-  /** Creates a new RotateDrivetrainByLimelightAngle. */
-  public RotateDrivetrainByLimelightAngle() {
+public class RotateDrivetrainToAngle extends ProfiledPIDCommand {
+  /** Creates a new RotateDrivetrainToAngle. */
+  public RotateDrivetrainToAngle(Rotation2d goal) {
     super(
         // The ProfiledPIDController used by the command
         new ProfiledPIDController(
             // The PID gains
             AutoConstants.kPThetaController,
-            0.0,
-            0.0,
+            0,
+            0,
             // The motion profile constraints
-            AutoConstants.kThetaControllerConstraints),
+            new TrapezoidProfile.Constraints(AutoConstants.MAX_ANGULAR_SPEED_RADIANS_PER_SECOND,
+            AutoConstants.MAX_ANGULAR_SPEED_RADIANS_PER_SECOND_SQUARED)),
         // This should return the measurement
-        () -> Limelight.getInstance().getXForRot() * Math.PI / 180,
+        () -> DriveSubsystem.getInstance().getPose().getRotation().getRadians(),
         // This should return the goal (can also be a constant)
-        () -> 0.0,
+        () -> goal.getRadians(),
         // This uses the output
         (output, setpoint) -> {
           // Use the output (and setpoint, if desired) here
           DriveSubsystem.getInstance().setModuleStates(
             DriveConstants.kDriveKinematics.toSwerveModuleStates(
-            ChassisSpeeds.fromFieldRelativeSpeeds(
-              RobotContainer.getInstance().getSpeedScaledDriverLeftY(),
-              RobotContainer.getInstance().getSpeedScaledDriverLeftX(),
-              output + setpoint.velocity,
-              DriveSubsystem.getInstance().getPose().getRotation())));
+              ChassisSpeeds.fromFieldRelativeSpeeds(
+                0.0, 
+                0.0, 
+                output + setpoint.velocity, 
+                DriveSubsystem.getInstance().getPose().getRotation())
+            )
+          );
         });
     // Use addRequirements() here to declare subsystem dependencies.
     // Configure additional PID options by calling `getController` here.
-    addRequirements(DriveSubsystem.getInstance(), Limelight.getInstance());
+    addRequirements(DriveSubsystem.getInstance());
     getController().enableContinuousInput(-Math.PI, Math.PI);
-    getController().setTolerance(Units.degreesToRadians(1.5));
+    getController().setTolerance(Units.degreesToRadians(2.0));
   }
 
   // Returns true when the command should end.

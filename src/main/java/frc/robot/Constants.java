@@ -32,16 +32,6 @@ public final class Constants {
     public static final boolean MK4I = true;
     public static final double BASE_SPEED_SCALE = 0.25;
 
-    public static final int kFrontLeftDriveMotorPort = 1;
-    public static final int kRearLeftDriveMotorPort = 6;
-    public static final int kFrontRightDriveMotorPort = 4;
-    public static final int kRearRightDriveMotorPort = 7;
-
-    public static final int kFrontLeftTurningMotorPort = 2;
-    public static final int kRearLeftTurningMotorPort = 5;
-    public static final int kFrontRightTurningMotorPort = 3;
-    public static final int kRearRightTurningMotorPort = 8;
-
     public static final int i_kFrontLeftDriveMotorPort = 2;
     public static final int i_kRearLeftDriveMotorPort = 6;
     public static final int i_kFrontRightDriveMotorPort = 4;
@@ -86,25 +76,6 @@ public final class Constants {
     public static final double i_kMaxSpeedMetersPerSecond = Units.feetToMeters(16.3);
   }
 
-  public static final class ModuleConstants {
-    public static final double kMaxModuleAngularSpeedRadiansPerSecond = 2 * Math.PI;
-    public static final double kMaxModuleAngularAccelerationRadiansPerSecondSquared = 2 * Math.PI;
-
-    public static final int kEncoderCPR = 42;
-    public static final double kWheelDiameterMeters = Units.inchesToMeters(4.0);
-    public static final double kDriveEncoderDistancePerPulse =
-        // Assumes the encoders are directly mounted on the wheel shafts
-        (kWheelDiameterMeters * Math.PI) * (1.0 / (60.0 / 15.0) / (20.0 / 24.0) / (40.0 / 16.0));
-
-    public static final double kTurningEncoderDistancePerPulse =
-        // Assumes the encoders are on a 1:1 reduction with the module shaft.
-        (2 * Math.PI) / (double) kEncoderCPR;
-
-    public static final double kPModuleTurningController = 0.5;
-
-    public static final double kPModuleDriveController = 0.0;
-  }
-
   public static final class OIConstants {
     public static final int kDriverControllerPort = 0;
     public static final int kOperatorControllerPort = 1;
@@ -127,13 +98,13 @@ public final class Constants {
 
     public static final double i_kPModuleTurningController = 0.2;
 
-    public static final double i_kPModuleDriveController = 0.14; //From best run on practice chassis
+    public static final double i_kPModuleDriveController = 0.10;
 
     public static final double i_kEncoderCountsPerModuleRev = (150.0 / 7.0) * 2048.0;
 
     public static final double i_kNominalVoltage = 12.0;
 
-    public static final double i_kTurningMotorAllowableClosedLoopError = 20.0;
+    public static final double i_kTurningMotorAllowableClosedLoopError = 40.0;
 
     public static final double kModuleMaxSpeedTurningRadiansPerSecond = 16 * Math.PI;
     public static final double kModuleMaxAccelerationTurningRadiansPerSecondSquared = 256 * Math.PI;
@@ -147,9 +118,9 @@ public final class Constants {
     public static final double kMaxSpeedMetersPerSecond = Units.feetToMeters(16.3);
     public static final double kMaxAccelerationMetersPerSecondSquared = Units.feetToMeters(16.3);
 
-    public static final double kPXController = 1.0;
+    public static final double kPXController = 8.75;
     public static final double kPYController = kPXController;
-    public static final double kPThetaController = 12.0;
+    public static final double kPThetaController = 7.0;
     public static final double MAX_ANGULAR_SPEED_RADIANS_PER_SECOND = Units.feetToMeters(16.3) /
         Math.hypot(DriveConstants.kTrackWidth / 2.0, DriveConstants.kWheelBase / 2.0);
     public static final double MAX_ANGULAR_SPEED_RADIANS_PER_SECOND_SQUARED = MAX_ANGULAR_SPEED_RADIANS_PER_SECOND;
@@ -225,7 +196,7 @@ public final class Constants {
 
     public static final double kMaxAllowedAngle = 30.;
 
-    public static final boolean kIsVBus = false;
+    public static final boolean kIsVBus = true;
     public static final boolean kIsRealGoal = false;
   }
 

@@ -8,13 +8,16 @@ import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.commands.PPSwerveControllerCommand;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 // import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.AutoConstants;
@@ -23,8 +26,9 @@ import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.commands.auton.AutonTimer;
-import frc.robot.commands.auton.TestAutonCommand;
+import frc.robot.commands.auton.FourBallAuton;
 import frc.robot.commands.chassis.RotateDrivetrainByLimelightAngle;
+import frc.robot.commands.chassis.RotateDrivetrainToAngle;
 import frc.robot.commands.chassis.XDrive;
 import frc.robot.commands.climber.GrippyUp;
 import frc.robot.commands.climber.HighBarClimb;
@@ -88,9 +92,9 @@ public class RobotContainer {
         // Turning is controlled by the X axis of the right stick.
         new RunCommand(
             () -> m_robotDrive.drive(
-                -m_driverController.getLeftYAxis(),
-                -m_driverController.getLeftXAxis(),
-                -m_driverController.getRightXAxis(),
+                getSpeedScaledDriverLeftY(),
+                getSpeedScaledDriverLeftX(),
+                getSpeedScaledDriverRightX(),
                 true),
             m_robotDrive));
   }
@@ -123,15 +127,15 @@ public class RobotContainer {
 
     // ======== DRIVER CONTROLLER ========
     m_driverController.a.whenPressed(new ToggleLEDMode());
-    m_driverController.b.whenPressed(new InstantCommand(() -> m_robotDrive.toggleEnableHoldAngle()));
     m_driverController.x.toggleWhenPressed(new XDrive());
     m_driverController.y.toggleWhenPressed(runInfeed);
     m_driverController.start.whenPressed(new InstantCommand(() -> m_robotDrive.zeroHeading()));
     m_driverController.lb.toggleWhenPressed(new ReverseInfeedAndConveyor());
     m_driverController.rb.whenPressed(new ToggleInfeedUp());
     m_driverController.lt.whileActiveContinuous(runInfeed);
-    m_driverController.rs.toggleWhenPressed(new RotateDrivetrainByLimelightAngle());
+    m_driverController.rs.toggleWhenPressed(new RotateDrivetrainByLimelightAngle().withTimeout(2.0));
     m_driverController.ls.whenPressed(new ToggleCamera());
+    m_driverController.b.toggleWhenPressed(new RotateDrivetrainToAngle(Rotation2d.fromDegrees(43)));
     // ===================================
 
     // ======== TEMP. CLIMBER CONTROLLER
@@ -161,6 +165,15 @@ public class RobotContainer {
 
   public double getRightTrigger() {
     return m_driverController.getRightTrigger();
+  }
+  public double getSpeedScaledDriverRightX(){
+    return (DriveConstants.BASE_SPEED_SCALE + getRightTrigger() * (1.0 - DriveConstants.BASE_SPEED_SCALE)) * -util.deadband(m_driverController.getRightXAxis());
+  }
+  public double getSpeedScaledDriverLeftX(){
+    return (DriveConstants.BASE_SPEED_SCALE + getRightTrigger() * (1.0 - DriveConstants.BASE_SPEED_SCALE)) * -util.deadband(m_driverController.getLeftXAxis());
+  }
+  public double getSpeedScaledDriverLeftY(){
+    return (DriveConstants.BASE_SPEED_SCALE + getRightTrigger() * (1.0 - DriveConstants.BASE_SPEED_SCALE)) * -util.deadband(m_driverController.getLeftYAxis());
   }
 
   public Command getPathPlannerSwerveControllerCommand(PathPlannerTrajectory traj) {
@@ -193,24 +206,8 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    // Create config for trajectory
-    m_robotDrive.resetOdometry(_trajectories.FourBall_AcquireFirstCargo().getInitialState().poseMeters);
-    return new TestAutonCommand().deadlineWith(new AutonTimer());
-    // return getSwerveControllerCommand(_trajectories.getTestCompFirstBall())
-    // .alongWith(new InstantCommand(() ->
-    // Infeed.getInstance().runInfeedSingulatorMotors(1.0)))
-    // .andThen(new RotateDrivetrainByAngle(Rotation2d.fromDegrees(187), true))
-    // .andThen(new RunShooterMotorsVbus().alongWith(new
-    // WaitCommand(0.25).andThen(new RunConveyor())).raceWith(new
-    // WaitCommand(1.25)))
-    // .andThen(new InstantCommand(() ->
-    // Infeed.getInstance().stopInfeedSingulatorMotors()))
-    // .deadlineWith(new AutonTimer());
-    // .andThen(getSwerveControllerCommand(_trajectories.getTestCompSecondBall()))
-    // .andThen(new WaitCommand(1.5))
-    // .andThen(getSwerveControllerCommand(_trajectories.getTestCompReturnShoot()))
-    // .andThen(new WaitCommand(2.0))
-    // .andThen(new InstantCommand(() -> System.out.println("AUTON FINISHED")));
+    m_robotDrive.resetOdometry(new Pose2d(Trajectories.FourBall_AcquireFirstCargo().getInitialPose().getTranslation(), Trajectories.FourBall_AcquireFirstCargo().getInitialState().holonomicRotation));
+    return new FourBallAuton().deadlineWith(new AutonTimer());
   }
 
 }

@@ -13,4 +13,7 @@ public final class util {
     public static double toFalconVelocity(double rpm) {
         return rpm * 4096 / 600;
     }
+    public static double deadband(double input){
+        return Math.abs(input) > 0.025? input: 0.0;
+    }
 }

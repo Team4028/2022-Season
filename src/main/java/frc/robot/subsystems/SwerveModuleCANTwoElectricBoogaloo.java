@@ -69,6 +69,7 @@ public class SwerveModuleCANTwoElectricBoogaloo {
     m_turningMotor.selectProfileSlot(0, 0);
     m_turningMotor.setSelectedSensorPosition(m_turningEncoder.getAbsolutePosition() / 360.0 * i_integratedEncoderTicksPerModRev);
     m_turningMotor.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 20, 25, 1.0));
+    m_turningMotor.configAllowableClosedloopError(0, i_kTurningMotorAllowableClosedLoopError, 0);
   }
   public void checkPowerFailure(){
     if(m_driveMotor.hasResetOccurred()){
@@ -116,7 +117,6 @@ public class SwerveModuleCANTwoElectricBoogaloo {
    */
   public void setDesiredState(SwerveModuleState desiredState) {
     // Optimize the reference state to avoid spinning further than 90 degrees
-    //TODO: Add back in optimize
     SwerveModuleState state = optimize(
         SwerveModuleState.optimize(desiredState, new Rotation2d(getTurningEncoderRadians())),
         new Rotation2d(getTurningEncoderRadians()));
@@ -125,7 +125,6 @@ public class SwerveModuleCANTwoElectricBoogaloo {
     final double feedForward = DriveConstants.driveTrainFeedforward.calculate(state.speedMetersPerSecond)
         / i_kNominalVoltage;
 
-    //TODO:Add feedforward/pid back once characterized
     m_driveMotor.set(ControlMode.Velocity,
     state.speedMetersPerSecond / 10.0 / i_kDriveEncoderDistancePerPulse,
     DemandType.ArbitraryFeedForward,

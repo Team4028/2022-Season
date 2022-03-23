@@ -30,12 +30,8 @@ public class DriveSubsystem extends SubsystemBase {
   private static final double i_BACK_LEFT_ANGLE_OFFSET = -Math.toRadians(105.7);//107);//327.7);//507.2 - 180.0);//31.3);
   private static final double i_BACK_RIGHT_ANGLE_OFFSET = -Math.toRadians(233.9);//234.5);//160.9);//340.1 - 180.0);//199.1);
 
-  private int holdAngleCounter = 0;
-  private double holdAngle;
-  private boolean enableHoldAngle = false;
   private int testTimer = 0;
   private int configWaitCycles = 50;
-  private WheelSpeeds _WheelSpeeds = new WheelSpeeds();
   private Rotation2d zeroAbsoluteCompassHeading;
 
   private static DriveSubsystem _instance;
@@ -173,7 +169,6 @@ public class DriveSubsystem extends SubsystemBase {
    */
   public void resetOdometry(Pose2d pose) {
     m_odometry.resetPosition(pose, getGyroRotation2d());
-    holdAngleCounter = 0;
   }
 
   /**
@@ -187,18 +182,9 @@ public class DriveSubsystem extends SubsystemBase {
    */
   @SuppressWarnings("ParameterName")
   public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
-    double speedScale = DriveConstants.BASE_SPEED_SCALE
-        + RobotContainer.getInstance().getRightTrigger() * (1 - DriveConstants.BASE_SPEED_SCALE);
-    xSpeed *= speedScale * DriveConstants.i_kMaxSpeedMetersPerSecond;
-    ySpeed *= speedScale * DriveConstants.i_kMaxSpeedMetersPerSecond;
-    rot *= speedScale * AutoConstants.MAX_ANGULAR_SPEED_RADIANS_PER_SECOND;
-    if (rot == 0 && enableHoldAngle) {
-      if (holdAngleCounter < 1) {
-        holdAngleCounter++;
-        holdAngle = getGyroRotation2d().getRadians();
-      }
-      rot = AutoConstants.AUTON_THETA_CONTROLLER.calculate(getGyroRotation2d().getRadians(), holdAngle);
-    }
+    xSpeed *= DriveConstants.i_kMaxSpeedMetersPerSecond;
+    ySpeed *= DriveConstants.i_kMaxSpeedMetersPerSecond;
+    rot *= AutoConstants.MAX_ANGULAR_SPEED_RADIANS_PER_SECOND;
     var swerveModuleStates =
         kDriveKinematics.toSwerveModuleStates(
             fieldRelative
@@ -260,13 +246,13 @@ public class DriveSubsystem extends SubsystemBase {
       m_rearRight.getState()
     ).vxMetersPerSecond;
   }
-
-  public void setEnableHoldAngle(boolean enable) {
-    enableHoldAngle = enable;
-  }
-
-  public void toggleEnableHoldAngle() {
-    enableHoldAngle = !enableHoldAngle;
+  public double getDriveAngularVelocity(){
+    return kDriveKinematics.toChassisSpeeds(
+      m_frontLeft.getState(),
+      m_frontRight.getState(),
+      m_rearLeft.getState(),
+      m_rearRight.getState())
+      .omegaRadiansPerSecond;
   }
 
   /**
