@@ -21,29 +21,33 @@ public class MoveArm extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
-
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() {
+  public void initialize() {
     climber.rightMotorForward(speed);
     climber.leftMotorForward(speed);
   }
+
+  // Called every time the scheduler runs while the command is scheduled.
+  @Override
+  public void execute() {}
+
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     climber.leftMotorOff();
     climber.rightMotorOff();
-    System.out.println("Turning Off");
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (Math.abs(climber.getLeftEncoderPosition() - encoderValue) < 1.) {
-      return true;
-    } else {
-      return false;
+    if (Math.abs(climber.getLeftEncoderPosition() - encoderValue) < 2.) {
+      climber.leftMotorOff();
     }
+    if (Math.abs(climber.getRightEncoderPosition() - encoderValue) < 2.) {
+      climber.rightMotorOff();
+    }
+
+    return ((Math.abs(climber.getLeftEncoderPosition() - encoderValue) < 2.) && 
+        (Math.abs(climber.getRightEncoderPosition() - encoderValue) < 2.));
   }
 }

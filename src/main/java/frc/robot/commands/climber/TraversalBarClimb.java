@@ -14,19 +14,19 @@ public class TraversalBarClimb extends SequentialCommandGroup {
   /** Add your docs here. */
   public TraversalBarClimb() {
     addCommands(
-    // new HighBarClimb(),
+    // new HighBarClimb(), // high bar first!
     new WaitCommand(.25), 
-    new ToggleGrippy(),  
-    new WaitCommand(3), 
-    new MoveArm(VBusConstants.kClimberFast, 156.6),//135),  
+    new ToggleGrippy(),  //ready to latch
+    new WaitCommand(2), //NOTE: we end high bar climb READY to toggle grippy!
+    new MoveArm(VBusConstants.kClimberFast, 140), // pull grippy up until it clears traverse bar
     new WaitCommand(1),  
-    new ToggleGrippy(),  
+    new ToggleGrippy(), // latch
     new WaitCommand(.5), 
-    new MoveArm(-VBusConstants.kClimberFast, -11.6),//-10), 
+    new MoveArm(-VBusConstants.kClimberFast, -5), // pull down to trav
     new WaitCommand(.25), 
-    new MoveArm(VBusConstants.kClimberSlow, 17.4),//15), 
+    new MoveArm(VBusConstants.kClimberSlow, 30), // slowly up until tippy clears
     new WaitCommand(.25),  
-    new MoveArm(-VBusConstants.kClimberFast, -34.8));//-30));  
+    new MoveArm(-VBusConstants.kClimberFast, -30)); // pull down until tippy clears & releases
     //instant command for solenoids
     //,command,new command, new command, new command
   }
