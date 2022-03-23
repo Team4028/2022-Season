@@ -96,12 +96,7 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.cancel();
     }
 
-<<<<<<< HEAD
-    Climber.getInstance().setRightEncoder(0.);//-EncoderConstants.kClimberRightStart);
-    Climber.getInstance().setLeftEncoder(0.);//-EncoderConstants.kClimberLeftStart);
-=======
     Climber.getInstance().resetEncoders();
->>>>>>> parent of c70bbd7 (practice climber stuff)
   }
 
   /** This function is called periodically during operator control. */
