@@ -214,7 +214,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    if(_autonChooser.getSelected().getName() == "FourBallAuton"){
+    if(_autonChooser.getSelected().equals(new FourBallAuton())){
     m_robotDrive.resetOdometry(new Pose2d(Trajectories.FourBall_AcquireFirstCargo().getInitialPose().getTranslation(), Trajectories.FourBall_AcquireFirstCargo().getInitialState().holonomicRotation));
     } else{
       m_robotDrive.resetOdometry(new Pose2d());
