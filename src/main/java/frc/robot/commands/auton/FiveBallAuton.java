@@ -4,22 +4,17 @@
 
 package frc.robot.commands.auton;
 
-import java.time.Instant;
-
 import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.commands.PPSwerveControllerCommand;
 
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.RobotContainer;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
-import frc.robot.commands.chassis.RotateDrivetrainToAngle;
 import frc.robot.commands.conveyor.RunConveyor;
+import frc.robot.commands.infeed.ToggleInfeedUp;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.Infeed;
 import frc.robot.subsystems.Shooter;
@@ -28,28 +23,28 @@ import frc.robot.utilities.Trajectories;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class FourBallAuton extends SequentialCommandGroup {
-  /** Creates a new TestAutonCommand. */
-  public FourBallAuton() {
+public class FiveBallAuton extends SequentialCommandGroup {
+  /** Creates a new FiveBallAuotn. */
+  public FiveBallAuton() {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
       new InstantCommand(() -> Infeed.getInstance().setInfeedDown()),
-      new WaitCommand(0.1),
-      getPathPlannerSwerveControllerCommand(Trajectories.FourBall_AcquireFirstCargo()).alongWith(new InstantCommand(() -> Infeed.getInstance().runInfeedSingulatorMotors(1.0))),
-      new WaitCommand(0.5),
-      new RotateDrivetrainToAngle(Rotation2d.fromDegrees(37.0)).alongWith(new InstantCommand(() -> Shooter.getInstance().runShooterMotors())),
+      new InstantCommand(() -> Infeed.getInstance().runInfeedSingulatorMotors(1.0)),
+      getPathPlannerSwerveControllerCommand(Trajectories.FiveBall_AcquireFirstCargo())
+      .alongWith(new WaitCommand(0.75).andThen(new InstantCommand(() -> Shooter.getInstance().runShooterMotors()))),
       new WaitCommand(1.1).deadlineWith(new RunConveyor()),
-      getPathPlannerSwerveControllerCommand(Trajectories.FourBall_AcquireLoadingZoneCargo()).alongWith(new WaitCommand(0.5).andThen(new InstantCommand(() -> Shooter.getInstance().stop()))),
-      new WaitCommand(1.5),
-      getPathPlannerSwerveControllerCommand(Trajectories.FourBall_ReturnToShoot()).alongWith(new WaitCommand(0.5).andThen(new InstantCommand(() -> Shooter.getInstance().runShooterMotors()))),
-      new WaitCommand(1.1).deadlineWith(new RunConveyor()),
-      new WaitCommand(0.25).andThen(new InstantCommand(() -> Shooter.getInstance().stop())),
-      new InstantCommand(() -> Infeed.getInstance().stopInfeedSingulatorMotors())
+      new InstantCommand(() -> Shooter.getInstance().stop()),
+      getPathPlannerSwerveControllerCommand(Trajectories.FiveBall_AcquireSecondCargo())
+      .alongWith(new WaitCommand(1.5).deadlineWith(new RunConveyor())),
+      getPathPlannerSwerveControllerCommand(Trajectories.FiveBall_AcquireLoadingZoneCargo()),
+      new WaitCommand(1.2),
+      getPathPlannerSwerveControllerCommand(Trajectories.FiveBall_ReturnToShoot())
+      .alongWith(new WaitCommand(1.5).andThen(new InstantCommand(() -> Shooter.getInstance().runShooterMotors()))),
+      new WaitCommand(1.2).deadlineWith(new RunConveyor()),
+      new WaitCommand(0.25),
+      new InstantCommand(() -> Shooter.getInstance().stop())
     );
-  }
-  public static Pose2d initialPose(){
-    return Trajectories.FourBall_AcquireFirstCargo().getInitialPose();
   }
   public Command getPathPlannerSwerveControllerCommand(PathPlannerTrajectory traj) {
     return new PPSwerveControllerCommand(
