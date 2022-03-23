@@ -25,8 +25,8 @@ import frc.robot.commands.auton.AutonTimer;
 import frc.robot.commands.auton.TestAutonCommand;
 import frc.robot.commands.chassis.RotateDrivetrainByLimelightAngle;
 import frc.robot.commands.chassis.XDrive;
-import frc.robot.commands.climber.GrippyUp;
 import frc.robot.commands.climber.HighBarClimb;
+import frc.robot.commands.climber.MoveArm;
 import frc.robot.commands.climber.TraversalBarClimb;
 import frc.robot.commands.conveyor.ReverseInfeedAndConveyor;
 import frc.robot.commands.conveyor.RunConveyor;
@@ -153,7 +153,7 @@ public class RobotContainer {
     climberController.back.whileHeld(new InstantCommand(() -> climber.leftMotorBackward(-.8)));
     climberController.back.whenReleased(new InstantCommand(() -> climber.leftMotorOff()));
 
-    climberController.a.whenPressed(new GrippyUp());
+    climberController.a.whenPressed(new MoveArm(0.8, 100));
     climberController.ls.whenPressed(new TraversalBarClimb());
     climberController.rs.whenPressed(new HighBarClimb());
   }
