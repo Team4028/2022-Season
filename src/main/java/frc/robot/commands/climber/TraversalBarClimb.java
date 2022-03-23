@@ -6,47 +6,27 @@ package frc.robot.commands.climber;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.Constants.VBusConstants;
 import frc.robot.subsystems.Climber;
 
 public class TraversalBarClimb extends SequentialCommandGroup {
   Climber climber = Climber.getInstance();
   /** Add your docs here. */
   public TraversalBarClimb() {
-    addCommands(/*new MoveArm(-.8, 8), 
-    new WaitCommand(.25),
-    new MoveArm(0.25, 45), 
+    addCommands(
+    // new HighBarClimb(),
     new WaitCommand(.25), 
-    new MoveArm(0.8, 60),  
-    new WaitCommand(.5), 
     new ToggleGrippy(),  
     new WaitCommand(3), 
-    new MoveArm(0.8, 180),  
+    new MoveArm(VBusConstants.kClimberFast, 156.6),//135),  
     new WaitCommand(1),  
     new ToggleGrippy(),  
-    new WaitCommand(1), 
-    new MoveArm(-0.8, 30), 
-    new WaitCommand(.25), 
-    new MoveArm(0.25, 70), 
-    new WaitCommand(.25),  
-    new MoveArm(-0.8, 15), 
-    new WaitCommand(.25), 
-    new MoveArm(0.25, 40),*/
-    new HighBarClimb(),
-    new WaitCommand(.25), 
-    new MoveArm(0.8, 60),  
     new WaitCommand(.5), 
-    new ToggleGrippy(),  
-    new WaitCommand(3), 
-    new MoveArm(0.8, 180),  
-    new WaitCommand(1),  
-    new ToggleGrippy(),  
-    new WaitCommand(1), 
-    new MoveArm(-0.8, 30), 
+    new MoveArm(-VBusConstants.kClimberFast, -11.6),//-10), 
     new WaitCommand(.25), 
-    new MoveArm(0.25, 70), 
+    new MoveArm(VBusConstants.kClimberSlow, 17.4),//15), 
     new WaitCommand(.25),  
-    new MoveArm(-0.8, 15), 
-    new WaitCommand(.25));  
+    new MoveArm(-VBusConstants.kClimberFast, -34.8));//-30));  
     //instant command for solenoids
     //,command,new command, new command, new command
   }

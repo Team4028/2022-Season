@@ -13,7 +13,7 @@ public class ResetDefaultIndex extends CommandBase {
   /** Creates a new ResetDefaultIndex. */
   public ResetDefaultIndex() {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(shooter);
+    //addRequirements(shooter);
   }
 
   // Called when the command is initially scheduled.

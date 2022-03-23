@@ -22,7 +22,6 @@ import frc.robot.Constants.ShooterConstants;
 import frc.robot.Constants.CurrentLimitConstants;
 import frc.robot.Constants.PIDConstants;
 import frc.robot.Constants.SubsystemConstants;
-import frc.robot.Constants.VBusConstants;
 import frc.robot.utilities.ShooterTable;
 import frc.robot.utilities.ShooterTableEntry;
 
@@ -69,9 +68,9 @@ public class Shooter extends SubsystemBase {
     _anglePid = _angle.getPIDController();
     _anglePid.setP(PIDConstants.Angle.kP);
 
-    put("FrontVbus", VBusConstants.kShooterFrontDefault);
-    put("BackVbus", VBusConstants.kShooterBackDefault);
-    put("Hood Angle (rot)", VBusConstants.kShooterHoodAngleRotDefault);
+    // put("FrontVbus", VBusConstants.kShooterFrontDefault);
+    // put("BackVbus", VBusConstants.kShooterBackDefault);
+    // put("Hood Angle (rot)", VBusConstants.kShooterHoodAngleRotDefault);
 
     if (!ShooterConstants.kIsVBus) {
       _front.config_kF(0, PIDConstants.Front.kF);
@@ -83,8 +82,8 @@ public class Shooter extends SubsystemBase {
       _back.config_kD(0, PIDConstants.Back.kD);
     }
 
-    _front.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 250);
-    _back.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 250);
+    _front.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 100);
+    _back.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 100);
   }
 
   public void update() {
@@ -97,8 +96,8 @@ public class Shooter extends SubsystemBase {
     put("Shot Kicker RPM", e.KickerRPM);
     put("Actuator Value", e.ActuatorVal);
 
-    // put("Front Error", util.toFalconRPM(_front.getClosedLoopError()));
-    // put("Back Error", util.toFalconRPM(_back.getClosedLoopError()));
+    put("Front Error", util.toFalconRPM(_front.getClosedLoopError()));
+    put("Back Error", util.toFalconRPM(_back.getClosedLoopError()));
     put("Front Motor RPM", util.toFalconRPM(_front.getSelectedSensorVelocity()));
     put("Back Motor RPM", util.toFalconRPM(_back.getSelectedSensorVelocity()));
     put("Kicker Motor RPM", util.toFalconRPM(_kicker.getSelectedSensorVelocity()));
@@ -126,6 +125,7 @@ public class Shooter extends SubsystemBase {
 
   public void runShooterMotors() {
     ShooterTableEntry entry = ShooterTable.getPrimaryTable().CalcShooterValues(shooterIndex);
+
     if (ShooterConstants.kIsVBus) {
       _front.set(ControlMode.PercentOutput, entry.ShooterFrontRPM / 100.);
       _back.set(ControlMode.PercentOutput, entry.ShooterBackRPM / 100.);
@@ -133,23 +133,10 @@ public class Shooter extends SubsystemBase {
     } else {
       _front.set(ControlMode.Velocity, util.toFalconVelocity(entry.ShooterFrontRPM));
       _back.set(ControlMode.Velocity, util.toFalconVelocity(entry.ShooterBackRPM));
-      _kicker.set(ControlMode.Velocity, util.toFalconVelocity(entry.KickerRPM));
+      _kicker.set(ControlMode.PercentOutput, entry.KickerRPM / 100.);
     }
 
     _anglePid.setReference(entry.ActuatorVal, ControlType.kPosition);
-  }
-
-  public void kick() {
-    ShooterTableEntry entry = ShooterTable.getPrimaryTable().CalcShooterValues(shooterIndex);
-    _kicker.set(ControlMode.PercentOutput, entry.KickerRPM);
-  }
-
-  public void testSpinAngleMotor() {
-    _angle.set(-0.1);
-  }
-
-  public void stopKicker() {
-    _kicker.set(ControlMode.PercentOutput, 0.);
   }
 
   public void stop() {

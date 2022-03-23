@@ -107,8 +107,8 @@ public class Climber extends SubsystemBase {
   }
 
   public void slowDrop() {
-    _right.set(VBusConstants.kClimberSlowDrop);
-    _left.set(VBusConstants.kClimberSlowDrop);
+    _right.set(-VBusConstants.kClimberSlow);
+    _left.set(-VBusConstants.kClimberSlow);
     System.out.println((_leftEncoder.getPosition() - leftEncoderOffset));
   }
 
@@ -148,9 +148,9 @@ public class Climber extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    /*SmartDashboard.putNumber("Left Climber", _leftEncoder.getPosition());
+    SmartDashboard.putNumber("Left Climber", _leftEncoder.getPosition());
     SmartDashboard.putNumber("Right Climber", _rightEncoder.getPosition());
     SmartDashboard.putNumber("Right Climber Current", _right.getOutputCurrent());
-    SmartDashboard.putNumber("Left Climber Current", _left.getOutputCurrent());*/
+    SmartDashboard.putNumber("Left Climber Current", _left.getOutputCurrent());
   }
 }
