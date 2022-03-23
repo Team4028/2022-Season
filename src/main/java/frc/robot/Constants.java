@@ -73,9 +73,9 @@ public final class Constants {
 
     public static final boolean kGyroReversed = false;
 
-    public static final double ksVolts = (0.209 + 0.227 + 0.222) / 3.0;//0.798;
-    public static final double kvVoltSecondsPerMeter = (2.3 + 2.27 + 2.27) / 3.0;//2.35;
-    public static final double kaVoltSecondsSquaredPerMeter = (0.30 + 0.25 + 0.33) / 3.0;//0.30;
+    public static final double ksVolts = (0.19 + 0.225 + 0.214 + 0.2256) / 4.0;//0.798;
+    public static final double kvVoltSecondsPerMeter = (2.2565 + 2.2785 + 2.2754 + 2.291) / 4.0;//2.35;
+    public static final double kaVoltSecondsSquaredPerMeter = (0.277 + 0.31) / 2.0;//0.30;
 
     public static final SimpleMotorFeedforward driveTrainFeedforward = new SimpleMotorFeedforward(
         ksVolts,
@@ -102,7 +102,7 @@ public final class Constants {
 
     public static final double kPModuleTurningController = 0.5;
 
-    public static final double kPModuleDriveController = 0;
+    public static final double kPModuleDriveController = 0.0;
   }
 
   public static final class OIConstants {
@@ -147,10 +147,10 @@ public final class Constants {
     public static final double kMaxSpeedMetersPerSecond = Units.feetToMeters(16.3);
     public static final double kMaxAccelerationMetersPerSecondSquared = Units.feetToMeters(16.3);
 
-    public static final double kPXController = 0.0;
+    public static final double kPXController = 1.0;
     public static final double kPYController = kPXController;
-    public static final double kPThetaController = 3.5;
-    public static final double MAX_ANGULAR_SPEED_RADIANS_PER_SECOND = kMaxSpeedMetersPerSecond /
+    public static final double kPThetaController = 12.0;
+    public static final double MAX_ANGULAR_SPEED_RADIANS_PER_SECOND = Units.feetToMeters(16.3) /
         Math.hypot(DriveConstants.kTrackWidth / 2.0, DriveConstants.kWheelBase / 2.0);
     public static final double MAX_ANGULAR_SPEED_RADIANS_PER_SECOND_SQUARED = MAX_ANGULAR_SPEED_RADIANS_PER_SECOND;
 

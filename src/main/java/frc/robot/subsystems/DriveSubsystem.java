@@ -193,7 +193,7 @@ public class DriveSubsystem extends SubsystemBase {
         + RobotContainer.getInstance().getRightTrigger() * (1 - DriveConstants.BASE_SPEED_SCALE);
     xSpeed *= speedScale * DriveConstants.i_kMaxSpeedMetersPerSecond;
     ySpeed *= speedScale * DriveConstants.i_kMaxSpeedMetersPerSecond;
-    rot *= speedScale * DriveConstants.i_kMaxSpeedMetersPerSecond;
+    rot *= speedScale * AutoConstants.MAX_ANGULAR_SPEED_RADIANS_PER_SECOND;
     if (rot == 0 && enableHoldAngle) {
       if (holdAngleCounter < 1) {
         holdAngleCounter++;

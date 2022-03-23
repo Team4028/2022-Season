@@ -28,7 +28,7 @@ public class TestAutonCommand extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new InstantCommand(() -> Infeed.getInstance().setInfeedDown()),
+      //new InstantCommand(() -> Infeed.getInstance().setInfeedDown()),
       new WaitCommand(0.2),
       _rc.getPathPlannerSwerveControllerCommand(_trajectories.FourBall_AcquireFirstCargo()).alongWith(new InstantCommand(() -> Infeed.getInstance().runInfeedSingulatorMotors(1.0))),
       new WaitCommand(0.5),
