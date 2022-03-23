@@ -87,7 +87,7 @@ public class RobotContainer {
         // Turning is controlled by the X axis of the right stick.
         new RunCommand(
             () -> m_robotDrive.drive(
-                m_driverController.getLeftYAxis(),
+                -m_driverController.getLeftYAxis(),
                 -m_driverController.getLeftXAxis(),
                 -m_driverController.getRightXAxis(),
                 true),
@@ -137,7 +137,7 @@ public class RobotContainer {
     BeakXBoxController climberController = new BeakXBoxController(2);
     Climber climber = Climber.getInstance();
     // climberController.a.whenPressed(new InstantCommand(() -> climber.toggleTippySolenoid()));
-    climberController.lb.whileHeld(new InstantCommand(() -> climber.leftMotorForward(.8)));
+    climberController.lb.whileHeld(new InstantCommand(() -> climber.leftMotorForward(.3)));
     climberController.lb.whenReleased(new InstantCommand(() -> climber.leftMotorOff()));
     climberController.start.whileHeld(new InstantCommand(() -> climber.rightMotorBackward(-.8)));
     climberController.start.whenReleased(new InstantCommand(() -> climber.rightMotorOff()));

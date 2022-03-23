@@ -40,7 +40,7 @@ public class MoveArm extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (Math.abs(climber.getLeftEncoderPosition() - encoderValue) < 2) {
+    if (Math.abs(climber.getLeftEncoderPosition() - encoderValue) < 1.) {
       return true;
     } else {
       return false;

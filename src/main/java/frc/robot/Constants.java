@@ -242,7 +242,10 @@ public final class Constants {
   }
 
   public static final class PIDConstants {
-    // TODO: more damping
+    // TODO: These are **only** tuned for the 12.5 foot auton shot.
+    // So at greater distances it overshoots the second ball.
+    // This can be fixed--and nothing can realistically be lost--
+    // by upping the D a bit.
     public static final class Front {
       public static double kF = 0.047;
       public static double kP = 0.1;
