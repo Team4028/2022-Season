@@ -34,7 +34,7 @@ import frc.robot.commands.chassis.RotateDrivetrainToAngle;
 import frc.robot.commands.chassis.XDrive;
 import frc.robot.commands.climber.HighBarClimb;
 import frc.robot.commands.climber.MoveArm;
-import frc.robot.commands.climber.TraversalBarClimb;
+import frc.robot.commands.climber.HighToTraverse;
 import frc.robot.commands.conveyor.ReverseInfeedAndConveyor;
 import frc.robot.commands.conveyor.RunConveyorOneBall;
 import frc.robot.commands.conveyor.RunConveyorTwoBall;
@@ -140,41 +140,41 @@ public class RobotContainer {
     // ===================================
 
     // ======== TEMP. CLIMBER CONTROLLER
-    // BeakXBoxController climberController = new BeakXBoxController(2);
-    // Climber climber = Climber.getInstance();
-    // // climberController.a.whenPressed(new InstantCommand(() -> climber.toggleTippySolenoid()));
-    // climberController.lb.whileHeld(new InstantCommand(() -> climber.leftMotorForward(.3)));
-    // climberController.lb.whenReleased(new InstantCommand(() -> climber.leftMotorOff()));
-    // climberController.start.whileHeld(new InstantCommand(() -> climber.rightMotorBackward(-.8)));
-    // climberController.start.whenReleased(new InstantCommand(() -> climber.rightMotorOff()));
+    BeakXBoxController climberController = new BeakXBoxController(2);
+    Climber climber = Climber.getInstance();
+    // climberController.a.whenPressed(new InstantCommand(() -> climber.toggleTippySolenoid()));
+    climberController.lb.whileHeld(new InstantCommand(() -> climber.leftMotorForward(.3)));
+    climberController.lb.whenReleased(new InstantCommand(() -> climber.leftMotorOff()));
+    climberController.start.whileHeld(new InstantCommand(() -> climber.rightMotorBackward(-.8)));
+    climberController.start.whenReleased(new InstantCommand(() -> climber.rightMotorOff()));
 
-    // climberController.y.whileHeld(new InstantCommand(() -> climber.leftMotorForward(.8)).alongWith(new InstantCommand(() -> climber.rightMotorForward(.8))));
-    // climberController.y.whenReleased(new InstantCommand(() -> climber.leftMotorOff()).alongWith(new InstantCommand(() -> climber.rightMotorOff())));
-    // climberController.x.whileHeld(new InstantCommand(() -> climber.leftMotorBackward(-.8)).alongWith(new InstantCommand(() -> climber.rightMotorBackward(-.8))));
-    // climberController.x.whenReleased(new InstantCommand(() -> climber.leftMotorOff()).alongWith(new InstantCommand(() -> climber.rightMotorOff())));
+    climberController.y.whileHeld(new InstantCommand(() -> climber.leftMotorForward(.8)).alongWith(new InstantCommand(() -> climber.rightMotorForward(.8))));
+    climberController.y.whenReleased(new InstantCommand(() -> climber.leftMotorOff()).alongWith(new InstantCommand(() -> climber.rightMotorOff())));
+    climberController.x.whileHeld(new InstantCommand(() -> climber.leftMotorBackward(-.8)).alongWith(new InstantCommand(() -> climber.rightMotorBackward(-.8))));
+    climberController.x.whenReleased(new InstantCommand(() -> climber.leftMotorOff()).alongWith(new InstantCommand(() -> climber.rightMotorOff())));
     
-    // climberController.b.whenPressed(new InstantCommand(() -> climber.toggleGrippySolenoid()));
-    // climberController.rb.whileHeld(new InstantCommand(() -> climber.rightMotorForward(.8)));
-    // climberController.rb.whenReleased(new InstantCommand(() -> climber.rightMotorOff()));
-    // climberController.back.whileHeld(new InstantCommand(() -> climber.leftMotorBackward(-.8)));
-    // climberController.back.whenReleased(new InstantCommand(() -> climber.leftMotorOff()));
+    climberController.b.whenPressed(new InstantCommand(() -> climber.toggleGrippySolenoid()));
+    climberController.rb.whileHeld(new InstantCommand(() -> climber.rightMotorForward(.8)));
+    climberController.rb.whenReleased(new InstantCommand(() -> climber.rightMotorOff()));
+    climberController.back.whileHeld(new InstantCommand(() -> climber.leftMotorBackward(-.8)));
+    climberController.back.whenReleased(new InstantCommand(() -> climber.leftMotorOff()));
 
-    // climberController.a.whenPressed(new MoveArm(0.8, 104));
-    // climberController.ls.whenPressed(new TraversalBarClimb());
-    // climberController.rs.whenPressed(new HighBarClimb());
+    climberController.a.whenPressed(new MoveArm(0.8, 104));
+    climberController.ls.whenPressed(new HighToTraverse());
+    climberController.rs.whenPressed(new HighBarClimb());
 
-    // climberController.lt.whenPressed(new InstantCommand(() -> climber.slowDrop()));
-    // climberController.rt.whenPressed(new InstantCommand(() -> climber.slowUp()));
+    climberController.lt.whenPressed(new InstantCommand(() -> climber.slowDrop()));
+    climberController.rt.whenPressed(new InstantCommand(() -> climber.slowUp()));
 
-    // // ======= BRUH PIT CONTROLLER
-    // BeakXBoxController pitController = new BeakXBoxController(3);
+    // ======= BRUH PIT CONTROLLER
+    BeakXBoxController pitController = new BeakXBoxController(3);
 
-    // pitController.a.whenPressed(new InstantCommand(() -> climber.resetEncoders()));
-    // pitController.start.whenPressed(new MoveArm(.2, 0));
-    // pitController.back.whenPressed(new MoveArm(-.2, -35));
+    pitController.a.whenPressed(new InstantCommand(() -> climber.resetEncoders()));
+    pitController.start.whenPressed(new MoveArm(.2, 0));
+    pitController.back.whenPressed(new MoveArm(-.2, -35));
 
-    // pitController.lb.whenPressed(new InstantCommand(() -> climber.setLeftEncoder(EncoderConstants.kClimberLeftStart)));
-    // pitController.rb.whenPressed(new InstantCommand(() -> climber.setRightEncoder(EncoderConstants.kClimberRightStart)));
+    pitController.lb.whenPressed(new InstantCommand(() -> climber.setLeftEncoder(EncoderConstants.kClimberLeftStart)));
+    pitController.rb.whenPressed(new InstantCommand(() -> climber.setRightEncoder(EncoderConstants.kClimberRightStart)));
   }
 
   public double getRightTrigger() {
