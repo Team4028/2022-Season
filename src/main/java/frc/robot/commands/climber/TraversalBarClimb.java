@@ -9,10 +9,10 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.VBusConstants;
 import frc.robot.subsystems.Climber;
 
-public class HighToTraverse extends SequentialCommandGroup {
+public class TraversalBarClimb extends SequentialCommandGroup {
   Climber climber = Climber.getInstance();
   /** Add your docs here. */
-  public HighToTraverse() {
+  public TraversalBarClimb() {
     addCommands(
     // new HighBarClimb(), // high bar first!
     new WaitCommand(.25), 

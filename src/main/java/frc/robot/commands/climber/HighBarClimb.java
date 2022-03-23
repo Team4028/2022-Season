@@ -11,7 +11,7 @@ import frc.robot.Constants.VBusConstants;
 public class HighBarClimb extends SequentialCommandGroup {
   /** Add your docs here. */
   public HighBarClimb() {
-    addCommands(new MoveArm(-.9, -35), // Pulls down to get tippy above
+    addCommands(new MoveArm(-.8, -35), // Pulls down to get tippy above
     new WaitCommand(.25),
     new MoveArm(VBusConstants.kClimberSlow, 20), // slowly pulls grippy up to get tippy on the bar
     new WaitCommand(.5), 

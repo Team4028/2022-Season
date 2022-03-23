@@ -7,11 +7,12 @@ package frc.robot;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.MjpegServer;
 import edu.wpi.first.cscore.UsbCamera;
+import edu.wpi.first.cscore.VideoSource;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.Constants.EncoderConstants;
 import frc.robot.subsystems.Climber;
+import frc.robot.subsystems.Limelight;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -95,8 +96,12 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.cancel();
     }
 
+<<<<<<< HEAD
     Climber.getInstance().setRightEncoder(0.);//-EncoderConstants.kClimberRightStart);
     Climber.getInstance().setLeftEncoder(0.);//-EncoderConstants.kClimberLeftStart);
+=======
+    Climber.getInstance().resetEncoders();
+>>>>>>> parent of c70bbd7 (practice climber stuff)
   }
 
   /** This function is called periodically during operator control. */
