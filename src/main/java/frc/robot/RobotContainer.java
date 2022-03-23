@@ -22,6 +22,7 @@ import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.Constants.EncoderConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.DriveSubsystem;
@@ -30,11 +31,10 @@ import frc.robot.commands.auton.FourBallAuton;
 import frc.robot.commands.chassis.RotateDrivetrainByLimelightAngle;
 import frc.robot.commands.chassis.RotateDrivetrainToAngle;
 import frc.robot.commands.chassis.XDrive;
-import frc.robot.commands.climber.GrippyUp;
 import frc.robot.commands.climber.HighBarClimb;
+import frc.robot.commands.climber.MoveArm;
 import frc.robot.commands.climber.TraversalBarClimb;
 import frc.robot.commands.conveyor.ReverseInfeedAndConveyor;
-import frc.robot.commands.conveyor.RunConveyor;
 import frc.robot.commands.conveyor.RunConveyorOneBall;
 import frc.robot.commands.conveyor.RunConveyorTwoBall;
 import frc.robot.commands.infeed.RunInfeedSingulatorMotors;
@@ -158,9 +158,22 @@ public class RobotContainer {
     climberController.back.whileHeld(new InstantCommand(() -> climber.leftMotorBackward(-.8)));
     climberController.back.whenReleased(new InstantCommand(() -> climber.leftMotorOff()));
 
-    climberController.a.whenPressed(new GrippyUp());
+    climberController.a.whenPressed(new MoveArm(0.8, 104));
     climberController.ls.whenPressed(new TraversalBarClimb());
     climberController.rs.whenPressed(new HighBarClimb());
+
+    climberController.lt.whenPressed(new InstantCommand(() -> climber.slowDrop()));
+    climberController.rt.whenPressed(new InstantCommand(() -> climber.slowUp()));
+
+    // ======= BRUH PIT CONTROLLER
+    BeakXBoxController pitController = new BeakXBoxController(3);
+
+    pitController.a.whenPressed(new InstantCommand(() -> climber.resetEncoders()));
+    pitController.start.whenPressed(new MoveArm(.2, 0));
+    pitController.back.whenPressed(new MoveArm(-.2, -35));
+
+    pitController.lb.whenPressed(new InstantCommand(() -> climber.setLeftEncoder(EncoderConstants.kClimberLeftStart)));
+    pitController.rb.whenPressed(new InstantCommand(() -> climber.setRightEncoder(EncoderConstants.kClimberRightStart)));
   }
 
   public double getRightTrigger() {

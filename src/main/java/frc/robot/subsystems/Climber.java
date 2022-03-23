@@ -112,6 +112,11 @@ public class Climber extends SubsystemBase {
     System.out.println((_leftEncoder.getPosition() - leftEncoderOffset));
   }
 
+  public void slowUp() {
+    _right.set(VBusConstants.kClimberSlow);
+    _left.set(VBusConstants.kClimberSlow);
+  }
+
   public void leftMotorOff() {
     _left.set(0.);
   }
@@ -139,6 +144,14 @@ public class Climber extends SubsystemBase {
   public void resetEncoders() {
     resetLeftEncoder();
     resetRightEncoder();
+  }
+
+  public void setRightEncoder(double val) {
+    _rightEncoder.setPosition(val);
+  }
+
+  public void setLeftEncoder(double val) {
+    _leftEncoder.setPosition(val);
   }
 
   public static Climber getInstance() {

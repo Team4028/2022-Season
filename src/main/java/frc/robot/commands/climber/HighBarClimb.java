@@ -11,23 +11,23 @@ import frc.robot.Constants.VBusConstants;
 public class HighBarClimb extends SequentialCommandGroup {
   /** Add your docs here. */
   public HighBarClimb() {
-    addCommands(new MoveArm(-.8, -40), 
+    addCommands(new MoveArm(-.8, -35), // Pulls down to get tippy above
     new WaitCommand(.25),
-    new MoveArm(VBusConstants.kClimberSlow, 29),//25), 
-    new WaitCommand(.25), 
-    new ToggleGrippy(),  
-    new WaitCommand(3), 
-    new MoveArm(VBusConstants.kClimberFast, 156.6),//135),  
-    new WaitCommand(1),  
-    new ToggleGrippy(),  
+    new MoveArm(VBusConstants.kClimberSlow, 20), // slowly pulls grippy up to get tippy on the bar
+    new WaitCommand(.5), 
+    new ToggleGrippy(), // get grippy ready to latch
     new WaitCommand(1), 
-    new MoveArm(-VBusConstants.kClimberFast, 5.8),//5), 
+    new MoveArm(VBusConstants.kClimberFast, 140), //get grippy to high
+    new WaitCommand(10),  
+    new ToggleGrippy(), // latch to high
+    new WaitCommand(1), 
+    new MoveArm(-VBusConstants.kClimberFast, -5), // pull down to high
     new WaitCommand(.25), 
-    new MoveArm(VBusConstants.kClimberSlow, 34.8),//30), 
+    new MoveArm(VBusConstants.kClimberSlow, 30), //slowly up until tippy clears
     new WaitCommand(.25),  
-    new MoveArm(-VBusConstants.kClimberFast, -46.4),//-40), 
+    new MoveArm(-VBusConstants.kClimberFast, -30), // pulls down until tippy releases
     new WaitCommand(.25), 
-    new MoveArm(VBusConstants.kClimberSlow, 34.8));//30));  
+    new MoveArm(VBusConstants.kClimberSlow, 20)); // place robot get grippy above*/
     //instant command for solenoids
     //,command,new command, new command, new command
   }

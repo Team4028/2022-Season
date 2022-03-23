@@ -186,6 +186,9 @@ public final class Constants {
     public static final double kConveyTwo = 80;
 
     public static final double kAngleThreshold = 0.1;
+
+    public static final double kClimberLeftStart = 35.;
+    public static final double kClimberRightStart = 35.;
   }
 
   public static final class ShooterConstants {
