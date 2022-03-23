@@ -60,7 +60,7 @@ public class RobotContainer {
   private final RunInfeedSingulatorMotors runInfeed;
   private static RobotContainer _instance;
   private static Trajectories _trajectories = Trajectories.getInstance();
-  private SendableChooser<Command> _autonChooser = new SendableChooser<Command>();
+  private SendableChooser<SequentialCommandGroup> _autonChooser = new SendableChooser<SequentialCommandGroup>();
 
   public static final RobotContainer getInstance() {
     if (_instance == null) {
@@ -203,13 +203,8 @@ public class RobotContainer {
   }
   //TODO: Add real Autons because these are just paths rn
   private void initAutonChooser(){
-    _autonChooser.setDefaultOption("FourBall_AcquireFirst", getPathPlannerSwerveControllerCommand(_trajectories.FourBall_AcquireFirstCargo()));
-    _autonChooser.addOption("FourBall_AcquireLoadingZoneCargo", getPathPlannerSwerveControllerCommand(_trajectories.FourBall_AcquireLoadingZoneCargo()));
-    _autonChooser.addOption("FourBall_ReturnToShoot", getPathPlannerSwerveControllerCommand(_trajectories.FourBall_ReturnToShoot()));
-    _autonChooser.addOption("FiveBall_AcquireFirstBall", getPathPlannerSwerveControllerCommand(_trajectories.FiveBall_AcquireFirstCargo()));
-    _autonChooser.addOption("FiveBall_AcquireSecondCargo", getPathPlannerSwerveControllerCommand(_trajectories.FiveBall_AcquireSecondCargo()));
-    _autonChooser.addOption("FiveBall_AcquireLoadingZoneCargo", getPathPlannerSwerveControllerCommand(_trajectories.FiveBall_AcquireLoadingZoneCargo()));
-    _autonChooser.addOption("FiveBall_ReturnToShoot", getPathPlannerSwerveControllerCommand(_trajectories.FiveBall_ReturnToShoot()));
+    _autonChooser.setDefaultOption("Four Ball", new FourBallAuton());
+    _autonChooser.addOption("Five Ball", new InstantCommand().andThen(new InstantCommand()));
   }
   
 
@@ -219,8 +214,12 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
+    if(_autonChooser.getSelected().getName() == "FourBallAuton"){
     m_robotDrive.resetOdometry(new Pose2d(Trajectories.FourBall_AcquireFirstCargo().getInitialPose().getTranslation(), Trajectories.FourBall_AcquireFirstCargo().getInitialState().holonomicRotation));
-    return new FourBallAuton().deadlineWith(new AutonTimer());
+    } else{
+      m_robotDrive.resetOdometry(new Pose2d());
+    }
+    return _autonChooser.getSelected().deadlineWith(new AutonTimer());
   }
 
 }
