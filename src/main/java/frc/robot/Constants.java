@@ -197,10 +197,10 @@ public final class Constants {
 
     public static final double kIndexDefault = 12.5;
 
-    public static final double kMaxAllowedAngle = 30.;
+    public static final double kMaxAllowedAngle = 33.;
 
     public static final boolean kIsVBus = true;
-    public static final boolean kIsRealGoal = false;
+    public static final boolean kIsRealGoal = true;
   }
 
   public static final class LimelightConstants {
