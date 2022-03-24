@@ -219,12 +219,12 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    if(_autonChooser.getSelected().equals(new FourBallAuton())){
+    if(true){
     m_robotDrive.resetOdometry(new Pose2d(Trajectories.FourBall_AcquireFirstCargo().getInitialPose().getTranslation(), Trajectories.FourBall_AcquireFirstCargo().getInitialState().holonomicRotation));
     } else{
       m_robotDrive.resetOdometry(new Pose2d(Trajectories.FiveBall_AcquireFirstCargo().getInitialPose().getTranslation(), Trajectories.FourBall_AcquireFirstCargo().getInitialState().holonomicRotation));
     }
-    return _autonChooser.getSelected().deadlineWith(new AutonTimer());
+    return new FourBallAuton().deadlineWith(new AutonTimer());
   }
 
 }
