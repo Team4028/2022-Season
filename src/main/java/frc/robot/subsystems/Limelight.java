@@ -35,7 +35,7 @@ public class Limelight extends SubsystemBase {
 
   /** Creates a new Limelight. */
   public Limelight() {
-    setPipeline(0);
+    setPipeline(3);
     setPictureInPicture(2);
   }
 
