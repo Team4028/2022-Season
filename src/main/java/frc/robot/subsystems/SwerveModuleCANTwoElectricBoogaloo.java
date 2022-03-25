@@ -43,7 +43,7 @@ public class SwerveModuleCANTwoElectricBoogaloo {
     m_turningEncoder = new WPI_CANCoder(CANEncoderPort, DriveConstants.kCANivoreName);
     dub = CANEncoderPort;
 
-    m_turningEncoder.configFactoryDefault();
+    // m_turningEncoder.configFactoryDefault();
     m_turningMotor.configFactoryDefault();
     m_driveMotor.configFactoryDefault();
 

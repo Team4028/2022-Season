@@ -154,6 +154,11 @@ public class Climber extends SubsystemBase {
     _leftEncoder.setPosition(val);
   }
 
+  public void stop() {
+    rightMotorOff();
+    leftMotorOff();
+  }
+
   public static Climber getInstance() {
     return _instance;
   }

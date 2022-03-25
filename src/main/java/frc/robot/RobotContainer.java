@@ -145,28 +145,30 @@ public class RobotContainer {
     BeakXBoxController climberController = new BeakXBoxController(2);
     Climber climber = Climber.getInstance();
     // climberController.a.whenPressed(new InstantCommand(() -> climber.toggleTippySolenoid()));
-    climberController.lb.whileHeld(new InstantCommand(() -> climber.leftMotorForward(.3)));
-    climberController.lb.whenReleased(new InstantCommand(() -> climber.leftMotorOff()));
-    climberController.start.whileHeld(new InstantCommand(() -> climber.rightMotorBackward(-.8)));
-    climberController.start.whenReleased(new InstantCommand(() -> climber.rightMotorOff()));
+    climberController.lb.whileHeld(new InstantCommand(() -> climber.leftMotorForward(.25)))
+      .whenReleased(new InstantCommand(() -> climber.leftMotorOff()));
+    climberController.start.whileHeld(new InstantCommand(() -> climber.rightMotorBackward(-.25)))
+      .whenReleased(new InstantCommand(() -> climber.rightMotorOff()));
 
-    climberController.y.whileHeld(new InstantCommand(() -> climber.leftMotorForward(.8)).alongWith(new InstantCommand(() -> climber.rightMotorForward(.8))));
-    climberController.y.whenReleased(new InstantCommand(() -> climber.leftMotorOff()).alongWith(new InstantCommand(() -> climber.rightMotorOff())));
-    climberController.x.whileHeld(new InstantCommand(() -> climber.leftMotorBackward(-.8)).alongWith(new InstantCommand(() -> climber.rightMotorBackward(-.8))));
-    climberController.x.whenReleased(new InstantCommand(() -> climber.leftMotorOff()).alongWith(new InstantCommand(() -> climber.rightMotorOff())));
+    climberController.y.whileHeld(new InstantCommand(() -> climber.leftMotorForward(.8)).alongWith(new InstantCommand(() -> climber.rightMotorForward(.8))))
+      .whenReleased(new InstantCommand(() -> climber.stop()));
+    climberController.x.whileHeld(new InstantCommand(() -> climber.leftMotorBackward(-.8)).alongWith(new InstantCommand(() -> climber.rightMotorBackward(-.8))))
+      .whenReleased(new InstantCommand(() -> climber.stop()));
     
     climberController.b.whenPressed(new InstantCommand(() -> climber.toggleGrippySolenoid()));
-    climberController.rb.whileHeld(new InstantCommand(() -> climber.rightMotorForward(.8)));
-    climberController.rb.whenReleased(new InstantCommand(() -> climber.rightMotorOff()));
-    climberController.back.whileHeld(new InstantCommand(() -> climber.leftMotorBackward(-.8)));
-    climberController.back.whenReleased(new InstantCommand(() -> climber.leftMotorOff()));
+    climberController.rb.whileHeld(new InstantCommand(() -> climber.rightMotorForward(.25)))
+      .whenReleased(new InstantCommand(() -> climber.rightMotorOff()));
+    climberController.back.whileHeld(new InstantCommand(() -> climber.leftMotorBackward(-.25)))
+      .whenReleased(new InstantCommand(() -> climber.leftMotorOff()));
 
     // THIS IS ALL WORKING, DON'T CHANGE ANY OF THE COMMANDS
-    climberController.a.whenPressed(new MoveArm(0.8, 104));
+    climberController.a.whenPressed(new MoveArm(0.9, 153));
     climberController.ls.whenPressed(new MidToHigh());
     climberController.rs.whenPressed(new MidBar());
 
     climberController.lt.whenPressed(new HighBar());
+    climberController.rt.whenPressed(new InstantCommand(() -> climber.slowUp()))
+      .whenReleased(new InstantCommand(() -> climber.stop()));
 
     // ======= BRUH PIT CONTROLLER
     BeakXBoxController pitController = new BeakXBoxController(3);
