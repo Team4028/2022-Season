@@ -68,7 +68,7 @@ public class SwerveModuleCANTwoElectricBoogaloo {
     m_turningMotor.setInverted(true);
     m_turningMotor.selectProfileSlot(0, 0);
     m_turningMotor.setSelectedSensorPosition(m_turningEncoder.getAbsolutePosition() / 360.0 * i_integratedEncoderTicksPerModRev);
-    m_turningMotor.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 20, 25, 1.0));
+    m_turningMotor.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 20, 25, 0.5));
     m_turningMotor.configAllowableClosedloopError(0, i_kTurningMotorAllowableClosedLoopError, 0);
   }
   public void checkPowerFailure(){
@@ -86,6 +86,7 @@ public class SwerveModuleCANTwoElectricBoogaloo {
     m_driveMotor.setNeutralMode(NeutralMode.Brake);
     m_driveMotor.configVoltageCompSaturation(i_kNominalVoltage);
     m_driveMotor.enableVoltageCompensation(true);
+    m_driveMotor.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 60, 65, 0.5));
   }
   public void configStatusFramePeriods(){
 

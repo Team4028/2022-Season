@@ -177,8 +177,8 @@ public final class Constants {
     public static final double kShooterBackDefault = 0.55;
     public static final double kShooterHoodAngleRotDefault = 24.5;
     
-    public static final double kClimberSlow = 0.25;
-    public static final double kClimberFast = 0.8;
+    public static final double kClimberSlow = 0.6;
+    public static final double kClimberFast = 0.9;
   }
 
   public static final class EncoderConstants {

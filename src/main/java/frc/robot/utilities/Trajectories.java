@@ -91,4 +91,18 @@ public class Trajectories {
         kMaxAccelerationMetersPerSecondSquared
         );
     }
+    public static PathPlannerTrajectory TwoBall_Top(){
+        return PathPlanner.loadPath(
+            "TwoBall_Top",
+        kMaxSpeedMetersPerSecond,
+        kMaxAccelerationMetersPerSecondSquared
+        );
+    }
+    public static PathPlannerTrajectory TwoBall_GetOutOfTheWay(){
+        return PathPlanner.loadPath(
+            "TwoBall_GetOutOfTheWay",
+        kMaxSpeedMetersPerSecond,
+        kMaxAccelerationMetersPerSecondSquared
+        );
+    }
 }

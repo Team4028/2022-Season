@@ -12,11 +12,16 @@ public class MoveArm extends CommandBase {
   private Climber climber = Climber.getInstance();
   double speed;
   double encoderValue;
+
+  boolean leftFinished = false, rightFinished = false;
   public MoveArm(double speed, double encoderValue) {
     this.speed = speed;
     this.encoderValue = encoderValue;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(climber);
+
+    leftFinished = false;
+    rightFinished = false;
   }
 
   // Called when the command is initially scheduled.
@@ -24,6 +29,10 @@ public class MoveArm extends CommandBase {
   public void initialize() {
     climber.rightMotorForward(speed);
     climber.leftMotorForward(speed);
+
+    climber.setRightEncoder(climber.getLeftEncoderPosition());
+    leftFinished = false;
+    rightFinished = false;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -40,14 +49,15 @@ public class MoveArm extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (Math.abs(climber.getLeftEncoderPosition() - encoderValue) < 2.) {
+    if (Math.abs(climber.getLeftEncoderPosition() - encoderValue) < 3.) {
       climber.leftMotorOff();
+      leftFinished = true;
     }
-    if (Math.abs(climber.getRightEncoderPosition() - encoderValue) < 2.) {
+    if (Math.abs(climber.getRightEncoderPosition() - encoderValue) < 3.) {
       climber.rightMotorOff();
+      rightFinished = true;
     }
 
-    return ((Math.abs(climber.getLeftEncoderPosition() - encoderValue) < 2.) && 
-        (Math.abs(climber.getRightEncoderPosition() - encoderValue) < 2.));
+    return leftFinished && rightFinished;
   }
 }

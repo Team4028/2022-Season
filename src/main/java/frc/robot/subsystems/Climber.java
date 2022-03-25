@@ -29,7 +29,6 @@ public class Climber extends SubsystemBase {
   private RelativeEncoder _leftEncoder;
   private RelativeEncoder _rightEncoder;
 
-  private double rightEncoderOffset = 0, leftEncoderOffset = 0;
   private boolean leftEncoderFinished = false, rightEncoderFinished = false;
 
   /** Creates a new Climber. */
@@ -55,10 +54,7 @@ public class Climber extends SubsystemBase {
     _leftEncoder = _left.getEncoder();
     _rightEncoder = _right.getEncoder();
 
-    _leftEncoder.setPosition(0.);
     resetLeftEncoder();
-
-    _rightEncoder.setPosition(0.);
     resetRightEncoder();
   }
 
@@ -71,29 +67,29 @@ public class Climber extends SubsystemBase {
   }
 
   public double getLeftEncoderPosition() {
-    return (_leftEncoder.getPosition() - leftEncoderOffset);
+    return _leftEncoder.getPosition();
   }
 
   public double getRightEncoderPosition() {
-    return (_rightEncoder.getPosition() - rightEncoderOffset);
+    return _rightEncoder.getPosition();
   }
 
   public void resetLeftEncoder() {
-    leftEncoderOffset = _leftEncoder.getPosition();
+    _leftEncoder.setPosition(0.);
   }
 
   public void resetRightEncoder() {
-    rightEncoderOffset = _rightEncoder.getPosition();
+    _rightEncoder.setPosition(0.);
   }
 
   public void leftMotorForward(double speed) {
     _left.set(speed);
-    System.out.println((_leftEncoder.getPosition() - leftEncoderOffset));
+    System.out.println(_leftEncoder.getPosition());
   }
 
   public void leftMotorBackward(double speed) {
     _left.set(speed);
-    System.out.println((_leftEncoder.getPosition() - leftEncoderOffset));
+    System.out.println(_leftEncoder.getPosition());
   }
 
   public void rightMotorForward(double speed) {
@@ -103,13 +99,13 @@ public class Climber extends SubsystemBase {
 
   public void rightMotorBackward(double speed) {
     _right.set(speed);
-    System.out.println((_rightEncoder.getPosition() - rightEncoderOffset));
+    System.out.println(_rightEncoder.getPosition());
   }
 
   public void slowDrop() {
     _right.set(-VBusConstants.kClimberSlow);
     _left.set(-VBusConstants.kClimberSlow);
-    System.out.println((_leftEncoder.getPosition() - leftEncoderOffset));
+    System.out.println(_leftEncoder.getPosition());
   }
 
   public void slowUp() {

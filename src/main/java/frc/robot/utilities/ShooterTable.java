@@ -218,7 +218,7 @@ public class ShooterTable {
                 primarytable.add(new ShooterTableEntry(_indexCounter++, 10., 39 /* 950 */, 59 /* 1400 */, 55 /* 1060 */,
                         14., "index 10", false));
                 primarytable.add(new ShooterTableEntry(_indexCounter++, 12.5, 41 /* 1230 */, 63 /* 1900 */,
-                        40 /* 1060 */, 19., "index 12.5", false));
+                        55 /* 1060 */, 19., "index 12.5", false));
                 primarytable.add(new ShooterTableEntry(_indexCounter++, 15., 43 /* 1100 */, 69 /* 1940 */, 55 /* 1060 */,
                         30., "index 15", false));
                 primarytable.add(new ShooterTableEntry(_indexCounter++, 19., 49 /* 1520 */, 78 /* 2360 */, 55 /* 1060 */,

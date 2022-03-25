@@ -60,7 +60,9 @@ public class Robot extends TimedRobot {
 
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
-  public void disabledInit() {}
+  public void disabledInit() {
+    Limelight.getInstance().setLedMode(1.);
+  }
 
   @Override
   public void disabledPeriodic() {}
@@ -97,6 +99,7 @@ public class Robot extends TimedRobot {
     }
 
     Climber.getInstance().resetEncoders();
+    Limelight.getInstance().setLedMode(3);
   }
 
   /** This function is called periodically during operator control. */

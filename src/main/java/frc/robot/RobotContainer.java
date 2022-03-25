@@ -26,9 +26,11 @@ import frc.robot.Constants.EncoderConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.Infeed;
 import frc.robot.commands.auton.AutonTimer;
 import frc.robot.commands.auton.FiveBallAuton;
 import frc.robot.commands.auton.FourBallAuton;
+import frc.robot.commands.auton.TwoBallTopAuton;
 import frc.robot.commands.chassis.RotateDrivetrainByLimelightAngle;
 import frc.robot.commands.chassis.RotateDrivetrainToAngle;
 import frc.robot.commands.chassis.XDrive;
@@ -163,6 +165,7 @@ public class RobotContainer {
 
     // THIS IS ALL WORKING, DON'T CHANGE ANY OF THE COMMANDS
     climberController.a.whenPressed(new MoveArm(0.9, 153));
+    climberController.a.whenPressed(new InstantCommand(() -> Infeed.getInstance().setInfeedDown()));
     climberController.ls.whenPressed(new MidToHigh());
     climberController.rs.whenPressed(new MidBar());
 
@@ -222,11 +225,13 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     if(true){
-    m_robotDrive.resetOdometry(new Pose2d(Trajectories.FourBall_AcquireFirstCargo().getInitialPose().getTranslation(), Trajectories.FourBall_AcquireFirstCargo().getInitialState().holonomicRotation));
+      m_robotDrive.resetOdometry(new Pose2d(Trajectories.FourBall_AcquireFirstCargo().getInitialPose().getTranslation(), Trajectories.FourBall_AcquireFirstCargo().getInitialState().holonomicRotation));
     } else{
       m_robotDrive.resetOdometry(new Pose2d(Trajectories.FiveBall_AcquireFirstCargo().getInitialPose().getTranslation(), Trajectories.FourBall_AcquireFirstCargo().getInitialState().holonomicRotation));
     }
     return new FourBallAuton().deadlineWith(new AutonTimer());
+    // m_robotDrive.resetOdometry(new Pose2d(Trajectories.TwoBall_Top().getInitialPose().getTranslation(), Trajectories.TwoBall_Top().getInitialState().holonomicRotation));
+    // return new TwoBallTopAuton().deadlineWith(new AutonTimer());
   }
 
 }

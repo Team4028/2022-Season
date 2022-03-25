@@ -7,8 +7,12 @@ package frc.robot.subsystems;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Robot;
 import frc.robot.Constants.LimelightConstants;
 
 public class Limelight extends SubsystemBase {
@@ -37,6 +41,7 @@ public class Limelight extends SubsystemBase {
   public Limelight() {
     setPipeline(3);
     setPictureInPicture(2);
+    setLedMode(1);
   }
 
   public double getX() {
@@ -51,6 +56,18 @@ public class Limelight extends SubsystemBase {
     return ledMode.getDouble(0);
   }
 
+  /** Set the Limelight's LED mode.
+   * 
+   * @param mode LED mode.
+   * 
+   *   0 = pipeline
+   * 
+   *   1 = off
+   * 
+   *   2 = blink
+   * 
+   *   3 = on
+   */
   public void setLedMode(double mode) {
     ledMode.forceSetDouble(mode);
   }
@@ -154,5 +171,8 @@ public class Limelight extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    if (RobotState.isDisabled() && getLedMode() != 1) {
+      setLedMode(1);
+    }
   }
 }

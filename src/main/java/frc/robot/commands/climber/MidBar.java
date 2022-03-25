@@ -11,7 +11,7 @@ import frc.robot.Constants.VBusConstants;
 public class MidBar extends SequentialCommandGroup {
   /** Add your docs here. */
   public MidBar() {
-    addCommands(new MoveArm(-.8, 15), // Pulls down to get tippy above
+    addCommands(new MoveArm(-.95, 15), // Pulls down to get tippy above
     new WaitCommand(.25),
     new MoveArm(VBusConstants.kClimberSlow, 80)); // slowly pulls grippy up to get tippy on the bar
     // new WaitCommand(.5), 
