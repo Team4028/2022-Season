@@ -48,7 +48,7 @@ public class Trajectories {
         return PathPlanner.loadPath(
             "FourBall_ReturnToShoot",
         kMaxSpeedMetersPerSecond * 0.65,
-        kMaxAccelerationMetersPerSecondSquared
+        kMaxAccelerationMetersPerSecondSquared * 0.65
         );
     }
     /**
@@ -98,11 +98,32 @@ public class Trajectories {
         kMaxAccelerationMetersPerSecondSquared
         );
     }
-    public static PathPlannerTrajectory TwoBall_GetOutOfTheWay(){
+    public static PathPlannerTrajectory TwoBall_TopGetOutOfTheWay(){
         return PathPlanner.loadPath(
-            "TwoBall_GetOutOfTheWay",
-        kMaxSpeedMetersPerSecond,
-        kMaxAccelerationMetersPerSecondSquared
+            "TwoBall_TopGetOutOfTheWay",
+        0.5 * kMaxSpeedMetersPerSecond,
+        0.5 * kMaxAccelerationMetersPerSecondSquared
+        );
+    }
+    public static PathPlannerTrajectory TwoBall_Middle(){
+        return PathPlanner.loadPath(
+            "TwoBall_Middle",
+        0.5 * kMaxSpeedMetersPerSecond,
+        0.5 * kMaxAccelerationMetersPerSecondSquared
+        );
+    }
+    public static PathPlannerTrajectory TwoBall_Bottom(){
+        return PathPlanner.loadPath(
+            "TwoBall_Bottom",
+        0.5 * kMaxSpeedMetersPerSecond,
+        0.5 * kMaxAccelerationMetersPerSecondSquared
+        );
+    }
+    public static PathPlannerTrajectory TwoBall_MiddleGetOutOfTheWay(){
+        return PathPlanner.loadPath(
+            "TwoBall_MiddleGetOutOfTheWay",
+        0.5 * kMaxSpeedMetersPerSecond,
+        0.5 * kMaxAccelerationMetersPerSecondSquared
         );
     }
 }

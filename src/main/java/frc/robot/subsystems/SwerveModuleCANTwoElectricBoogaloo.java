@@ -24,7 +24,6 @@ public class SwerveModuleCANTwoElectricBoogaloo {
   private final WPI_CANCoder m_turningEncoder;
 
   private final int CAN_TIMEOUT_MS = 250;
-  private int dub;
 
   /**
    * Constructs a SwerveModuleCANTwoElectricBoogaloo.
@@ -41,9 +40,7 @@ public class SwerveModuleCANTwoElectricBoogaloo {
     m_driveMotor = new WPI_TalonFX(driveMotorChannel, DriveConstants.kCANivoreName);
     m_turningMotor = new WPI_TalonFX(turningMotorChannel, DriveConstants.kCANivoreName);
     m_turningEncoder = new WPI_CANCoder(CANEncoderPort, DriveConstants.kCANivoreName);
-    dub = CANEncoderPort;
 
-    // m_turningEncoder.configFactoryDefault();
     m_turningMotor.configFactoryDefault();
     m_driveMotor.configFactoryDefault();
 
@@ -61,9 +58,6 @@ public class SwerveModuleCANTwoElectricBoogaloo {
   }
 
   public void configTurningMotor() {
-    // m_turningMotor.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor,
-    // 0, CAN_TIMEOUT_MS);
-    // m_turningMotor.configSelectedFeedbackCoefficient(1.0);
     m_turningMotor.setNeutralMode(NeutralMode.Brake);
     m_turningMotor.setInverted(true);
     m_turningMotor.selectProfileSlot(0, 0);
@@ -89,16 +83,6 @@ public class SwerveModuleCANTwoElectricBoogaloo {
     m_driveMotor.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 60, 65, 0.5));
   }
   public void configStatusFramePeriods(){
-
-    // m_turningEncoder.setStatusFramePeriod(CANCoderStatusFrame.SensorData, 100);
-    // m_turningMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_1_General, 20);
-    // m_turningMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 20);
-    // m_turningMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_4_AinTempVbat, 255);
-    // m_driveMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_6_Misc, 255);
-    // m_driveMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_1_General, 20);
-    // m_driveMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 20);
-    // m_driveMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_4_AinTempVbat, 255);
-    // m_driveMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_6_Misc, 255);
   }
 
   /**
@@ -130,7 +114,6 @@ public class SwerveModuleCANTwoElectricBoogaloo {
     state.speedMetersPerSecond / 10.0 / i_kDriveEncoderDistancePerPulse,
     DemandType.ArbitraryFeedForward,
     feedForward);
-    // m_driveMotor.set(ControlMode.PercentOutput, state.speedMetersPerSecond / DriveConstants.i_kMaxSpeedMetersPerSecond);
     setHeading(state.angle.getDegrees());
   }
 
