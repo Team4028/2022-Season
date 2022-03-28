@@ -31,7 +31,9 @@ public class TwoBall_MiddleGetOutOfTheWay extends SequentialCommandGroup {
     new InstantCommand(() -> Shooter.getInstance().runShooterMotors()),
     new WaitCommand(0.5),
     new RunConveyor().withTimeout(1.5),
-    util.getPathPlannerSwerveControllerCommand(Trajectories.TwoBall_MiddleGetOutOfTheWay())     
+    util.getPathPlannerSwerveControllerCommand(Trajectories.TwoBall_MiddleGetOutOfTheWay()),
+    new InstantCommand(() -> Shooter.getInstance().stop()),
+    new InstantCommand(() -> Infeed.getInstance().stopInfeedSingulatorMotors())  
   );
   }
 }
