@@ -120,7 +120,7 @@ public final class Constants {
 
     public static final double kPXController = 8.75;
     public static final double kPYController = kPXController;
-    public static final double kPThetaController = 7.0;
+    public static final double kPThetaController = 7.0 * 0.9;
     public static final double MAX_ANGULAR_SPEED_RADIANS_PER_SECOND = Units.feetToMeters(16.3) /
         Math.hypot(DriveConstants.kTrackWidth / 2.0, DriveConstants.kWheelBase / 2.0);
     public static final double MAX_ANGULAR_SPEED_RADIANS_PER_SECOND_SQUARED = MAX_ANGULAR_SPEED_RADIANS_PER_SECOND;
