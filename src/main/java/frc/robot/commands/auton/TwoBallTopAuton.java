@@ -41,6 +41,8 @@ public class TwoBallTopAuton extends SequentialCommandGroup {
       new InstantCommand(() -> Shooter.getInstance().runShooterMotors()),
       new WaitCommand(0.5),
       new RunConveyor().withTimeout(1.5),
+      new InstantCommand(() -> Shooter.getInstance().stop()),
+      new InstantCommand(() -> Infeed.getInstance().stopInfeedSingulatorMotors()),
       getPathPlannerSwerveControllerCommand(Trajectories.TwoBall_GetOutOfTheWay())
       
     );

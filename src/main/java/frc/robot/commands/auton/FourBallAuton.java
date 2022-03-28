@@ -11,6 +11,7 @@ import com.pathplanner.lib.commands.PPSwerveControllerCommand;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -19,6 +20,7 @@ import frc.robot.RobotContainer;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.commands.chassis.RotateDrivetrainToAngle;
+import frc.robot.commands.chassis.RotateDrivetrainToOdometryTargetAngle;
 import frc.robot.commands.conveyor.RunConveyor;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.Infeed;
@@ -43,9 +45,12 @@ public class FourBallAuton extends SequentialCommandGroup {
       getPathPlannerSwerveControllerCommand(Trajectories.FourBall_AcquireLoadingZoneCargo()).alongWith(new WaitCommand(0.5).andThen(new InstantCommand(() -> Shooter.getInstance().stop()))),
       new WaitCommand(1.5),
       getPathPlannerSwerveControllerCommand(Trajectories.FourBall_ReturnToShoot()).alongWith(new WaitCommand(0.5).andThen(new InstantCommand(() -> Shooter.getInstance().runShooterMotors()))),
+      new RotateDrivetrainToAngle(Rotation2d.fromDegrees(35.0)),
+      //new RotateDrivetrainToOdometryTargetAngle(),
       new WaitCommand(1.1).deadlineWith(new RunConveyor()),
       new WaitCommand(0.25).andThen(new InstantCommand(() -> Shooter.getInstance().stop())),
-      new InstantCommand(() -> Infeed.getInstance().stopInfeedSingulatorMotors())
+      new InstantCommand(() -> Infeed.getInstance().stopInfeedSingulatorMotors()),
+      new RotateDrivetrainToOdometryTargetAngle().withTimeout(2.5)
     );
   }
   public static Pose2d initialPose(){

@@ -254,6 +254,9 @@ public class DriveSubsystem extends SubsystemBase {
       m_rearRight.getState())
       .omegaRadiansPerSecond;
   }
+  public Rotation2d getOdometryAngleToTarget(){
+    return new Rotation2d(Math.atan2(Units.inchesToMeters(324.0) - m_odometry.getPoseMeters().getX(), Units.inchesToMeters(162.0) - m_odometry.getPoseMeters().getY()));
+  }
 
   /**
    * Returns the heading of the robot.
