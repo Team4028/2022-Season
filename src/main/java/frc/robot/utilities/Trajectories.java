@@ -57,8 +57,8 @@ public class Trajectories {
     public static PathPlannerTrajectory FiveBall_AcquireFirstCargo(){
         return PathPlanner.loadPath(
             "FiveBall_AcquireFirstCargo",
-        kMaxSpeedMetersPerSecond,
-        kMaxAccelerationMetersPerSecondSquared
+        0.75 * kMaxSpeedMetersPerSecond,
+        0.75 * kMaxAccelerationMetersPerSecondSquared
         );
     }
     /**
@@ -77,8 +77,8 @@ public class Trajectories {
     public static PathPlannerTrajectory FiveBall_AcquireLoadingZoneCargo(){
         return PathPlanner.loadPath(
             "FiveBall_AcquireLoadingZoneCargo",
-        kMaxSpeedMetersPerSecond,
-        kMaxAccelerationMetersPerSecondSquared
+        0.75 * kMaxSpeedMetersPerSecond,
+        0.75 * kMaxAccelerationMetersPerSecondSquared
         );
     }
     /**

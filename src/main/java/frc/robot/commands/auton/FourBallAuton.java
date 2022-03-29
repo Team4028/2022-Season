@@ -6,12 +6,10 @@ package frc.robot.commands.auton;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.util;
+import frc.robot.commands.BeakAutonCommand;
 import frc.robot.commands.chassis.RotateDrivetrainToAngle;
 import frc.robot.commands.chassis.RotateDrivetrainToOdometryTargetAngle;
 import frc.robot.commands.conveyor.RunConveyor;
@@ -22,12 +20,12 @@ import frc.robot.utilities.Trajectories;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class FourBallAuton extends SequentialCommandGroup {
+public class FourBallAuton extends BeakAutonCommand {
   /** Creates a new TestAutonCommand. */
   public FourBallAuton() {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    addCommands(
+    super.addCommands(
       new InstantCommand(() -> Infeed.getInstance().setInfeedDown()),
       new WaitCommand(0.1),
       util.getPathPlannerSwerveControllerCommand(Trajectories.FourBall_AcquireFirstCargo()).alongWith(new InstantCommand(() -> Infeed.getInstance().runInfeedSingulatorMotors(1.0))),
@@ -42,6 +40,7 @@ public class FourBallAuton extends SequentialCommandGroup {
       new InstantCommand(() -> Infeed.getInstance().stopInfeedSingulatorMotors()),
       new RotateDrivetrainToOdometryTargetAngle().withTimeout(2.5)
     );
+    super.setInitialPose(Trajectories.FourBall_AcquireFirstCargo());
   }
   public static Pose2d initialPose(){
     return Trajectories.FourBall_AcquireFirstCargo().getInitialPose();

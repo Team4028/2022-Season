@@ -6,9 +6,9 @@ package frc.robot.commands.auton;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.util;
+import frc.robot.commands.BeakAutonCommand;
 import frc.robot.commands.chassis.RotateDrivetrainToAngle;
 import frc.robot.commands.conveyor.RunConveyor;
 import frc.robot.subsystems.Infeed;
@@ -18,12 +18,12 @@ import frc.robot.utilities.Trajectories;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class TwoBallTopAuton extends SequentialCommandGroup {
+public class TwoBallTopAuton extends BeakAutonCommand {
   /** Creates a new TwoBallAuton. */
   public TwoBallTopAuton() {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    addCommands(
+    super.addCommands(
       new InstantCommand(() -> Infeed.getInstance().setInfeedDown()),
       new InstantCommand(() -> Infeed.getInstance().runInfeedSingulatorMotors(1.0)),
       util.getPathPlannerSwerveControllerCommand(Trajectories.TwoBall_Top()),
@@ -33,7 +33,7 @@ public class TwoBallTopAuton extends SequentialCommandGroup {
       new RunConveyor().withTimeout(1.5),
       new InstantCommand(() -> Shooter.getInstance().stop()),
       new InstantCommand(() -> Infeed.getInstance().stopInfeedSingulatorMotors())
-      
     );
+    super.setInitialPose(Trajectories.TwoBall_Top());
   }
 }

@@ -21,11 +21,18 @@ import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.EncoderConstants;
 import frc.robot.Constants.OIConstants;
+import frc.robot.commands.BeakAutonCommand;
 import frc.robot.commands.auton.AutonTimer;
 import frc.robot.commands.auton.FiveBallAuton;
 import frc.robot.commands.auton.FourBallAuton;
+import frc.robot.commands.auton.TwoBallBottomAuton;
+import frc.robot.commands.auton.TwoBallMiddleAuton;
+import frc.robot.commands.auton.TwoBallTopAuton;
+import frc.robot.commands.auton.TwoBallTopGetOutOfTheWayAuton;
+import frc.robot.commands.auton.TwoBallMiddleGetOutOfTheWayAuton;
 import frc.robot.commands.chassis.RotateDrivetrainByLimelightAngle;
 import frc.robot.commands.chassis.RotateDrivetrainToAngle;
+import frc.robot.commands.chassis.RotateDrivetrainToOdometryTargetAngle;
 import frc.robot.commands.chassis.XDrive;
 import frc.robot.commands.climber.HighBar;
 import frc.robot.commands.climber.MidBar;
@@ -60,7 +67,7 @@ public class RobotContainer {
   private final RunInfeedSingulatorMotors runInfeed;
   private static RobotContainer _instance;
   private static Trajectories _trajectories = Trajectories.getInstance();
-  private SendableChooser<Command> _autonChooser = new SendableChooser<Command>();
+  private SendableChooser<BeakAutonCommand> _autonChooser = new SendableChooser<BeakAutonCommand>();
 
   public static final RobotContainer getInstance() {
     if (_instance == null) {
@@ -135,7 +142,7 @@ public class RobotContainer {
     m_driverController.lt.whileActiveContinuous(runInfeed);
     m_driverController.rs.toggleWhenPressed(new RotateDrivetrainByLimelightAngle().withTimeout(2.0));
     m_driverController.ls.whenPressed(new ToggleCamera());
-    m_driverController.b.toggleWhenPressed(new RotateDrivetrainToAngle(Rotation2d.fromDegrees(43)));
+    m_driverController.b.toggleWhenPressed(new RotateDrivetrainToOdometryTargetAngle());
     // ===================================
 
     // ======== TEMP. CLIMBER CONTROLLER
@@ -195,21 +202,14 @@ public class RobotContainer {
     return (DriveConstants.BASE_SPEED_SCALE + getRightTrigger() * (1.0 - DriveConstants.BASE_SPEED_SCALE)) * -util.deadband(m_driverController.getLeftYAxis());
   }
 
-  public Command getPathPlannerSwerveControllerCommand(PathPlannerTrajectory traj) {
-    return new PPSwerveControllerCommand(
-        traj,
-        m_robotDrive::getPose,
-        DriveConstants.kDriveKinematics,
-        AutoConstants.AUTON_X_CONTROLLER,
-        AutoConstants.AUTON_Y_CONTROLLER,
-        AutoConstants.AUTON_THETA_CONTROLLER,
-        m_robotDrive::setModuleStates,
-        m_robotDrive)
-            .andThen(new InstantCommand(() -> m_robotDrive.drive(0, 0, 0, true)));
-  }
   private void initAutonChooser(){
     _autonChooser.setDefaultOption("Four Ball", new FourBallAuton());
     _autonChooser.addOption("Five Ball", new FiveBallAuton());
+    _autonChooser.addOption("Top Two Ball", new TwoBallTopAuton());
+    _autonChooser.addOption("Top Two Ball (Get Out Of The Way)", new TwoBallTopGetOutOfTheWayAuton());
+    _autonChooser.addOption("Middle Two Ball (Get Out Of The Way)", new TwoBallMiddleGetOutOfTheWayAuton());
+    _autonChooser.addOption("Middle Two Ball", new TwoBallMiddleAuton());    
+    _autonChooser.addOption("Bottom Two Ball", new TwoBallBottomAuton());
   }
   
 
@@ -219,14 +219,8 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    if(true){
-      m_robotDrive.resetOdometry(new Pose2d(Trajectories.FourBall_AcquireFirstCargo().getInitialPose().getTranslation(), Trajectories.FourBall_AcquireFirstCargo().getInitialState().holonomicRotation));
-    } else{
-      m_robotDrive.resetOdometry(new Pose2d(Trajectories.FiveBall_AcquireFirstCargo().getInitialPose().getTranslation(), Trajectories.FourBall_AcquireFirstCargo().getInitialState().holonomicRotation));
-    }
-    return new FourBallAuton().deadlineWith(new AutonTimer());
-    // m_robotDrive.resetOdometry(new Pose2d(Trajectories.TwoBall_Top().getInitialPose().getTranslation(), Trajectories.TwoBall_Top().getInitialState().holonomicRotation));
-    // return new TwoBallTopAuton().deadlineWith(new AutonTimer());
+    m_robotDrive.resetOdometry(_autonChooser.getSelected().getInitialPose());
+    return _autonChooser.getSelected().deadlineWith(new AutonTimer());
   }
 
 }
