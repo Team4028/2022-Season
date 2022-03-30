@@ -38,7 +38,7 @@ public class Infeed extends SubsystemBase {
   }
 
   public void runInfeedSingulatorMotors(double mult) {
-    if (true) {//_solenoid.get()) {
+    if (_solenoid.get()) {
       _infeedMotor.set(ControlMode.PercentOutput, mult * VBusConstants.kInfeed);
       // SmartDashboard.putBoolean("Infeed/Running", true);
       // SmartDashboard.putNumber("Infeed/Vbus", mult * VBusConstants.kInfeed);
