@@ -7,7 +7,6 @@ package frc.robot;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.MjpegServer;
 import edu.wpi.first.cscore.UsbCamera;
-import edu.wpi.first.cscore.VideoSource;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -35,10 +34,10 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     m_robotContainer = RobotContainer.getInstance();
     
-    MjpegServer cam = CameraServer.startAutomaticCapture(new UsbCamera("BRUH", "/dev/video0"));
+    /*MjpegServer cam = CameraServer.startAutomaticCapture(new UsbCamera("BRUH", "/dev/video0"));
     cam.setResolution(160, 120);
     cam.setCompression(35);
-    cam.setFPS(10);
+    cam.setFPS(10);*/
   }
 
   /**
@@ -99,7 +98,7 @@ public class Robot extends TimedRobot {
     }
 
     Climber.getInstance().resetEncoders();
-    Limelight.getInstance().setLedMode(3);
+    Limelight.getInstance().setLedMode(0.);
   }
 
   /** This function is called periodically during operator control. */

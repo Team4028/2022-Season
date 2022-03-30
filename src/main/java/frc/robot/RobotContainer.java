@@ -4,15 +4,9 @@
 
 package frc.robot;
 
-import com.pathplanner.lib.PathPlannerTrajectory;
-import com.pathplanner.lib.commands.PPSwerveControllerCommand;
-
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-// import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -21,17 +15,17 @@ import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.EncoderConstants;
 import frc.robot.Constants.OIConstants;
-import frc.robot.commands.BeakAutonCommand;
 import frc.robot.commands.auton.AutonTimer;
 import frc.robot.commands.auton.FiveBallAuton;
+import frc.robot.commands.auton.FiveBallBackupAuton;
 import frc.robot.commands.auton.FourBallAuton;
+import frc.robot.commands.auton.FourBallBackupAuton;
 import frc.robot.commands.auton.TwoBallBottomAuton;
 import frc.robot.commands.auton.TwoBallMiddleAuton;
 import frc.robot.commands.auton.TwoBallTopAuton;
 import frc.robot.commands.auton.TwoBallTopGetOutOfTheWayAuton;
 import frc.robot.commands.auton.TwoBallMiddleGetOutOfTheWayAuton;
 import frc.robot.commands.chassis.RotateDrivetrainByLimelightAngle;
-import frc.robot.commands.chassis.RotateDrivetrainToAngle;
 import frc.robot.commands.chassis.RotateDrivetrainToOdometryTargetAngle;
 import frc.robot.commands.chassis.XDrive;
 import frc.robot.commands.climber.HighBar;
@@ -41,6 +35,7 @@ import frc.robot.commands.climber.MoveArm;
 import frc.robot.commands.conveyor.ReverseInfeedAndConveyor;
 import frc.robot.commands.conveyor.RunConveyorOneBall;
 import frc.robot.commands.conveyor.RunConveyorTwoBall;
+import frc.robot.commands.BeakAutonCommand;
 import frc.robot.commands.infeed.RunInfeedSingulatorMotors;
 import frc.robot.commands.infeed.ToggleInfeedUp;
 import frc.robot.commands.shooter.AcceptLimelightDistance;
@@ -53,7 +48,6 @@ import frc.robot.commands.vision.ToggleLEDMode;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.Infeed;
-import frc.robot.utilities.Trajectories;
 
 /*
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -66,7 +60,6 @@ public class RobotContainer {
   private final DriveSubsystem m_robotDrive = DriveSubsystem.getInstance();
   private final RunInfeedSingulatorMotors runInfeed;
   private static RobotContainer _instance;
-  private static Trajectories _trajectories = Trajectories.getInstance();
   private SendableChooser<BeakAutonCommand> _autonChooser = new SendableChooser<BeakAutonCommand>();
 
   public static final RobotContainer getInstance() {
@@ -149,9 +142,9 @@ public class RobotContainer {
     BeakXBoxController climberController = new BeakXBoxController(2);
     Climber climber = Climber.getInstance();
     // climberController.a.whenPressed(new InstantCommand(() -> climber.toggleTippySolenoid()));
-    climberController.lb.whileHeld(new InstantCommand(() -> climber.leftMotorForward(.25)))
+    climberController.rb.whileHeld(new InstantCommand(() -> climber.leftMotorForward(.25)))
       .whenReleased(new InstantCommand(() -> climber.leftMotorOff()));
-    climberController.start.whileHeld(new InstantCommand(() -> climber.rightMotorBackward(-.25)))
+    climberController.lt.whileHeld(new InstantCommand(() -> climber.rightMotorBackward(-.25)))
       .whenReleased(new InstantCommand(() -> climber.rightMotorOff()));
 
     climberController.y.whileHeld(new InstantCommand(() -> climber.leftMotorForward(.8)).alongWith(new InstantCommand(() -> climber.rightMotorForward(.8))))
@@ -160,20 +153,19 @@ public class RobotContainer {
       .whenReleased(new InstantCommand(() -> climber.stop()));
     
     climberController.b.whenPressed(new InstantCommand(() -> climber.toggleGrippySolenoid()));
-    climberController.rb.whileHeld(new InstantCommand(() -> climber.rightMotorForward(.25)))
+    climberController.lb.whileHeld(new InstantCommand(() -> climber.rightMotorForward(.25)))
       .whenReleased(new InstantCommand(() -> climber.rightMotorOff()));
-    climberController.back.whileHeld(new InstantCommand(() -> climber.leftMotorBackward(-.25)))
+    climberController.rt.whileHeld(new InstantCommand(() -> climber.leftMotorBackward(-.25)))
       .whenReleased(new InstantCommand(() -> climber.leftMotorOff()));
 
     // THIS IS ALL WORKING, DON'T CHANGE ANY OF THE COMMANDS
-    climberController.a.whenPressed(new MoveArm(0.9, 153));
-    climberController.a.whenPressed(new InstantCommand(() -> Infeed.getInstance().setInfeedDown()));
+    climberController.back.whenPressed(new MoveArm(0.9, 153));
+    climberController.back.whenPressed(new InstantCommand(() -> Infeed.getInstance().setInfeedDown()));
     climberController.ls.whenPressed(new MidToHigh());
-    climberController.rs.whenPressed(new MidBar());
+    climberController.start.whenPressed(new MidBar());
 
-    climberController.lt.whenPressed(new HighBar());
-    climberController.rt.whenPressed(new InstantCommand(() -> climber.slowUp()))
-      .whenReleased(new InstantCommand(() -> climber.stop()));
+    climberController.rs.whenPressed(new HighBar());
+    climberController.a.whenPressed(new InstantCommand(() -> climber.resetEncoders()));
 
     // ======= BRUH PIT CONTROLLER
     BeakXBoxController pitController = new BeakXBoxController(3);
@@ -193,18 +185,20 @@ public class RobotContainer {
     return m_driverController.getRightTrigger();
   }
   public double getSpeedScaledDriverRightX(){
-    return (DriveConstants.BASE_SPEED_SCALE + getRightTrigger() * (1.0 - DriveConstants.BASE_SPEED_SCALE)) * -util.deadband(m_driverController.getRightXAxis());
+    return util.speedscaleDrive(-util.deadband(m_driverController.getRightXAxis()), DriveConstants.BASE_SPEED_SCALE, getRightTrigger());
   }
   public double getSpeedScaledDriverLeftX(){
-    return (DriveConstants.BASE_SPEED_SCALE + getRightTrigger() * (1.0 - DriveConstants.BASE_SPEED_SCALE)) * -util.deadband(m_driverController.getLeftXAxis());
+    return util.speedscaleDrive(-util.deadband(m_driverController.getLeftXAxis()), DriveConstants.BASE_SPEED_SCALE, getRightTrigger());
   }
   public double getSpeedScaledDriverLeftY(){
-    return (DriveConstants.BASE_SPEED_SCALE + getRightTrigger() * (1.0 - DriveConstants.BASE_SPEED_SCALE)) * -util.deadband(m_driverController.getLeftYAxis());
+    return util.speedscaleDrive(-util.deadband(m_driverController.getLeftYAxis()), DriveConstants.BASE_SPEED_SCALE, getRightTrigger());
   }
 
   private void initAutonChooser(){
     _autonChooser.setDefaultOption("Four Ball", new FourBallAuton());
+    _autonChooser.addOption("Four Ball With Backup", new FourBallBackupAuton());
     _autonChooser.addOption("Five Ball", new FiveBallAuton());
+    _autonChooser.addOption("Five Ball With Backup", new FiveBallBackupAuton());
     _autonChooser.addOption("Top Two Ball", new TwoBallTopAuton());
     _autonChooser.addOption("Top Two Ball (Get Out Of The Way)", new TwoBallTopGetOutOfTheWayAuton());
     _autonChooser.addOption("Middle Two Ball (Get Out Of The Way)", new TwoBallMiddleGetOutOfTheWayAuton());

@@ -37,8 +37,8 @@ public class Trajectories {
     public static PathPlannerTrajectory FourBall_AcquireLoadingZoneCargo(){
         return PathPlanner.loadPath(
             "FourBall_AcquireLoadingZoneCargo",
-        kMaxSpeedMetersPerSecond,
-        kMaxAccelerationMetersPerSecondSquared
+        0.85 * kMaxSpeedMetersPerSecond,
+        0.85 * kMaxAccelerationMetersPerSecondSquared
         );
     }
     /**
@@ -47,6 +47,20 @@ public class Trajectories {
     public static PathPlannerTrajectory FourBall_ReturnToShoot(){
         return PathPlanner.loadPath(
             "FourBall_ReturnToShoot",
+        kMaxSpeedMetersPerSecond * 0.65,
+        kMaxAccelerationMetersPerSecondSquared * 0.65
+        );
+    }
+    public static PathPlannerTrajectory FourBall_Backup(){
+        return PathPlanner.loadPath(
+            "FourBall_Backup",
+        kMaxSpeedMetersPerSecond,
+        kMaxAccelerationMetersPerSecondSquared
+        );
+    }
+    public static PathPlannerTrajectory FourBall_BackupReturnToShoot(){
+        return PathPlanner.loadPath(
+            "FourBall_BackupReturnToShoot",
         kMaxSpeedMetersPerSecond * 0.65,
         kMaxAccelerationMetersPerSecondSquared * 0.65
         );

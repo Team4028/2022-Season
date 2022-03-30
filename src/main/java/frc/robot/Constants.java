@@ -210,8 +210,8 @@ public final class Constants {
   }
 
   public static final class VisionConstants {
-    public static final String kCamera1Url = "http://10.40.28.2:1181/stream.mjpg";
-    public static final String kCamera2Url = "http://limelight.local:5800/stream.mjpg"; // Limelight's stream: PiP with
+    public static final String kCamera1Url = "http://10.40.28.13:1181/stream.mjpg";
+    public static final String kCamera2Url = "http://10.40.28.13:1182/stream.mjpg"; // Limelight's stream: PiP with
                                                                                         // Climber cam as main, LL in corner
   }
 

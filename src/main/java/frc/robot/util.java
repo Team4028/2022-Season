@@ -7,6 +7,7 @@ package frc.robot;
 import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.commands.PPSwerveControllerCommand;
 
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.Constants.AutoConstants;
@@ -25,6 +26,12 @@ public final class util {
     public static double deadband(double input){
         return Math.abs(input) > 0.025? input: 0.0;
     }
+    public static double speedscaleDrive(double input, double base, double throttle){
+        return (base + throttle * (1.0 - base)) * input;
+    }
+    public static double swerveModuleReferenceAngleDegrees(Rotation2d angle){
+        return Math.toDegrees(Math.atan2(angle.getSin(), angle.getCos()));
+    }
     public static Command getPathPlannerSwerveControllerCommand(PathPlannerTrajectory traj) {
         return new PPSwerveControllerCommand(
             traj,
@@ -36,5 +43,5 @@ public final class util {
             DriveSubsystem.getInstance()::setModuleStates,
             DriveSubsystem.getInstance())
                 .andThen(new InstantCommand(() -> DriveSubsystem.getInstance().drive(0, 0, 0, true)));
-      }
+}
 }

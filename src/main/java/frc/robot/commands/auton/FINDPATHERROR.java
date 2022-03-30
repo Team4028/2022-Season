@@ -7,6 +7,7 @@ package frc.robot.commands.auton;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveSubsystem;
 
@@ -57,7 +58,7 @@ public class FINDPATHERROR extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    //SmartDashboard.putNumber("Average Err: ", totalError / totalMeasurements);
+    SmartDashboard.putNumber("Average Err: ", totalError / totalMeasurements);
   }
 
   // Returns true when the command should end.
