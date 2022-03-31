@@ -84,28 +84,23 @@ public class Climber extends SubsystemBase {
 
   public void leftMotorForward(double speed) {
     _left.set(speed);
-    System.out.println(_leftEncoder.getPosition());
   }
 
   public void leftMotorBackward(double speed) {
     _left.set(speed);
-    System.out.println(_leftEncoder.getPosition());
   }
 
   public void rightMotorForward(double speed) {
     _right.set(speed);
-    System.out.println(_rightEncoder.getPosition());
   }
 
   public void rightMotorBackward(double speed) {
     _right.set(speed);
-    System.out.println(_rightEncoder.getPosition());
   }
 
   public void slowDrop() {
     _right.set(-VBusConstants.kClimberSlow);
     _left.set(-VBusConstants.kClimberSlow);
-    System.out.println(_leftEncoder.getPosition());
   }
 
   public void slowUp() {
@@ -164,7 +159,5 @@ public class Climber extends SubsystemBase {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("Left Climber", _leftEncoder.getPosition());
     SmartDashboard.putNumber("Right Climber", _rightEncoder.getPosition());
-    SmartDashboard.putNumber("Right Climber Current", _right.getOutputCurrent());
-    SmartDashboard.putNumber("Left Climber Current", _left.getOutputCurrent());
   }
 }

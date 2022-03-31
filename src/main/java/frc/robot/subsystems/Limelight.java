@@ -34,6 +34,8 @@ public class Limelight extends SubsystemBase {
   private NetworkTableEntry ledMode = entry("ledMode");
   private NetworkTableEntry pipeline = entry("pipeline");
 
+  private int updateCycles = 0;
+
   /** Creates a new Limelight. */
   public Limelight() {
     setPipeline(4);
@@ -168,8 +170,13 @@ public class Limelight extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    if (RobotState.isDisabled() && getLedMode() != 1) {
-      // setLedMode(1);
-    }
+    // if (updateCycles == 25) {
+    //   if (RobotState.isDisabled() && getLedMode() != 1) {
+    //     setLedMode(1);
+    //   }
+    //   updateCycles = 0;
+    // } else {
+    //   updateCycles++;
+    // }
   }
 }

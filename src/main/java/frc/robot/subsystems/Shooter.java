@@ -39,6 +39,7 @@ public class Shooter extends SubsystemBase {
   double limelightDistance, shooterIndex = ShooterConstants.kIndexDefault;
 
   private static Shooter _instance = new Shooter();
+  private int updateCycles = 0;
 
   public Shooter() {
     _front = new TalonFX(SubsystemConstants.SHOOTER_FRONT_MOTOR_ID);
@@ -105,8 +106,8 @@ public class Shooter extends SubsystemBase {
     put("Shot Kicker RPM", e.KickerRPM);
     put("Actuator Value", e.ActuatorVal);
 
-    put("Front Error", util.toFalconRPM(_front.getClosedLoopError()));
-    put("Back Error", util.toFalconRPM(_back.getClosedLoopError()));
+    // put("Front Error", util.toFalconRPM(_front.getClosedLoopError()));
+    // put("Back Error", util.toFalconRPM(_back.getClosedLoopError()));
     put("Front Motor RPM", util.toFalconRPM(_front.getSelectedSensorVelocity()));
     put("Back Motor RPM", util.toFalconRPM(_back.getSelectedSensorVelocity()));
     put("Kicker Motor RPM", util.toFalconRPM(_kicker.getSelectedSensorVelocity()));
@@ -199,7 +200,12 @@ public class Shooter extends SubsystemBase {
 
   @Override
   public void periodic() {
-    update();
+    if (updateCycles == 5) {
+      update();
+      updateCycles = 0;
+    } else {
+      updateCycles++;
+    }
     // This method will be called once per scheduler run
     // System.out.println(_angle.getOutputCurrent());
   }

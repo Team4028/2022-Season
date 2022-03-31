@@ -34,6 +34,8 @@ public class DriveSubsystem extends SubsystemBase {
 
   private static DriveSubsystem _instance;
 
+  private int updateCycles = 0;
+
   public static final DriveSubsystem getInstance() {
     if (_instance == null) {
       _instance = new DriveSubsystem();
@@ -90,16 +92,21 @@ public class DriveSubsystem extends SubsystemBase {
           m_rearRight.getState());
     }
     //TODO: Organized, comprehensive data for whole Drivetrain
-    SmartDashboard.putNumber("X (Feet)", Units.metersToFeet(m_odometry.getPoseMeters().getX()));
-    SmartDashboard.putNumber("Y (Feet)", Units.metersToFeet(m_odometry.getPoseMeters().getY()));
-    SmartDashboard.putNumber("X (Metres)", m_odometry.getPoseMeters().getX());
-    SmartDashboard.putNumber("Y (Metres)", m_odometry.getPoseMeters().getY());
-    SmartDashboard.putNumber("Heading (Deg)", m_odometry.getPoseMeters().getRotation().getDegrees());
-    SmartDashboard.putNumber("FL Angle", m_frontLeft.getState().angle.getDegrees());
-    SmartDashboard.putNumber("FR Angle", m_frontRight.getState().angle.getDegrees());
-    SmartDashboard.putNumber("RL Angle", m_rearLeft.getState().angle.getDegrees());
-    SmartDashboard.putNumber("RR Angle", m_rearRight.getState().angle.getDegrees());
-    //SmartDashboard.putBoolean("Hold Angle", enableHoldAngle);
+    if (updateCycles == 3) {
+      SmartDashboard.putNumber("X (Feet)", Units.metersToFeet(m_odometry.getPoseMeters().getX()));
+      SmartDashboard.putNumber("Y (Feet)", Units.metersToFeet(m_odometry.getPoseMeters().getY()));
+      // SmartDashboard.putNumber("X (Metres)", m_odometry.getPoseMeters().getX());
+      // SmartDashboard.putNumber("Y (Metres)", m_odometry.getPoseMeters().getY());
+      SmartDashboard.putNumber("Heading (Deg)", m_odometry.getPoseMeters().getRotation().getDegrees());
+      SmartDashboard.putNumber("FL Angle", m_frontLeft.getState().angle.getDegrees());
+      SmartDashboard.putNumber("FR Angle", m_frontRight.getState().angle.getDegrees());
+      SmartDashboard.putNumber("RL Angle", m_rearLeft.getState().angle.getDegrees());
+      SmartDashboard.putNumber("RR Angle", m_rearRight.getState().angle.getDegrees());
+      //SmartDashboard.putBoolean("Hold Angle", enableHoldAngle);
+      updateCycles = 0;
+    } else {
+      updateCycles++;
+    }
 
     //TODO: Fix this/ remove if possible
     if(testTimer < 8 * configWaitCycles + 1){
