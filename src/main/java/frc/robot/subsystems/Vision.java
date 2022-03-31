@@ -15,6 +15,7 @@ public class Vision extends SubsystemBase {
   public Vision() {
     // UsbCamera cam = CameraServer.startAutomaticCapture();
     // cam.setResolution(80, 60);
+    setInfeedCamera();
   }
 
   public void toggleCam() {
@@ -27,6 +28,14 @@ public class Vision extends SubsystemBase {
       System.out.println("setting Climber Camera");
       SmartDashboard.putString("CamSelection", VisionConstants.kCamera1Url);
     }
+  }
+
+  public void setShooterCamera() {
+    SmartDashboard.putString("CamSelection", VisionConstants.kCamera2Url);
+  }
+
+  public void setInfeedCamera() {
+    SmartDashboard.putString("CamSelection", VisionConstants.kCamera1Url);
   }
 
   public static Vision getInstance() {

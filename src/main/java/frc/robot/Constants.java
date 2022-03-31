@@ -166,9 +166,9 @@ public final class Constants {
   }
 
   public static final class VBusConstants {
-    public static final double kConveyAll = 0.5;
-    public static final double kConveyOne = 0.5;//0.85; // op b
-    public static final double kConveyTwo = 0.5; // op a
+    public static final double kConveyAll = 0.75;
+    public static final double kConveyOne = 0.50;//0.85; // op b
+    public static final double kConveyTwo = 0.75; // op a
 
     public static final double kInfeed = 0.6; // op y
     public static final double kSingulator = 0.5; // op y
@@ -200,21 +200,20 @@ public final class Constants {
     public static final double kMaxAllowedAngle = 33.;
 
     public static final boolean kIsVBus = true;
-    public static final boolean kIsRealGoal = false;
+    public static final boolean kIsRealGoal = true;
 
-    public static final double kVoltageCompensation = 10.;
+    public static final double kVoltageCompensation = 11.;
   }
 
   public static final class LimelightConstants {
     public static final double kTargetHeight = ShooterConstants.kIsRealGoal ? 104. : 88.;
     public static final double kMountHeight = 21.5;
-    public static final double kMountAngle = 30;
+    public static final double kMountAngle = 30.5;
   }
 
   public static final class VisionConstants {
-    public static final String kCamera1Url = "http://10.40.28.13:1181/stream.mjpg";
-    public static final String kCamera2Url = "http://10.40.28.13:1182/stream.mjpg"; // Limelight's stream: PiP with
-                                                                                        // Climber cam as main, LL in corner
+    public static final String kCamera1Url = "http://10.40.28.13:1182/stream.mjpg"; // infeed
+    public static final String kCamera2Url = "http://10.40.28.13:1181/stream.mjpg"; // shooter
   }
 
   public static final class PIDConstants {

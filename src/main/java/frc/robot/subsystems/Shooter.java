@@ -51,14 +51,14 @@ public class Shooter extends SubsystemBase {
     _front.setInverted(false);
     _kicker.setInverted(InvertType.InvertMotorOutput);
 
-    _front.configVoltageCompSaturation(ShooterConstants.kVoltageCompensation);
-    _front.enableVoltageCompensation(true);
+    // _front.configVoltageCompSaturation(ShooterConstants.kVoltageCompensation);
+    // _front.enableVoltageCompensation(true);
 
-    _back.configVoltageCompSaturation(ShooterConstants.kVoltageCompensation);
-    _back.enableVoltageCompensation(true);
+    // _back.configVoltageCompSaturation(ShooterConstants.kVoltageCompensation);
+    // _back.enableVoltageCompensation(true);
 
-    _kicker.configVoltageCompSaturation(ShooterConstants.kVoltageCompensation);
-    _kicker.enableVoltageCompensation(true);
+    // _kicker.configVoltageCompSaturation(ShooterConstants.kVoltageCompensation);
+    // _kicker.enableVoltageCompensation(true);
 
     _l = Limelight.getInstance();
 
@@ -173,6 +173,10 @@ public class Shooter extends SubsystemBase {
     } else {
       shooterIndex -= ShooterConstants.kCoarseAdjustment;
     }
+  }
+
+  public void setShooterIndex(double index) {
+    shooterIndex = index;
   }
 
   public double getLimelightDistance() {

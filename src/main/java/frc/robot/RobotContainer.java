@@ -13,7 +13,6 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
-import frc.robot.Constants.EncoderConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.auton.AutonTimer;
 import frc.robot.commands.auton.FiveBallAuton;
@@ -48,6 +47,7 @@ import frc.robot.commands.vision.ToggleLEDMode;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.Infeed;
+import frc.robot.subsystems.Vision;
 
 /*
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -114,7 +114,6 @@ public class RobotContainer {
     m_operatorController.b.whenPressed(new RunConveyorOneBall());
     m_operatorController.x.toggleWhenPressed(new RunShooterMotors());
     m_operatorController.y.toggleWhenPressed(runInfeed);
-    //m_operatorController.start.whenPressed(new HighBarClimb());
     m_operatorController.back.toggleWhenPressed(new ReverseInfeedAndConveyor());
     m_operatorController.lb.whenPressed(new DecrementShooterIndex(false));
     m_operatorController.rb.whenPressed(new IncrementShooterIndex(false));
@@ -141,7 +140,6 @@ public class RobotContainer {
     // ======== TEMP. CLIMBER CONTROLLER
     BeakXBoxController climberController = new BeakXBoxController(2);
     Climber climber = Climber.getInstance();
-    // climberController.a.whenPressed(new InstantCommand(() -> climber.toggleTippySolenoid()));
     climberController.rb.whileHeld(new InstantCommand(() -> climber.leftMotorForward(.25)))
       .whenReleased(new InstantCommand(() -> climber.leftMotorOff()));
     climberController.lt.whileHeld(new InstantCommand(() -> climber.rightMotorBackward(-.25)))
@@ -168,17 +166,17 @@ public class RobotContainer {
     climberController.a.whenPressed(new InstantCommand(() -> climber.resetEncoders()));
 
     // ======= BRUH PIT CONTROLLER
-    BeakXBoxController pitController = new BeakXBoxController(3);
+    // BeakXBoxController pitController = new BeakXBoxController(3);
 
-    pitController.a.whenPressed(new InstantCommand(() -> climber.resetEncoders()));
-    pitController.start.whenPressed(new MoveArm(.2, 0));
-    pitController.back.whenPressed(new MoveArm(-.2, -35));
+    // pitController.a.whenPressed(new InstantCommand(() -> climber.resetEncoders()));
+    // pitController.start.whenPressed(new MoveArm(.2, 0));
+    // pitController.back.whenPressed(new MoveArm(-.2, -35));
 
-    pitController.lb.whenPressed(new InstantCommand(() -> climber.setLeftEncoder(EncoderConstants.kClimberLeftStart)));
-    pitController.rb.whenPressed(new InstantCommand(() -> climber.setRightEncoder(EncoderConstants.kClimberRightStart)));
+    // pitController.lb.whenPressed(new InstantCommand(() -> climber.setLeftEncoder(EncoderConstants.kClimberLeftStart)));
+    // pitController.rb.whenPressed(new InstantCommand(() -> climber.setRightEncoder(EncoderConstants.kClimberRightStart)));
 
-    pitController.lt.whenPressed(new InstantCommand(() -> climber.slowDrop()));
-    pitController.rt.whenPressed(new InstantCommand(() -> climber.slowUp()));
+    // pitController.lt.whenPressed(new InstantCommand(() -> climber.slowDrop()));
+    // pitController.rt.whenPressed(new InstantCommand(() -> climber.slowUp()));
   }
 
   public double getRightTrigger() {

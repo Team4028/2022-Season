@@ -17,9 +17,11 @@ import frc.robot.commands.chassis.RotateDrivetrainToOdometryTargetAngle;
 import frc.robot.commands.conveyor.RunConveyor;
 import frc.robot.commands.shooter.DecrementShooterIndex;
 import frc.robot.commands.shooter.IncrementShooterIndex;
+import frc.robot.commands.shooter.ResetDefaultIndex;
 import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.Infeed;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Vision;
 import frc.robot.utilities.Trajectories;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
@@ -32,23 +34,19 @@ public class FiveBallAuton extends BeakAutonCommand {
     // addCommands(new FooCommand(), new BarCommand());
     super.addCommands(
       new InstantCommand(() -> Infeed.getInstance().setInfeedDown()),
+      new WaitCommand(0.25),
       new InstantCommand(() -> Infeed.getInstance().runInfeedSingulatorMotors(1.0)),
+      new InstantCommand(() -> Shooter.getInstance().setShooterIndex(16.5)),
       util.getPathPlannerSwerveControllerCommand(Trajectories.FiveBall_AcquireFirstCargo())
       .alongWith(new WaitCommand(1.5).andThen(new InstantCommand(() -> Shooter.getInstance().runShooterMotors()))),
-      new IncrementShooterIndex(false),
-      new IncrementShooterIndex(false),
-      new IncrementShooterIndex(false),
-      new IncrementShooterIndex(false),
-      new RotateDrivetrainToAngle(Rotation2d.fromDegrees(37.0)),
-      new InstantCommand(() -> Conveyor.getInstance().runConveyorMotor(VBusConstants.kConveyAll * 1.5)),
+      new RotateDrivetrainToAngle(Rotation2d.fromDegrees(35.0)),
+      new InstantCommand(() -> Conveyor.getInstance().runConveyorMotor(VBusConstants.kConveyAll )),
       new WaitCommand(1.1),
       new InstantCommand(() -> Conveyor.getInstance().stopConveyorMotor()),
-      new DecrementShooterIndex(false),
-      new DecrementShooterIndex(false),
-      new DecrementShooterIndex(false),
-      new DecrementShooterIndex(false),
-      util.getPathPlannerSwerveControllerCommand(Trajectories.FiveBall_AcquireSecondCargo()),
-      new InstantCommand(() -> Conveyor.getInstance().runConveyorMotor(VBusConstants.kConveyAll * 1.5)),
+      new ResetDefaultIndex(),
+      new InstantCommand(() -> Shooter.getInstance().stop()),
+      util.getPathPlannerSwerveControllerCommand(Trajectories.FiveBall_AcquireSecondCargo()).alongWith(new InstantCommand(() -> Shooter.getInstance().runShooterMotors())),
+      new InstantCommand(() -> Conveyor.getInstance().runConveyorMotor(VBusConstants.kConveyAll )),
       new WaitCommand(1.1),
       new InstantCommand(() -> Conveyor.getInstance().stopConveyorMotor()),
       new InstantCommand(() -> Shooter.getInstance().stop()),
@@ -56,11 +54,12 @@ public class FiveBallAuton extends BeakAutonCommand {
       new WaitCommand(1.2),
       util.getPathPlannerSwerveControllerCommand(Trajectories.FiveBall_ReturnToShoot())
       .alongWith(new WaitCommand(1.5).andThen(new InstantCommand(() -> Shooter.getInstance().runShooterMotors()))),
-      new InstantCommand(() -> Conveyor.getInstance().runConveyorMotor(VBusConstants.kConveyAll * 1.5)),
+      new InstantCommand(() -> Conveyor.getInstance().runConveyorMotor(VBusConstants.kConveyAll)),
       new WaitCommand(1.1),
       new InstantCommand(() -> Conveyor.getInstance().stopConveyorMotor()),
       new WaitCommand(0.25),
-      new InstantCommand(() -> Shooter.getInstance().stop())
+      new InstantCommand(() -> Shooter.getInstance().stop()),
+      new InstantCommand(() -> Vision.getInstance().setInfeedCamera())
     );
     super.setInitialPose(Trajectories.FiveBall_AcquireFirstCargo());
   }

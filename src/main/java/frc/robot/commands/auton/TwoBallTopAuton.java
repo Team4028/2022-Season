@@ -25,6 +25,7 @@ public class TwoBallTopAuton extends BeakAutonCommand {
     // addCommands(new FooCommand(), new BarCommand());
     super.addCommands(
       new InstantCommand(() -> Infeed.getInstance().setInfeedDown()),
+      new WaitCommand(0.25),
       new InstantCommand(() -> Infeed.getInstance().runInfeedSingulatorMotors(1.0)),
       util.getPathPlannerSwerveControllerCommand(Trajectories.TwoBall_Top()),
       new RotateDrivetrainToAngle(Rotation2d.fromDegrees(-32.0)),

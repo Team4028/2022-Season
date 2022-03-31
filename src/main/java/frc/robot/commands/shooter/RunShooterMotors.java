@@ -6,13 +6,15 @@ package frc.robot.commands.shooter;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Vision;
 
 public class RunShooterMotors extends CommandBase {
   private Shooter shooter = Shooter.getInstance();
+  private Vision vision = Vision.getInstance();
 
   /** Creates a new RunShooterMotors. */
   public RunShooterMotors() {
-    addRequirements(Shooter.getInstance());
+    addRequirements(shooter, vision);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -20,6 +22,7 @@ public class RunShooterMotors extends CommandBase {
   @Override
   public void initialize() {
     shooter.runShooterMotors();
+    vision.setShooterCamera();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -32,6 +35,7 @@ public class RunShooterMotors extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     shooter.stop();
+    vision.setInfeedCamera();
   }
 
   // Returns true when the command should end.

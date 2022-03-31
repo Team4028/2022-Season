@@ -51,6 +51,11 @@ public class Infeed extends SubsystemBase {
   //   SmartDashboard.putNumber("Singulator/Vbus", mult * VBusConstants.kInfeed);
   }
 
+  public void forceRunInfeed() {
+    _infeedMotor.set(ControlMode.PercentOutput, VBusConstants.kInfeed);
+    _singulatorMotor.set(VBusConstants.kSingulator);
+  }
+
   public void stopInfeedSingulatorMotors() {
     _infeedMotor.set(ControlMode.PercentOutput, 0);
     _singulatorMotor.set(0);

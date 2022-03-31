@@ -6,12 +6,9 @@ package frc.robot.commands.chassis;
 
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.ProfiledPIDCommand;
-import frc.robot.Robot;
 import frc.robot.RobotContainer;
-import frc.robot.util;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.subsystems.DriveSubsystem;
@@ -27,7 +24,7 @@ public class RotateDrivetrainByLimelightAngle extends ProfiledPIDCommand {
         // The ProfiledPIDController used by the command
         new ProfiledPIDController(
             // The PID gains
-            AutoConstants.kPThetaController,
+            AutoConstants.kPThetaController * .75,
             0.0,
             0.0,
             // The motion profile constraints
@@ -51,7 +48,7 @@ public class RotateDrivetrainByLimelightAngle extends ProfiledPIDCommand {
     // Configure additional PID options by calling `getController` here.
     addRequirements(DriveSubsystem.getInstance(), Limelight.getInstance());
     getController().enableContinuousInput(-Math.PI, Math.PI);
-    getController().setTolerance(Units.degreesToRadians(1.5));
+    getController().setTolerance(Units.degreesToRadians(.5));
   }
 
   // Returns true when the command should end.

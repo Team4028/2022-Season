@@ -36,8 +36,8 @@ public class Limelight extends SubsystemBase {
 
   /** Creates a new Limelight. */
   public Limelight() {
-    setPipeline(3);
-    setPictureInPicture(2);
+    setPipeline(4);
+    setPictureInPicture(0);
     setLedMode(1);
   }
 
@@ -132,7 +132,7 @@ public class Limelight extends SubsystemBase {
           (Math.tan(goalAngle) *
               Math.cos(yawComp));
 
-      distEstTotal += (dist + 23 + 26);
+      distEstTotal += (dist + 22 + 26);
       distEstIters++;
     }
     return distEst;
@@ -169,7 +169,7 @@ public class Limelight extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     if (RobotState.isDisabled() && getLedMode() != 1) {
-      setLedMode(1);
+      // setLedMode(1);
     }
   }
 }
