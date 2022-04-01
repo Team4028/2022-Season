@@ -70,6 +70,9 @@ public class Infeed extends SubsystemBase {
   public void setInfeedDown(){
     _solenoid.set(true);
   }
+  public void setInfeedUp() {
+    _solenoid.set(false);
+  }
 
   @Override
   public void periodic() {

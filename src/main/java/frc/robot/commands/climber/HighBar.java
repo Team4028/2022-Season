@@ -4,9 +4,12 @@
 
 package frc.robot.commands.climber;
 
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.VBusConstants;
+import frc.robot.commands.infeed.ToggleInfeedUp;
+import frc.robot.subsystems.Infeed;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
@@ -17,12 +20,17 @@ public class HighBar extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
+    new InstantCommand(() -> Infeed.getInstance().setInfeedUp()),
+    new WaitCommand(0.5),
     new MoveArm(-VBusConstants.kClimberFast, 50), // pull down to high
     new WaitCommand(1), 
     new MoveArm(VBusConstants.kClimberSlow, 75), //slowly up until tippy clears
     new WaitCommand(.25),  
     new MoveArm(-VBusConstants.kClimberFast, 20), // pulls down until tippy releases
     new WaitCommand(.25), 
-    new MoveArm(VBusConstants.kClimberSlow, 80));
+    new MoveArm(VBusConstants.kClimberSlow, 80),
+    new WaitCommand(0.25),
+    new InstantCommand(() -> Infeed.getInstance().setInfeedDown())
+    );
   }
 }
