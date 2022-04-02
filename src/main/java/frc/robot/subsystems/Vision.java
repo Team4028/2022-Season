@@ -4,38 +4,50 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.HttpCamera;
+import edu.wpi.first.cscore.VideoSink;
+import edu.wpi.first.cscore.HttpCamera.HttpCameraKind;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.VisionConstants;
 
 public class Vision extends SubsystemBase {
   private static Vision _instance = new Vision();
+  HttpCamera infeedCam, shooterCam;
+  boolean useInfeedCam = true;
+
+  VideoSink dashCam;
 
   /** Creates a new Vision. */
   public Vision() {
-    // UsbCamera cam = CameraServer.startAutomaticCapture();
-    // cam.setResolution(80, 60);
+    infeedCam = new HttpCamera("infeedCamera", VisionConstants.kCamera1Url, HttpCameraKind.kMJPGStreamer);
+    shooterCam = new HttpCamera("shooterCamera", VisionConstants.kCamera2Url, HttpCameraKind.kMJPGStreamer);
+
+    dashCam = CameraServer.addSwitchedCamera("Dashboard Cam");
     setInfeedCamera();
+
   }
 
   public void toggleCam() {
-    System.out.println(SmartDashboard.getString("CamSelection", ""));
-    System.out.println(VisionConstants.kCamera1Url);
-    if (SmartDashboard.getString("CamSelection", " ").compareTo(VisionConstants.kCamera1Url) == 0) {
-      System.out.println("setting Primary Camera");
-      SmartDashboard.putString("CamSelection", VisionConstants.kCamera2Url);
+    useInfeedCam = !useInfeedCam;
+    if (useInfeedCam) {
+        dashCam.setSource(infeedCam);
     } else {
-      System.out.println("setting Climber Camera");
-      SmartDashboard.putString("CamSelection", VisionConstants.kCamera1Url);
+        dashCam.setSource(shooterCam);
     }
   }
 
   public void setShooterCamera() {
-    SmartDashboard.putString("CamSelection", VisionConstants.kCamera2Url);
+      useInfeedCam = false;
+      dashCam.setSource(shooterCam);
   }
 
   public void setInfeedCamera() {
-    SmartDashboard.putString("CamSelection", VisionConstants.kCamera1Url);
+    useInfeedCam = true;
+    dashCam.setSource(infeedCam);
   }
 
   public static Vision getInstance() {

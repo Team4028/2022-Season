@@ -81,7 +81,7 @@ public class SwerveModuleCANTwoElectricBoogaloo {
     m_driveMotor.setNeutralMode(NeutralMode.Brake);
     m_driveMotor.configVoltageCompSaturation(i_kNominalVoltage);
     m_driveMotor.enableVoltageCompensation(true);
-    m_driveMotor.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 45, 50, 0.2));
+    m_driveMotor.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 40, 45, 0.1));
   }
   public void configStatusFramePeriods(){
   }

@@ -131,6 +131,7 @@ public class DriveSubsystem extends SubsystemBase {
       DriveSubsystem.getInstance().m_rearRight.configTurningMotor();
     }else if(testTimer == 7 * configWaitCycles){
       DriveSubsystem.getInstance().m_frontRight.configTurningMotor();
+      DriveSubsystem.getInstance().m_frontLeft.configDriveMotor();
     }else if(testTimer == 8 * configWaitCycles){
       DriveSubsystem.getInstance().m_rearLeft.configTurningMotor();
       zeroHeading();

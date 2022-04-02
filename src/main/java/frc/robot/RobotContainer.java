@@ -36,6 +36,7 @@ import frc.robot.commands.conveyor.RunConveyorOneBall;
 import frc.robot.commands.conveyor.RunConveyorTwoBall;
 import frc.robot.commands.BeakAutonCommand;
 import frc.robot.commands.infeed.RunInfeedSingulatorMotors;
+import frc.robot.commands.infeed.SetInfeedUp;
 import frc.robot.commands.infeed.ToggleInfeedUp;
 import frc.robot.commands.shooter.AcceptLimelightDistance;
 import frc.robot.commands.shooter.DecrementShooterIndex;
@@ -47,7 +48,7 @@ import frc.robot.commands.vision.ToggleLEDMode;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.Infeed;
-import frc.robot.subsystems.Vision;
+import frc.robot.subsystems.Shooter;
 
 /*
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -114,14 +115,14 @@ public class RobotContainer {
     m_operatorController.b.whenPressed(new RunConveyorOneBall());
     m_operatorController.x.toggleWhenPressed(new RunShooterMotors());
     m_operatorController.y.toggleWhenPressed(runInfeed);
-    m_operatorController.back.toggleWhenPressed(new ReverseInfeedAndConveyor());
+    m_operatorController.start.whenPressed(new SetInfeedUp());
+    m_operatorController.back.whenPressed(new AcceptLimelightDistance());
     m_operatorController.lb.whenPressed(new DecrementShooterIndex(false));
     m_operatorController.rb.whenPressed(new IncrementShooterIndex(false));
     m_operatorController.lt.whenActive(new DecrementShooterIndex(true));
     m_operatorController.rt.whenActive(new IncrementShooterIndex(true));
     m_operatorController.ls.whenPressed(new ResetDefaultIndex());
-    m_operatorController.rs.whenPressed(new AcceptLimelightDistance());
-    m_operatorController.start.toggleWhenPressed(new ToggleInfeedUp());
+    m_operatorController.rs.whenPressed(new InstantCommand(() -> Shooter.getInstance().setShooterIndex(17)));
     // ====================================
 
     // ======== DRIVER CONTROLLER ========

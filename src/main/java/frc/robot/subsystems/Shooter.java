@@ -53,13 +53,13 @@ public class Shooter extends SubsystemBase {
     _kicker.setInverted(InvertType.InvertMotorOutput);
 
     // _front.configVoltageCompSaturation(ShooterConstants.kVoltageCompensation);
-    // _front.enableVoltageCompensation(true);
+    _front.enableVoltageCompensation(false);
 
     // _back.configVoltageCompSaturation(ShooterConstants.kVoltageCompensation);
-    // _back.enableVoltageCompensation(true);
+    _back.enableVoltageCompensation(false);
 
     // _kicker.configVoltageCompSaturation(ShooterConstants.kVoltageCompensation);
-    // _kicker.enableVoltageCompensation(true);
+    _kicker.enableVoltageCompensation(false);
 
     _l = Limelight.getInstance();
 

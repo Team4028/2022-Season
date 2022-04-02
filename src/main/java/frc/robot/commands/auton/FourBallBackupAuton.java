@@ -29,7 +29,7 @@ public class FourBallBackupAuton extends BeakAutonCommand {
       new WaitCommand(0.25),
       util.getPathPlannerSwerveControllerCommand(Trajectories.FourBall_AcquireFirstCargo()).alongWith(new InstantCommand(() -> Infeed.getInstance().runInfeedSingulatorMotors(1.0))),
       new WaitCommand(0.5),
-      new RotateDrivetrainToAngle(Rotation2d.fromDegrees(35.0)).alongWith(new InstantCommand(() -> Shooter.getInstance().runShooterMotors())),
+      new RotateDrivetrainToAngle(Rotation2d.fromDegrees(37.0)).alongWith(new InstantCommand(() -> Shooter.getInstance().runShooterMotors())),
       new WaitCommand(1.1).deadlineWith(new RunConveyor()),
       new InstantCommand(() -> Shooter.getInstance().stop()),
       util.getPathPlannerSwerveControllerCommand(Trajectories.FourBall_AcquireLoadingZoneCargo()),
