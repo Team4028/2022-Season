@@ -8,7 +8,6 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.VBusConstants;
-import frc.robot.commands.infeed.ToggleInfeedUp;
 import frc.robot.subsystems.Infeed;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more

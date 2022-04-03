@@ -11,6 +11,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.SubsystemConstants;
 import frc.robot.Constants.VBusConstants;
@@ -40,14 +41,14 @@ public class Infeed extends SubsystemBase {
   public void runInfeedSingulatorMotors(double mult) {
     if (_solenoid.get()) {
       _infeedMotor.set(ControlMode.PercentOutput, mult * VBusConstants.kInfeed);
-      // SmartDashboard.putBoolean("Infeed/Running", true);
+      SmartDashboard.putBoolean("Infeed/Running", true);
       // SmartDashboard.putNumber("Infeed/Vbus", mult * VBusConstants.kInfeed);
     } else {
       _infeedMotor.set(ControlMode.PercentOutput, 0.);
-      // SmartDashboard.putBoolean("Infeed/Running", false);
+      SmartDashboard.putBoolean("Infeed/Running", false);
     }
     _singulatorMotor.set(mult * VBusConstants.kSingulator);
-  //   SmartDashboard.putBoolean("Singulator/Running", true);
+    SmartDashboard.putBoolean("Singulator/Running", true);
   //   SmartDashboard.putNumber("Singulator/Vbus", mult * VBusConstants.kInfeed);
   }
 
@@ -59,9 +60,8 @@ public class Infeed extends SubsystemBase {
   public void stopInfeedSingulatorMotors() {
     _infeedMotor.set(ControlMode.PercentOutput, 0);
     _singulatorMotor.set(0);
-    // SmartDashboard.putBoolean("Infeed/Running", false);
-    // SmartDashboard.putBoolean("Singulator/Running", false);
-
+    SmartDashboard.putBoolean("Infeed/Running", false);
+    SmartDashboard.putBoolean("Singulator/Running", false);
   }
 
   public void toggleInfeedUp() {

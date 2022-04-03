@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.InvertType;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.revrobotics.CANSparkMax;
@@ -51,6 +52,10 @@ public class Shooter extends SubsystemBase {
     _back.setInverted(false);
     _front.setInverted(false);
     _kicker.setInverted(InvertType.InvertMotorOutput);
+
+    _front.setNeutralMode(NeutralMode.Coast);
+    _back.setNeutralMode(NeutralMode.Coast);
+    _kicker.setNeutralMode(NeutralMode.Coast);
 
     // _front.configVoltageCompSaturation(ShooterConstants.kVoltageCompensation);
     _front.enableVoltageCompensation(false);
@@ -146,6 +151,8 @@ public class Shooter extends SubsystemBase {
       _kicker.set(ControlMode.PercentOutput, entry.KickerRPM / 100.);
     }
 
+    SmartDashboard.putBoolean("Shooter/Running", true);
+
     _anglePid.setReference(entry.ActuatorVal, ControlType.kPosition);
   }
 
@@ -154,6 +161,8 @@ public class Shooter extends SubsystemBase {
     _back.set(ControlMode.PercentOutput, 0);
     _kicker.set(ControlMode.PercentOutput, 0);
     _angle.set(0.0);
+
+    SmartDashboard.putBoolean("Shooter/Running", false);
   }
 
   public double index() {
@@ -166,6 +175,7 @@ public class Shooter extends SubsystemBase {
     } else {
       shooterIndex += ShooterConstants.kCoarseAdjustment;
     }
+    update();
   }
 
   public void decrementIndex(boolean fine) {
@@ -174,10 +184,12 @@ public class Shooter extends SubsystemBase {
     } else {
       shooterIndex -= ShooterConstants.kCoarseAdjustment;
     }
+    update();
   }
 
   public void setShooterIndex(double index) {
     shooterIndex = index;
+    update();
   }
 
   public double getLimelightDistance() {

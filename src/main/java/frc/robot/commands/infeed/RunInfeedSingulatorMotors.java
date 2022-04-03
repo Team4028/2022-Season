@@ -4,6 +4,7 @@
 
 package frc.robot.commands.infeed;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Infeed;
 
@@ -32,6 +33,8 @@ public class RunInfeedSingulatorMotors extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     infeed.stopInfeedSingulatorMotors();
+    SmartDashboard.putBoolean("Infeed/Running", false);
+    SmartDashboard.putBoolean("Singulator/Running", false);
   }
 
   // Returns true when the command should end.

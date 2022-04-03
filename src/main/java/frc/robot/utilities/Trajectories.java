@@ -90,7 +90,7 @@ public class Trajectories {
      */
     public static PathPlannerTrajectory FiveBall_AcquireLoadingZoneCargo(){
         return PathPlanner.loadPath(
-            "FiveBall_AcquireLoadingZoneCargo",
+            "FiveBall_AcquireLoadingZoneCargoMod",
         0.9 * kMaxSpeedMetersPerSecond,
         0.9 * kMaxAccelerationMetersPerSecondSquared
         );
