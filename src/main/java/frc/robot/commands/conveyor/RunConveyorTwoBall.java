@@ -8,13 +8,15 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.EncoderConstants;
 import frc.robot.Constants.VBusConstants;
 import frc.robot.subsystems.Conveyor;
+import frc.robot.subsystems.Infeed;
 
 
 public class RunConveyorTwoBall extends CommandBase {
   private Conveyor conveyor = Conveyor.getInstance();
+  private Infeed infeed = Infeed.getInstance();
   /** Creates a new RunWithEncoderA. */
   public RunConveyorTwoBall() {
-    addRequirements(conveyor);
+    addRequirements(conveyor, infeed);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -24,18 +26,21 @@ public class RunConveyorTwoBall extends CommandBase {
     conveyor.resetEncoder();
     conveyor.setIsTargetReached();
     conveyor.runConveyorMotorWithEncoder(EncoderConstants.kConveyTwo, VBusConstants.kConveyTwo);
+
+    infeed.runSingulator();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     conveyor.runConveyorMotorWithEncoder(EncoderConstants.kConveyTwo, VBusConstants.kConveyTwo);
+    infeed.runSingulator();
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    // no special end steps needed
+    infeed.stopInfeedSingulatorMotors();
   }
 
   // Returns true when the command should end.

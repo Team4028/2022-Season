@@ -60,6 +60,7 @@ public class RobotContainer {
   // The robot's subsystems
   private final DriveSubsystem m_robotDrive = DriveSubsystem.getInstance();
   private final RunInfeedSingulatorMotors runInfeed;
+  private final RunShooterMotors runShooter;
   private static RobotContainer _instance;
   private SendableChooser<BeakAutonCommand> _autonChooser = new SendableChooser<BeakAutonCommand>();
 
@@ -82,6 +83,7 @@ public class RobotContainer {
     AutoConstants.AUTON_THETA_CONTROLLER.enableContinuousInput(-Math.PI, Math.PI);
     // Configure the button bindings
     runInfeed = new RunInfeedSingulatorMotors();
+    runShooter = new RunShooterMotors();
     configureButtonBindings();
     //Init Auton Chooser
     initAutonChooser();
@@ -113,7 +115,7 @@ public class RobotContainer {
     // ========= OPERATOR CONTROLLER =======
     m_operatorController.a.whenPressed(new RunConveyorTwoBall());
     m_operatorController.b.whenPressed(new RunConveyorOneBall());
-    m_operatorController.x.toggleWhenPressed(new RunShooterMotors());
+    m_operatorController.x.toggleWhenPressed(runShooter);
     m_operatorController.y.toggleWhenPressed(runInfeed);
     m_operatorController.start.whenPressed(new SetInfeedUp());
     m_operatorController.back.whenPressed(new AcceptLimelightDistance());
@@ -160,6 +162,7 @@ public class RobotContainer {
     // THIS IS ALL WORKING, DON'T CHANGE ANY OF THE COMMANDS
     climberController.back.whenPressed(new MoveArm(0.9, 153));
     climberController.back.whenPressed(new InstantCommand(() -> Infeed.getInstance().setInfeedDown()));
+    climberController.back.whenPressed(new InstantCommand(() -> runShooter.cancel()));
     climberController.ls.whenPressed(new MidToHigh());
     climberController.start.whenPressed(new MidBar());
 

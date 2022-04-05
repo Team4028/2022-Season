@@ -4,8 +4,6 @@
 
 package frc.robot.commands.auton;
 
-import org.ejml.ops.ConvertMatrixData;
-
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -13,10 +11,6 @@ import frc.robot.util;
 import frc.robot.Constants.VBusConstants;
 import frc.robot.commands.BeakAutonCommand;
 import frc.robot.commands.chassis.RotateDrivetrainToAngle;
-import frc.robot.commands.chassis.RotateDrivetrainToOdometryTargetAngle;
-import frc.robot.commands.conveyor.RunConveyor;
-import frc.robot.commands.shooter.DecrementShooterIndex;
-import frc.robot.commands.shooter.IncrementShooterIndex;
 import frc.robot.commands.shooter.ResetDefaultIndex;
 import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.Infeed;

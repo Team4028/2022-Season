@@ -16,7 +16,7 @@ public class Limelight extends SubsystemBase {
   private int distEstIters = 0;
   private double distEst, distEstTotal;
 
-  private double kDistIters = 20;
+  private double kDistIters = 3;
 
   private static Limelight _instance = new Limelight();
 
@@ -128,11 +128,11 @@ public class Limelight extends SubsystemBase {
           LimelightConstants.kMountHeight;
       double goalAngle = (LimelightConstants.kMountAngle + getY()) *
           (3.14159 / 180.);
-      double yawComp = getX() * (3.14159 / 180.);
+    //   double yawComp = getX() * (3.14159 / 180.);
 
       double dist = heightDelta /
-          (Math.tan(goalAngle) *
-              Math.cos(yawComp));
+          (Math.tan(goalAngle) /**
+              Math.cos(yawComp)*/);
 
       distEstTotal += (dist + 22 + 26);
       distEstIters++;

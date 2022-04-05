@@ -8,54 +8,50 @@ import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.HttpCamera;
 import edu.wpi.first.cscore.VideoSink;
 import edu.wpi.first.cscore.HttpCamera.HttpCameraKind;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.VisionConstants;
 
 public class Vision extends SubsystemBase {
-  private static Vision _instance = new Vision();
-  HttpCamera infeedCam, shooterCam;
-  boolean useInfeedCam = true;
+    private static Vision _instance = new Vision();
+    HttpCamera infeedCam, shooterCam;
+    boolean useInfeedCam = true;
 
-  VideoSink dashCam;
+    VideoSink dashCam;
 
-  /** Creates a new Vision. */
-  public Vision() {
-    infeedCam = new HttpCamera("infeedCamera", VisionConstants.kCamera1Url, HttpCameraKind.kMJPGStreamer);
-    shooterCam = new HttpCamera("shooterCamera", VisionConstants.kCamera2Url, HttpCameraKind.kMJPGStreamer);
+    /** Creates a new Vision. */
+    public Vision() {
+        infeedCam = new HttpCamera("infeedCamera", VisionConstants.kCamera1Url, HttpCameraKind.kMJPGStreamer);
+        shooterCam = new HttpCamera("shooterCamera", VisionConstants.kCamera2Url, HttpCameraKind.kMJPGStreamer);
 
-    dashCam = CameraServer.addSwitchedCamera("Dashboard Cam");
-    setInfeedCamera();
+        dashCam = CameraServer.addSwitchedCamera("Dashboard Cam");
+        setInfeedCamera();
+    }
 
-  }
+    public void toggleCam() {
+        useInfeedCam = !useInfeedCam;
+        if (useInfeedCam) {
+            dashCam.setSource(infeedCam);
+        } else {
+            dashCam.setSource(shooterCam);
+        }
+    }
 
-  public void toggleCam() {
-    useInfeedCam = !useInfeedCam;
-    if (useInfeedCam) {
-        dashCam.setSource(infeedCam);
-    } else {
+    public void setShooterCamera() {
+        useInfeedCam = false;
         dashCam.setSource(shooterCam);
     }
-  }
 
-  public void setShooterCamera() {
-      useInfeedCam = false;
-      dashCam.setSource(shooterCam);
-  }
+    public void setInfeedCamera() {
+        useInfeedCam = true;
+        dashCam.setSource(infeedCam);
+    }
 
-  public void setInfeedCamera() {
-    useInfeedCam = true;
-    dashCam.setSource(infeedCam);
-  }
+    public static Vision getInstance() {
+        return _instance;
+    }
 
-  public static Vision getInstance() {
-    return _instance;
-  }
-
-  @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
-  }
+    @Override
+    public void periodic() {
+        // This method will be called once per scheduler run
+    }
 }

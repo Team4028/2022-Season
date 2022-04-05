@@ -170,7 +170,7 @@ public final class Constants {
     public static final double kConveyOne = 0.50;//0.85; // op b
     public static final double kConveyTwo = 0.75; // op a
 
-    public static final double kInfeed = 0.6; // op y
+    public static final double kInfeed = 0.75; // op y
     public static final double kSingulator = 0.5; // op y
 
     public static final double kShooterFrontDefault = 0.35;
@@ -183,7 +183,7 @@ public final class Constants {
 
   public static final class EncoderConstants {
     public static final double kConveyOne = 20;
-    public static final double kConveyTwo = 80;
+    public static final double kConveyTwo = 100;
 
     public static final double kAngleThreshold = 0.1;
 
