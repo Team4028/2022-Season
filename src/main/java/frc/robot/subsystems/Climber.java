@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CurrentLimitConstants;
+import frc.robot.Constants.RampRateConstants;
 import frc.robot.Constants.SubsystemConstants;
 import frc.robot.Constants.VBusConstants;
 
@@ -29,9 +30,7 @@ public class Climber extends SubsystemBase {
   private RelativeEncoder _leftEncoder;
   private RelativeEncoder _rightEncoder;
 
-  private boolean leftEncoderFinished = false, rightEncoderFinished = false;
-
-  /** Creates a new Climber. */
+  /** Creates a new cry about it. */
   public Climber() {
     _tippy = new Solenoid(PneumaticsModuleType.CTREPCM, SubsystemConstants.TIPPY_SOLENOID_ID);
     _grippy = new Solenoid(PneumaticsModuleType.CTREPCM, SubsystemConstants.GRIPPY_SOLENOID_ID);
@@ -48,8 +47,8 @@ public class Climber extends SubsystemBase {
     _left.setIdleMode(IdleMode.kBrake);
     _right.setIdleMode(IdleMode.kBrake);
 
-    _left.setOpenLoopRampRate(0.1);
-    _right.setOpenLoopRampRate(0.1);
+    _left.setOpenLoopRampRate(RampRateConstants.kClimber);
+    _right.setOpenLoopRampRate(RampRateConstants.kClimber);
 
     _leftEncoder = _left.getEncoder();
     _rightEncoder = _right.getEncoder();
@@ -114,22 +113,6 @@ public class Climber extends SubsystemBase {
 
   public void rightMotorOff() {
     _right.set(0.);
-  }
-
-  public boolean getLeftEncoderFinished() {
-    return leftEncoderFinished;
-  }
-
-  public boolean getRightEncoderFinished() {
-    return rightEncoderFinished;
-  }
-
-  public void setLeftEncoderFinished(boolean value) {
-    leftEncoderFinished = value;
-  }
-
-  public void setRightEncoderFinished(boolean value) {
-    rightEncoderFinished = value;
   }
 
   public void resetEncoders() {

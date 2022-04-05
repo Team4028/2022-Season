@@ -277,4 +277,8 @@ public final class Constants {
     public static final int kConveyor = 20;
     public static final int kAngle = 10;
   }
+
+  public static final class RampRateConstants {
+      public static final double kClimber = 0.1;
+  }
 }
