@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -61,6 +62,8 @@ public class RobotContainer {
   private final DriveSubsystem m_robotDrive = DriveSubsystem.getInstance();
   private final RunInfeedSingulatorMotors runInfeed;
   private final RunShooterMotors runShooter;
+  private SlewRateLimiter driveXLimiter;
+  private SlewRateLimiter driveYLimiter;
   private static RobotContainer _instance;
   private SendableChooser<BeakAutonCommand> _autonChooser = new SendableChooser<BeakAutonCommand>();
 
@@ -84,6 +87,8 @@ public class RobotContainer {
     // Configure the button bindings
     runInfeed = new RunInfeedSingulatorMotors();
     runShooter = new RunShooterMotors();
+    driveXLimiter = new SlewRateLimiter(6.);
+    driveYLimiter = new SlewRateLimiter(6.);
     configureButtonBindings();
     //Init Auton Chooser
     initAutonChooser();
@@ -190,10 +195,10 @@ public class RobotContainer {
     return util.speedscaleDrive(-util.deadband(m_driverController.getRightXAxis()), DriveConstants.BASE_SPEED_SCALE, getRightTrigger());
   }
   public double getSpeedScaledDriverLeftX(){
-    return util.speedscaleDrive(-util.deadband(m_driverController.getLeftXAxis()), DriveConstants.BASE_SPEED_SCALE, getRightTrigger());
+    return driveXLimiter.calculate(util.speedscaleDrive(-util.deadband(m_driverController.getLeftXAxis()), DriveConstants.BASE_SPEED_SCALE, getRightTrigger()));
   }
   public double getSpeedScaledDriverLeftY(){
-    return util.speedscaleDrive(-util.deadband(m_driverController.getLeftYAxis()), DriveConstants.BASE_SPEED_SCALE, getRightTrigger());
+    return driveYLimiter.calculate(util.speedscaleDrive(-util.deadband(m_driverController.getLeftYAxis()), DriveConstants.BASE_SPEED_SCALE, getRightTrigger()));
   }
 
   private void initAutonChooser(){

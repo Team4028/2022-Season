@@ -215,6 +215,15 @@ public class DriveSubsystem extends SubsystemBase {
     m_rearRight.setDesiredState(desiredStates[3]);
   }
 
+  public SwerveModuleState[] getModuleStates(){
+    return new SwerveModuleState[]{
+      m_frontLeft.getState(),
+      m_frontRight.getState(),
+      m_rearLeft.getState(),
+      m_rearRight.getState()
+    };
+  }
+
 
   /** Resets the drive encoders to currently read a position of 0. */
   public void resetEncoders() {
