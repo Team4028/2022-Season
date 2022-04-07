@@ -19,12 +19,13 @@ import frc.robot.subsystems.Limelight;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class RotateDrivetrainByLimelightAngle extends ProfiledPIDCommand {
   /** Creates a new RotateDrivetrainByLimelightAngle. */
-  public RotateDrivetrainByLimelightAngle() {
+  private boolean continuous;
+  public RotateDrivetrainByLimelightAngle(boolean continuous) {
     super(
         // The ProfiledPIDController used by the command
         new ProfiledPIDController(
             // The PID gains
-            AutoConstants.kPThetaController * .75,
+            AutoConstants.kPThetaController * .85,
             0.0,
             0.0,
             // The motion profile constraints
@@ -39,8 +40,8 @@ public class RotateDrivetrainByLimelightAngle extends ProfiledPIDCommand {
           DriveSubsystem.getInstance().setModuleStates(
             DriveConstants.kDriveKinematics.toSwerveModuleStates(
             ChassisSpeeds.fromFieldRelativeSpeeds(
-              RobotContainer.getInstance().getSpeedScaledDriverLeftY(),
-              RobotContainer.getInstance().getSpeedScaledDriverLeftX(),
+              DriveConstants.kMaxSpeedMetersPerSecond * RobotContainer.getInstance().getSpeedScaledDriverLeftY(),
+              DriveConstants.kMaxSpeedMetersPerSecond * RobotContainer.getInstance().getSpeedScaledDriverLeftX(),
               output + setpoint.velocity,
               DriveSubsystem.getInstance().getPose().getRotation())));
         });
@@ -48,12 +49,17 @@ public class RotateDrivetrainByLimelightAngle extends ProfiledPIDCommand {
     // Configure additional PID options by calling `getController` here.
     addRequirements(DriveSubsystem.getInstance(), Limelight.getInstance());
     getController().enableContinuousInput(-Math.PI, Math.PI);
-    getController().setTolerance(Units.degreesToRadians(.5));
+    getController().setTolerance(Units.degreesToRadians(1.0));
+    this.continuous = continuous;
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return getController().atGoal();
+    if(!continuous){
+      return getController().atGoal();
+    } else{
+      return false;
+    }
   }
 }

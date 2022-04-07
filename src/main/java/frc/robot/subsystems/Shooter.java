@@ -199,7 +199,7 @@ public class Shooter extends SubsystemBase {
     }
 
     public void acceptLimelight() {
-        shooterIndex = limelightDistance;
+        shooterIndex = _l.willTestDistance();
     }
 
     public void resetIndex() {

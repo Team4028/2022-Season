@@ -38,7 +38,7 @@ public class Limelight extends SubsystemBase {
 
   /** Creates a new Limelight. */
   public Limelight() {
-    setPipeline(4);
+    setPipeline(0);
     setPictureInPicture(0);
     setLedMode(1);
   }
@@ -47,7 +47,6 @@ public class Limelight extends SubsystemBase {
     return tx.getDouble(0);
   }
   public double getXForRot(){
-    System.out.println("getting tx for rot comm");
     return tx.getDouble(0.0);
   }
 
@@ -140,6 +139,19 @@ public class Limelight extends SubsystemBase {
     return distEst;
   }
 
+  public double willTestDistance(){
+    double heightDelta = LimelightConstants.kTargetHeight -
+    LimelightConstants.kMountHeight;
+    double goalAngle = (LimelightConstants.kMountAngle + getY()) *
+    (3.14159 / 180.);
+    double dist = heightDelta /
+    (Math.tan(goalAngle));
+    if(getHasTarget()){
+      put("Test Distance", (dist + 22 + 26) / 12.0);
+    }
+    return (dist + 22 + 26) / 12.0;
+  }
+
   public void putTargetValues() {
     put("Target X Offset", entry("tx").getDouble(0.));
     // put("Target Y Offset", entry("ty").getDouble(0.));
@@ -178,5 +190,6 @@ public class Limelight extends SubsystemBase {
     // } else {
     //   updateCycles++;
     // }
+    willTestDistance();
   }
 }

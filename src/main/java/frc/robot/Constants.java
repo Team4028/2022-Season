@@ -200,15 +200,15 @@ public final class Constants {
     public static final double kMaxAllowedAngle = 33.;
 
     public static final boolean kIsVBus = true;
-    public static final boolean kIsRealGoal = true;
+    public static final boolean kIsRealGoal = false;
 
     public static final double kVoltageCompensation = 11.;
   }
 
   public static final class LimelightConstants {
-    public static final double kTargetHeight = ShooterConstants.kIsRealGoal ? 104. : 88.;
-    public static final double kMountHeight = 21.5;
-    public static final double kMountAngle = 30.5;
+    public static final double kTargetHeight = ShooterConstants.kIsRealGoal ? 104. : 85.;
+    public static final double kMountHeight = 21;
+    public static final double kMountAngle = 29.4;//30.5;
   }
 
   public static final class VisionConstants {

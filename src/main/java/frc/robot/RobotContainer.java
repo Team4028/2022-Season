@@ -42,6 +42,7 @@ import frc.robot.commands.infeed.ToggleInfeedUp;
 import frc.robot.commands.shooter.AcceptLimelightDistance;
 import frc.robot.commands.shooter.DecrementShooterIndex;
 import frc.robot.commands.shooter.IncrementShooterIndex;
+import frc.robot.commands.shooter.MagicShootCommand;
 import frc.robot.commands.shooter.ResetDefaultIndex;
 import frc.robot.commands.shooter.RunShooterMotors;
 import frc.robot.commands.vision.ToggleCamera;
@@ -120,7 +121,8 @@ public class RobotContainer {
     // ========= OPERATOR CONTROLLER =======
     m_operatorController.a.whenPressed(new RunConveyorTwoBall());
     m_operatorController.b.whenPressed(new RunConveyorOneBall());
-    m_operatorController.x.toggleWhenPressed(runShooter);
+    //m_operatorController.x.toggleWhenPressed(runShooter);
+    m_operatorController.x.toggleWhenPressed(new MagicShootCommand());
     m_operatorController.y.toggleWhenPressed(runInfeed);
     m_operatorController.start.whenPressed(new SetInfeedUp());
     m_operatorController.back.whenPressed(new AcceptLimelightDistance());
@@ -134,13 +136,15 @@ public class RobotContainer {
 
     // ======== DRIVER CONTROLLER ========
     m_driverController.a.whenPressed(new ToggleLEDMode());
-    m_driverController.x.toggleWhenPressed(new XDrive());
+    //m_driverController.x.toggleWhenPressed(new XDrive());
+    m_driverController.x.toggleWhenPressed(new MagicShootCommand());
     m_driverController.y.toggleWhenPressed(runInfeed);
     m_driverController.start.whenPressed(new InstantCommand(() -> m_robotDrive.zeroHeading()));
     m_driverController.lb.toggleWhenPressed(new ReverseInfeedAndConveyor());
     m_driverController.rb.whenPressed(new ToggleInfeedUp());
-    m_driverController.lt.whileActiveContinuous(runInfeed);
-    m_driverController.rs.toggleWhenPressed(new RotateDrivetrainByLimelightAngle().withTimeout(2.0));
+    //m_driverController.lt.whileActiveContinuous(runInfeed);
+    m_driverController.rs.toggleWhenPressed(new RotateDrivetrainByLimelightAngle(false).withTimeout(2.0));
+    m_driverController.lt.whileActiveContinuous(new RotateDrivetrainByLimelightAngle(true));
     m_driverController.ls.whenPressed(new ToggleCamera());
     m_driverController.b.toggleWhenPressed(new RotateDrivetrainToOdometryTargetAngle());
     // ===================================
