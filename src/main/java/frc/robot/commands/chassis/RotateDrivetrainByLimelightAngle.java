@@ -6,6 +6,8 @@ package frc.robot.commands.chassis;
 
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.ProfiledPIDCommand;
 import frc.robot.RobotContainer;
@@ -37,13 +39,14 @@ public class RotateDrivetrainByLimelightAngle extends ProfiledPIDCommand {
         // This uses the output
         (output, setpoint) -> {
           // Use the output (and setpoint, if desired) here
-          DriveSubsystem.getInstance().setModuleStates(
-            DriveConstants.kDriveKinematics.toSwerveModuleStates(
+          SwerveModuleState[] states = DriveConstants.kDriveKinematics.toSwerveModuleStates(
             ChassisSpeeds.fromFieldRelativeSpeeds(
-              DriveConstants.kMaxSpeedMetersPerSecond * RobotContainer.getInstance().getSpeedScaledDriverLeftY(),
-              DriveConstants.kMaxSpeedMetersPerSecond * RobotContainer.getInstance().getSpeedScaledDriverLeftX(),
+              DriveConstants.i_kMaxSpeedMetersPerSecond * RobotContainer.getInstance().getSpeedScaledDriverLeftY(),
+              DriveConstants.i_kMaxSpeedMetersPerSecond * RobotContainer.getInstance().getSpeedScaledDriverLeftX(),
               output + setpoint.velocity,
-              DriveSubsystem.getInstance().getPose().getRotation())));
+              DriveSubsystem.getInstance().getPose().getRotation()));
+          SwerveDriveKinematics.desaturateWheelSpeeds(states, DriveConstants.i_kMaxSpeedMetersPerSecond);
+          DriveSubsystem.getInstance().setModuleStates(states);
         });
     // Use addRequirements() here to declare subsystem dependencies.
     // Configure additional PID options by calling `getController` here.

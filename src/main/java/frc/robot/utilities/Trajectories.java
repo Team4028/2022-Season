@@ -119,6 +119,34 @@ public class Trajectories {
         0.5 * kMaxAccelerationMetersPerSecondSquared
         );
     }
+    public static PathPlannerTrajectory TwoBall_TopHangarDisposalFirstOpponentBall(){
+        return PathPlanner.loadPath(
+            "TwoBall_TopHangarDisposalFirstOpponentBall",
+        0.75 * kMaxSpeedMetersPerSecond,
+        0.75 * kMaxAccelerationMetersPerSecondSquared
+        );
+    }
+    public static PathPlannerTrajectory TwoBall_TopHangarDisposalSecondOpponentBall(){
+        return PathPlanner.loadPath(
+            "TwoBall_TopHangarDisposalSecondOpponentBall",
+        0.75 * kMaxSpeedMetersPerSecond,
+        0.75 * kMaxAccelerationMetersPerSecondSquared
+        );
+    }
+    public static PathPlannerTrajectory TwoBall_TopTrussDisposalSecond(){
+        return PathPlanner.loadPath(
+            "TwoBall_TopTrussDisposalSecond",
+        0.75 * kMaxSpeedMetersPerSecond,
+        0.75 * kMaxAccelerationMetersPerSecondSquared
+        );
+    }
+    public static PathPlannerTrajectory TwoBall_TopTrussDispose(){
+        return PathPlanner.loadPath(
+            "TwoBall_TopTrussDispose",
+        0.75 * kMaxSpeedMetersPerSecond,
+        0.75 * kMaxAccelerationMetersPerSecondSquared
+        );
+    }
     public static PathPlannerTrajectory TwoBall_Middle(){
         return PathPlanner.loadPath(
             "TwoBall_Middle",

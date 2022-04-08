@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.chassis.RotateDrivetrainByLimelightAngle;
 import frc.robot.commands.conveyor.RunConveyorTwoBall;
+import frc.robot.subsystems.Limelight;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
@@ -32,5 +33,9 @@ public class MagicShootCommand extends SequentialCommandGroup {
           new RotateDrivetrainByLimelightAngle(true)
         )
     );
+  }
+  @Override
+  public boolean isFinished(){
+    return super.isFinished() || !Limelight.getInstance().getHasTarget();
   }
 }

@@ -24,6 +24,8 @@ import frc.robot.commands.auton.TwoBallBottomAuton;
 import frc.robot.commands.auton.TwoBallMiddleAuton;
 import frc.robot.commands.auton.TwoBallTopAuton;
 import frc.robot.commands.auton.TwoBallTopGetOutOfTheWayAuton;
+import frc.robot.commands.auton.TwoBallTopHangarDisposal;
+import frc.robot.commands.auton.TwoBallTopTrussDisposal;
 import frc.robot.commands.auton.TwoBallMiddleGetOutOfTheWayAuton;
 import frc.robot.commands.chassis.RotateDrivetrainByLimelightAngle;
 import frc.robot.commands.chassis.RotateDrivetrainToOdometryTargetAngle;
@@ -88,8 +90,8 @@ public class RobotContainer {
     // Configure the button bindings
     runInfeed = new RunInfeedSingulatorMotors();
     runShooter = new RunShooterMotors();
-    driveXLimiter = new SlewRateLimiter(6.);
-    driveYLimiter = new SlewRateLimiter(6.);
+    driveXLimiter = new SlewRateLimiter(6.0);
+    driveYLimiter = new SlewRateLimiter(6.0);
     configureButtonBindings();
     //Init Auton Chooser
     initAutonChooser();
@@ -142,9 +144,9 @@ public class RobotContainer {
     m_driverController.start.whenPressed(new InstantCommand(() -> m_robotDrive.zeroHeading()));
     m_driverController.lb.toggleWhenPressed(new ReverseInfeedAndConveyor());
     m_driverController.rb.whenPressed(new ToggleInfeedUp());
-    //m_driverController.lt.whileActiveContinuous(runInfeed);
+    m_driverController.lt.whileActiveContinuous(runInfeed);
     m_driverController.rs.toggleWhenPressed(new RotateDrivetrainByLimelightAngle(false).withTimeout(2.0));
-    m_driverController.lt.whileActiveContinuous(new RotateDrivetrainByLimelightAngle(true));
+    // m_driverController.lt.whileActiveContinuous(new RotateDrivetrainByLimelightAngle(true));
     m_driverController.ls.whenPressed(new ToggleCamera());
     m_driverController.b.toggleWhenPressed(new RotateDrivetrainToOdometryTargetAngle());
     // ===================================
@@ -215,6 +217,8 @@ public class RobotContainer {
     _autonChooser.addOption("Middle Two Ball (Get Out Of The Way)", new TwoBallMiddleGetOutOfTheWayAuton());
     _autonChooser.addOption("Middle Two Ball", new TwoBallMiddleAuton());    
     _autonChooser.addOption("Bottom Two Ball", new TwoBallBottomAuton());
+    _autonChooser.addOption("Two Ball Top Hangar Disposal", new TwoBallTopHangarDisposal());
+    _autonChooser.addOption("Two Ball Top Truss Disposal", new TwoBallTopTrussDisposal());
   }
   
 

@@ -72,7 +72,7 @@ public final class Constants {
         kvVoltSecondsPerMeter,
         kaVoltSecondsSquaredPerMeter);
 
-    public static final double kMaxSpeedMetersPerSecond = Units.feetToMeters(12.0);
+    public static final double kMaxSpeedMetersPerSecond = Units.feetToMeters(16.3);
     public static final double i_kMaxSpeedMetersPerSecond = Units.feetToMeters(16.3);
   }
 
@@ -85,10 +85,10 @@ public final class Constants {
     public static final double i_kMaxModuleAngularSpeedRadiansPerSecond = 2 * Math.PI;
     public static final double i_kMaxModuleAngularAccelerationRadiansPerSecondSquared = 2 * Math.PI;
 
-    public static final double i_integratedEncoderTicksPerModRev = 2048 * (150.0 / 7.0);
+    public static final double i_integratedEncoderTicksPerModRev = 2048.0 * (150.0 / 7.0);
 
     public static final int i_kEncoderCPR = 4096;
-    public static final double i_kWheelDiameterMeters = Units.inchesToMeters(3.9);//Units.inchesToMeters(4.0);
+    public static final double i_kWheelDiameterMeters = Units.inchesToMeters(3.85);//Units.inchesToMeters(4.0);
     public static final double i_kDriveEncoderDistancePerPulse =
         // Assumes the encoders are directly mounted on the wheel shafts
         (i_kWheelDiameterMeters * Math.PI) * (1.0 / (50.0 / 14.0) / (17.0 / 27.0) / (45.0 / 15.0)) / 2048.0;
