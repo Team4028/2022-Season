@@ -171,7 +171,7 @@ public class RobotContainer {
       .whenReleased(new InstantCommand(() -> climber.leftMotorOff()));
 
     // THIS IS ALL WORKING, DON'T CHANGE ANY OF THE COMMANDS
-    climberController.back.whenPressed(new MoveArm(0.9, 153));
+    climberController.back.whenPressed(new MoveArm(0.9, 122.4));
     climberController.back.whenPressed(new InstantCommand(() -> Infeed.getInstance().setInfeedDown()));
     climberController.back.whenPressed(new InstantCommand(() -> runShooter.cancel()));
     climberController.ls.whenPressed(new MidToHigh());

@@ -21,13 +21,13 @@ public class HighBar extends SequentialCommandGroup {
     addCommands(
     new InstantCommand(() -> Infeed.getInstance().setInfeedUp()),
     new WaitCommand(0.5),
-    new MoveArm(-VBusConstants.kClimberFast, 50), // pull down to high
+    new MoveArm(-VBusConstants.kClimberFast, 40), // pull down to high
     new WaitCommand(1), 
-    new MoveArm(VBusConstants.kClimberSlow, 75), //slowly up until tippy clears
+    new MoveArm(VBusConstants.kClimberSlow, 60), //slowly up until tippy clears
     new WaitCommand(.25),  
-    new MoveArm(-VBusConstants.kClimberFast, 20), // pulls down until tippy releases
+    new MoveArm(-VBusConstants.kClimberFast, 16), // pulls down until tippy releases
     new WaitCommand(.25), 
-    new MoveArm(VBusConstants.kClimberSlow, 80),
+    new MoveArm(VBusConstants.kClimberSlow, 64),
     new WaitCommand(0.25),
     new InstantCommand(() -> Infeed.getInstance().setInfeedDown())
     );
