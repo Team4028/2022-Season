@@ -122,9 +122,10 @@ public class RobotContainer {
   private void configureButtonBindings() {
     // ========= OPERATOR CONTROLLER =======
     m_operatorController.a.whenPressed(new RunConveyorTwoBall());
-    m_operatorController.b.whenPressed(new RunConveyorOneBall());
+    //m_operatorController.b.whenPressed(new RunConveyorOneBall());
     //m_operatorController.x.toggleWhenPressed(runShooter);
-    m_operatorController.x.toggleWhenPressed(new MagicShootCommand());
+    m_operatorController.b.whileActiveOnce(runShooter);
+    m_operatorController.x.whileActiveOnce(new MagicShootCommand());
     m_operatorController.y.toggleWhenPressed(runInfeed);
     m_operatorController.start.whenPressed(new SetInfeedUp());
     m_operatorController.back.whenPressed(new AcceptLimelightDistance());
@@ -139,7 +140,7 @@ public class RobotContainer {
     // ======== DRIVER CONTROLLER ========
     m_driverController.a.whenPressed(new ToggleLEDMode());
     //m_driverController.x.toggleWhenPressed(new XDrive());
-    m_driverController.x.toggleWhenPressed(new MagicShootCommand());
+    m_driverController.x.whileActiveOnce(new MagicShootCommand());
     m_driverController.y.toggleWhenPressed(runInfeed);
     m_driverController.start.whenPressed(new InstantCommand(() -> m_robotDrive.zeroHeading()));
     m_driverController.lb.toggleWhenPressed(new ReverseInfeedAndConveyor());

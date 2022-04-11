@@ -20,6 +20,7 @@ public class Conveyor extends SubsystemBase {
   private RelativeEncoder _enc;
   private double encoderOffset = 0;
   private static Conveyor _instance;
+  private boolean isRunning = false;
 
   public static Conveyor getInstance() {
     if (_instance ==null){
@@ -74,6 +75,12 @@ public class Conveyor extends SubsystemBase {
 
   public boolean getIsTargetReached() {
     return isTargetReached;
+  }
+  public boolean getIsRunning(){
+    return isRunning;
+  }
+  public void setIsRunning(boolean set){
+    isRunning = set;
   }
 
   @Override
