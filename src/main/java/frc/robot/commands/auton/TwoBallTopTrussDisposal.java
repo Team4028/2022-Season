@@ -4,15 +4,12 @@
 
 package frc.robot.commands.auton;
 
-import frc.robot.commands.BeakAutonCommand;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.util;
 import frc.robot.commands.BeakAutonCommand;
 import frc.robot.commands.chassis.RotateDrivetrainToAngle;
-import frc.robot.commands.conveyor.ReverseInfeedAndConveyor;
 import frc.robot.commands.conveyor.RunConveyor;
 import frc.robot.commands.conveyor.SlowOutfeedAndConveyor;
 import frc.robot.subsystems.Infeed;
