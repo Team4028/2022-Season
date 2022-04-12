@@ -35,6 +35,8 @@ public class Shooter extends SubsystemBase {
     private RelativeEncoder _angleEnc;
     private SparkMaxPIDController _anglePid;
 
+    private boolean isShotValidation;
+
     private Limelight _l;
     private ShooterTable _st = ShooterTable.getPrimaryTable();
     double limelightDistance, manualIndex, shooterIndex = ShooterConstants.kIndexDefault;
@@ -101,6 +103,8 @@ public class Shooter extends SubsystemBase {
 
         _front.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 100);
         _back.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 100);
+
+        isShotValidation = false;
     }
 
     public void update() {
@@ -183,18 +187,18 @@ public class Shooter extends SubsystemBase {
 
     public void incrementIndex(boolean fine) {
         if (fine) {
-            shooterIndex += ShooterConstants.kFineAdjustment;
+            manualIndex += ShooterConstants.kFineAdjustment;
         } else {
-            shooterIndex += ShooterConstants.kCoarseAdjustment;
+            manualIndex += ShooterConstants.kCoarseAdjustment;
         }
         update();
     }
 
     public void decrementIndex(boolean fine) {
         if (fine) {
-            shooterIndex -= ShooterConstants.kFineAdjustment;
+            manualIndex -= ShooterConstants.kFineAdjustment;
         } else {
-            shooterIndex -= ShooterConstants.kCoarseAdjustment;
+            manualIndex -= ShooterConstants.kCoarseAdjustment;
         }
         update();
     }
@@ -205,16 +209,20 @@ public class Shooter extends SubsystemBase {
     }
     public void setManualIndex(){
         if(!longshot){
-            if (manualCounter() % 2 == 0){
+            if (manualCounter() % 3 == 0){
+                manualIndex = 7.0;
+            } else if(manualCounter() % 3 == 2) {
                 manualIndex = 10.0;
             } else{
-                manualIndex = 7;
+                manualIndex = 12.5;
             }
         }else{
-            if (manualCounter() % 2 == 0){
+            if (manualCounter() % 3 == 0){
+                manualIndex = 21.0;
+            } else if(manualCounter() % 3 == 2){
                 manualIndex = 17.0;
             } else{
-                manualIndex = 12.5;
+                manualIndex = 15.0;
             }
         }
     }
@@ -245,6 +253,15 @@ public class Shooter extends SubsystemBase {
     public void resetCounter(){
         manualCounter = 0;
     }
+    public void setIsShotValidation(boolean isShotValidation){
+        this.isShotValidation = isShotValidation;
+    }
+    public void toggleIsShotValidation(){
+        this.isShotValidation = !this.isShotValidation;
+    }
+    public boolean getIsShotValidation(){
+        return isShotValidation;
+    }
 
     public static Shooter getInstance() {
         return _instance;
@@ -261,6 +278,6 @@ public class Shooter extends SubsystemBase {
         // This method will be called once per scheduler run
         // System.out.println(_angle.getOutputCurrent());
         SmartDashboard.putNumber("Manual Index", manualIndex());
-        SmartDashboard.putNumber("Manual counter", manualCounter());
+        SmartDashboard.putBoolean("Shot Validation", getIsShotValidation());
     }
 }

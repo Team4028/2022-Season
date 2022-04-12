@@ -9,16 +9,13 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
-import frc.robot.Constants.ShooterConstants;
+import frc.robot.commands.BeakAutonCommand;
 import frc.robot.commands.auton.AutonTimer;
 import frc.robot.commands.auton.FiveBallAuton;
 import frc.robot.commands.auton.FiveBallBackupAuton;
@@ -26,14 +23,12 @@ import frc.robot.commands.auton.FourBallAuton;
 import frc.robot.commands.auton.FourBallBackupAuton;
 import frc.robot.commands.auton.TwoBallBottomAuton;
 import frc.robot.commands.auton.TwoBallMiddleAuton;
+import frc.robot.commands.auton.TwoBallMiddleGetOutOfTheWayAuton;
 import frc.robot.commands.auton.TwoBallTopAuton;
 import frc.robot.commands.auton.TwoBallTopGetOutOfTheWayAuton;
 import frc.robot.commands.auton.TwoBallTopHangarDisposal;
 import frc.robot.commands.auton.TwoBallTopTrussDisposal;
-import frc.robot.commands.auton.TwoBallMiddleGetOutOfTheWayAuton;
 import frc.robot.commands.chassis.RotateDrivetrainByLimelightAngle;
-import frc.robot.commands.chassis.RotateDrivetrainToOdometryTargetAngle;
-import frc.robot.commands.chassis.XDrive;
 import frc.robot.commands.climber.HighBar;
 import frc.robot.commands.climber.LeftZeroSequence;
 import frc.robot.commands.climber.MidBar;
@@ -41,9 +36,7 @@ import frc.robot.commands.climber.MidToHigh;
 import frc.robot.commands.climber.MoveArm;
 import frc.robot.commands.climber.RightZeroSequence;
 import frc.robot.commands.conveyor.ReverseInfeedAndConveyor;
-import frc.robot.commands.conveyor.RunConveyorOneBall;
 import frc.robot.commands.conveyor.RunConveyorTwoBall;
-import frc.robot.commands.BeakAutonCommand;
 import frc.robot.commands.infeed.RunInfeedSingulatorMotors;
 import frc.robot.commands.infeed.SetInfeedUp;
 import frc.robot.commands.infeed.ToggleInfeedUp;
@@ -51,7 +44,6 @@ import frc.robot.commands.shooter.AcceptLimelightDistance;
 import frc.robot.commands.shooter.DecrementShooterIndex;
 import frc.robot.commands.shooter.IncrementShooterIndex;
 import frc.robot.commands.shooter.MagicShootCommand;
-import frc.robot.commands.shooter.ResetDefaultIndex;
 import frc.robot.commands.shooter.RunShooterMotors;
 import frc.robot.commands.shooter.RunShootersManual;
 import frc.robot.commands.shooter.SetLongShot;
@@ -59,8 +51,10 @@ import frc.robot.commands.shooter.SetShortShot;
 import frc.robot.commands.vision.ToggleCamera;
 import frc.robot.commands.vision.ToggleLEDMode;
 import frc.robot.subsystems.Climber;
+import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.Infeed;
+import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Shooter;
 
 /*
@@ -71,9 +65,19 @@ import frc.robot.subsystems.Shooter;
  */
 public class RobotContainer {
   // The robot's subsystems
-  private final DriveSubsystem m_robotDrive = DriveSubsystem.getInstance();
+  private final DriveSubsystem m_drive = DriveSubsystem.getInstance();
+  private final Shooter m_shooter = Shooter.getInstance();
+  private final Infeed m_infeed = Infeed.getInstance();
+  private final Limelight m_limelight = Limelight.getInstance();
+  private final Conveyor m_conveyor = Conveyor.getInstance();
+  private final Climber m_climber = Climber.getInstance();
+
+
   private final RunInfeedSingulatorMotors runInfeed;
   private final RunShooterMotors runShooter;
+  private final SetLongShot setLongShotCommand;
+  private final SetShortShot setShortShotCommand;
+
   private SlewRateLimiter driveXLimiter;
   private SlewRateLimiter driveYLimiter;
   private static RobotContainer _instance;
@@ -86,7 +90,6 @@ public class RobotContainer {
     }
     return _instance;
   }
-  // private final Shooter m_shooter = Shooter.getInstance();
 
   // Controller Setup
   private BeakXBoxController m_driverController = new BeakXBoxController(OIConstants.kDriverControllerPort);
@@ -100,6 +103,9 @@ public class RobotContainer {
     // Configure the button bindings
     runInfeed = new RunInfeedSingulatorMotors();
     runShooter = new RunShooterMotors();
+    setLongShotCommand = new SetLongShot();
+    setShortShotCommand = new SetShortShot();
+
     driveXLimiter = new SlewRateLimiter(6.0);
     driveYLimiter = new SlewRateLimiter(6.0);
     configureButtonBindings();
@@ -108,16 +114,22 @@ public class RobotContainer {
     SmartDashboard.putData(_autonChooser);
 
     // Configure default commands
-    m_robotDrive.setDefaultCommand(
-        // The left stick controls translation of the robot.
-        // Turning is controlled by the X axis of the right stick.
+    m_drive.setDefaultCommand(
         new RunCommand(
-            () -> m_robotDrive.drive(
+            () -> m_drive.drive(
                 getSpeedScaledDriverLeftY(),
                 getSpeedScaledDriverLeftX(),
                 getSpeedScaledDriverRightX(),
                 () -> fieldOriented),
-            m_robotDrive));
+            m_drive
+          )
+      );
+    m_shooter.setDefaultCommand(
+      new RunCommand(
+        () -> m_shooter.setShooterIndex(m_shooter.manualIndex()),
+        m_shooter
+        )
+      );
   }
 
   /**
@@ -133,95 +145,84 @@ public class RobotContainer {
     // ========= OPERATOR CONTROLLER =======
     m_operatorController.a.whenPressed(new RunConveyorTwoBall());
     //m_operatorController.b.whenPressed(new RunConveyorOneBall());
-    //m_operatorController.x.toggleWhenPressed(runShooter);
     m_operatorController.b.whileActiveOnce(new RunShootersManual());
     m_operatorController.x.whileActiveOnce(new MagicShootCommand());
     m_operatorController.y.toggleWhenPressed(runInfeed);
     m_operatorController.start.whenPressed(new SetInfeedUp());
     m_operatorController.back.whenPressed(new AcceptLimelightDistance());
-    // m_operatorController.lb.whenPressed(new DecrementShooterIndex(false));
-    // m_operatorController.rb.whenPressed(new IncrementShooterIndex(false));
-    SetLongShot lbcommand = new SetLongShot();
-    SetShortShot rbcommand = new SetShortShot();
-    m_operatorController.lb.cancelWhenPressed(rbcommand).cancelWhenPressed(lbcommand).whenPressed(lbcommand);
-    m_operatorController.rb.cancelWhenPressed(lbcommand).cancelWhenPressed(rbcommand).whenPressed(rbcommand);
+    m_operatorController.lb.cancelWhenPressed(setShortShotCommand).cancelWhenPressed(setLongShotCommand).whenPressed(setLongShotCommand);
+    m_operatorController.rb.cancelWhenPressed(setLongShotCommand).cancelWhenPressed(setShortShotCommand).whenPressed(setShortShotCommand);
     m_operatorController.lt.whenActive(new DecrementShooterIndex(true));
     m_operatorController.rt.whenActive(new IncrementShooterIndex(true));
-    m_operatorController.ls.whenPressed(new ResetDefaultIndex());
-    m_operatorController.rs.whenPressed(new InstantCommand(() -> Shooter.getInstance().setShooterIndex(17)));
+    m_operatorController.ls.whenPressed(new InstantCommand(() -> m_shooter.toggleIsShotValidation()));
     // ====================================
 
     // ======== DRIVER CONTROLLER ========
     m_driverController.a.whenPressed(new ToggleLEDMode());
-    //m_driverController.x.toggleWhenPressed(new XDrive());
     m_driverController.back.whenPressed(new InstantCommand(() -> toggleFieldOriented()));
-    m_driverController.x.whileActiveOnce(new MagicShootCommand());
-    m_driverController.y.toggleWhenPressed(runInfeed);
-    m_driverController.start.whenPressed(new InstantCommand(() -> m_robotDrive.zeroHeading()));
+    m_driverController.x.whileActiveContinuous(new RotateDrivetrainByLimelightAngle(true));
+    m_driverController.start.whenPressed(new InstantCommand(() -> m_drive.zeroHeading()));
     m_driverController.lb.toggleWhenPressed(new ReverseInfeedAndConveyor());
     m_driverController.rb.whenPressed(new ToggleInfeedUp());
     m_driverController.lt.whileActiveContinuous(runInfeed);
     m_driverController.rs.toggleWhenPressed(new RotateDrivetrainByLimelightAngle(false).withTimeout(2.0));
-    // m_driverController.lt.whileActiveContinuous(new RotateDrivetrainByLimelightAngle(true));
     m_driverController.ls.whenPressed(new ToggleCamera());
-    m_driverController.b.toggleWhenPressed(new RotateDrivetrainToOdometryTargetAngle());
     // ===================================
 
-    // ======== TEMP. CLIMBER CONTROLLER
-    BeakXBoxController climberController = new BeakXBoxController(2);
-    Climber climber = Climber.getInstance();
-    climberController.rb.whileHeld(new InstantCommand(() -> climber.leftMotorForward(.25)))
-      .whenReleased(new InstantCommand(() -> climber.leftMotorOff()));
-    climberController.lt.whileHeld(new InstantCommand(() -> climber.rightMotorBackward(-.25)))
-      .whenReleased(new InstantCommand(() -> climber.rightMotorOff()));
+    // ======== TEMP. m_climber CONTROLLER
+    BeakXBoxController m_climberController = new BeakXBoxController(2);
+    m_climberController.rb.whileHeld(new InstantCommand(() -> m_climber.leftMotorForward(.25)))
+      .whenReleased(new InstantCommand(() -> m_climber.leftMotorOff()));
+    m_climberController.lt.whileHeld(new InstantCommand(() -> m_climber.rightMotorBackward(-.25)))
+      .whenReleased(new InstantCommand(() -> m_climber.rightMotorOff()));
 
-    climberController.y.whileHeld(new InstantCommand(() -> climber.leftMotorForward(.8)).alongWith(new InstantCommand(() -> climber.rightMotorForward(.8))))
-      .whenReleased(new InstantCommand(() -> climber.stop()));
-    climberController.x.whileHeld(new InstantCommand(() -> climber.leftMotorBackward(-.8)).alongWith(new InstantCommand(() -> climber.rightMotorBackward(-.8))))
-      .whenReleased(new InstantCommand(() -> climber.stop()));
+    m_climberController.y.whileHeld(new InstantCommand(() -> m_climber.leftMotorForward(.8)).alongWith(new InstantCommand(() -> m_climber.rightMotorForward(.8))))
+      .whenReleased(new InstantCommand(() -> m_climber.stop()));
+    m_climberController.x.whileHeld(new InstantCommand(() -> m_climber.leftMotorBackward(-.8)).alongWith(new InstantCommand(() -> m_climber.rightMotorBackward(-.8))))
+      .whenReleased(new InstantCommand(() -> m_climber.stop()));
     
-    climberController.b.whenPressed(new InstantCommand(() -> climber.toggleGrippySolenoid()));
-    climberController.lb.whileHeld(new InstantCommand(() -> climber.rightMotorForward(.25)))
-      .whenReleased(new InstantCommand(() -> climber.rightMotorOff()));
-    climberController.rt.whileHeld(new InstantCommand(() -> climber.leftMotorBackward(-.25)))
-      .whenReleased(new InstantCommand(() -> climber.leftMotorOff()));
+    m_climberController.b.whenPressed(new InstantCommand(() -> m_climber.toggleGrippySolenoid()));
+    m_climberController.lb.whileHeld(new InstantCommand(() -> m_climber.rightMotorForward(.25)))
+      .whenReleased(new InstantCommand(() -> m_climber.rightMotorOff()));
+    m_climberController.rt.whileHeld(new InstantCommand(() -> m_climber.leftMotorBackward(-.25)))
+      .whenReleased(new InstantCommand(() -> m_climber.leftMotorOff()));
 
     // THIS IS ALL WORKING, DON'T CHANGE ANY OF THE COMMANDS
-    climberController.back.whenPressed(new MoveArm(0.9, 122.4));
-    climberController.back.whenPressed(new InstantCommand(() -> Infeed.getInstance().setInfeedDown()));
-    climberController.back.whenPressed(new InstantCommand(() -> runShooter.cancel()));
-    climberController.ls.whenPressed(new MidToHigh());
-    climberController.start.whenPressed(new MidBar());
+    m_climberController.back.whenPressed(new MoveArm(0.9, 122.4));
+    m_climberController.back.whenPressed(new InstantCommand(() -> m_infeed.setInfeedDown()));
+    m_climberController.back.whenPressed(new InstantCommand(() -> runShooter.cancel()));
+    m_climberController.ls.whenPressed(new MidToHigh());
+    m_climberController.start.whenPressed(new MidBar());
 
-    climberController.rs.whenPressed(new HighBar());
-    climberController.a.whenPressed(new RightZeroSequence());
-    climberController.a.whenPressed(new LeftZeroSequence());
+    m_climberController.rs.whenPressed(new HighBar());
+    m_climberController.a.whenPressed(new RightZeroSequence());
+    m_climberController.a.whenPressed(new LeftZeroSequence());
 
     // ======= BRUH PIT CONTROLLER
     // BeakXBoxController pitController = new BeakXBoxController(3);
 
-    // pitController.a.whenPressed(new InstantCommand(() -> climber.resetEncoders()));
+    // pitController.a.whenPressed(new InstantCommand(() -> m_climber.resetEncoders()));
     // pitController.start.whenPressed(new MoveArm(.2, 0));
     // pitController.back.whenPressed(new MoveArm(-.2, -35));
 
-    // pitController.lb.whenPressed(new InstantCommand(() -> climber.setLeftEncoder(EncoderConstants.kClimberLeftStart)));
-    // pitController.rb.whenPressed(new InstantCommand(() -> climber.setRightEncoder(EncoderConstants.kClimberRightStart)));
+    // pitController.lb.whenPressed(new InstantCommand(() -> m_climber.setLeftEncoder(EncoderConstants.km_climberLeftStart)));
+    // pitController.rb.whenPressed(new InstantCommand(() -> m_climber.setRightEncoder(EncoderConstants.km_climberRightStart)));
 
-    // pitController.lt.whenPressed(new InstantCommand(() -> climber.slowDrop()));
-    // pitController.rt.whenPressed(new InstantCommand(() -> climber.slowUp()));
+    // pitController.lt.whenPressed(new InstantCommand(() -> m_climber.slowDrop()));
+    // pitController.rt.whenPressed(new InstantCommand(() -> m_climber.slowUp()));
   }
 
   public double getRightTrigger() {
     return m_driverController.getRightTrigger();
   }
   public double getSpeedScaledDriverRightX(){
-    return util.speedscaleDrive(-util.deadband(m_driverController.getRightXAxis()), DriveConstants.BASE_SPEED_SCALE, getRightTrigger());
+    return util.speedscaleDrive(-m_driverController.getRightXAxis(), DriveConstants.BASE_SPEED_SCALE, getRightTrigger());
   }
   public double getSpeedScaledDriverLeftX(){
-    return driveXLimiter.calculate(util.speedscaleDrive(-util.deadband(m_driverController.getLeftXAxis()), DriveConstants.BASE_SPEED_SCALE, getRightTrigger()));
+    return driveXLimiter.calculate(util.speedscaleDrive(-m_driverController.getLeftXAxis(), DriveConstants.BASE_SPEED_SCALE, getRightTrigger()));
   }
   public double getSpeedScaledDriverLeftY(){
-    return driveYLimiter.calculate(util.speedscaleDrive(-util.deadband(m_driverController.getLeftYAxis()), DriveConstants.BASE_SPEED_SCALE, getRightTrigger()));
+    return driveYLimiter.calculate(util.speedscaleDrive(-m_driverController.getLeftYAxis(), DriveConstants.BASE_SPEED_SCALE, getRightTrigger()));
   }
   public void toggleFieldOriented(){
     fieldOriented = !fieldOriented;
@@ -247,7 +248,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    m_robotDrive.resetOdometry(_autonChooser.getSelected().getInitialPose());
+    m_drive.resetOdometry(_autonChooser.getSelected().getInitialPose());
     return _autonChooser.getSelected().deadlineWith(new AutonTimer());
   }
 

@@ -19,7 +19,6 @@ import frc.robot.subsystems.Vision;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class MagicShootCommand extends SequentialCommandGroup {
   /** Creates a new MagicShootCommand. */
-  RunShooterMotors _RunShooterMotors;
   /**
    * false = before conveyor runs
    * true = after conveyor runs
@@ -27,7 +26,6 @@ public class MagicShootCommand extends SequentialCommandGroup {
   private boolean interruptPoint;
   public MagicShootCommand() {
     // Add your commands in the addCommands() call, e.g.
-    _RunShooterMotors = new RunShooterMotors();
     interruptPoint = false;
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
@@ -49,24 +47,30 @@ public class MagicShootCommand extends SequentialCommandGroup {
   }
   @Override
   public boolean isFinished(){
-    return super.isFinished() || !Limelight.getInstance().getHasTarget();
+    return (isOutOfRangeOfManual() || super.isFinished() || !Limelight.getInstance().getHasTarget());
   }
   @Override
   public void end(boolean interrupted){
-    if(interrupted){
+    if(interrupted || isOutOfRangeOfManual() || !Limelight.getInstance().getHasTarget()){
       if(interruptPoint == false){
         Shooter.getInstance().stop();
-        // Vision.getInstance().setInfeedCamera();
+        Vision.getInstance().setInfeedCamera();
         Conveyor.getInstance().setIsRunning(false);
       } else{
+        Vision.getInstance().setInfeedCamera();
         Conveyor.getInstance().setIsRunning(true);
+        new MagicShootEndCommand().schedule();
       }
     } else{
       super.end(interrupted);
     }
-    new MagicShootEndCommand().schedule();
   }
   private void setInterruptPoint(boolean pt){
     interruptPoint = pt;
+  }
+  private boolean isOutOfRangeOfManual(){
+    return Shooter.getInstance().getIsShotValidation() &&
+    (!interruptPoint) &&
+    Math.abs(Shooter.getInstance().manualIndex() - Shooter.getInstance().index()) > 3.0;
   }
 }
