@@ -42,6 +42,6 @@ public final class util {
             AutoConstants.AUTON_THETA_CONTROLLER,
             DriveSubsystem.getInstance()::setModuleStates,
             DriveSubsystem.getInstance())
-                .andThen(new InstantCommand(() -> DriveSubsystem.getInstance().drive(0, 0, 0, true)));
+                .andThen(new InstantCommand(() -> DriveSubsystem.getInstance().drive(0, 0, 0, () -> true)));
 }
 }
