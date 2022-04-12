@@ -31,9 +31,11 @@ import frc.robot.commands.chassis.RotateDrivetrainByLimelightAngle;
 import frc.robot.commands.chassis.RotateDrivetrainToOdometryTargetAngle;
 import frc.robot.commands.chassis.XDrive;
 import frc.robot.commands.climber.HighBar;
+import frc.robot.commands.climber.LeftZeroSequence;
 import frc.robot.commands.climber.MidBar;
 import frc.robot.commands.climber.MidToHigh;
 import frc.robot.commands.climber.MoveArm;
+import frc.robot.commands.climber.RightZeroSequence;
 import frc.robot.commands.conveyor.ReverseInfeedAndConveyor;
 import frc.robot.commands.conveyor.RunConveyorOneBall;
 import frc.robot.commands.conveyor.RunConveyorTwoBall;
@@ -179,7 +181,8 @@ public class RobotContainer {
     climberController.start.whenPressed(new MidBar());
 
     climberController.rs.whenPressed(new HighBar());
-    climberController.a.whenPressed(new InstantCommand(() -> climber.resetEncoders()));
+    climberController.a.whenPressed(new RightZeroSequence());
+    climberController.a.whenPressed(new LeftZeroSequence());
 
     // ======= BRUH PIT CONTROLLER
     // BeakXBoxController pitController = new BeakXBoxController(3);
