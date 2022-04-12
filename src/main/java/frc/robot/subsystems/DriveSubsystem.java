@@ -187,13 +187,13 @@ public class DriveSubsystem extends SubsystemBase {
    *                      field.
    */
   @SuppressWarnings("ParameterName")
-  public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
+  public void drive(double xSpeed, double ySpeed, double rot, BooleanSupplier fieldRelative) {
     xSpeed *= DriveConstants.i_kMaxSpeedMetersPerSecond;
     ySpeed *= DriveConstants.i_kMaxSpeedMetersPerSecond;
     rot *= AutoConstants.MAX_ANGULAR_SPEED_RADIANS_PER_SECOND;
     var swerveModuleStates =
         kDriveKinematics.toSwerveModuleStates(
-            fieldRelative
+            fieldRelative.getAsBoolean()
                 ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, Rotation2d.fromDegrees(m_odometry.getPoseMeters().getRotation().getDegrees()))
                 : new ChassisSpeeds(xSpeed, ySpeed, rot));
     SwerveDriveKinematics.desaturateWheelSpeeds(
