@@ -74,6 +74,7 @@ public class RobotContainer {
   private SlewRateLimiter driveYLimiter;
   private static RobotContainer _instance;
   private SendableChooser<BeakAutonCommand> _autonChooser = new SendableChooser<BeakAutonCommand>();
+  private boolean fieldOriented = true;
 
   public static final RobotContainer getInstance() {
     if (_instance == null) {
@@ -111,7 +112,7 @@ public class RobotContainer {
                 getSpeedScaledDriverLeftY(),
                 getSpeedScaledDriverLeftX(),
                 getSpeedScaledDriverRightX(),
-                true),
+                () -> fieldOriented),
             m_robotDrive));
   }
 
@@ -153,6 +154,7 @@ public class RobotContainer {
     // ======== DRIVER CONTROLLER ========
     m_driverController.a.whenPressed(new ToggleLEDMode());
     //m_driverController.x.toggleWhenPressed(new XDrive());
+    m_driverController.back.whenPressed(new InstantCommand(() -> toggleFieldOriented()));
     m_driverController.x.whileActiveOnce(new MagicShootCommand());
     m_driverController.y.toggleWhenPressed(runInfeed);
     m_driverController.start.whenPressed(new InstantCommand(() -> m_robotDrive.zeroHeading()));
@@ -221,7 +223,9 @@ public class RobotContainer {
   public double getSpeedScaledDriverLeftY(){
     return driveYLimiter.calculate(util.speedscaleDrive(-util.deadband(m_driverController.getLeftYAxis()), DriveConstants.BASE_SPEED_SCALE, getRightTrigger()));
   }
-
+  public void toggleFieldOriented(){
+    fieldOriented = !fieldOriented;
+  }
   private void initAutonChooser(){
     _autonChooser.setDefaultOption("Four Ball", new FourBallAuton());
     _autonChooser.addOption("Four Ball With Backup", new FourBallBackupAuton());
