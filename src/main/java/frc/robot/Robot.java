@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Limelight;
+import frc.robot.subsystems.Shooter;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -96,6 +97,7 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.cancel();
     }
 
+    Shooter.getInstance().resetCounter();
     Climber.getInstance().resetEncoders();
     Limelight.getInstance().setLedMode(0.);
   }

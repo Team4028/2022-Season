@@ -38,6 +38,8 @@ public class MagicShootCommand extends SequentialCommandGroup {
           new WaitCommand(0.25),
           new InstantCommand(() -> setInterruptPoint(true)),
           new RunConveyorTwoBall(),
+          new InstantCommand(() -> Vision.getInstance().setInfeedCamera()),
+          new InstantCommand(() -> setInterruptPoint(false)),
           new WaitCommand(0.25)
         ).deadlineWith(
           new RunShooterMotors(),
@@ -54,7 +56,7 @@ public class MagicShootCommand extends SequentialCommandGroup {
     if(interrupted){
       if(interruptPoint == false){
         Shooter.getInstance().stop();
-        Vision.getInstance().setInfeedCamera();
+        // Vision.getInstance().setInfeedCamera();
         Conveyor.getInstance().setIsRunning(false);
       } else{
         Conveyor.getInstance().setIsRunning(true);

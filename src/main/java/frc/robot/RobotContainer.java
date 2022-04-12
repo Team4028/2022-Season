@@ -9,8 +9,10 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.AutoConstants;
@@ -52,6 +54,8 @@ import frc.robot.commands.shooter.MagicShootCommand;
 import frc.robot.commands.shooter.ResetDefaultIndex;
 import frc.robot.commands.shooter.RunShooterMotors;
 import frc.robot.commands.shooter.RunShootersManual;
+import frc.robot.commands.shooter.SetLongShot;
+import frc.robot.commands.shooter.SetShortShot;
 import frc.robot.commands.vision.ToggleCamera;
 import frc.robot.commands.vision.ToggleLEDMode;
 import frc.robot.subsystems.Climber;
@@ -137,14 +141,10 @@ public class RobotContainer {
     m_operatorController.back.whenPressed(new AcceptLimelightDistance());
     // m_operatorController.lb.whenPressed(new DecrementShooterIndex(false));
     // m_operatorController.rb.whenPressed(new IncrementShooterIndex(false));
-    m_operatorController.lb.whenPressed(new InstantCommand(() -> Shooter.getInstance().incrementCounter())
-    .alongWith(new InstantCommand(() -> Shooter.getInstance().setLongshot(true)))
-    .andThen(new WaitCommand(3.0))
-    .andThen(new InstantCommand(() -> Shooter.getInstance().resetManualIndex())));
-    m_operatorController.rb.whenPressed(new InstantCommand(() -> Shooter.getInstance().incrementCounter())
-    .alongWith(new InstantCommand(() -> Shooter.getInstance().setLongshot(false)))
-    .andThen(new WaitCommand(3.0))
-    .andThen(new InstantCommand(() -> Shooter.getInstance().resetManualIndex())));
+    SetLongShot lbcommand = new SetLongShot();
+    SetShortShot rbcommand = new SetShortShot();
+    m_operatorController.lb.cancelWhenPressed(rbcommand).cancelWhenPressed(lbcommand).whenPressed(lbcommand);
+    m_operatorController.rb.cancelWhenPressed(lbcommand).cancelWhenPressed(rbcommand).whenPressed(rbcommand);
     m_operatorController.lt.whenActive(new DecrementShooterIndex(true));
     m_operatorController.rt.whenActive(new IncrementShooterIndex(true));
     m_operatorController.ls.whenPressed(new ResetDefaultIndex());

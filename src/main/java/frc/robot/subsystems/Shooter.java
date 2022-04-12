@@ -171,22 +171,13 @@ public class Shooter extends SubsystemBase {
         return shooterIndex;
     }
     public double manualIndex(){
-        if(longshot){
-            if (manualCounter() % 2 == 0){
-                setManualIndex(10);
-            } else{
-                setManualIndex(7);
-            }
-        }else{
-            if (manualCounter() % 2 == 0){
-                setManualIndex(17.0);
-            } else{
-                setManualIndex(12.5);
-            }
-        }
         return manualIndex;
     }
     public void setLongshot(boolean longshot){
+        if(this.longshot != longshot){
+            resetCounter();
+            incrementCounter();
+        }
         this.longshot = longshot;
     }
 
@@ -212,8 +203,20 @@ public class Shooter extends SubsystemBase {
         shooterIndex = index;
         update();
     }
-    public void setManualIndex(double index){
-        manualIndex = index;
+    public void setManualIndex(){
+        if(!longshot){
+            if (manualCounter() % 2 == 0){
+                manualIndex = 10.0;
+            } else{
+                manualIndex = 7;
+            }
+        }else{
+            if (manualCounter() % 2 == 0){
+                manualIndex = 17.0;
+            } else{
+                manualIndex = 12.5;
+            }
+        }
     }
 
     public double getLimelightDistance() {
@@ -258,5 +261,6 @@ public class Shooter extends SubsystemBase {
         // This method will be called once per scheduler run
         // System.out.println(_angle.getOutputCurrent());
         SmartDashboard.putNumber("Manual Index", manualIndex());
+        SmartDashboard.putNumber("Manual counter", manualCounter());
     }
 }
