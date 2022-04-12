@@ -37,7 +37,9 @@ public class Shooter extends SubsystemBase {
 
     private Limelight _l;
     private ShooterTable _st = ShooterTable.getPrimaryTable();
-    double limelightDistance, shooterIndex = ShooterConstants.kIndexDefault;
+    double limelightDistance, manualIndex, shooterIndex = ShooterConstants.kIndexDefault;
+    int manualCounter = 0;
+    boolean longshot;
 
     private static Shooter _instance = new Shooter();
     private int updateCycles = 0;
@@ -168,6 +170,25 @@ public class Shooter extends SubsystemBase {
     public double index() {
         return shooterIndex;
     }
+    public double manualIndex(){
+        if(longshot){
+            if (manualCounter() % 2 == 0){
+                setManualIndex(10);
+            } else{
+                setManualIndex(7);
+            }
+        }else{
+            if (manualCounter() % 2 == 0){
+                setManualIndex(17.0);
+            } else{
+                setManualIndex(12.5);
+            }
+        }
+        return manualIndex;
+    }
+    public void setLongshot(boolean longshot){
+        this.longshot = longshot;
+    }
 
     public void incrementIndex(boolean fine) {
         if (fine) {
@@ -191,6 +212,9 @@ public class Shooter extends SubsystemBase {
         shooterIndex = index;
         update();
     }
+    public void setManualIndex(double index){
+        manualIndex = index;
+    }
 
     public double getLimelightDistance() {
         _l.putTargetValues();
@@ -204,6 +228,19 @@ public class Shooter extends SubsystemBase {
 
     public void resetIndex() {
         shooterIndex = ShooterConstants.kIndexDefault;
+    }
+    public void resetManualIndex(){
+        manualIndex = ShooterConstants.kIndexDefault;
+        resetCounter();
+    }
+    public int manualCounter(){
+        return manualCounter;
+    }
+    public void incrementCounter(){
+        manualCounter++;
+    }
+    public void resetCounter(){
+        manualCounter = 0;
     }
 
     public static Shooter getInstance() {
@@ -220,5 +257,6 @@ public class Shooter extends SubsystemBase {
         }
         // This method will be called once per scheduler run
         // System.out.println(_angle.getOutputCurrent());
+        SmartDashboard.putNumber("Manual Index", manualIndex());
     }
 }

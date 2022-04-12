@@ -11,10 +11,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
+import frc.robot.Constants.ShooterConstants;
 import frc.robot.commands.auton.AutonTimer;
 import frc.robot.commands.auton.FiveBallAuton;
 import frc.robot.commands.auton.FiveBallBackupAuton;
@@ -49,6 +51,7 @@ import frc.robot.commands.shooter.IncrementShooterIndex;
 import frc.robot.commands.shooter.MagicShootCommand;
 import frc.robot.commands.shooter.ResetDefaultIndex;
 import frc.robot.commands.shooter.RunShooterMotors;
+import frc.robot.commands.shooter.RunShootersManual;
 import frc.robot.commands.vision.ToggleCamera;
 import frc.robot.commands.vision.ToggleLEDMode;
 import frc.robot.subsystems.Climber;
@@ -126,13 +129,21 @@ public class RobotContainer {
     m_operatorController.a.whenPressed(new RunConveyorTwoBall());
     //m_operatorController.b.whenPressed(new RunConveyorOneBall());
     //m_operatorController.x.toggleWhenPressed(runShooter);
-    m_operatorController.b.whileActiveOnce(runShooter);
+    m_operatorController.b.whileActiveOnce(new RunShootersManual());
     m_operatorController.x.whileActiveOnce(new MagicShootCommand());
     m_operatorController.y.toggleWhenPressed(runInfeed);
     m_operatorController.start.whenPressed(new SetInfeedUp());
     m_operatorController.back.whenPressed(new AcceptLimelightDistance());
-    m_operatorController.lb.whenPressed(new DecrementShooterIndex(false));
-    m_operatorController.rb.whenPressed(new IncrementShooterIndex(false));
+    // m_operatorController.lb.whenPressed(new DecrementShooterIndex(false));
+    // m_operatorController.rb.whenPressed(new IncrementShooterIndex(false));
+    m_operatorController.lb.whenPressed(new InstantCommand(() -> Shooter.getInstance().incrementCounter())
+    .alongWith(new InstantCommand(() -> Shooter.getInstance().setLongshot(true)))
+    .andThen(new WaitCommand(3.0))
+    .andThen(new InstantCommand(() -> Shooter.getInstance().resetManualIndex())));
+    m_operatorController.rb.whenPressed(new InstantCommand(() -> Shooter.getInstance().incrementCounter())
+    .alongWith(new InstantCommand(() -> Shooter.getInstance().setLongshot(false)))
+    .andThen(new WaitCommand(3.0))
+    .andThen(new InstantCommand(() -> Shooter.getInstance().resetManualIndex())));
     m_operatorController.lt.whenActive(new DecrementShooterIndex(true));
     m_operatorController.rt.whenActive(new IncrementShooterIndex(true));
     m_operatorController.ls.whenPressed(new ResetDefaultIndex());
