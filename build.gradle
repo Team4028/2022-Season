@@ -5,16 +5,6 @@ plugins {
     id "edu.wpi.first.GradleRIO" version "2022.3.1"
 }
 
-repositories {
-   mavenCentral()
-   maven{ url "https://frcmaven.wpi.edu:443/artifactory/release" }
-}
-
-dependencies {
-   compileOnly 'edu.wpi.first.shuffleboard:api:2022.+'
-   compileOnly 'edu.wpi.first.shuffleboard.plugin:networktables:2020.+'
-}
-
 sourceCompatibility = JavaVersion.VERSION_11
 targetCompatibility = JavaVersion.VERSION_11
 
