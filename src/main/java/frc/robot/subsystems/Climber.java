@@ -30,6 +30,8 @@ public class Climber extends SubsystemBase {
     private RelativeEncoder _leftEncoder;
     private RelativeEncoder _rightEncoder;
 
+    private int updateCycles = 0;
+
     /** Creates a new cry about it. */
     public Climber() {
         _tippy = new Solenoid(PneumaticsModuleType.CTREPCM, SubsystemConstants.TIPPY_SOLENOID_ID);
@@ -58,11 +60,11 @@ public class Climber extends SubsystemBase {
     }
 
     public void toggleTippySolenoid() {
-        _tippy.set(!_tippy.get());
+        _tippy.toggle();
     }
 
     public void toggleGrippySolenoid() {
-        _grippy.set(!_grippy.get());
+        _grippy.toggle();
     }
 
     public double getLeftEncoderPosition() {
@@ -148,7 +150,11 @@ public class Climber extends SubsystemBase {
     @Override
     public void periodic() {
         // This method will be called once per scheduler run
-        SmartDashboard.putNumber("Left Climber", _leftEncoder.getPosition());
-        SmartDashboard.putNumber("Right Climber", _rightEncoder.getPosition());
+        if (updateCycles % 4 == 0)
+        {
+            SmartDashboard.putNumber("Left Climber", _leftEncoder.getPosition());
+            SmartDashboard.putNumber("Right Climber", _rightEncoder.getPosition());
+        }
+        updateCycles++;
     }
 }

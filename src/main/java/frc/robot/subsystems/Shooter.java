@@ -262,22 +262,20 @@ public class Shooter extends SubsystemBase {
     public boolean getIsShotValidation(){
         return isShotValidation;
     }
-
     public static Shooter getInstance() {
         return _instance;
     }
 
     @Override
     public void periodic() {
-        if (updateCycles == 5) {
+        if (updateCycles % 5 == 0) {
             update();
-            updateCycles = 0;
-        } else {
-            updateCycles++;
-        }
+            SmartDashboard.putNumber("Manual Index", manualIndex());
+            SmartDashboard.putBoolean("Shot Validation", getIsShotValidation());
+        } 
+        updateCycles++;
         // This method will be called once per scheduler run
         // System.out.println(_angle.getOutputCurrent());
-        SmartDashboard.putNumber("Manual Index", manualIndex());
-        SmartDashboard.putBoolean("Shot Validation", getIsShotValidation());
+        
     }
 }

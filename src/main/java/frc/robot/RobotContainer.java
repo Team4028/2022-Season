@@ -6,6 +6,7 @@ package frc.robot;
 
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -37,6 +38,7 @@ import frc.robot.commands.climber.MoveArm;
 import frc.robot.commands.climber.RightZeroSequence;
 import frc.robot.commands.conveyor.ReverseInfeedAndConveyor;
 import frc.robot.commands.conveyor.RunConveyorTwoBall;
+import frc.robot.commands.infeed.ReverseInfeedAndSingulator;
 import frc.robot.commands.infeed.RunInfeedSingulatorMotors;
 import frc.robot.commands.infeed.SetInfeedUp;
 import frc.robot.commands.infeed.ToggleInfeedUp;
@@ -147,7 +149,7 @@ public class RobotContainer {
     //m_operatorController.b.whenPressed(new RunConveyorOneBall());
     m_operatorController.b.whileActiveOnce(new RunShootersManual());
     m_operatorController.x.whileActiveOnce(new MagicShootCommand());
-    m_operatorController.y.toggleWhenPressed(runInfeed);
+    m_operatorController.y.toggleWhenPressed(new ReverseInfeedAndSingulator());
     m_operatorController.start.whenPressed(new SetInfeedUp());
     m_operatorController.back.whenPressed(new AcceptLimelightDistance());
     m_operatorController.lb.cancelWhenPressed(setShortShotCommand).cancelWhenPressed(setLongShotCommand).whenPressed(setLongShotCommand);
@@ -156,7 +158,7 @@ public class RobotContainer {
     m_operatorController.rt.whenActive(new IncrementShooterIndex(true));
     m_operatorController.ls.whenPressed(new InstantCommand(() -> m_shooter.toggleIsShotValidation()));
     // ====================================
-
+    
     // ======== DRIVER CONTROLLER ========
     m_driverController.a.whenPressed(new ToggleLEDMode());
     m_driverController.back.whenPressed(new InstantCommand(() -> toggleFieldOriented()));
@@ -188,7 +190,7 @@ public class RobotContainer {
       .whenReleased(new InstantCommand(() -> m_climber.leftMotorOff()));
 
     // THIS IS ALL WORKING, DON'T CHANGE ANY OF THE COMMANDS
-    m_climberController.back.whenPressed(new MoveArm(0.9, 122.4));
+    m_climberController.back.whenPressed(new MoveArm(0.9, 127));
     m_climberController.back.whenPressed(new InstantCommand(() -> m_infeed.setInfeedDown()));
     m_climberController.back.whenPressed(new InstantCommand(() -> runShooter.cancel()));
     m_climberController.ls.whenPressed(new MidToHigh());

@@ -10,6 +10,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.LimelightConstants;
+import frc.robot.Constants.ShooterConstants;
 
 public class Limelight extends SubsystemBase {
   private int distEstIters = 0;
@@ -37,7 +38,7 @@ public class Limelight extends SubsystemBase {
 
   /** Creates a new Limelight. */
   public Limelight() {
-    setPipeline(0);
+    setPipeline(ShooterConstants.kIsRealGoal ? 4 : 0);
     setPictureInPicture(0);
     setLedMode(1);
   }
@@ -167,7 +168,10 @@ public class Limelight extends SubsystemBase {
   }
 
   public void put(String key, double val) {
-    SmartDashboard.putNumber(key, val);
+    if (updateCycles % 3 == 0)
+    {
+      SmartDashboard.putNumber(key, val);
+    }
   }
 
   public double get(String key, double defaultValue) {
@@ -180,15 +184,7 @@ public class Limelight extends SubsystemBase {
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
-    // if (updateCycles == 25) {
-    //   if (RobotState.isDisabled() && getLedMode() != 1) {
-    //     setLedMode(1);
-    //   }
-    //   updateCycles = 0;
-    // } else {
-    //   updateCycles++;
-    // }
     willTestDistance();
+    updateCycles++;
   }
 }

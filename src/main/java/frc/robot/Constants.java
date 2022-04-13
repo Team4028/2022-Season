@@ -178,7 +178,7 @@ public final class Constants {
     public static final double kShooterHoodAngleRotDefault = 24.5;
     
     public static final double kClimberSlow = 0.6;
-    public static final double kClimberFast = 0.9;
+    public static final double kClimberFast = 1;
   }
 
   public static final class EncoderConstants {
@@ -241,8 +241,8 @@ public final class Constants {
   }
 
   public static final class ControllerConstants {
-    public static final double kDeadband = 0.05; // Jiggle room for the thumbsticks
-    public static final double kSensitivity = 0.05;
+    public static final double kDeadband = 0.025; // Jiggle room for the thumbsticks
+    public static final double kSensitivity = 0.025;
     public static final double kTriggerDeadband = 0.01; // Jiggle room for the triggers
     public static final double kTriggerSensitivity = 0.6; // If the trigger is beyond this limit, say it has been
                                                           // pressed

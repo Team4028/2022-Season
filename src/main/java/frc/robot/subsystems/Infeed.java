@@ -22,7 +22,7 @@ public class Infeed extends SubsystemBase {
   private CANSparkMax _singulatorMotor;
   private Solenoid _solenoid;
   private static Infeed _instance = new Infeed();
-
+  private boolean isInfeedDown = false;
   public static Infeed getInstance() {
     return _instance;
   }
@@ -39,7 +39,7 @@ public class Infeed extends SubsystemBase {
   }
 
   public void runInfeedSingulatorMotors(double mult) {
-    if (_solenoid.get()) {
+    if (isInfeedDown) {
       _infeedMotor.set(ControlMode.PercentOutput, mult * VBusConstants.kInfeed);
       SmartDashboard.putBoolean("Infeed/Running", true);
       // SmartDashboard.putNumber("Infeed/Vbus", mult * VBusConstants.kInfeed);
@@ -71,12 +71,15 @@ public class Infeed extends SubsystemBase {
 
   public void toggleInfeedUp() {
     _solenoid.toggle();
+    isInfeedDown = !isInfeedDown;
   }
   public void setInfeedDown(){
     _solenoid.set(true);
+    isInfeedDown = true;
   }
   public void setInfeedUp() {
     _solenoid.set(false);
+    isInfeedDown = false;
   }
 
   @Override

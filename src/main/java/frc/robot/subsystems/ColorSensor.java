@@ -4,10 +4,13 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.PicoColorSensor;
 import frc.robot.PicoColorSensor.RawColor;
+
+import java.util.Map;
 
 public class ColorSensor extends SubsystemBase {
   private PicoColorSensor m_sensor = new PicoColorSensor();
@@ -89,6 +92,8 @@ public class ColorSensor extends SubsystemBase {
       SmartDashboard.putBoolean("red ball 1", false);
       SmartDashboard.putBoolean("blue ball 1", false);
     }
+    boolean[] bruh = {blue1 > blueThreshold1 && higher == blue1, red1 > redThreshold1 && higher == red1};
+    SmartDashboard.putBooleanArray("ball0", bruh);
 
     SmartDashboard.putNumber("red 1", red1);
     SmartDashboard.putNumber("blue 1", blue1);
@@ -99,8 +104,6 @@ public class ColorSensor extends SubsystemBase {
 public static ColorSensor getInstance(){
   return _instance;
 }
-
-
 
   @Override
   public void periodic() {
