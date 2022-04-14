@@ -262,6 +262,12 @@ public class Shooter extends SubsystemBase {
     public boolean getIsShotValidation(){
         return isShotValidation;
     }
+    public void runShooterOutfeed(){
+        _front.set(ControlMode.PercentOutput, 0.35);
+        _back.set(ControlMode.PercentOutput, 0);
+        _kicker.set(ControlMode.PercentOutput, 0.55);
+        _anglePid.setReference(32.0, ControlType.kPosition);
+    }
     public static Shooter getInstance() {
         return _instance;
     }

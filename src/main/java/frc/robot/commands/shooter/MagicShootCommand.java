@@ -28,6 +28,7 @@ public class MagicShootCommand extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     interruptPoint = false;
     // addCommands(new FooCommand(), new BarCommand());
+    addRequirements(Shooter.getInstance());
     addCommands(
       new InstantCommand(() -> setInterruptPoint(false)),
       new RotateDrivetrainByLimelightAngle(false),
@@ -40,8 +41,8 @@ public class MagicShootCommand extends SequentialCommandGroup {
           new InstantCommand(() -> setInterruptPoint(false)),
           new WaitCommand(0.25)
         ).deadlineWith(
-          new RunShooterMotors(),
-          new RotateDrivetrainByLimelightAngle(true)
+          new RunShooterMotors()
+          // new RotateDrivetrainByLimelightAngle(true)
         )
     );
   }

@@ -38,6 +38,7 @@ import frc.robot.commands.climber.MoveArm;
 import frc.robot.commands.climber.RightZeroSequence;
 import frc.robot.commands.conveyor.ReverseInfeedAndConveyor;
 import frc.robot.commands.conveyor.RunConveyorTwoBall;
+import frc.robot.commands.infeed.EvacuateWrongCargo;
 import frc.robot.commands.infeed.ReverseInfeedAndSingulator;
 import frc.robot.commands.infeed.RunInfeedSingulatorMotors;
 import frc.robot.commands.infeed.SetInfeedUp;
@@ -146,10 +147,11 @@ public class RobotContainer {
   private void configureButtonBindings() {
     // ========= OPERATOR CONTROLLER =======
     m_operatorController.a.whenPressed(new RunConveyorTwoBall());
+    m_operatorController.y.whenPressed(new EvacuateWrongCargo().withTimeout(2.0));
     //m_operatorController.b.whenPressed(new RunConveyorOneBall());
     m_operatorController.b.whileActiveOnce(new RunShootersManual());
     m_operatorController.x.whileActiveOnce(new MagicShootCommand());
-    m_operatorController.y.toggleWhenPressed(new ReverseInfeedAndSingulator());
+    m_operatorController.rs.toggleWhenPressed(new ReverseInfeedAndSingulator());
     m_operatorController.start.whenPressed(new SetInfeedUp());
     m_operatorController.back.whenPressed(new AcceptLimelightDistance());
     m_operatorController.lb.cancelWhenPressed(setShortShotCommand).cancelWhenPressed(setLongShotCommand).whenPressed(setLongShotCommand);
@@ -158,16 +160,15 @@ public class RobotContainer {
     m_operatorController.rt.whenActive(new IncrementShooterIndex(true));
     m_operatorController.ls.whenPressed(new InstantCommand(() -> m_shooter.toggleIsShotValidation()));
     // ====================================
-    
+
     // ======== DRIVER CONTROLLER ========
     m_driverController.a.whenPressed(new ToggleLEDMode());
-    m_driverController.back.whenPressed(new InstantCommand(() -> toggleFieldOriented()));
-    m_driverController.x.whileActiveContinuous(new RotateDrivetrainByLimelightAngle(true));
+    m_driverController.x.whenPressed(new InstantCommand(() -> toggleFieldOriented()));
     m_driverController.start.whenPressed(new InstantCommand(() -> m_drive.zeroHeading()));
     m_driverController.lb.toggleWhenPressed(new ReverseInfeedAndConveyor());
     m_driverController.rb.whenPressed(new ToggleInfeedUp());
     m_driverController.lt.whileActiveContinuous(runInfeed);
-    m_driverController.rs.toggleWhenPressed(new RotateDrivetrainByLimelightAngle(false).withTimeout(2.0));
+    m_driverController.rs.whileActiveContinuous(new RotateDrivetrainByLimelightAngle(true));
     m_driverController.ls.whenPressed(new ToggleCamera());
     // ===================================
 
