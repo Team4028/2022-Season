@@ -42,8 +42,8 @@ public class SwerveModuleCANTwoElectricBoogaloo {
     m_turningMotor = new WPI_TalonFX(turningMotorChannel, DriveConstants.kCANivoreName);
     m_turningEncoder = new WPI_CANCoder(CANEncoderPort, DriveConstants.kCANivoreName);
 
-    m_turningMotor.configFactoryDefault();
-    m_driveMotor.configFactoryDefault();
+    // m_turningMotor.configFactoryDefault();
+    // m_driveMotor.configFactoryDefault();
 
     m_turningEncoder.configMagnetOffset(Math.toDegrees(turningMotorOffset));
     m_turningEncoder.setStatusFramePeriod(
@@ -66,6 +66,7 @@ public class SwerveModuleCANTwoElectricBoogaloo {
     m_turningMotor.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 20, 25, 0.2));
     m_turningMotor.configAllowableClosedloopError(0, i_kTurningMotorAllowableClosedLoopError, 0);
     configMotorPID(m_driveMotor, 0, i_kPModuleDriveController, 0.0, 0.0);
+    configMotorPID(m_turningMotor, 0, i_kPModuleTurningController, 0.0, 0.1);
   }
   public void checkPowerFailure(){
     if(m_driveMotor.hasResetOccurred()){

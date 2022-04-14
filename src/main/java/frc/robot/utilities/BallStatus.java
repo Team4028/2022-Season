@@ -37,7 +37,7 @@ public class BallStatus implements Sendable {
 
     @Override
     public void initSendable(SendableBuilder builder) {
-        builder.setSmartDashboardType("Point2D");
+        builder.setSmartDashboardType("BallStatus");
         builder.addBooleanProperty("hasRed", () -> hasRed, null);
         builder.addBooleanProperty("hasBlue", () -> hasBlue, null);
         builder.addBooleanProperty("hasBall", () -> hasBall, null);
