@@ -6,14 +6,11 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.PicoColorSensor;
 import frc.robot.PicoColorSensor.RawColor;
-
-import java.util.Map;
+import frc.robot.utilities.BallStatus;
 
 public class ColorSensor extends SubsystemBase {
   private PicoColorSensor m_sensor = new PicoColorSensor();
@@ -38,6 +35,9 @@ public class ColorSensor extends SubsystemBase {
   private boolean ball0Detected;
   private boolean ball1Detected;
 
+  private BallStatus innerBall;
+  private BallStatus outerBall;
+
   Alliance alliance;
 
   private static ColorSensor _instance = new ColorSensor();
@@ -46,10 +46,11 @@ public class ColorSensor extends SubsystemBase {
   /** Creates a new ColorSensor. */
   public ColorSensor() {
     updateCycles = 0;
-    alliance = Alliance.Red; //Just to avoid nullpointer
+    alliance = Alliance.Red; // Just to avoid nullpointer
   }
 
-  public void updateSensor0(){
+  public void updateSensor0() {
+    outerBall = new BallStatus();
     RawColor rc0 = m_sensor.getRawColor0();
 
     int red0 = rc0.red;
@@ -59,18 +60,18 @@ public class ColorSensor extends SubsystemBase {
 
     int higher = Math.max(red0, blue0);
 
+    boolean hasRed = false;
+    boolean hasBlue = false;
     if (proximity0 > proximityThreshold0) {
-      if (red0 > redThreshold0 && higher == red0) {
-        SmartDashboard.putBoolean("red ball 0", true);
-        redBall0 = true;
+      hasRed = red0 > redThreshold0 && higher == red0;
+      hasBlue = blue0 > blueThreshold0 && higher == blue0;
+      if (hasRed) {
         if (!redBallFoundLastCycle) {
           redBalls++;
         }
         redBallFoundLastCycle = true;
       }
       if (blue0 > blueThreshold0 && higher == blue0) {
-        SmartDashboard.putBoolean("blue ball 0", true);
-        blueBall0 = true;
         if (!blueBallFoundLastCycle) {
           blueBalls++;
         }
@@ -79,11 +80,15 @@ public class ColorSensor extends SubsystemBase {
     } else {
       redBallFoundLastCycle = false;
       blueBallFoundLastCycle = false;
-      SmartDashboard.putBoolean("red ball 0", false);
-      SmartDashboard.putBoolean("blue ball 0", false);
-      redBall0 = false;
-      blueBall0 = false;
     }
+
+    SmartDashboard.putBoolean("red ball 0", hasRed);
+    outerBall.setRed(hasRed);
+    redBall0 = hasRed;
+
+    SmartDashboard.putBoolean("blue ball 0", hasBlue);
+    outerBall.setBlue(hasBlue);
+    blueBall0 = hasBlue;
 
     SmartDashboard.putNumber("red 0", red0);
     SmartDashboard.putNumber("blue 0", blue0);
@@ -91,9 +96,13 @@ public class ColorSensor extends SubsystemBase {
     SmartDashboard.putNumber("total red balls", redBalls);
     SmartDashboard.putNumber("total blue balls", blueBalls);
     ball0Detected = proximity0 > proximityThreshold0;
+
+    outerBall.setBall(ball0Detected);
   }
 
-  public void updateSensor1(){
+  public void updateSensor1() {
+    innerBall = new BallStatus();
+
     RawColor rc1 = m_sensor.getRawColor1();
 
     int red1 = rc1.red;
@@ -103,68 +112,73 @@ public class ColorSensor extends SubsystemBase {
 
     int higher = Math.max(red1, blue1);
 
+    boolean hasRed = false;
+    boolean hasBlue = false;
     if (proximity1 > proximityThreshold1) {
-      boolean isRed = red1 > redThreshold1 && higher == red1;
-      boolean isBlue = blue1 > blueThreshold1 && higher == blue1;
-
-      SmartDashboard.putBoolean("red ball 1", isRed);
-      SmartDashboard.putBoolean("blue ball 1", isBlue);
-
-      redBall1 = isRed;
-      blueBall1 = isBlue;
-    } else {
-      SmartDashboard.putBoolean("red ball 1", false);
-      SmartDashboard.putBoolean("blue ball 1", false);
-
-      redBall1 = false;
-      blueBall1 = false;
+      hasRed = red1 > redThreshold1 && higher == red1;
+      hasBlue = blue1 > blueThreshold1 && higher == blue1;
     }
-    boolean[] bruh = {blue1 > blueThreshold1 && higher == blue1, red1 > redThreshold1 && higher == red1};
+
+    SmartDashboard.putBoolean("red ball 1", hasRed);
+    innerBall.setRed(hasRed);
+    redBall1 = hasRed;
+
+    SmartDashboard.putBoolean("blue ball 1", hasBlue);
+    innerBall.setBlue(hasBlue);
+    blueBall1 = hasBlue;
+
+    boolean[] bruh = { blue1 > blueThreshold1 && higher == blue1, red1 > redThreshold1 && higher == red1 };
     SmartDashboard.putBooleanArray("ball0", bruh);
 
     SmartDashboard.putNumber("red 1", red1);
     SmartDashboard.putNumber("blue 1", blue1);
     SmartDashboard.putNumber("proximity 1", proximity1);
     ball1Detected = proximity1 > proximityThreshold1;
+
+    innerBall.setBall(ball1Detected);
   }
 
-  public void setAlliance(){
-    alliance = DriverStation.getAlliance() != Alliance.Invalid? DriverStation.getAlliance(): Alliance.Red;
+  public void setAlliance() {
+    alliance = DriverStation.getAlliance() != Alliance.Invalid ? DriverStation.getAlliance() : Alliance.Red;
   }
-  public boolean getOuterBallCorrect(){
-    return 
-    (alliance.equals(Alliance.Red) && redBall0 && ball0Detected)
-    ||
-    (alliance.equals(Alliance.Blue) && blueBall0 && ball0Detected);
+
+  public boolean getOuterBallCorrect() {
+    return (alliance.equals(Alliance.Red) && redBall0 && ball0Detected)
+        ||
+        (alliance.equals(Alliance.Blue) && blueBall0 && ball0Detected);
   }
-  public boolean getInnerBallCorrect(){
-    return 
-    (alliance.equals(Alliance.Red) && redBall1 && ball1Detected)
-    ||
-    (alliance.equals(Alliance.Blue) && blueBall1 && ball1Detected);
+
+  public boolean getInnerBallCorrect() {
+    return (alliance.equals(Alliance.Red) && redBall1 && ball1Detected)
+        ||
+        (alliance.equals(Alliance.Blue) && blueBall1 && ball1Detected);
   }
-  public boolean getInnerFilled(){
+
+  public boolean getInnerFilled() {
     return ball1Detected;
   }
-  public boolean getOuterFilled(){
+
+  public boolean getOuterFilled() {
     return ball0Detected;
   }
-public static ColorSensor getInstance(){
-  return _instance;
-}
 
+  public static ColorSensor getInstance() {
+    return _instance;
+  }
 
   @Override
   public void periodic() {
-    if (updateCycles %2 == 0)
-    {
+    if (updateCycles % 2 == 0) {
       updateSensor0();
       updateSensor1();
+
+      SmartDashboard.putData("Inner Ball", innerBall);
+      SmartDashboard.putData("Outer Ball", outerBall);
     }
     updateCycles++;
     SmartDashboard.putBoolean("Inner Correct", getInnerBallCorrect());
-    SmartDashboard.putBoolean("Outer Correct", getOuterBallCorrect()); //TEMP
-    
+    SmartDashboard.putBoolean("Outer Correct", getOuterBallCorrect()); // TEMP
+
     // This method will be called once per scheduler run
   }
 }
