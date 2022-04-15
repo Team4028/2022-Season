@@ -83,19 +83,19 @@ public class ColorSensor extends SubsystemBase {
       blueBallFoundLastCycle = false;
     }
 
-    SmartDashboard.putBoolean("red ball 0", hasRed);
+    // SmartDashboard.putBoolean("red ball 0", hasRed);
     outerBall.setRed(hasRed);
     redBall0 = hasRed;
 
-    SmartDashboard.putBoolean("blue ball 0", hasBlue);
+    // SmartDashboard.putBoolean("blue ball 0", hasBlue);
     outerBall.setBlue(hasBlue);
     blueBall0 = hasBlue;
 
-    SmartDashboard.putNumber("red 0", red0);
-    SmartDashboard.putNumber("blue 0", blue0);
-    SmartDashboard.putNumber("proximity 0", proximity0);
-    SmartDashboard.putNumber("total red balls", redBalls);
-    SmartDashboard.putNumber("total blue balls", blueBalls);
+    // SmartDashboard.putNumber("red 0", red0);
+    // SmartDashboard.putNumber("blue 0", blue0);
+    // SmartDashboard.putNumber("proximity 0", proximity0);
+    // SmartDashboard.putNumber("total red balls", redBalls);
+    // SmartDashboard.putNumber("total blue balls", blueBalls);
     ball0Detected = proximity0 > proximityThreshold0;
 
     outerBall.setBall(ball0Detected);
@@ -118,20 +118,17 @@ public class ColorSensor extends SubsystemBase {
       hasBlue = blue1 > blueThreshold1 && higher == blue1;
     }
 
-    SmartDashboard.putBoolean("red ball 1", hasRed);
+    // SmartDashboard.putBoolean("red ball 1", hasRed);
     innerBall.setRed(hasRed);
     redBall1 = hasRed;
 
-    SmartDashboard.putBoolean("blue ball 1", hasBlue);
+    // SmartDashboard.putBoolean("blue ball 1", hasBlue);
     innerBall.setBlue(hasBlue);
     blueBall1 = hasBlue;
 
-    boolean[] bruh = { blue1 > blueThreshold1 && higher == blue1, red1 > redThreshold1 && higher == red1 };
-    SmartDashboard.putBooleanArray("ball0", bruh);
-
-    SmartDashboard.putNumber("red 1", red1);
-    SmartDashboard.putNumber("blue 1", blue1);
-    SmartDashboard.putNumber("proximity 1", proximity1);
+    // SmartDashboard.putNumber("red 1", red1);
+    // SmartDashboard.putNumber("blue 1", blue1);
+    // SmartDashboard.putNumber("proximity 1", proximity1);
     ball1Detected = proximity1 > proximityThreshold1;
 
     innerBall.setBall(ball1Detected);

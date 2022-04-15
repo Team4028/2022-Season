@@ -170,7 +170,7 @@ public final class Constants {
     public static final double kConveyOne = 0.50;//0.85; // op b
     public static final double kConveyTwo = 0.75; // op a
 
-    public static final double kInfeed = 0.75; // op y
+    public static final double kInfeed = 0.85; // op y
     public static final double kSingulator = 0.5; // op y
 
     public static final double kShooterFrontDefault = 0.35;
@@ -209,6 +209,9 @@ public final class Constants {
     public static final double kTargetHeight = ShooterConstants.kIsRealGoal ? 104. : 85.;
     public static final double kMountHeight = 21;
     public static final double kMountAngle = 29.4;//30.5;
+
+    public static final double kLensToBack = 22.;
+    public static final double kTapeToCenter = 26.;
   }
 
   public static final class VisionConstants {

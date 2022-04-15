@@ -6,7 +6,6 @@ package frc.robot;
 
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -16,11 +15,10 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
+import frc.robot.Constants.VBusConstants;
 import frc.robot.commands.BeakAutonCommand;
 import frc.robot.commands.auton.AutonTimer;
-import frc.robot.commands.auton.FiveBallAuton;
 import frc.robot.commands.auton.FiveBallBackupAuton;
-import frc.robot.commands.auton.FourBallAuton;
 import frc.robot.commands.auton.FourBallBackupAuton;
 import frc.robot.commands.auton.TwoBallBottomAuton;
 import frc.robot.commands.auton.TwoBallMiddleAuton;
@@ -54,10 +52,8 @@ import frc.robot.commands.shooter.SetShortShot;
 import frc.robot.commands.vision.ToggleCamera;
 import frc.robot.commands.vision.ToggleLEDMode;
 import frc.robot.subsystems.Climber;
-import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.Infeed;
-import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Shooter;
 
 /*
@@ -71,10 +67,7 @@ public class RobotContainer {
   private final DriveSubsystem m_drive = DriveSubsystem.getInstance();
   private final Shooter m_shooter = Shooter.getInstance();
   private final Infeed m_infeed = Infeed.getInstance();
-  private final Limelight m_limelight = Limelight.getInstance();
-  private final Conveyor m_conveyor = Conveyor.getInstance();
   private final Climber m_climber = Climber.getInstance();
-
 
   private final RunInfeedSingulatorMotors runInfeed;
   private final RunShooterMotors runShooter;
@@ -129,7 +122,7 @@ public class RobotContainer {
       );
     m_shooter.setDefaultCommand(
       new RunCommand(
-        () -> m_shooter.setShooterIndex(m_shooter.manualIndex()),
+        () -> m_shooter.setShooterIndex(m_shooter.manualIndex(), true),
         m_shooter
         )
       );
@@ -191,7 +184,8 @@ public class RobotContainer {
       .whenReleased(new InstantCommand(() -> m_climber.leftMotorOff()));
 
     // THIS IS ALL WORKING, DON'T CHANGE ANY OF THE COMMANDS
-    m_climberController.back.whenPressed(new MoveArm(0.9, 127));
+    m_climberController.back.whenPressed(new MoveArm(0.9, 135)
+      .andThen(new MoveArm(-0.3, 127)));
     m_climberController.back.whenPressed(new InstantCommand(() -> m_infeed.setInfeedDown()));
     m_climberController.back.whenPressed(new InstantCommand(() -> runShooter.cancel()));
     m_climberController.ls.whenPressed(new MidToHigh());

@@ -30,7 +30,7 @@ public class FiveBallAuton extends BeakAutonCommand {
       new InstantCommand(() -> Infeed.getInstance().setInfeedDown()),
       new WaitCommand(0.25),
       new InstantCommand(() -> Infeed.getInstance().forceRunInfeed()),
-      new InstantCommand(() -> Shooter.getInstance().setShooterIndex(16.5)),
+      new InstantCommand(() -> Shooter.getInstance().setShooterIndex(16.5, true)),
       util.getPathPlannerSwerveControllerCommand(Trajectories.FiveBall_AcquireFirstCargo())
       .alongWith(new WaitCommand(1.5).andThen(new InstantCommand(() -> Shooter.getInstance().runShooterMotors()))),
       new RotateDrivetrainToAngle(Rotation2d.fromDegrees(37.5)).withTimeout(1.0),

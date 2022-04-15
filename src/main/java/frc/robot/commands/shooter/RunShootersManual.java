@@ -18,7 +18,7 @@ public class RunShootersManual extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    Shooter.getInstance().setShooterIndex(Shooter.getInstance().manualIndex());
+    Shooter.getInstance().setShooterIndex(Shooter.getInstance().manualIndex(), true);
     Shooter.getInstance().runShooterMotors();
     Vision.getInstance().setShooterCamera();
   }
@@ -26,7 +26,7 @@ public class RunShootersManual extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    Shooter.getInstance().setShooterIndex(Shooter.getInstance().manualIndex());
+    Shooter.getInstance().setShooterIndex(Shooter.getInstance().manualIndex(), true);
     Shooter.getInstance().runShooterMotors();
   }
 

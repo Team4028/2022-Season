@@ -8,7 +8,6 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.EncoderConstants;
 import frc.robot.Constants.VBusConstants;
 import frc.robot.subsystems.Conveyor;
-import frc.robot.subsystems.Infeed;
 
 public class RunConveyorOneBallEvacuate extends CommandBase {
   /** Creates a new RunConveyorOneBallEvacuate. */

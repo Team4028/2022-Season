@@ -99,9 +99,9 @@ public class SwerveModuleCANTwoElectricBoogaloo {
    */
   public void setDesiredState(SwerveModuleState desiredState) {
     // Optimize the reference state to avoid spinning further than 90 degrees
-    SwerveModuleState state = optimize(
-        SwerveModuleState.optimize(desiredState, getState().angle),
-        getState().angle);
+    SwerveModuleState state = //optimize(
+        SwerveModuleState.optimize(desiredState, getState().angle);/*,
+        getState().angle);*/
 
     // Calculate Arbitrary Feed Forward for Drive Motor
     final double feedForward = DriveConstants.driveTrainFeedforward.calculate(state.speedMetersPerSecond)

@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.LimelightConstants;
 import frc.robot.Constants.ShooterConstants;
+import frc.robot.utilities.ShooterIndex;
 
 public class Limelight extends SubsystemBase {
   private int distEstIters = 0;
@@ -36,11 +37,16 @@ public class Limelight extends SubsystemBase {
 
   private int updateCycles = 0;
 
+  private ShooterIndex distData;
+
   /** Creates a new Limelight. */
   public Limelight() {
     setPipeline(ShooterConstants.kIsRealGoal ? 4 : 0);
     setPictureInPicture(0);
     setLedMode(1);
+
+    distData = new ShooterIndex();
+    distData.setFontSize(35);
   }
 
   public double getX() {
@@ -141,19 +147,22 @@ public class Limelight extends SubsystemBase {
 
   public double willTestDistance(){
     double heightDelta = LimelightConstants.kTargetHeight -
-    LimelightConstants.kMountHeight;
+      LimelightConstants.kMountHeight;
     double goalAngle = (LimelightConstants.kMountAngle + getY()) *
-    (3.14159 / 180.);
+      (3.14159 / 180.);
     double dist = heightDelta /
-    (Math.tan(goalAngle));
+      (Math.tan(goalAngle));
+
+    double indexDist = (dist + LimelightConstants.kLensToBack + LimelightConstants.kTapeToCenter) / 12.0;
     if(getHasTarget()){
-      put("Test Distance", (dist + 22 + 26) / 12.0);
+      distData.setIndex(Math.round(indexDist * 100.) / 100.);
+      SmartDashboard.putData("Limelight Distance", distData);
     }
-    return (dist + 22 + 26) / 12.0;
+    return indexDist;
   }
 
   public void putTargetValues() {
-    put("Target X Offset", entry("tx").getDouble(0.));
+    put("Target X Offset", Math.round(entry("tx").getDouble(0.) * 100.) / 100.);
     // put("Target Y Offset", entry("ty").getDouble(0.));
     // put("Target Area", entry("ta").getDouble(0.));
     SmartDashboard.putBoolean("Has Target", getHasTarget());
@@ -185,6 +194,7 @@ public class Limelight extends SubsystemBase {
   @Override
   public void periodic() {
     willTestDistance();
+    putTargetValues();
     updateCycles++;
   }
 }

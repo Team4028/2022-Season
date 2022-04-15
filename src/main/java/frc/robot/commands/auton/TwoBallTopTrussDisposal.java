@@ -26,7 +26,7 @@ public class TwoBallTopTrussDisposal extends BeakAutonCommand{
     new WaitCommand(0.25),
     new InstantCommand(() -> Infeed.getInstance().forceRunInfeed()),
     util.getPathPlannerSwerveControllerCommand(Trajectories.TwoBall_Top()),
-    new InstantCommand(() -> Shooter.getInstance().setShooterIndex(12.5)),
+    new InstantCommand(() -> Shooter.getInstance().setShooterIndex(12.5, true)),
     new RotateDrivetrainToAngle(Rotation2d.fromDegrees(-32.0)),
     new InstantCommand(() -> Shooter.getInstance().runShooterMotors()),
     new WaitCommand(0.5),

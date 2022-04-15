@@ -4,11 +4,7 @@
 
 package frc.robot.commands.infeed;
 
-import com.revrobotics.CANSparkMax.ControlType;
-
-import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.subsystems.ColorSensor;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more

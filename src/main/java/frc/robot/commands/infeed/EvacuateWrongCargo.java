@@ -6,9 +6,6 @@ package frc.robot.commands.infeed;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ColorSensor;
-import frc.robot.subsystems.Conveyor;
-import frc.robot.subsystems.Infeed;
-import frc.robot.subsystems.Shooter;
 
 public class EvacuateWrongCargo extends CommandBase {
   /** Creates a new EvacuateWrongCargo. */

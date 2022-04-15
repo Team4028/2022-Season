@@ -23,6 +23,7 @@ import frc.robot.Constants.ShooterConstants;
 import frc.robot.Constants.CurrentLimitConstants;
 import frc.robot.Constants.PIDConstants;
 import frc.robot.Constants.SubsystemConstants;
+import frc.robot.utilities.ShooterIndex;
 import frc.robot.utilities.ShooterTable;
 import frc.robot.utilities.ShooterTableEntry;
 
@@ -42,6 +43,10 @@ public class Shooter extends SubsystemBase {
     double limelightDistance, manualIndex, shooterIndex = ShooterConstants.kIndexDefault;
     int manualCounter = 0;
     boolean longshot;
+
+    private double lastIndex = 0.;
+
+    private ShooterIndex indexData;
 
     private static Shooter _instance;
     private int updateCycles = 0;
@@ -105,26 +110,9 @@ public class Shooter extends SubsystemBase {
         _back.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 100);
 
         isShotValidation = false;
-    }
 
-    public void update() {
-        // Data values needed for debug
-        put("Shooter Index", shooterIndex);
-        ShooterTableEntry e = _st.CalcShooterValues(shooterIndex);
-        SmartDashboard.putString("Shot", e.Description);
-        put("Shot Front RPM", e.ShooterFrontRPM);
-        put("Shot Back RPM", e.ShooterBackRPM);
-        put("Shot Kicker RPM", e.KickerRPM);
-        put("Actuator Value", e.ActuatorVal);
-
-        // put("Front Error", util.toFalconRPM(_front.getClosedLoopError()));
-        // put("Back Error", util.toFalconRPM(_back.getClosedLoopError()));
-        put("Front Motor RPM", util.toFalconRPM(_front.getSelectedSensorVelocity()));
-        put("Back Motor RPM", util.toFalconRPM(_back.getSelectedSensorVelocity()));
-        put("Kicker Motor RPM", util.toFalconRPM(_kicker.getSelectedSensorVelocity()));
-        put("Angle", _angleEnc.getPosition());
-
-        getLimelightDistance();
+        indexData = new ShooterIndex();
+        indexData.setFontSize(100);
     }
 
     public void put(String key, double val) {
@@ -156,6 +144,11 @@ public class Shooter extends SubsystemBase {
             _back.set(ControlMode.Velocity, util.toFalconVelocity(entry.ShooterBackRPM));
             _kicker.set(ControlMode.PercentOutput, entry.KickerRPM / 100.);
         }
+
+        put("Front Motor RPM", util.toFalconRPM(_front.getSelectedSensorVelocity()));
+        put("Back Motor RPM", util.toFalconRPM(_back.getSelectedSensorVelocity()));
+        put("Kicker Motor RPM", util.toFalconRPM(_kicker.getSelectedSensorVelocity()));
+        put("Angle", _angleEnc.getPosition());
 
         SmartDashboard.putBoolean("Shooter/Running", true);
 
@@ -193,7 +186,7 @@ public class Shooter extends SubsystemBase {
         } else {
             manualIndex += ShooterConstants.kCoarseAdjustment;
         }
-        update();
+        // update();
     }
 
     public void decrementIndex(boolean fine) {
@@ -202,13 +195,27 @@ public class Shooter extends SubsystemBase {
         } else {
             manualIndex -= ShooterConstants.kCoarseAdjustment;
         }
-        update();
+        // update();
     }
 
-    public void setShooterIndex(double index) {
-        manualIndex = index;
+    public void setShooterIndex(double index, boolean setManual) {
+        if (setManual) {
+            manualIndex = index;
+        }
         shooterIndex = index;
-        // update();
+
+        if (lastIndex != index) {
+            indexData.setIndex(Math.round(index * 10.) / 10.);
+            SmartDashboard.putData("Shooter Index", indexData);
+
+            ShooterTableEntry e = _st.CalcShooterValues(shooterIndex);
+            SmartDashboard.putString("Shot", e.Description);
+            put("Shot Front RPM", e.ShooterFrontRPM);
+            put("Shot Back RPM", e.ShooterBackRPM);
+            put("Shot Kicker RPM", e.KickerRPM);
+            put("Actuator Value", e.ActuatorVal);
+            lastIndex = index;
+        }
     }
 
     public void setManualIndex() {
@@ -231,14 +238,8 @@ public class Shooter extends SubsystemBase {
         }
     }
 
-    public double getLimelightDistance() {
-        _l.putTargetValues();
-        limelightDistance = _l.distance() / 12;
-        return limelightDistance;
-    }
-
     public void acceptLimelight() {
-        shooterIndex = _l.willTestDistance();
+        setShooterIndex(_l.willTestDistance(), false);
     }
 
     public void resetIndex() {
@@ -265,10 +266,12 @@ public class Shooter extends SubsystemBase {
 
     public void setIsShotValidation(boolean isShotValidation) {
         this.isShotValidation = isShotValidation;
+        SmartDashboard.putBoolean("Shot Validation", this.isShotValidation);
     }
 
     public void toggleIsShotValidation() {
         this.isShotValidation = !this.isShotValidation;
+        SmartDashboard.putBoolean("Shot Validation", this.isShotValidation);
     }
 
     public boolean getIsShotValidation() {
@@ -292,8 +295,8 @@ public class Shooter extends SubsystemBase {
     @Override
     public void periodic() {
         if (updateCycles % 5 == 0) {
-            update();
-            SmartDashboard.putNumber("Manual Index", manualIndex());
+            // update();
+            // SmartDashboard.putNumber("Manual Index", manualIndex());
             SmartDashboard.putBoolean("Shot Validation", getIsShotValidation());
         }
         updateCycles++;
