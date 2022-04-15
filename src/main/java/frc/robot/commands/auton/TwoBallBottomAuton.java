@@ -11,6 +11,7 @@ import frc.robot.util;
 import frc.robot.commands.BeakAutonCommand;
 import frc.robot.commands.chassis.RotateDrivetrainToAngle;
 import frc.robot.commands.conveyor.RunConveyor;
+import frc.robot.commands.shooter.ResetDefaultIndex;
 import frc.robot.subsystems.Infeed;
 import frc.robot.subsystems.Shooter;
 import frc.robot.utilities.Trajectories;
@@ -24,9 +25,10 @@ public class TwoBallBottomAuton extends BeakAutonCommand {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     super.addCommands(
+      new ResetDefaultIndex(),
       new InstantCommand(() -> Infeed.getInstance().setInfeedDown()),
       new WaitCommand(0.25),
-      new InstantCommand(() -> Infeed.getInstance().runInfeedSingulatorMotors(1.0)),
+      new InstantCommand(() -> Infeed.getInstance().forceRunInfeed()),
       util.getPathPlannerSwerveControllerCommand(Trajectories.TwoBall_Bottom()),
       new RotateDrivetrainToAngle(Rotation2d.fromDegrees(79.0)),
       new InstantCommand(() -> Shooter.getInstance().runShooterMotors()),

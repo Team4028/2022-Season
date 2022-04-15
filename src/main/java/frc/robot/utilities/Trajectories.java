@@ -71,8 +71,15 @@ public class Trajectories {
     public static PathPlannerTrajectory FiveBall_AcquireFirstCargo(){
         return PathPlanner.loadPath(
             "FiveBall_AcquireFirstCargo",
-        0.85 * kMaxSpeedMetersPerSecond,
-        0.85 * kMaxAccelerationMetersPerSecondSquared
+        0.65 * kMaxSpeedMetersPerSecond,
+        0.65 * kMaxAccelerationMetersPerSecondSquared
+        );
+    }
+    public static PathPlannerTrajectory FiveBall_GoToFirstShot(){
+        return PathPlanner.loadPath(
+            "FiveBall_GoToFirstShot",
+        0.55 * kMaxSpeedMetersPerSecond,
+        0.55 * kMaxAccelerationMetersPerSecondSquared
         );
     }
     /**
@@ -81,8 +88,8 @@ public class Trajectories {
     public static PathPlannerTrajectory FiveBall_AcquireSecondCargo(){
         return PathPlanner.loadPath(
             "FiveBall_AcquireSecondCargo",
-        kMaxSpeedMetersPerSecond,
-        kMaxAccelerationMetersPerSecondSquared
+        0.95 * kMaxSpeedMetersPerSecond,
+        0.95 * kMaxAccelerationMetersPerSecondSquared
         );
     }
     /**
@@ -90,9 +97,9 @@ public class Trajectories {
      */
     public static PathPlannerTrajectory FiveBall_AcquireLoadingZoneCargo(){
         return PathPlanner.loadPath(
-            "FiveBall_AcquireLoadingZoneCargoMod",
-        0.9 * kMaxSpeedMetersPerSecond,
-        0.9 * kMaxAccelerationMetersPerSecondSquared
+            "FiveBall_AcquireLoadingZoneCargo",
+        0.85 * kMaxSpeedMetersPerSecond,
+        0.85 * kMaxAccelerationMetersPerSecondSquared
         );
     }
     /**
@@ -101,22 +108,22 @@ public class Trajectories {
     public static PathPlannerTrajectory FiveBall_ReturnToShoot(){
         return PathPlanner.loadPath(
             "FiveBall_ReturnToShoot",
-        kMaxSpeedMetersPerSecond,
-        kMaxAccelerationMetersPerSecondSquared
+        0.75 * kMaxSpeedMetersPerSecond,
+        0.75 * kMaxAccelerationMetersPerSecondSquared
         );
     }
     public static PathPlannerTrajectory TwoBall_Top(){
         return PathPlanner.loadPath(
             "TwoBall_Top",
-        kMaxSpeedMetersPerSecond,
-        kMaxAccelerationMetersPerSecondSquared
+        0.75 * kMaxSpeedMetersPerSecond,
+        0.75 * kMaxAccelerationMetersPerSecondSquared
         );
     }
     public static PathPlannerTrajectory TwoBall_TopGetOutOfTheWay(){
         return PathPlanner.loadPath(
             "TwoBall_TopGetOutOfTheWay",
         0.5 * kMaxSpeedMetersPerSecond,
-        0.5 * kMaxAccelerationMetersPerSecondSquared
+        0.25 * kMaxAccelerationMetersPerSecondSquared
         );
     }
     public static PathPlannerTrajectory TwoBall_TopHangarDisposalFirstOpponentBall(){
@@ -136,15 +143,15 @@ public class Trajectories {
     public static PathPlannerTrajectory TwoBall_TopTrussDisposalSecond(){
         return PathPlanner.loadPath(
             "TwoBall_TopTrussDisposalSecond",
-        0.75 * kMaxSpeedMetersPerSecond,
-        0.75 * kMaxAccelerationMetersPerSecondSquared
+        0.5 * kMaxSpeedMetersPerSecond,
+        0.5 * kMaxAccelerationMetersPerSecondSquared
         );
     }
     public static PathPlannerTrajectory TwoBall_TopTrussDispose(){
         return PathPlanner.loadPath(
             "TwoBall_TopTrussDispose",
-        0.75 * kMaxSpeedMetersPerSecond,
-        0.75 * kMaxAccelerationMetersPerSecondSquared
+        0.5 * kMaxSpeedMetersPerSecond,
+        0.5 * kMaxAccelerationMetersPerSecondSquared
         );
     }
     public static PathPlannerTrajectory TwoBall_Middle(){

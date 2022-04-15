@@ -206,6 +206,7 @@ public class Shooter extends SubsystemBase {
     }
 
     public void setShooterIndex(double index) {
+        manualIndex = index;
         shooterIndex = index;
         // update();
     }
@@ -241,6 +242,7 @@ public class Shooter extends SubsystemBase {
     }
 
     public void resetIndex() {
+        manualIndex = ShooterConstants.kIndexDefault;
         shooterIndex = ShooterConstants.kIndexDefault;
     }
 
@@ -277,7 +279,7 @@ public class Shooter extends SubsystemBase {
         _front.set(ControlMode.PercentOutput, 0.35);
         _back.set(ControlMode.PercentOutput, 0);
         _kicker.set(ControlMode.PercentOutput, 0.55);
-        _anglePid.setReference(32.0, ControlType.kPosition);
+        _anglePid.setReference(25.0, ControlType.kPosition);
     }
 
     public static Shooter getInstance() {

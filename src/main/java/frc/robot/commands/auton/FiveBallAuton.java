@@ -29,7 +29,7 @@ public class FiveBallAuton extends BeakAutonCommand {
     super.addCommands(
       new InstantCommand(() -> Infeed.getInstance().setInfeedDown()),
       new WaitCommand(0.25),
-      new InstantCommand(() -> Infeed.getInstance().runInfeedSingulatorMotors(1.0)),
+      new InstantCommand(() -> Infeed.getInstance().forceRunInfeed()),
       new InstantCommand(() -> Shooter.getInstance().setShooterIndex(16.5)),
       util.getPathPlannerSwerveControllerCommand(Trajectories.FiveBall_AcquireFirstCargo())
       .alongWith(new WaitCommand(1.5).andThen(new InstantCommand(() -> Shooter.getInstance().runShooterMotors()))),

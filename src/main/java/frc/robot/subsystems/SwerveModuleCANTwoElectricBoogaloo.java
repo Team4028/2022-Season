@@ -43,7 +43,7 @@ public class SwerveModuleCANTwoElectricBoogaloo {
     m_turningEncoder = new WPI_CANCoder(CANEncoderPort, DriveConstants.kCANivoreName);
 
     // m_turningMotor.configFactoryDefault();
-    // m_driveMotor.configFactoryDefault();
+    m_driveMotor.configFactoryDefault();
 
     m_turningEncoder.configMagnetOffset(Math.toDegrees(turningMotorOffset));
     m_turningEncoder.setStatusFramePeriod(

@@ -58,7 +58,7 @@ public class Infeed extends SubsystemBase {
   }
 
   public void forceRunInfeed() {
-    _infeedMotor.set(ControlMode.PercentOutput, VBusConstants.kInfeed);
+    _infeedMotor.set(ControlMode.PercentOutput, 0.85);
     _singulatorMotor.set(VBusConstants.kSingulator);
   }
 

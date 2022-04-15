@@ -231,9 +231,9 @@ public class RobotContainer {
     fieldOriented = !fieldOriented;
   }
   private void initAutonChooser(){
-    _autonChooser.setDefaultOption("Four Ball", new FourBallAuton());
-    _autonChooser.addOption("Four Ball With Backup", new FourBallBackupAuton());
-    _autonChooser.addOption("Five Ball", new FiveBallAuton());
+    // _autonChooser.setDefaultOption("Four Ball", new FourBallAuton());
+    _autonChooser.setDefaultOption("Four Ball With Backup", new FourBallBackupAuton());
+    // _autonChooser.addOption("Five Ball", new FiveBallAuton());
     _autonChooser.addOption("Five Ball With Backup", new FiveBallBackupAuton());
     _autonChooser.addOption("Top Two Ball", new TwoBallTopAuton());
     _autonChooser.addOption("Top Two Ball (Get Out Of The Way)", new TwoBallTopGetOutOfTheWayAuton());
@@ -251,8 +251,9 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
+    AutonTimer timer = new AutonTimer();
     m_drive.resetOdometry(_autonChooser.getSelected().getInitialPose());
-    return _autonChooser.getSelected().deadlineWith(new AutonTimer());
+    return _autonChooser.getSelected().deadlineWith(timer);
   }
 
 }

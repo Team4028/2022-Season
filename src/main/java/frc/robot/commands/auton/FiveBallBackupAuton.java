@@ -11,6 +11,9 @@ import frc.robot.util;
 import frc.robot.Constants.VBusConstants;
 import frc.robot.commands.BeakAutonCommand;
 import frc.robot.commands.chassis.RotateDrivetrainToAngle;
+import frc.robot.commands.conveyor.RunConveyor;
+import frc.robot.commands.conveyor.RunConveyorTwoBall;
+import frc.robot.commands.infeed.ToggleInfeedUp;
 import frc.robot.commands.shooter.ResetDefaultIndex;
 import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.Infeed;
@@ -30,31 +33,41 @@ public class FiveBallBackupAuton extends BeakAutonCommand {
     super.addCommands(
       new InstantCommand(() -> Infeed.getInstance().setInfeedDown()),
       new WaitCommand(0.25),
-      new InstantCommand(() -> Infeed.getInstance().runInfeedSingulatorMotors(1.0)),
+      new InstantCommand(() -> Infeed.getInstance().forceRunInfeed()),
       new InstantCommand(() -> Shooter.getInstance().setShooterIndex(17.0)),
-      util.getPathPlannerSwerveControllerCommand(Trajectories.FiveBall_AcquireFirstCargo())
-      .alongWith(new WaitCommand(1.5).andThen(new InstantCommand(() -> Shooter.getInstance().runShooterMotors()))),
+      util.getPathPlannerSwerveControllerCommand(Trajectories.FiveBall_AcquireFirstCargo()),
+      new WaitCommand(0.2),
+      new ToggleInfeedUp(),
+      new InstantCommand(() -> Infeed.getInstance().stopInfeedSingulatorMotors()),
+      util.getPathPlannerSwerveControllerCommand(Trajectories.FiveBall_GoToFirstShot())
+      .alongWith(new WaitCommand(1.0).andThen(new InstantCommand(() -> Shooter.getInstance().runShooterMotors()))),
       new RotateDrivetrainToAngle(Rotation2d.fromDegrees(38)).withTimeout(1.0),
-      new InstantCommand(() -> Conveyor.getInstance().runConveyorMotor(VBusConstants.kConveyAll )),
-      new WaitCommand(1.1),
-      new InstantCommand(() -> Conveyor.getInstance().stopConveyorMotor()),
+      // new WaitCommand(1.1).deadlineWith(
+      //   new RunConveyor()
+      // ),
+      new RunConveyorTwoBall(),
       new ResetDefaultIndex(),
+      new ToggleInfeedUp(),
       new InstantCommand(() -> Shooter.getInstance().stop()),
+      new InstantCommand(() -> Infeed.getInstance().forceRunInfeed(), Infeed.getInstance()),
       util.getPathPlannerSwerveControllerCommand(Trajectories.FiveBall_AcquireSecondCargo()).alongWith(new InstantCommand(() -> Shooter.getInstance().runShooterMotors())),
-      new InstantCommand(() -> Conveyor.getInstance().runConveyorMotor(VBusConstants.kConveyAll )),
-      new WaitCommand(1.1),
-      new InstantCommand(() -> Conveyor.getInstance().stopConveyorMotor()),
+      // new WaitCommand(1.0).deadlineWith(
+      //   new RunConveyor()
+      // ),
+      new RunConveyorTwoBall(),
       new InstantCommand(() -> Shooter.getInstance().stop()),
+      new InstantCommand(() -> Infeed.getInstance().forceRunInfeed(), Infeed.getInstance()),
       util.getPathPlannerSwerveControllerCommand(Trajectories.FiveBall_AcquireLoadingZoneCargo()),
       new WaitCommand(0.35),
       util.getPathPlannerSwerveControllerCommand(Trajectories.FourBall_Backup()),
       new WaitCommand(1.0),
-      util.getPathPlannerSwerveControllerCommand(Trajectories.FourBall_ReturnToShoot())
+      util.getPathPlannerSwerveControllerCommand(Trajectories.FourBall_BackupReturnToShoot())
       .alongWith(new WaitCommand(1.0).andThen(new InstantCommand(() -> Shooter.getInstance().runShooterMotors()))),
       new RotateDrivetrainToAngle(Rotation2d.fromDegrees(37.5)).withTimeout(1.0),
-      new InstantCommand(() -> Conveyor.getInstance().runConveyorMotor(VBusConstants.kConveyAll )),
-      new WaitCommand(1.1),
-      new InstantCommand(() -> Conveyor.getInstance().stopConveyorMotor()),
+      // new WaitCommand(1.5).deadlineWith(
+      //   new RunConveyor()
+      // ),
+      new RunConveyorTwoBall(),
       new WaitCommand(0.25),
       new InstantCommand(() -> Shooter.getInstance().stop()),
       new InstantCommand(() -> Vision.getInstance().setInfeedCamera())
