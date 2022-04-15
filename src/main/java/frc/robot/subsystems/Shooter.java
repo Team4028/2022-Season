@@ -43,7 +43,7 @@ public class Shooter extends SubsystemBase {
     int manualCounter = 0;
     boolean longshot;
 
-    private static Shooter _instance = new Shooter();
+    private static Shooter _instance;
     private int updateCycles = 0;
 
     public Shooter() {
@@ -174,11 +174,13 @@ public class Shooter extends SubsystemBase {
     public double index() {
         return shooterIndex;
     }
-    public double manualIndex(){
+
+    public double manualIndex() {
         return manualIndex;
     }
-    public void setLongshot(boolean longshot){
-        if(this.longshot != longshot){
+
+    public void setLongshot(boolean longshot) {
+        if (this.longshot != longshot) {
             resetCounter();
             incrementCounter();
         }
@@ -205,23 +207,24 @@ public class Shooter extends SubsystemBase {
 
     public void setShooterIndex(double index) {
         shooterIndex = index;
-        update();
+        // update();
     }
-    public void setManualIndex(){
-        if(!longshot){
-            if (manualCounter() % 3 == 0){
+
+    public void setManualIndex() {
+        if (!longshot) {
+            if (manualCounter() % 3 == 0) {
                 manualIndex = 7.0;
-            } else if(manualCounter() % 3 == 2) {
+            } else if (manualCounter() % 3 == 2) {
                 manualIndex = 10.0;
-            } else{
+            } else {
                 manualIndex = 12.5;
             }
-        }else{
-            if (manualCounter() % 3 == 0){
+        } else {
+            if (manualCounter() % 3 == 0) {
                 manualIndex = 21.0;
-            } else if(manualCounter() % 3 == 2){
+            } else if (manualCounter() % 3 == 2) {
                 manualIndex = 17.0;
-            } else{
+            } else {
                 manualIndex = 15.0;
             }
         }
@@ -240,35 +243,47 @@ public class Shooter extends SubsystemBase {
     public void resetIndex() {
         shooterIndex = ShooterConstants.kIndexDefault;
     }
-    public void resetManualIndex(){
+
+    public void resetManualIndex() {
         manualIndex = ShooterConstants.kIndexDefault;
         resetCounter();
     }
-    public int manualCounter(){
+
+    public int manualCounter() {
         return manualCounter;
     }
-    public void incrementCounter(){
+
+    public void incrementCounter() {
         manualCounter++;
     }
-    public void resetCounter(){
+
+    public void resetCounter() {
         manualCounter = 0;
     }
-    public void setIsShotValidation(boolean isShotValidation){
+
+    public void setIsShotValidation(boolean isShotValidation) {
         this.isShotValidation = isShotValidation;
     }
-    public void toggleIsShotValidation(){
+
+    public void toggleIsShotValidation() {
         this.isShotValidation = !this.isShotValidation;
     }
-    public boolean getIsShotValidation(){
+
+    public boolean getIsShotValidation() {
         return isShotValidation;
     }
-    public void runShooterOutfeed(){
+
+    public void runShooterOutfeed() {
         _front.set(ControlMode.PercentOutput, 0.35);
         _back.set(ControlMode.PercentOutput, 0);
         _kicker.set(ControlMode.PercentOutput, 0.55);
         _anglePid.setReference(32.0, ControlType.kPosition);
     }
+
     public static Shooter getInstance() {
+        if(_instance == null){
+            _instance = new Shooter();
+        }
         return _instance;
     }
 
@@ -278,10 +293,10 @@ public class Shooter extends SubsystemBase {
             update();
             SmartDashboard.putNumber("Manual Index", manualIndex());
             SmartDashboard.putBoolean("Shot Validation", getIsShotValidation());
-        } 
+        }
         updateCycles++;
         // This method will be called once per scheduler run
         // System.out.println(_angle.getOutputCurrent());
-        
+
     }
 }

@@ -16,6 +16,7 @@ import frc.robot.subsystems.Shooter;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class EvacuateInnerCargo extends SequentialCommandGroup {
   boolean correctColor = false;
+  Shooter shooter = Shooter.getInstance();
   /** Creates a new EvacuateInnerCargo. */
   public EvacuateInnerCargo() {
     // Add your commands in the addCommands() call, e.g.
@@ -24,9 +25,9 @@ public class EvacuateInnerCargo extends SequentialCommandGroup {
       new WaitCommand(0.1),
       new WaitCommand(1.5).deadlineWith(
         new RunConveyorOneBallEvacuate(),
-        new InstantCommand(() -> Shooter.getInstance().runShooterOutfeed(), Shooter.getInstance())
+        new InstantCommand(() -> shooter.runShooterOutfeed(), shooter)
       ),
-      new InstantCommand(() -> Shooter.getInstance().stop(), Shooter.getInstance())
+      new InstantCommand(() -> shooter.stop(), shooter)
     );
   }
   @Override

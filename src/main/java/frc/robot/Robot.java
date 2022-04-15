@@ -11,8 +11,10 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.Constants.ShooterConstants;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.ColorSensor;
+import frc.robot.subsystems.Infeed;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Shooter;
 
@@ -27,6 +29,13 @@ public class Robot extends TimedRobot {
   private RobotContainer m_robotContainer;
   private Compressor compressor = new Compressor(PneumaticsModuleType.CTREPCM);
 
+  private Shooter shooter;
+  private Limelight limelight;
+  private Climber climber;
+  private ColorSensor colorSensor;
+
+  private CommandScheduler commandScheduler;
+
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -38,7 +47,12 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     m_robotContainer = RobotContainer.getInstance();
     LiveWindow.disableAllTelemetry();
-    ColorSensor.getInstance();
+
+    colorSensor = ColorSensor.getInstance();
+    climber = Climber.getInstance();
+    limelight = Limelight.getInstance();
+    shooter = Shooter.getInstance();
+    commandScheduler = CommandScheduler.getInstance();
     
     /*MjpegServer cam = CameraServer.startAutomaticCapture(new UsbCamera("BRUH", "/dev/video0"));
     cam.setResolution(160, 120);
@@ -59,7 +73,7 @@ public class Robot extends TimedRobot {
     // commands, running already-scheduled commands, removing finished or interrupted commands,
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
-    CommandScheduler.getInstance().run();
+    commandScheduler.run();
     SmartDashboard.putBoolean("Compressor", compressor.enabled());
 
   }
@@ -67,7 +81,7 @@ public class Robot extends TimedRobot {
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
   public void disabledInit() {
-    Limelight.getInstance().setLedMode(1.);
+    limelight.setLedMode(1.);
   }
 
   @Override
@@ -77,7 +91,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
-    ColorSensor.getInstance().setAlliance();
+    colorSensor.setAlliance();
     /*
      * String autoSelected = SmartDashboard.getString("Auto Selector",
      * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
@@ -101,15 +115,15 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
-    ColorSensor.getInstance().setAlliance();
+    colorSensor.setAlliance();
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
 
-    Shooter.getInstance().resetCounter();
-    Shooter.getInstance().setIsShotValidation(false);
-    Climber.getInstance().resetEncoders();
-    Limelight.getInstance().setLedMode(0.);
+    shooter.resetCounter();
+    shooter.setIsShotValidation(false);
+    climber.resetEncoders();
+    limelight.setLedMode(0.);
   }
 
   /** This function is called periodically during operator control. */

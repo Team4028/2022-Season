@@ -47,10 +47,11 @@ public class ColorSensor extends SubsystemBase {
   public ColorSensor() {
     updateCycles = 0;
     alliance = Alliance.Red; // Just to avoid nullpointer
+    innerBall = new BallStatus();
+    outerBall = new BallStatus();
   }
 
   public void updateSensor0() {
-    outerBall = new BallStatus();
     RawColor rc0 = m_sensor.getRawColor0();
 
     int red0 = rc0.red;
@@ -101,8 +102,6 @@ public class ColorSensor extends SubsystemBase {
   }
 
   public void updateSensor1() {
-    innerBall = new BallStatus();
-
     RawColor rc1 = m_sensor.getRawColor1();
 
     int red1 = rc1.red;
@@ -176,9 +175,6 @@ public class ColorSensor extends SubsystemBase {
       SmartDashboard.putData("Outer Ball", outerBall);
     }
     updateCycles++;
-    SmartDashboard.putBoolean("Inner Correct", getInnerBallCorrect());
-    SmartDashboard.putBoolean("Outer Correct", getOuterBallCorrect()); // TEMP
-
     // This method will be called once per scheduler run
   }
 }

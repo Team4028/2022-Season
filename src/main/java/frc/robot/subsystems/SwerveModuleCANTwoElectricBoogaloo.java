@@ -24,7 +24,7 @@ public class SwerveModuleCANTwoElectricBoogaloo {
   private final WPI_TalonFX m_turningMotor;
   private final WPI_CANCoder m_turningEncoder;
 
-  private final int CAN_TIMEOUT_MS = 250;
+  private final int CAN_TIMEOUT_MS = 30;
 
   /**
    * Constructs a SwerveModuleCANTwoElectricBoogaloo.
@@ -62,31 +62,24 @@ public class SwerveModuleCANTwoElectricBoogaloo {
     m_turningMotor.setNeutralMode(NeutralMode.Brake);
     m_turningMotor.setInverted(true);
     m_turningMotor.selectProfileSlot(0, 0);
-    m_turningMotor.setSelectedSensorPosition(m_turningEncoder.getAbsolutePosition() / 360.0 * i_integratedEncoderTicksPerModRev);
-    m_turningMotor.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 20, 25, 0.2));
+    m_turningMotor
+        .setSelectedSensorPosition(m_turningEncoder.getAbsolutePosition() / 360.0 * i_integratedEncoderTicksPerModRev);
+    m_turningMotor.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 20, 25, 0.2), CAN_TIMEOUT_MS);
     m_turningMotor.configAllowableClosedloopError(0, i_kTurningMotorAllowableClosedLoopError, 0);
     configMotorPID(m_driveMotor, 0, i_kPModuleDriveController, 0.0, 0.0);
     configMotorPID(m_turningMotor, 0, i_kPModuleTurningController, 0.0, 0.1);
   }
-  public void checkPowerFailure(){
-    if(m_driveMotor.hasResetOccurred()){
-      System.out.println("Drive Motor" + Integer.toString(m_driveMotor.getDeviceID()));
-    }
-    if(m_turningMotor.hasResetOccurred()){
-      System.out.println("Turning Motor" + Integer.toString(m_turningMotor.getDeviceID()));
-    }
-    if(m_turningEncoder.hasResetOccurred()){
-      System.out.println("CANcoder" + Integer.toString(m_turningEncoder.getDeviceID()));
-    }
-  }
-  public void configDriveMotor(){
+
+
+  public void configDriveMotor() {
     m_driveMotor.setNeutralMode(NeutralMode.Brake);
-    m_driveMotor.configVoltageCompSaturation(i_kNominalVoltage);
+    m_driveMotor.configVoltageCompSaturation(i_kNominalVoltage, CAN_TIMEOUT_MS);
     m_driveMotor.enableVoltageCompensation(true);
-    m_driveMotor.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 40, 45, 0.1));
-    m_driveMotor.configStatorCurrentLimit(new StatorCurrentLimitConfiguration(true, 80, 85, 0.5));
+    m_driveMotor.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 40, 45, 0.1), CAN_TIMEOUT_MS);
+    m_driveMotor.configStatorCurrentLimit(new StatorCurrentLimitConfiguration(true, 80, 85, 0.5), CAN_TIMEOUT_MS);
   }
-  public void configStatusFramePeriods(){
+
+  public void configStatusFramePeriods() {
   }
 
   /**
@@ -107,20 +100,19 @@ public class SwerveModuleCANTwoElectricBoogaloo {
   public void setDesiredState(SwerveModuleState desiredState) {
     // Optimize the reference state to avoid spinning further than 90 degrees
     SwerveModuleState state = optimize(
-        SwerveModuleState.optimize(desiredState, new Rotation2d(getTurningEncoderRadians())),
-        new Rotation2d(getTurningEncoderRadians()));
+        SwerveModuleState.optimize(desiredState, getState().angle),
+        getState().angle);
 
     // Calculate Arbitrary Feed Forward for Drive Motor
     final double feedForward = DriveConstants.driveTrainFeedforward.calculate(state.speedMetersPerSecond)
         / i_kNominalVoltage;
 
     m_driveMotor.set(ControlMode.Velocity,
-    state.speedMetersPerSecond / 10.0 / i_kDriveEncoderDistancePerPulse,
-    DemandType.ArbitraryFeedForward,
-    feedForward);
+        state.speedMetersPerSecond / 10.0 / i_kDriveEncoderDistancePerPulse,
+        DemandType.ArbitraryFeedForward,
+        feedForward);
     setHeading(state.angle.getDegrees());
   }
-
 
   public void configMotorPID(WPI_TalonFX talon, int slotIdx, double p, double i, double d) {
     talon.config_kP(slotIdx, p, CAN_TIMEOUT_MS);
@@ -146,24 +138,24 @@ public class SwerveModuleCANTwoElectricBoogaloo {
       newAngleDemand += 360.0;
     }
     m_turningMotor.set(ControlMode.Position, newAngleDemand / 360.0 * i_integratedEncoderTicksPerModRev);
-}
-public static SwerveModuleState optimize(
-  SwerveModuleState desiredState, Rotation2d currentAngle) {
-var delta = desiredState.angle.minus(currentAngle);
-while(Math.abs(delta.getDegrees()) > 90.0){
-  desiredState =   new SwerveModuleState(
-    -desiredState.speedMetersPerSecond,
-    Rotation2d.fromDegrees(
-      delta.getDegrees() < 90.0?
-      delta.getDegrees() + 180.0:
-      delta.getDegrees() - 180.0
-    ));
-  delta = desiredState.angle.minus(currentAngle);
-}
-  return new SwerveModuleState(desiredState.speedMetersPerSecond, desiredState.angle);
+  }
 
-}
-public void RezeroTurningMotorEncoder(){
-  m_turningMotor.setSelectedSensorPosition(m_turningEncoder.getAbsolutePosition() / 360.0 * i_integratedEncoderTicksPerModRev);
-}
+  public static SwerveModuleState optimize(
+      SwerveModuleState desiredState, Rotation2d currentAngle) {
+    var delta = desiredState.angle.minus(currentAngle);
+    while (Math.abs(delta.getDegrees()) > 90.0) {
+      desiredState = new SwerveModuleState(
+          -desiredState.speedMetersPerSecond,
+          Rotation2d.fromDegrees(
+              delta.getDegrees() < 90.0 ? delta.getDegrees() + 180.0 : delta.getDegrees() - 180.0));
+      delta = desiredState.angle.minus(currentAngle);
+    }
+    return new SwerveModuleState(desiredState.speedMetersPerSecond, desiredState.angle);
+
+  }
+
+  public void RezeroTurningMotorEncoder() {
+    m_turningMotor
+        .setSelectedSensorPosition(m_turningEncoder.getAbsolutePosition() / 360.0 * i_integratedEncoderTicksPerModRev, 0, 30);
+  }
 }

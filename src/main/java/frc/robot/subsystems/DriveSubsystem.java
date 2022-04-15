@@ -95,8 +95,8 @@ public class DriveSubsystem extends SubsystemBase {
     }
     //TODO: Organized, comprehensive data for whole Drivetrain
     if (updateCycles == 3) {
-      SmartDashboard.putNumber("X (Feet)", Units.metersToFeet(m_odometry.getPoseMeters().getX()));
-      SmartDashboard.putNumber("Y (Feet)", Units.metersToFeet(m_odometry.getPoseMeters().getY()));
+      // SmartDashboard.putNumber("X (Feet)", Units.metersToFeet(m_odometry.getPoseMeters().getX()));
+      // SmartDashboard.putNumber("Y (Feet)", Units.metersToFeet(m_odometry.getPoseMeters().getY()));
       SmartDashboard.putNumber("X (Metres)", m_odometry.getPoseMeters().getX());
       SmartDashboard.putNumber("Y (Metres)", m_odometry.getPoseMeters().getY());
       SmartDashboard.putNumber("Heading (Deg)", m_odometry.getPoseMeters().getRotation().getDegrees());
@@ -111,31 +111,31 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     //TODO: Fix this/ remove if possible
-    if(testTimer < 8 * configWaitCycles + 1){
+    if(testTimer < 8 * configWaitCycles + 3){
       testTimer++;
     }
     if (testTimer == configWaitCycles) {
       System.out.println("we are worse 1");
-      DriveSubsystem.getInstance().m_frontLeft.configDriveMotor();
+      m_frontLeft.configDriveMotor();
       zeroHeading();
     }else if (testTimer == 2 * configWaitCycles){
       System.out.println("we are worse 2");
-      DriveSubsystem.getInstance().m_frontRight.configDriveMotor();
+      m_frontRight.configDriveMotor();
     }else if (testTimer == 3 * configWaitCycles){
       System.out.println("we are worse 3");
-      DriveSubsystem.getInstance().m_rearLeft.configDriveMotor();
+      m_rearLeft.configDriveMotor();
     }else if (testTimer == 4 * configWaitCycles){
       System.out.println("we are worse 4");
-      DriveSubsystem.getInstance().m_rearRight.configDriveMotor();
+      m_rearRight.configDriveMotor();
     } else if(testTimer == 5 * configWaitCycles){
-      DriveSubsystem.getInstance().m_frontLeft.configTurningMotor();
+      m_frontLeft.configTurningMotor();
     }else if(testTimer == 6 * configWaitCycles){
-      DriveSubsystem.getInstance().m_rearRight.configTurningMotor();
+      m_rearRight.configTurningMotor();
     }else if(testTimer == 7 * configWaitCycles){
-      DriveSubsystem.getInstance().m_frontRight.configTurningMotor();
-      DriveSubsystem.getInstance().m_frontLeft.configDriveMotor();
+      m_frontRight.configTurningMotor();
+      m_frontLeft.configDriveMotor();
     }else if(testTimer == 8 * configWaitCycles){
-      DriveSubsystem.getInstance().m_rearLeft.configTurningMotor();
+      m_rearLeft.configTurningMotor();
       zeroHeading();
     }
   }
@@ -235,10 +235,10 @@ public class DriveSubsystem extends SubsystemBase {
     m_rearRight.resetEncoders();
   }
   private void resetModuleHeadingControllers(){
-    DriveSubsystem.getInstance().m_frontLeft.RezeroTurningMotorEncoder();
-    DriveSubsystem.getInstance().m_frontRight.RezeroTurningMotorEncoder();
-    DriveSubsystem.getInstance().m_rearLeft.RezeroTurningMotorEncoder();
-    DriveSubsystem.getInstance().m_rearRight.RezeroTurningMotorEncoder();
+    m_frontLeft.RezeroTurningMotorEncoder();
+    m_frontRight.RezeroTurningMotorEncoder();
+    m_rearLeft.RezeroTurningMotorEncoder();
+    m_rearRight.RezeroTurningMotorEncoder();
   }
 
   /** Zeroes the heading of the robot. */
