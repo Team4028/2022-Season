@@ -6,6 +6,7 @@ package frc.robot.utilities;
 
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
+
 /**
  * A {@link Sendable} to interface with a custom
  * widget that represents a shooter index or limelight
@@ -14,7 +15,9 @@ import edu.wpi.first.util.sendable.SendableBuilder;
 public class ShooterIndex implements Sendable {
     private double index;
     private double fontSize;
-    public ShooterIndex() {}
+
+    public ShooterIndex() {
+    }
 
     public void setIndex(double index) {
         this.index = index;

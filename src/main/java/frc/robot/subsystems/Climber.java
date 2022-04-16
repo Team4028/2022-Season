@@ -165,8 +165,7 @@ public class Climber extends SubsystemBase {
     @Override
     public void periodic() {
         // This method will be called once per scheduler run
-        if (updateCycles % 4 == 0)
-        {
+        if (updateCycles % 4 == 0) {
             SmartDashboard.putNumber("Left Climber", _leftEncoder.getPosition());
             SmartDashboard.putNumber("Right Climber", _rightEncoder.getPosition());
         }

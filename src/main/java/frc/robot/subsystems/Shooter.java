@@ -123,7 +123,7 @@ public class Shooter extends SubsystemBase {
         _angle.setPeriodicFramePeriod(PeriodicFrame.kStatus1, 23);
         _angle.setPeriodicFramePeriod(PeriodicFrame.kStatus2, 23);
         _angle.setPeriodicFramePeriod(PeriodicFrame.kStatus3, 53);
-        
+
         _front.setStatusFramePeriod(StatusFrameEnhanced.Status_1_General, 19);
         _front.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 19);
         _front.setStatusFramePeriod(StatusFrameEnhanced.Status_4_AinTempVbat, 253);
@@ -312,7 +312,7 @@ public class Shooter extends SubsystemBase {
     }
 
     public static Shooter getInstance() {
-        if(_instance == null){
+        if (_instance == null) {
             _instance = new Shooter();
         }
         return _instance;

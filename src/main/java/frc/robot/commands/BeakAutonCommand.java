@@ -13,16 +13,20 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class BeakAutonCommand extends SequentialCommandGroup {
-  /** Creates a new BeakAutonCommand. */
-  private Pose2d initialPose;
-  public BeakAutonCommand() {
-    // Add your commands in the addCommands() call, e.g.
-    // addCommands(new FooCommand(), new BarCommand());
-  }
-  protected void setInitialPose(PathPlannerTrajectory initialTrajectory){
-    this.initialPose = new Pose2d(initialTrajectory.getInitialPose().getTranslation(), initialTrajectory.getInitialState().holonomicRotation);
-  }
-  public Pose2d getInitialPose(){
-    return initialPose;
-  }
+    /** Creates a new BeakAutonCommand. */
+    private Pose2d initialPose;
+
+    public BeakAutonCommand() {
+        // Add your commands in the addCommands() call, e.g.
+        // addCommands(new FooCommand(), new BarCommand());
+    }
+
+    protected void setInitialPose(PathPlannerTrajectory initialTrajectory) {
+        this.initialPose = new Pose2d(initialTrajectory.getInitialPose().getTranslation(),
+                initialTrajectory.getInitialState().holonomicRotation);
+    }
+
+    public Pose2d getInitialPose() {
+        return initialPose;
+    }
 }

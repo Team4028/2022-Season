@@ -23,25 +23,29 @@ public final class util {
     public static double toFalconVelocity(double rpm) {
         return rpm * 4096 / 600;
     }
-    public static double deadband(double input){
-        return Math.abs(input) > 0.025? input: 0.0;
+
+    public static double deadband(double input) {
+        return Math.abs(input) > 0.025 ? input : 0.0;
     }
-    public static double speedscaleDrive(double input, double base, double throttle){
+
+    public static double speedscaleDrive(double input, double base, double throttle) {
         return (base + throttle * (1.0 - base)) * input;
     }
-    public static double swerveModuleReferenceAngleDegrees(Rotation2d angle){
+
+    public static double swerveModuleReferenceAngleDegrees(Rotation2d angle) {
         return Math.toDegrees(Math.atan2(angle.getSin(), angle.getCos()));
     }
+
     public static Command getPathPlannerSwerveControllerCommand(PathPlannerTrajectory traj) {
         return new PPSwerveControllerCommand(
-            traj,
-            DriveSubsystem.getInstance()::getPose,
-            DriveConstants.kDriveKinematics,
-            AutoConstants.AUTON_X_CONTROLLER,
-            AutoConstants.AUTON_Y_CONTROLLER,
-            AutoConstants.AUTON_THETA_CONTROLLER,
-            DriveSubsystem.getInstance()::setModuleStates,
-            DriveSubsystem.getInstance())
-                .andThen(new InstantCommand(() -> DriveSubsystem.getInstance().drive(0, 0, 0, () -> true)));
-}
+                traj,
+                DriveSubsystem.getInstance()::getPose,
+                DriveConstants.kDriveKinematics,
+                AutoConstants.AUTON_X_CONTROLLER,
+                AutoConstants.AUTON_Y_CONTROLLER,
+                AutoConstants.AUTON_THETA_CONTROLLER,
+                DriveSubsystem.getInstance()::setModuleStates,
+                DriveSubsystem.getInstance())
+                        .andThen(new InstantCommand(() -> DriveSubsystem.getInstance().drive(0, 0, 0, () -> true)));
+    }
 }

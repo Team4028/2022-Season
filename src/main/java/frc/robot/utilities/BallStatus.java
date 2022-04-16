@@ -6,13 +6,16 @@ package frc.robot.utilities;
 
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
+
 /**
  * A @{link Sendable} to interface with a custom widget
  * representing the color of a cargo piece within the robot.
-*/
+ */
 public class BallStatus implements Sendable {
     private boolean hasRed, hasBlue, hasBall;
-    public BallStatus() {}
+
+    public BallStatus() {
+    }
 
     public void setRed(boolean has) {
         hasRed = has;
