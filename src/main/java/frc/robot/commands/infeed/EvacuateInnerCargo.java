@@ -15,28 +15,29 @@ import frc.robot.subsystems.Shooter;
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class EvacuateInnerCargo extends SequentialCommandGroup {
-  boolean correctColor = false;
-  Shooter shooter = Shooter.getInstance();
-  /** Creates a new EvacuateInnerCargo. */
-  public EvacuateInnerCargo() {
-    // Add your commands in the addCommands() call, e.g.
-    // addCommands(new FooCommand(), new BarCommand());
-    addCommands(
-      new WaitCommand(0.1),
-      new WaitCommand(1.5).deadlineWith(
-        new RunConveyorOneBallEvacuate(),
-        new InstantCommand(() -> shooter.runShooterOutfeed(), shooter)
-      ),
-      new InstantCommand(() -> shooter.stop(), shooter)
-    );
-  }
-  @Override
-  public void initialize(){
-    super.initialize();
-    correctColor = ColorSensor.getInstance().getInnerBallCorrect();
-  }
-  @Override
-  public boolean isFinished(){
-    return super.isFinished() || correctColor;
-  }
+    boolean correctColor = false;
+    Shooter shooter = Shooter.getInstance();
+
+    /** Creates a new EvacuateInnerCargo. */
+    public EvacuateInnerCargo() {
+        // Add your commands in the addCommands() call, e.g.
+        // addCommands(new FooCommand(), new BarCommand());
+        addCommands(
+                new WaitCommand(0.1),
+                new WaitCommand(1.5).deadlineWith(
+                        new RunConveyorOneBallEvacuate(),
+                        new InstantCommand(() -> shooter.runShooterOutfeed(), shooter)),
+                new InstantCommand(() -> shooter.stop(), shooter));
+    }
+
+    @Override
+    public void initialize() {
+        super.initialize();
+        correctColor = ColorSensor.getInstance().getInnerBallCorrect();
+    }
+
+    @Override
+    public boolean isFinished() {
+        return super.isFinished() || correctColor;
+    }
 }

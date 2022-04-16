@@ -20,33 +20,34 @@ import frc.robot.utilities.Trajectories;
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class FourBallBackupAuton extends BeakAutonCommand {
-  /** Creates a new FourBallBackupAuton. */
-  public FourBallBackupAuton() {
-    // Add your commands in the addCommands() call, e.g.
-    // addCommands(new FooCommand(), new BarCommand());
-    super.setInitialPose(Trajectories.FourBall_AcquireFirstCargo());
-    super.addCommands(
-      new ResetDefaultIndex(),
-      new InstantCommand(() -> Infeed.getInstance().setInfeedDown()),
-      new WaitCommand(0.25),
-      new InstantCommand(() -> Infeed.getInstance().forceRunInfeed(), Infeed.getInstance()),
-      util.getPathPlannerSwerveControllerCommand(Trajectories.FourBall_AcquireFirstCargo()),
-      new WaitCommand(0.5),
-      new RotateDrivetrainToAngle(Rotation2d.fromDegrees(37.0)).alongWith(new InstantCommand(() -> Shooter.getInstance().runShooterMotors())),
-      new WaitCommand(1.1).deadlineWith(new RunConveyor()),
-      new InstantCommand(() -> Shooter.getInstance().stop()),
-      new InstantCommand(() -> Infeed.getInstance().forceRunInfeed(), Infeed.getInstance()),
-      util.getPathPlannerSwerveControllerCommand(Trajectories.FourBall_AcquireLoadingZoneCargo()),
-      new WaitCommand(0.75),
-      util.getPathPlannerSwerveControllerCommand(Trajectories.FourBall_Backup()),
-      new WaitCommand(1.5),
-      util.getPathPlannerSwerveControllerCommand(Trajectories.FourBall_BackupReturnToShoot()),
-      new RotateDrivetrainToAngle(Trajectories.FourBall_BackupReturnToShoot().getEndState().holonomicRotation).withTimeout(1.5),
-      new InstantCommand(() -> Shooter.getInstance().runShooterMotors()),
-      new WaitCommand(0.25),
-      new WaitCommand(1.1).deadlineWith(new RunConveyor()),
-      new WaitCommand(0.25).andThen(new InstantCommand(() -> Shooter.getInstance().stop())),
-      new InstantCommand(() -> Infeed.getInstance().stopInfeedSingulatorMotors())
-    );
-  }
+    /** Creates a new FourBallBackupAuton. */
+    public FourBallBackupAuton() {
+        // Add your commands in the addCommands() call, e.g.
+        // addCommands(new FooCommand(), new BarCommand());
+        super.setInitialPose(Trajectories.FourBall_AcquireFirstCargo());
+        super.addCommands(
+                new ResetDefaultIndex(),
+                new InstantCommand(() -> Infeed.getInstance().setInfeedDown()),
+                new WaitCommand(0.25),
+                new InstantCommand(() -> Infeed.getInstance().forceRunInfeed(), Infeed.getInstance()),
+                util.getPathPlannerSwerveControllerCommand(Trajectories.FourBall_AcquireFirstCargo()),
+                new WaitCommand(0.5),
+                new RotateDrivetrainToAngle(Rotation2d.fromDegrees(37.0))
+                        .alongWith(new InstantCommand(() -> Shooter.getInstance().runShooterMotors())),
+                new WaitCommand(1.1).deadlineWith(new RunConveyor()),
+                new InstantCommand(() -> Shooter.getInstance().stop()),
+                new InstantCommand(() -> Infeed.getInstance().forceRunInfeed(), Infeed.getInstance()),
+                util.getPathPlannerSwerveControllerCommand(Trajectories.FourBall_AcquireLoadingZoneCargo()),
+                new WaitCommand(0.75),
+                util.getPathPlannerSwerveControllerCommand(Trajectories.FourBall_Backup()),
+                new WaitCommand(1.5),
+                util.getPathPlannerSwerveControllerCommand(Trajectories.FourBall_BackupReturnToShoot()),
+                new RotateDrivetrainToAngle(Trajectories.FourBall_BackupReturnToShoot().getEndState().holonomicRotation)
+                        .withTimeout(1.5),
+                new InstantCommand(() -> Shooter.getInstance().runShooterMotors()),
+                new WaitCommand(0.25),
+                new WaitCommand(1.1).deadlineWith(new RunConveyor()),
+                new WaitCommand(0.25).andThen(new InstantCommand(() -> Shooter.getInstance().stop())),
+                new InstantCommand(() -> Infeed.getInstance().stopInfeedSingulatorMotors()));
+    }
 }

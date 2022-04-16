@@ -22,29 +22,34 @@ import frc.robot.utilities.Trajectories;
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class FourBallAuton extends BeakAutonCommand {
-  /** Creates a new TestAutonCommand. */
-  public FourBallAuton() {
-    // Add your commands in the addCommands() call, e.g.
-    // addCommands(new FooCommand(), new BarCommand());
-    super.addCommands(
-      new ResetDefaultIndex(),
-      new InstantCommand(() -> Infeed.getInstance().setInfeedDown()),
-      new WaitCommand(0.25),
-      util.getPathPlannerSwerveControllerCommand(Trajectories.FourBall_AcquireFirstCargo()).alongWith(new InstantCommand(() -> Infeed.getInstance().runInfeedSingulatorMotors(1.0))),
-      new WaitCommand(0.5),
-      new RotateDrivetrainToAngle(Rotation2d.fromDegrees(37.0)).alongWith(new InstantCommand(() -> Shooter.getInstance().runShooterMotors())),
-      new WaitCommand(1.1).deadlineWith(new RunConveyor()),
-      util.getPathPlannerSwerveControllerCommand(Trajectories.FourBall_AcquireLoadingZoneCargo()).alongWith(new WaitCommand(0.5).andThen(new InstantCommand(() -> Shooter.getInstance().stop()))),
-      new WaitCommand(1.5),
-      util.getPathPlannerSwerveControllerCommand(Trajectories.FourBall_ReturnToShoot()).alongWith(new WaitCommand(0.5).andThen(new InstantCommand(() -> Shooter.getInstance().runShooterMotors()))),
-      new WaitCommand(1.1).deadlineWith(new RunConveyor()),
-      new WaitCommand(0.25).andThen(new InstantCommand(() -> Shooter.getInstance().stop())),
-      new InstantCommand(() -> Infeed.getInstance().stopInfeedSingulatorMotors()),
-      new RotateDrivetrainToOdometryTargetAngle().withTimeout(2.5)
-    );
-    super.setInitialPose(Trajectories.FourBall_AcquireFirstCargo());
-  }
-  public static Pose2d initialPose(){
-    return Trajectories.FourBall_AcquireFirstCargo().getInitialPose();
-  }
+    /** Creates a new TestAutonCommand. */
+    public FourBallAuton() {
+        // Add your commands in the addCommands() call, e.g.
+        // addCommands(new FooCommand(), new BarCommand());
+        super.addCommands(
+                new ResetDefaultIndex(),
+                new InstantCommand(() -> Infeed.getInstance().setInfeedDown()),
+                new WaitCommand(0.25),
+                util.getPathPlannerSwerveControllerCommand(Trajectories.FourBall_AcquireFirstCargo())
+                        .alongWith(new InstantCommand(() -> Infeed.getInstance().runInfeedSingulatorMotors(1.0))),
+                new WaitCommand(0.5),
+                new RotateDrivetrainToAngle(Rotation2d.fromDegrees(37.0))
+                        .alongWith(new InstantCommand(() -> Shooter.getInstance().runShooterMotors())),
+                new WaitCommand(1.1).deadlineWith(new RunConveyor()),
+                util.getPathPlannerSwerveControllerCommand(Trajectories.FourBall_AcquireLoadingZoneCargo()).alongWith(
+                        new WaitCommand(0.5).andThen(new InstantCommand(() -> Shooter.getInstance().stop()))),
+                new WaitCommand(1.5),
+                util.getPathPlannerSwerveControllerCommand(Trajectories.FourBall_ReturnToShoot())
+                        .alongWith(new WaitCommand(0.5)
+                                .andThen(new InstantCommand(() -> Shooter.getInstance().runShooterMotors()))),
+                new WaitCommand(1.1).deadlineWith(new RunConveyor()),
+                new WaitCommand(0.25).andThen(new InstantCommand(() -> Shooter.getInstance().stop())),
+                new InstantCommand(() -> Infeed.getInstance().stopInfeedSingulatorMotors()),
+                new RotateDrivetrainToOdometryTargetAngle().withTimeout(2.5));
+        super.setInitialPose(Trajectories.FourBall_AcquireFirstCargo());
+    }
+
+    public static Pose2d initialPose() {
+        return Trajectories.FourBall_AcquireFirstCargo().getInitialPose();
+    }
 }

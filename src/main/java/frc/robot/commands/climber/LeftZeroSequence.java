@@ -12,15 +12,14 @@ import frc.robot.subsystems.Climber;
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class LeftZeroSequence extends SequentialCommandGroup {
-  /** Creates a new CurrentZeroSequence. */
-  public LeftZeroSequence() {
-    // Add your commands in the addCommands() call, e.g.
-    // addCommands(new FooCommand(), new BarCommand());
-    addCommands(
-      new LeftCurrentZero(),
-      new InstantCommand(() -> Climber.getInstance().setLeftEncoder(0.)),
-      new MoveLeftArm(0.1, 9),
-      new InstantCommand(() -> Climber.getInstance().setLeftEncoder(0.))
-    );
-  }
+    /** Creates a new CurrentZeroSequence. */
+    public LeftZeroSequence() {
+        // Add your commands in the addCommands() call, e.g.
+        // addCommands(new FooCommand(), new BarCommand());
+        addCommands(
+                new LeftCurrentZero(),
+                new InstantCommand(() -> Climber.getInstance().setLeftEncoder(0.)),
+                new MoveLeftArm(0.1, 9),
+                new InstantCommand(() -> Climber.getInstance().setLeftEncoder(0.)));
+    }
 }

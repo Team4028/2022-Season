@@ -21,34 +21,34 @@ import frc.robot.utilities.Trajectories;
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class TwoBallTopHangarDisposal extends BeakAutonCommand {
-  /** Creates a new TwoBallTopHangarDisposal. */
-  public TwoBallTopHangarDisposal() {
-    // Add your commands in the addCommands() call, e.g.
-    // addCommands(new FooCommand(), new BarCommand());
-    super.addCommands(
-      new ResetDefaultIndex(),
-      new InstantCommand(() -> Infeed.getInstance().setInfeedDown()),
-      new WaitCommand(0.25),
-      new InstantCommand(() -> Infeed.getInstance().forceRunInfeed()),
-      util.getPathPlannerSwerveControllerCommand(Trajectories.TwoBall_Top()),
-      new RotateDrivetrainToAngle(Rotation2d.fromDegrees(-32.0)),
-      new InstantCommand(() -> Shooter.getInstance().runShooterMotors()),
-      new WaitCommand(0.5),
-      new RunConveyor().withTimeout(1.5),
-      new InstantCommand(() -> Shooter.getInstance().stop()),
-      new InstantCommand(() -> Infeed.getInstance().runInfeedSingulatorMotors(1.0)),
-      util.getPathPlannerSwerveControllerCommand(Trajectories.TwoBall_TopHangarDisposalFirstOpponentBall()),
-      new WaitCommand(0.25),
-      new InstantCommand(() -> Infeed.getInstance().stopInfeedSingulatorMotors()),
-      new RotateDrivetrainToAngle(Trajectories.TwoBall_TopHangarDisposalSecondOpponentBall().getInitialState().holonomicRotation),
-      new ReverseInfeedAndConveyor().withTimeout(2.0),
-      new InstantCommand(() -> Infeed.getInstance().runInfeedSingulatorMotors(1.0)),
-      util.getPathPlannerSwerveControllerCommand(Trajectories.TwoBall_TopHangarDisposalSecondOpponentBall()),
-      new WaitCommand(0.25),
-      new RotateDrivetrainToAngle(Rotation2d.fromDegrees(175.0)),
-      new InstantCommand(() -> Infeed.getInstance().stopInfeedSingulatorMotors()),
-      new ReverseInfeedAndConveyor().withTimeout(2.0)
-    );
-    super.setInitialPose(Trajectories.TwoBall_Top());
-  }
+    /** Creates a new TwoBallTopHangarDisposal. */
+    public TwoBallTopHangarDisposal() {
+        // Add your commands in the addCommands() call, e.g.
+        // addCommands(new FooCommand(), new BarCommand());
+        super.addCommands(
+                new ResetDefaultIndex(),
+                new InstantCommand(() -> Infeed.getInstance().setInfeedDown()),
+                new WaitCommand(0.25),
+                new InstantCommand(() -> Infeed.getInstance().forceRunInfeed()),
+                util.getPathPlannerSwerveControllerCommand(Trajectories.TwoBall_Top()),
+                new RotateDrivetrainToAngle(Rotation2d.fromDegrees(-32.0)),
+                new InstantCommand(() -> Shooter.getInstance().runShooterMotors()),
+                new WaitCommand(0.5),
+                new RunConveyor().withTimeout(1.5),
+                new InstantCommand(() -> Shooter.getInstance().stop()),
+                new InstantCommand(() -> Infeed.getInstance().runInfeedSingulatorMotors(1.0)),
+                util.getPathPlannerSwerveControllerCommand(Trajectories.TwoBall_TopHangarDisposalFirstOpponentBall()),
+                new WaitCommand(0.25),
+                new InstantCommand(() -> Infeed.getInstance().stopInfeedSingulatorMotors()),
+                new RotateDrivetrainToAngle(
+                        Trajectories.TwoBall_TopHangarDisposalSecondOpponentBall().getInitialState().holonomicRotation),
+                new ReverseInfeedAndConveyor().withTimeout(2.0),
+                new InstantCommand(() -> Infeed.getInstance().runInfeedSingulatorMotors(1.0)),
+                util.getPathPlannerSwerveControllerCommand(Trajectories.TwoBall_TopHangarDisposalSecondOpponentBall()),
+                new WaitCommand(0.25),
+                new RotateDrivetrainToAngle(Rotation2d.fromDegrees(175.0)),
+                new InstantCommand(() -> Infeed.getInstance().stopInfeedSingulatorMotors()),
+                new ReverseInfeedAndConveyor().withTimeout(2.0));
+        super.setInitialPose(Trajectories.TwoBall_Top());
+    }
 }

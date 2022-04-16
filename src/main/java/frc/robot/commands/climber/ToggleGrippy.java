@@ -8,30 +8,33 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Climber;
 
 public class ToggleGrippy extends CommandBase {
-  private Climber climber = Climber.getInstance();
-  /** Creates a new ToggleGrippySoliniod. */
-  public ToggleGrippy() {
-    // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(climber);
-  }
+    private Climber climber = Climber.getInstance();
 
-  // Called when the command is initially scheduled.
-  @Override
-  public void initialize() {
-    climber.toggleGrippySolenoid();
-  }
+    /** Creates a new ToggleGrippySoliniod. */
+    public ToggleGrippy() {
+        // Use addRequirements() here to declare subsystem dependencies.
+        addRequirements(climber);
+    }
 
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() {}
+    // Called when the command is initially scheduled.
+    @Override
+    public void initialize() {
+        climber.toggleGrippySolenoid();
+    }
 
-  // Called once the command ends or is interrupted.
-  @Override
-  public void end(boolean interrupted) {}
+    // Called every time the scheduler runs while the command is scheduled.
+    @Override
+    public void execute() {
+    }
 
-  // Returns true when the command should end.
-  @Override
-  public boolean isFinished() {
-    return true;
-  }
+    // Called once the command ends or is interrupted.
+    @Override
+    public void end(boolean interrupted) {
+    }
+
+    // Returns true when the command should end.
+    @Override
+    public boolean isFinished() {
+        return true;
+    }
 }

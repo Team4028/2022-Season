@@ -8,34 +8,35 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Infeed;
 
 public class ReverseInfeedAndSingulator extends CommandBase {
-  private Infeed infeed = Infeed.getInstance();
-  /** Creates a new ReverseInfeedAndSingulator. */
-  public ReverseInfeedAndSingulator() {
-    // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(infeed);
-  }
+    private Infeed infeed = Infeed.getInstance();
 
-  // Called when the command is initially scheduled.
-  @Override
-  public void initialize() {
-    infeed.runInfeedSingulatorMotors(-1);
-  }
+    /** Creates a new ReverseInfeedAndSingulator. */
+    public ReverseInfeedAndSingulator() {
+        // Use addRequirements() here to declare subsystem dependencies.
+        addRequirements(infeed);
+    }
 
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() {
-    infeed.runInfeedSingulatorMotors(-1);
-  }
+    // Called when the command is initially scheduled.
+    @Override
+    public void initialize() {
+        infeed.runInfeedSingulatorMotors(-1);
+    }
 
-  // Called once the command ends or is interrupted.
-  @Override
-  public void end(boolean interrupted) {
-    infeed.stopInfeedSingulatorMotors();
-  }
+    // Called every time the scheduler runs while the command is scheduled.
+    @Override
+    public void execute() {
+        infeed.runInfeedSingulatorMotors(-1);
+    }
 
-  // Returns true when the command should end.
-  @Override
-  public boolean isFinished() {
-    return false;
-  }
+    // Called once the command ends or is interrupted.
+    @Override
+    public void end(boolean interrupted) {
+        infeed.stopInfeedSingulatorMotors();
+    }
+
+    // Returns true when the command should end.
+    @Override
+    public boolean isFinished() {
+        return false;
+    }
 }

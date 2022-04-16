@@ -22,52 +22,54 @@ import frc.robot.utilities.Trajectories;
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class FiveBallBackupAuton extends BeakAutonCommand {
-  /** Creates a new FiveBallBackupAuton. */
-  public FiveBallBackupAuton() {
-    // Add your commands in the addCommands() call, e.g.
-    // addCommands(new FooCommand(), new BarCommand());
-    super.setInitialPose(Trajectories.FiveBall_AcquireFirstCargo());
-    super.addCommands(
-      new InstantCommand(() -> Infeed.getInstance().setInfeedDown()),
-      new WaitCommand(0.25),
-      new InstantCommand(() -> Infeed.getInstance().forceRunInfeed()),
-      new InstantCommand(() -> Shooter.getInstance().setShooterIndex(17.0, true)),
-      util.getPathPlannerSwerveControllerCommand(Trajectories.FiveBall_AcquireFirstCargo()),
-      new WaitCommand(0.2),
-      new ToggleInfeedUp(),
-      new InstantCommand(() -> Infeed.getInstance().stopInfeedSingulatorMotors()),
-      util.getPathPlannerSwerveControllerCommand(Trajectories.FiveBall_GoToFirstShot())
-      .alongWith(new WaitCommand(1.0).andThen(new InstantCommand(() -> Shooter.getInstance().runShooterMotors()))),
-      new RotateDrivetrainToAngle(Rotation2d.fromDegrees(38)).withTimeout(1.0),
-      // new WaitCommand(1.1).deadlineWith(
-      //   new RunConveyor()
-      // ),
-      new RunConveyorTwoBall(),
-      new ResetDefaultIndex(),
-      new ToggleInfeedUp(),
-      new InstantCommand(() -> Shooter.getInstance().stop()),
-      new InstantCommand(() -> Infeed.getInstance().forceRunInfeed(), Infeed.getInstance()),
-      util.getPathPlannerSwerveControllerCommand(Trajectories.FiveBall_AcquireSecondCargo()).alongWith(new InstantCommand(() -> Shooter.getInstance().runShooterMotors())),
-      // new WaitCommand(1.0).deadlineWith(
-      //   new RunConveyor()
-      // ),
-      new RunConveyorTwoBall(),
-      new InstantCommand(() -> Shooter.getInstance().stop()),
-      new InstantCommand(() -> Infeed.getInstance().forceRunInfeed(), Infeed.getInstance()),
-      util.getPathPlannerSwerveControllerCommand(Trajectories.FiveBall_AcquireLoadingZoneCargo()),
-      new WaitCommand(0.35),
-      util.getPathPlannerSwerveControllerCommand(Trajectories.FourBall_Backup()),
-      new WaitCommand(1.0),
-      util.getPathPlannerSwerveControllerCommand(Trajectories.FourBall_BackupReturnToShoot())
-      .alongWith(new WaitCommand(1.0).andThen(new InstantCommand(() -> Shooter.getInstance().runShooterMotors()))),
-      new RotateDrivetrainToAngle(Rotation2d.fromDegrees(37.5)).withTimeout(1.0),
-      // new WaitCommand(1.5).deadlineWith(
-      //   new RunConveyor()
-      // ),
-      new RunConveyorTwoBall(),
-      new WaitCommand(0.25),
-      new InstantCommand(() -> Shooter.getInstance().stop()),
-      new InstantCommand(() -> Vision.getInstance().setInfeedCamera())
-      );
-  }
+    /** Creates a new FiveBallBackupAuton. */
+    public FiveBallBackupAuton() {
+        // Add your commands in the addCommands() call, e.g.
+        // addCommands(new FooCommand(), new BarCommand());
+        super.setInitialPose(Trajectories.FiveBall_AcquireFirstCargo());
+        super.addCommands(
+                new InstantCommand(() -> Infeed.getInstance().setInfeedDown()),
+                new WaitCommand(0.25),
+                new InstantCommand(() -> Infeed.getInstance().forceRunInfeed()),
+                new InstantCommand(() -> Shooter.getInstance().setShooterIndex(17.0, true)),
+                util.getPathPlannerSwerveControllerCommand(Trajectories.FiveBall_AcquireFirstCargo()),
+                new WaitCommand(0.2),
+                new ToggleInfeedUp(),
+                new InstantCommand(() -> Infeed.getInstance().stopInfeedSingulatorMotors()),
+                util.getPathPlannerSwerveControllerCommand(Trajectories.FiveBall_GoToFirstShot())
+                        .alongWith(new WaitCommand(1.0)
+                                .andThen(new InstantCommand(() -> Shooter.getInstance().runShooterMotors()))),
+                new RotateDrivetrainToAngle(Rotation2d.fromDegrees(38)).withTimeout(1.0),
+                // new WaitCommand(1.1).deadlineWith(
+                // new RunConveyor()
+                // ),
+                new RunConveyorTwoBall(),
+                new ResetDefaultIndex(),
+                new ToggleInfeedUp(),
+                new InstantCommand(() -> Shooter.getInstance().stop()),
+                new InstantCommand(() -> Infeed.getInstance().forceRunInfeed(), Infeed.getInstance()),
+                util.getPathPlannerSwerveControllerCommand(Trajectories.FiveBall_AcquireSecondCargo())
+                        .alongWith(new InstantCommand(() -> Shooter.getInstance().runShooterMotors())),
+                // new WaitCommand(1.0).deadlineWith(
+                // new RunConveyor()
+                // ),
+                new RunConveyorTwoBall(),
+                new InstantCommand(() -> Shooter.getInstance().stop()),
+                new InstantCommand(() -> Infeed.getInstance().forceRunInfeed(), Infeed.getInstance()),
+                util.getPathPlannerSwerveControllerCommand(Trajectories.FiveBall_AcquireLoadingZoneCargo()),
+                new WaitCommand(0.35),
+                util.getPathPlannerSwerveControllerCommand(Trajectories.FourBall_Backup()),
+                new WaitCommand(1.0),
+                util.getPathPlannerSwerveControllerCommand(Trajectories.FourBall_BackupReturnToShoot())
+                        .alongWith(new WaitCommand(1.0)
+                                .andThen(new InstantCommand(() -> Shooter.getInstance().runShooterMotors()))),
+                new RotateDrivetrainToAngle(Rotation2d.fromDegrees(37.5)).withTimeout(1.0),
+                // new WaitCommand(1.5).deadlineWith(
+                // new RunConveyor()
+                // ),
+                new RunConveyorTwoBall(),
+                new WaitCommand(0.25),
+                new InstantCommand(() -> Shooter.getInstance().stop()),
+                new InstantCommand(() -> Vision.getInstance().setInfeedCamera()));
+    }
 }

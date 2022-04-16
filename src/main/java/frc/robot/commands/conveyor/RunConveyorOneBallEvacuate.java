@@ -10,35 +10,36 @@ import frc.robot.Constants.VBusConstants;
 import frc.robot.subsystems.Conveyor;
 
 public class RunConveyorOneBallEvacuate extends CommandBase {
-  /** Creates a new RunConveyorOneBallEvacuate. */
-  Conveyor conveyor = Conveyor.getInstance();
-  public RunConveyorOneBallEvacuate() {
-    addRequirements(conveyor);
-    // Use addRequirements() here to declare subsystem dependencies.
-  }
+    /** Creates a new RunConveyorOneBallEvacuate. */
+    Conveyor conveyor = Conveyor.getInstance();
 
-  // Called when the command is initially scheduled.
-  @Override
-  public void initialize() {
-    conveyor.resetEncoder();
-    conveyor.setIsTargetReached();
-    conveyor.runConveyorMotorWithEncoder(EncoderConstants.kConveyOne, VBusConstants.kConveyOne);
-  }
+    public RunConveyorOneBallEvacuate() {
+        addRequirements(conveyor);
+        // Use addRequirements() here to declare subsystem dependencies.
+    }
 
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() {
-    conveyor.runConveyorMotorWithEncoder(EncoderConstants.kConveyOne, VBusConstants.kConveyOne);
-  }
+    // Called when the command is initially scheduled.
+    @Override
+    public void initialize() {
+        conveyor.resetEncoder();
+        conveyor.setIsTargetReached();
+        conveyor.runConveyorMotorWithEncoder(EncoderConstants.kConveyOne, VBusConstants.kConveyOne);
+    }
 
-  // Called once the command ends or is interrupted.
-  @Override
-  public void end(boolean interrupted) {
-  }
+    // Called every time the scheduler runs while the command is scheduled.
+    @Override
+    public void execute() {
+        conveyor.runConveyorMotorWithEncoder(EncoderConstants.kConveyOne, VBusConstants.kConveyOne);
+    }
 
-  // Returns true when the command should end.
-  @Override
-  public boolean isFinished() {
-    return conveyor.getIsTargetReached();
-  }
+    // Called once the command ends or is interrupted.
+    @Override
+    public void end(boolean interrupted) {
+    }
+
+    // Returns true when the command should end.
+    @Override
+    public boolean isFinished() {
+        return conveyor.getIsTargetReached();
+    }
 }

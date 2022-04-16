@@ -10,40 +10,43 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveSubsystem;
 
 public class XDrive extends CommandBase {
-  /** Creates a new XDrive. */
-  private DriveSubsystem m_drive = DriveSubsystem.getInstance();
-  /**
-   * Turns Swerve Module Wheels to an "X" Position in order to resist pushing and hold position
-   */
-  public XDrive() {
-    // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(m_drive);
-  }
+    /** Creates a new XDrive. */
+    private DriveSubsystem m_drive = DriveSubsystem.getInstance();
 
-  // Called when the command is initially scheduled.
-  @Override
-  public void initialize() {
-    m_drive.setModuleStates(new SwerveModuleState[]{
-      new SwerveModuleState(0.0, Rotation2d.fromDegrees(45.0)),
-      new SwerveModuleState(0.0, Rotation2d.fromDegrees(-45.0)),
-      new SwerveModuleState(0.0, Rotation2d.fromDegrees(-45.0)),
-      new SwerveModuleState(0.0, Rotation2d.fromDegrees(45.0))
-    });
-  }
+    /**
+     * Turns Swerve Module Wheels to an "X" Position in order to resist pushing and
+     * hold position
+     */
+    public XDrive() {
+        // Use addRequirements() here to declare subsystem dependencies.
+        addRequirements(m_drive);
+    }
 
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() {}
+    // Called when the command is initially scheduled.
+    @Override
+    public void initialize() {
+        m_drive.setModuleStates(new SwerveModuleState[] {
+                new SwerveModuleState(0.0, Rotation2d.fromDegrees(45.0)),
+                new SwerveModuleState(0.0, Rotation2d.fromDegrees(-45.0)),
+                new SwerveModuleState(0.0, Rotation2d.fromDegrees(-45.0)),
+                new SwerveModuleState(0.0, Rotation2d.fromDegrees(45.0))
+        });
+    }
 
-  // Called once the command ends or is interrupted.
-  @Override
-  public void end(boolean interrupted) {
+    // Called every time the scheduler runs while the command is scheduled.
+    @Override
+    public void execute() {
+    }
 
-  }
+    // Called once the command ends or is interrupted.
+    @Override
+    public void end(boolean interrupted) {
 
-  // Returns true when the command should end.
-  @Override
-  public boolean isFinished() {
-    return false;
-  }
+    }
+
+    // Returns true when the command should end.
+    @Override
+    public boolean isFinished() {
+        return false;
+    }
 }

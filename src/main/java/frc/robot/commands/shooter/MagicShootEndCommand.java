@@ -16,24 +16,25 @@ import frc.robot.subsystems.Vision;
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class MagicShootEndCommand extends SequentialCommandGroup {
-  /** Creates a new MagicShootEndCommand. */
-  public MagicShootEndCommand() {
-    // Add your commands in the addCommands() call, e.g.
-    // addCommands(new FooCommand(), new BarCommand());
-    addCommands(
-      new WaitCommand(0.5),
-      new InstantCommand(() -> Shooter.getInstance().stop()),
-      new InstantCommand(() -> Conveyor.getInstance().stopConveyorMotor()),
-      new InstantCommand(() -> Infeed.getInstance().stopInfeedSingulatorMotors())
-    );
-  }
-  @Override
-  public boolean isFinished(){
-    return super.isFinished() || !Conveyor.getInstance().getIsRunning();
-  }
-  @Override
-  public void end(boolean interrupted){
-    super.end(interrupted);
-    Vision.getInstance().setInfeedCamera();
-  }
+    /** Creates a new MagicShootEndCommand. */
+    public MagicShootEndCommand() {
+        // Add your commands in the addCommands() call, e.g.
+        // addCommands(new FooCommand(), new BarCommand());
+        addCommands(
+                new WaitCommand(0.5),
+                new InstantCommand(() -> Shooter.getInstance().stop()),
+                new InstantCommand(() -> Conveyor.getInstance().stopConveyorMotor()),
+                new InstantCommand(() -> Infeed.getInstance().stopInfeedSingulatorMotors()));
+    }
+
+    @Override
+    public boolean isFinished() {
+        return super.isFinished() || !Conveyor.getInstance().getIsRunning();
+    }
+
+    @Override
+    public void end(boolean interrupted) {
+        super.end(interrupted);
+        Vision.getInstance().setInfeedCamera();
+    }
 }

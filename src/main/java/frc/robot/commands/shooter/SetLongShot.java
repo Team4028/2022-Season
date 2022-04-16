@@ -13,14 +13,13 @@ import frc.robot.subsystems.Shooter;
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class SetLongShot extends SequentialCommandGroup {
-  /** Creates a new SetLongShot. */
-  public SetLongShot() {
-    // Add your commands in the addCommands() call, e.g.
-    // addCommands(new FooCommand(), new BarCommand());
-    addCommands(new InstantCommand(() -> Shooter.getInstance().incrementCounter())
-    ,new InstantCommand(() -> Shooter.getInstance().setLongshot(true))
-    ,new InstantCommand(() -> Shooter.getInstance().setManualIndex())
-    ,new WaitCommand(3.0)
-    ,new InstantCommand(() -> Shooter.getInstance().resetCounter()));
-  }
+    /** Creates a new SetLongShot. */
+    public SetLongShot() {
+        // Add your commands in the addCommands() call, e.g.
+        // addCommands(new FooCommand(), new BarCommand());
+        addCommands(new InstantCommand(() -> Shooter.getInstance().incrementCounter()),
+                new InstantCommand(() -> Shooter.getInstance().setLongshot(true)),
+                new InstantCommand(() -> Shooter.getInstance().setManualIndex()), new WaitCommand(3.0),
+                new InstantCommand(() -> Shooter.getInstance().resetCounter()));
+    }
 }

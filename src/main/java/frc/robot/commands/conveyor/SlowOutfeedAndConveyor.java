@@ -10,39 +10,40 @@ import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.Infeed;
 
 public class SlowOutfeedAndConveyor extends CommandBase {
-  /** Creates a new SlowOutfeedAndConveyor. */
-  private Conveyor _Con = Conveyor.getInstance();
-  private Infeed _Infeed = Infeed.getInstance();
-  public SlowOutfeedAndConveyor() {
-    // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(_Con);
-    addRequirements(_Infeed);
-  }
+    /** Creates a new SlowOutfeedAndConveyor. */
+    private Conveyor _Con = Conveyor.getInstance();
+    private Infeed _Infeed = Infeed.getInstance();
 
-  // Called when the command is initially scheduled.
-  @Override
-  public void initialize() {
-    _Con.runConveyorMotor(-VBusConstants.kConveyAll);
-    _Infeed.runInfeedSingulatorMotors(-0.75);
-  }
+    public SlowOutfeedAndConveyor() {
+        // Use addRequirements() here to declare subsystem dependencies.
+        addRequirements(_Con);
+        addRequirements(_Infeed);
+    }
 
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() {
-    _Con.runConveyorMotor(-VBusConstants.kConveyAll);
-    _Infeed.runInfeedSingulatorMotors(-0.75);
-  }
+    // Called when the command is initially scheduled.
+    @Override
+    public void initialize() {
+        _Con.runConveyorMotor(-VBusConstants.kConveyAll);
+        _Infeed.runInfeedSingulatorMotors(-0.75);
+    }
 
-  // Called once the command ends or is interrupted.
-  @Override
-  public void end(boolean interrupted) {
-    _Con.stopConveyorMotor();
-    _Infeed.stopInfeedSingulatorMotors();
-  }
+    // Called every time the scheduler runs while the command is scheduled.
+    @Override
+    public void execute() {
+        _Con.runConveyorMotor(-VBusConstants.kConveyAll);
+        _Infeed.runInfeedSingulatorMotors(-0.75);
+    }
 
-  // Returns true when the command should end.
-  @Override
-  public boolean isFinished() {
-    return false;
-  }
+    // Called once the command ends or is interrupted.
+    @Override
+    public void end(boolean interrupted) {
+        _Con.stopConveyorMotor();
+        _Infeed.stopInfeedSingulatorMotors();
+    }
+
+    // Returns true when the command should end.
+    @Override
+    public boolean isFinished() {
+        return false;
+    }
 }

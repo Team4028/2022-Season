@@ -9,37 +9,37 @@ import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Vision;
 
 public class RunShootersManual extends CommandBase {
-  /** Creates a new RunShootersManual. */
-  public RunShootersManual() {
-    // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(Shooter.getInstance(), Vision.getInstance());
-  }
+    /** Creates a new RunShootersManual. */
+    public RunShootersManual() {
+        // Use addRequirements() here to declare subsystem dependencies.
+        addRequirements(Shooter.getInstance(), Vision.getInstance());
+    }
 
-  // Called when the command is initially scheduled.
-  @Override
-  public void initialize() {
-    Shooter.getInstance().setShooterIndex(Shooter.getInstance().manualIndex(), true);
-    Shooter.getInstance().runShooterMotors();
-    Vision.getInstance().setShooterCamera();
-  }
+    // Called when the command is initially scheduled.
+    @Override
+    public void initialize() {
+        Shooter.getInstance().setShooterIndex(Shooter.getInstance().manualIndex(), true);
+        Shooter.getInstance().runShooterMotors();
+        Vision.getInstance().setShooterCamera();
+    }
 
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() {
-    Shooter.getInstance().setShooterIndex(Shooter.getInstance().manualIndex(), true);
-    Shooter.getInstance().runShooterMotors();
-  }
+    // Called every time the scheduler runs while the command is scheduled.
+    @Override
+    public void execute() {
+        Shooter.getInstance().setShooterIndex(Shooter.getInstance().manualIndex(), true);
+        Shooter.getInstance().runShooterMotors();
+    }
 
-  // Called once the command ends or is interrupted.
-  @Override
-  public void end(boolean interrupted) {
-    Shooter.getInstance().stop();
-    Vision.getInstance().setInfeedCamera();
-  }
+    // Called once the command ends or is interrupted.
+    @Override
+    public void end(boolean interrupted) {
+        Shooter.getInstance().stop();
+        Vision.getInstance().setInfeedCamera();
+    }
 
-  // Returns true when the command should end.
-  @Override
-  public boolean isFinished() {
-    return false;
-  }
+    // Returns true when the command should end.
+    @Override
+    public boolean isFinished() {
+        return false;
+    }
 }

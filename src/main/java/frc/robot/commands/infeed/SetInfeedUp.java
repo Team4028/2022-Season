@@ -9,29 +9,32 @@ import frc.robot.subsystems.Infeed;
 
 public class SetInfeedUp extends CommandBase {
     private Infeed infeed = Infeed.getInstance();
-  /** Creates a new SetInfeedUp. */
-  public SetInfeedUp() {
-    // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(infeed);
-  }
 
-  // Called when the command is initially scheduled.
-  @Override
-  public void initialize() {
-    infeed.setInfeedUp();
-  }
+    /** Creates a new SetInfeedUp. */
+    public SetInfeedUp() {
+        // Use addRequirements() here to declare subsystem dependencies.
+        addRequirements(infeed);
+    }
 
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() {}
+    // Called when the command is initially scheduled.
+    @Override
+    public void initialize() {
+        infeed.setInfeedUp();
+    }
 
-  // Called once the command ends or is interrupted.
-  @Override
-  public void end(boolean interrupted) {}
+    // Called every time the scheduler runs while the command is scheduled.
+    @Override
+    public void execute() {
+    }
 
-  // Returns true when the command should end.
-  @Override
-  public boolean isFinished() {
-    return true;
-  }
+    // Called once the command ends or is interrupted.
+    @Override
+    public void end(boolean interrupted) {
+    }
+
+    // Returns true when the command should end.
+    @Override
+    public boolean isFinished() {
+        return true;
+    }
 }

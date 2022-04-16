@@ -20,49 +20,52 @@ import frc.robot.subsystems.Limelight;
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class RotateDrivetrainByLimelightAngle extends ProfiledPIDCommand {
-  /** Creates a new RotateDrivetrainByLimelightAngle. */
-  private boolean continuous;
-  public RotateDrivetrainByLimelightAngle(boolean continuous) {
-    super(
-        // The ProfiledPIDController used by the command
-        new ProfiledPIDController(
-            // The PID gains
-            AutoConstants.kPThetaController * .85,
-            0.0,
-            0.0,
-            // The motion profile constraints
-            AutoConstants.kThetaControllerConstraints),
-        // This should return the measurement
-        () -> Limelight.getInstance().getXForRot() * Math.PI / 180,
-        // This should return the goal (can also be a constant)
-        () -> 0.0,
-        // This uses the output
-        (output, setpoint) -> {
-          // Use the output (and setpoint, if desired) here
-          SwerveModuleState[] states = DriveConstants.kDriveKinematics.toSwerveModuleStates(
-            ChassisSpeeds.fromFieldRelativeSpeeds(
-              DriveConstants.i_kMaxSpeedMetersPerSecond * RobotContainer.getInstance().getSpeedScaledDriverLeftY(),
-              DriveConstants.i_kMaxSpeedMetersPerSecond * RobotContainer.getInstance().getSpeedScaledDriverLeftX(),
-              output + setpoint.velocity,
-              DriveSubsystem.getInstance().getPose().getRotation()));
-          SwerveDriveKinematics.desaturateWheelSpeeds(states, DriveConstants.i_kMaxSpeedMetersPerSecond);
-          DriveSubsystem.getInstance().setModuleStates(states);
-        });
-    // Use addRequirements() here to declare subsystem dependencies.
-    // Configure additional PID options by calling `getController` here.
-    addRequirements(DriveSubsystem.getInstance(), Limelight.getInstance());
-    getController().enableContinuousInput(-Math.PI, Math.PI);
-    getController().setTolerance(Units.degreesToRadians(1.0));
-    this.continuous = continuous;
-  }
+    /** Creates a new RotateDrivetrainByLimelightAngle. */
+    private boolean continuous;
 
-  // Returns true when the command should end.
-  @Override
-  public boolean isFinished() {
-    if(!continuous){
-      return getController().atGoal();
-    } else{
-      return false;
+    public RotateDrivetrainByLimelightAngle(boolean continuous) {
+        super(
+                // The ProfiledPIDController used by the command
+                new ProfiledPIDController(
+                        // The PID gains
+                        AutoConstants.kPThetaController * .85,
+                        0.0,
+                        0.0,
+                        // The motion profile constraints
+                        AutoConstants.kThetaControllerConstraints),
+                // This should return the measurement
+                () -> Limelight.getInstance().getXForRot() * Math.PI / 180,
+                // This should return the goal (can also be a constant)
+                () -> 0.0,
+                // This uses the output
+                (output, setpoint) -> {
+                    // Use the output (and setpoint, if desired) here
+                    SwerveModuleState[] states = DriveConstants.kDriveKinematics.toSwerveModuleStates(
+                            ChassisSpeeds.fromFieldRelativeSpeeds(
+                                    DriveConstants.i_kMaxSpeedMetersPerSecond
+                                            * RobotContainer.getInstance().getSpeedScaledDriverLeftY(),
+                                    DriveConstants.i_kMaxSpeedMetersPerSecond
+                                            * RobotContainer.getInstance().getSpeedScaledDriverLeftX(),
+                                    output + setpoint.velocity,
+                                    DriveSubsystem.getInstance().getPose().getRotation()));
+                    SwerveDriveKinematics.desaturateWheelSpeeds(states, DriveConstants.i_kMaxSpeedMetersPerSecond);
+                    DriveSubsystem.getInstance().setModuleStates(states);
+                });
+        // Use addRequirements() here to declare subsystem dependencies.
+        // Configure additional PID options by calling `getController` here.
+        addRequirements(DriveSubsystem.getInstance(), Limelight.getInstance());
+        getController().enableContinuousInput(-Math.PI, Math.PI);
+        getController().setTolerance(Units.degreesToRadians(1.0));
+        this.continuous = continuous;
     }
-  }
+
+    // Returns true when the command should end.
+    @Override
+    public boolean isFinished() {
+        if (!continuous) {
+            return getController().atGoal();
+        } else {
+            return false;
+        }
+    }
 }

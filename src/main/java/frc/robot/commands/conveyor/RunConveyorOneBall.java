@@ -10,41 +10,41 @@ import frc.robot.Constants.VBusConstants;
 import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.Infeed;
 
-
 public class RunConveyorOneBall extends CommandBase {
-  private Conveyor conveyor = Conveyor.getInstance();
-  private Infeed infeed = Infeed.getInstance();
-  /** Creates a new RunWithEncoder. */
-  public RunConveyorOneBall() {
-    addRequirements(conveyor, infeed);
-    // Use addRequirements() here to declare subsystem dependencies.
-  }
+    private Conveyor conveyor = Conveyor.getInstance();
+    private Infeed infeed = Infeed.getInstance();
 
-  // Called when the command is initially scheduled.
-  @Override
-  public void initialize() {
-    conveyor.resetEncoder();
-    conveyor.setIsTargetReached();
-    conveyor.runConveyorMotorWithEncoder(EncoderConstants.kConveyOne, VBusConstants.kConveyOne);
-    infeed.runSingulator();
-  }
+    /** Creates a new RunWithEncoder. */
+    public RunConveyorOneBall() {
+        addRequirements(conveyor, infeed);
+        // Use addRequirements() here to declare subsystem dependencies.
+    }
 
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() {
-    conveyor.runConveyorMotorWithEncoder(EncoderConstants.kConveyOne, VBusConstants.kConveyOne);
-    infeed.runSingulator();
-  }
+    // Called when the command is initially scheduled.
+    @Override
+    public void initialize() {
+        conveyor.resetEncoder();
+        conveyor.setIsTargetReached();
+        conveyor.runConveyorMotorWithEncoder(EncoderConstants.kConveyOne, VBusConstants.kConveyOne);
+        infeed.runSingulator();
+    }
 
-  // Called once the command ends or is interrupted.
-  @Override
-  public void end(boolean interrupted) {
-    infeed.stopInfeedSingulatorMotors();
-  }
+    // Called every time the scheduler runs while the command is scheduled.
+    @Override
+    public void execute() {
+        conveyor.runConveyorMotorWithEncoder(EncoderConstants.kConveyOne, VBusConstants.kConveyOne);
+        infeed.runSingulator();
+    }
 
-  // Returns true when the command should end.
-  @Override
-  public boolean isFinished() {
-    return conveyor.getIsTargetReached();
-  }
+    // Called once the command ends or is interrupted.
+    @Override
+    public void end(boolean interrupted) {
+        infeed.stopInfeedSingulatorMotors();
+    }
+
+    // Returns true when the command should end.
+    @Override
+    public boolean isFinished() {
+        return conveyor.getIsTargetReached();
+    }
 }

@@ -18,60 +18,63 @@ import frc.robot.subsystems.Vision;
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class MagicShootCommand extends SequentialCommandGroup {
-  /** Creates a new MagicShootCommand. */
-  /**
-   * false = before conveyor runs
-   * true = after conveyor runs
-   */
-  private boolean interruptPoint;
-  public MagicShootCommand() {
-    // Add your commands in the addCommands() call, e.g.
-    interruptPoint = false;
-    // addCommands(new FooCommand(), new BarCommand());
-    addRequirements(Shooter.getInstance());
-    addCommands(
-      new InstantCommand(() -> setInterruptPoint(false)),
-      new RotateDrivetrainByLimelightAngle(false),
-      new AcceptLimelightDistance(),
-        sequence(
-          new WaitCommand(0.25),
-          new InstantCommand(() -> setInterruptPoint(true)),
-          new RunConveyorTwoBall(),
-          new InstantCommand(() -> Vision.getInstance().setInfeedCamera()),
-          new InstantCommand(() -> setInterruptPoint(false)),
-          new WaitCommand(0.25)
-        ).deadlineWith(
-          new RunShooterMotors()
-          // new RotateDrivetrainByLimelightAngle(true)
-        )
-    );
-  }
-  @Override
-  public boolean isFinished(){
-    return (isOutOfRangeOfManual() || super.isFinished() || !Limelight.getInstance().getHasTarget());
-  }
-  @Override
-  public void end(boolean interrupted){
-    if(interrupted || isOutOfRangeOfManual() || !Limelight.getInstance().getHasTarget()){
-      if(interruptPoint == false){
-        Shooter.getInstance().stop();
-        Vision.getInstance().setInfeedCamera();
-        Conveyor.getInstance().setIsRunning(false);
-      } else{
-        Vision.getInstance().setInfeedCamera();
-        Conveyor.getInstance().setIsRunning(true);
-        new MagicShootEndCommand().schedule();
-      }
-    } else{
-      super.end(interrupted);
+    /** Creates a new MagicShootCommand. */
+    /**
+     * false = before conveyor runs
+     * true = after conveyor runs
+     */
+    private boolean interruptPoint;
+
+    public MagicShootCommand() {
+        // Add your commands in the addCommands() call, e.g.
+        interruptPoint = false;
+        // addCommands(new FooCommand(), new BarCommand());
+        addRequirements(Shooter.getInstance());
+        addCommands(
+                new InstantCommand(() -> setInterruptPoint(false)),
+                new RotateDrivetrainByLimelightAngle(false),
+                new AcceptLimelightDistance(),
+                sequence(
+                        new WaitCommand(0.25),
+                        new InstantCommand(() -> setInterruptPoint(true)),
+                        new RunConveyorTwoBall(),
+                        new InstantCommand(() -> Vision.getInstance().setInfeedCamera()),
+                        new InstantCommand(() -> setInterruptPoint(false)),
+                        new WaitCommand(0.25)).deadlineWith(
+                                new RunShooterMotors()
+                // new RotateDrivetrainByLimelightAngle(true)
+                ));
     }
-  }
-  private void setInterruptPoint(boolean pt){
-    interruptPoint = pt;
-  }
-  private boolean isOutOfRangeOfManual(){
-    return Shooter.getInstance().getIsShotValidation() &&
-    (!interruptPoint) &&
-    Math.abs(Shooter.getInstance().manualIndex() - Shooter.getInstance().index()) > 3.0;
-  }
+
+    @Override
+    public boolean isFinished() {
+        return (isOutOfRangeOfManual() || super.isFinished() || !Limelight.getInstance().getHasTarget());
+    }
+
+    @Override
+    public void end(boolean interrupted) {
+        if (interrupted || isOutOfRangeOfManual() || !Limelight.getInstance().getHasTarget()) {
+            if (interruptPoint == false) {
+                Shooter.getInstance().stop();
+                Vision.getInstance().setInfeedCamera();
+                Conveyor.getInstance().setIsRunning(false);
+            } else {
+                Vision.getInstance().setInfeedCamera();
+                Conveyor.getInstance().setIsRunning(true);
+                new MagicShootEndCommand().schedule();
+            }
+        } else {
+            super.end(interrupted);
+        }
+    }
+
+    private void setInterruptPoint(boolean pt) {
+        interruptPoint = pt;
+    }
+
+    private boolean isOutOfRangeOfManual() {
+        return Shooter.getInstance().getIsShotValidation() &&
+                (!interruptPoint) &&
+                Math.abs(Shooter.getInstance().manualIndex() - Shooter.getInstance().index()) > 3.0;
+    }
 }
