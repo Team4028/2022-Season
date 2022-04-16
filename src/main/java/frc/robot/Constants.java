@@ -284,4 +284,17 @@ public final class Constants {
   public static final class RampRateConstants {
       public static final double kClimber = 0.1;
   }
+
+  public static final class ColorSensorConstants {
+    public static final class InfeedBall {
+      public static final int kRedThreshold = 300;
+      public static final int kBlueThreshold = 350;
+      public static final int kProximityThreshold = 120;
+    }
+    public static final class ShooterBall {
+      public static final int kRedThreshold = 300;
+      public static final int kBlueThreshold = 400;
+      public static final int kProximityThreshold = 180;
+    }
+  }
 }

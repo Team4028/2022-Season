@@ -18,6 +18,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.AutoConstants;
@@ -84,8 +85,9 @@ public class DriveSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    // Update the odometry in the periodic block
-    if (testTimer > 8 * configWaitCycles) {
+    // Update the odometry in the periodic block -- only during auton/disabled
+    // Not needed during teleop
+    if (/*!DriverStation.isTeleopEnabled() && */testTimer > 8 * configWaitCycles) {
       m_odometry.update(
           getGyroRotation2d(),
           m_frontLeft.getState(),
@@ -93,6 +95,7 @@ public class DriveSubsystem extends SubsystemBase {
           m_frontRight.getState(),
           m_rearRight.getState());
     }
+
     //TODO: Organized, comprehensive data for whole Drivetrain
     if (updateCycles == 3) {
       // SmartDashboard.putNumber("X (Feet)", Units.metersToFeet(m_odometry.getPoseMeters().getX()));

@@ -6,7 +6,11 @@ package frc.robot.utilities;
 
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
-/** Add your docs here. */
+/**
+ * A {@link Sendable} to interface with a custom
+ * widget that represents a shooter index or limelight
+ * distance.
+ */
 public class ShooterIndex implements Sendable {
     private double index;
     private double fontSize;

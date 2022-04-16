@@ -47,6 +47,7 @@ public class Limelight extends SubsystemBase {
 
     distData = new ShooterIndex();
     distData.setFontSize(35);
+    SmartDashboard.putData("Limelight Distance", distData);
   }
 
   public double getX() {

@@ -9,6 +9,8 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.PicoColorSensor;
+import frc.robot.Constants.ColorSensorConstants.InfeedBall;
+import frc.robot.Constants.ColorSensorConstants.ShooterBall;
 import frc.robot.PicoColorSensor.RawColor;
 import frc.robot.utilities.BallStatus;
 
@@ -18,13 +20,6 @@ public class ColorSensor extends SubsystemBase {
   private int blueBalls = 0;
   private boolean redBallFoundLastCycle;
   private boolean blueBallFoundLastCycle;
-  private int redThreshold0 = 300;
-  private int blueThreshold0 = 350;
-  private int proximityThreshold0 = 120;
-
-  private int redThreshold1 = 300;
-  private int blueThreshold1 = 400;
-  private int proximityThreshold1 = 180;
 
   private boolean redBall0 = false;
   private boolean blueBall0 = false;
@@ -35,8 +30,8 @@ public class ColorSensor extends SubsystemBase {
   private boolean ball0Detected;
   private boolean ball1Detected;
 
-  private BallStatus innerBall;
-  private BallStatus outerBall;
+  private BallStatus shooterBall;
+  private BallStatus infeedBall;
 
   Alliance alliance;
 
@@ -47,8 +42,8 @@ public class ColorSensor extends SubsystemBase {
   public ColorSensor() {
     updateCycles = 0;
     alliance = Alliance.Red; // Just to avoid nullpointer
-    innerBall = new BallStatus();
-    outerBall = new BallStatus();
+    shooterBall = new BallStatus();
+    infeedBall = new BallStatus();
   }
 
   public void updateSensor0() {
@@ -63,16 +58,20 @@ public class ColorSensor extends SubsystemBase {
 
     boolean hasRed = false;
     boolean hasBlue = false;
-    if (proximity0 > proximityThreshold0) {
-      hasRed = red0 > redThreshold0 && higher == red0;
-      hasBlue = blue0 > blueThreshold0 && higher == blue0;
+
+    ball0Detected = proximity0 > InfeedBall.kProximityThreshold;
+    infeedBall.setBall(ball0Detected);
+
+    if (ball0Detected) {
+      hasRed = red0 > InfeedBall.kRedThreshold && higher == red0;
+      hasBlue = blue0 > InfeedBall.kBlueThreshold && higher == blue0;
       if (hasRed) {
         if (!redBallFoundLastCycle) {
           redBalls++;
         }
         redBallFoundLastCycle = true;
       }
-      if (blue0 > blueThreshold0 && higher == blue0) {
+      if (hasBlue) {
         if (!blueBallFoundLastCycle) {
           blueBalls++;
         }
@@ -84,11 +83,11 @@ public class ColorSensor extends SubsystemBase {
     }
 
     // SmartDashboard.putBoolean("red ball 0", hasRed);
-    outerBall.setRed(hasRed);
+    infeedBall.setRed(hasRed);
     redBall0 = hasRed;
 
     // SmartDashboard.putBoolean("blue ball 0", hasBlue);
-    outerBall.setBlue(hasBlue);
+    infeedBall.setBlue(hasBlue);
     blueBall0 = hasBlue;
 
     // SmartDashboard.putNumber("red 0", red0);
@@ -96,9 +95,6 @@ public class ColorSensor extends SubsystemBase {
     // SmartDashboard.putNumber("proximity 0", proximity0);
     // SmartDashboard.putNumber("total red balls", redBalls);
     // SmartDashboard.putNumber("total blue balls", blueBalls);
-    ball0Detected = proximity0 > proximityThreshold0;
-
-    outerBall.setBall(ball0Detected);
   }
 
   public void updateSensor1() {
@@ -113,25 +109,26 @@ public class ColorSensor extends SubsystemBase {
 
     boolean hasRed = false;
     boolean hasBlue = false;
-    if (proximity1 > proximityThreshold1) {
-      hasRed = red1 > redThreshold1 && higher == red1;
-      hasBlue = blue1 > blueThreshold1 && higher == blue1;
+
+    ball1Detected = proximity1 > ShooterBall.kProximityThreshold;
+    shooterBall.setBall(ball1Detected);
+
+    if (ball1Detected) {
+      hasRed = red1 > ShooterBall.kRedThreshold && higher == red1;
+      hasBlue = blue1 > ShooterBall.kBlueThreshold && higher == blue1;
     }
 
     // SmartDashboard.putBoolean("red ball 1", hasRed);
-    innerBall.setRed(hasRed);
+    shooterBall.setRed(hasRed);
     redBall1 = hasRed;
 
     // SmartDashboard.putBoolean("blue ball 1", hasBlue);
-    innerBall.setBlue(hasBlue);
+    shooterBall.setBlue(hasBlue);
     blueBall1 = hasBlue;
 
     // SmartDashboard.putNumber("red 1", red1);
     // SmartDashboard.putNumber("blue 1", blue1);
     // SmartDashboard.putNumber("proximity 1", proximity1);
-    ball1Detected = proximity1 > proximityThreshold1;
-
-    innerBall.setBall(ball1Detected);
   }
 
   public void setAlliance() {
@@ -168,8 +165,8 @@ public class ColorSensor extends SubsystemBase {
       updateSensor0();
       updateSensor1();
 
-      SmartDashboard.putData("Inner Ball", innerBall);
-      SmartDashboard.putData("Outer Ball", outerBall);
+      SmartDashboard.putData("Inner Ball", shooterBall);
+      SmartDashboard.putData("Outer Ball", infeedBall);
     }
     updateCycles++;
     // This method will be called once per scheduler run
