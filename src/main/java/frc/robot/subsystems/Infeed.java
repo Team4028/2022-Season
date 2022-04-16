@@ -5,9 +5,12 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.StatusFrame;
+import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.CANSparkMaxLowLevel.PeriodicFrame;
 
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
@@ -36,6 +39,20 @@ public class Infeed extends SubsystemBase {
     _singulatorMotor.setInverted(false);
 
     _infeedMotor.setInverted(true);
+
+    configStatusFramePeriods();
+  }
+
+  public void configStatusFramePeriods() {
+        _infeedMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_1_General, 19);
+        _infeedMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 19);
+        _infeedMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_4_AinTempVbat, 253);
+        _infeedMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_6_Misc, 59);
+
+      _singulatorMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus0, 11);
+      _singulatorMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus1, 23);
+      _singulatorMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus2, 23);
+      _singulatorMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus3, 53);
   }
 
   public void runInfeedSingulatorMotors(double mult) {

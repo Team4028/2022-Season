@@ -10,6 +10,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
+import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.sensors.CANCoderStatusFrame;
@@ -52,6 +53,8 @@ public class SwerveModuleCANTwoElectricBoogaloo {
         CAN_TIMEOUT_MS);
     configMotorPID(m_turningMotor, 0, i_kPModuleTurningController, 0.0, 0.1);
     configMotorPID(m_driveMotor, 0, i_kPModuleDriveController, 0.0, 0.0);
+
+    configStatusFramePeriods();
   }
 
   private double getTurningEncoderRadians() {
@@ -80,6 +83,17 @@ public class SwerveModuleCANTwoElectricBoogaloo {
   }
 
   public void configStatusFramePeriods() {
+    m_turningEncoder.setStatusFramePeriod(CANCoderStatusFrame.SensorData, 101);
+
+    m_turningMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_1_General, 19);
+    m_turningMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 19);
+    m_turningMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_4_AinTempVbat, 253);
+    m_turningMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_6_Misc, 59);
+
+    m_driveMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_1_General, 19);
+    m_driveMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 19);
+    m_driveMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_4_AinTempVbat, 253);
+    m_driveMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_6_Misc, 59);
   }
 
   /**

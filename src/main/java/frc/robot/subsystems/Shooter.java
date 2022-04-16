@@ -15,6 +15,7 @@ import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.CANSparkMaxLowLevel.PeriodicFrame;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -66,14 +67,14 @@ public class Shooter extends SubsystemBase {
         _back.setNeutralMode(NeutralMode.Coast);
         _kicker.setNeutralMode(NeutralMode.Coast);
 
-        // _front.configVoltageCompSaturation(ShooterConstants.kVoltageCompensation);
-        _front.enableVoltageCompensation(false);
+        _front.configVoltageCompSaturation(ShooterConstants.kVoltageCompensation);
+        _front.enableVoltageCompensation(ShooterConstants.kUseVoltageComp);
 
-        // _back.configVoltageCompSaturation(ShooterConstants.kVoltageCompensation);
-        _back.enableVoltageCompensation(false);
+        _back.configVoltageCompSaturation(ShooterConstants.kVoltageCompensation);
+        _back.enableVoltageCompensation(ShooterConstants.kUseVoltageComp);
 
-        // _kicker.configVoltageCompSaturation(ShooterConstants.kVoltageCompensation);
-        _kicker.enableVoltageCompensation(false);
+        _kicker.configVoltageCompSaturation(ShooterConstants.kVoltageCompensation);
+        _kicker.enableVoltageCompensation(ShooterConstants.kUseVoltageComp);
 
         _l = Limelight.getInstance();
 
@@ -113,6 +114,31 @@ public class Shooter extends SubsystemBase {
 
         indexData = new ShooterIndex();
         indexData.setFontSize(100);
+
+        configStatusFramePeriods();
+    }
+
+    public void configStatusFramePeriods() {
+        _angle.setPeriodicFramePeriod(PeriodicFrame.kStatus0, 11);
+        _angle.setPeriodicFramePeriod(PeriodicFrame.kStatus1, 23);
+        _angle.setPeriodicFramePeriod(PeriodicFrame.kStatus2, 23);
+        _angle.setPeriodicFramePeriod(PeriodicFrame.kStatus3, 53);
+        
+        _front.setStatusFramePeriod(StatusFrameEnhanced.Status_1_General, 19);
+        _front.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 19);
+        _front.setStatusFramePeriod(StatusFrameEnhanced.Status_4_AinTempVbat, 253);
+        _front.setStatusFramePeriod(StatusFrameEnhanced.Status_6_Misc, 59);
+
+        _back.setStatusFramePeriod(StatusFrameEnhanced.Status_1_General, 19);
+        _back.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 19);
+        _back.setStatusFramePeriod(StatusFrameEnhanced.Status_4_AinTempVbat, 253);
+        _back.setStatusFramePeriod(StatusFrameEnhanced.Status_6_Misc, 59);
+
+        _kicker.setStatusFramePeriod(StatusFrameEnhanced.Status_1_General, 19);
+        _kicker.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 19);
+        _kicker.setStatusFramePeriod(StatusFrameEnhanced.Status_4_AinTempVbat, 253);
+        _kicker.setStatusFramePeriod(StatusFrameEnhanced.Status_6_Misc, 59);
+
     }
 
     public void put(String key, double val) {
