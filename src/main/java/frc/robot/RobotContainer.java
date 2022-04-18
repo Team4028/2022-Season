@@ -35,6 +35,7 @@ import frc.robot.commands.climber.MidToHigh;
 import frc.robot.commands.climber.MoveArm;
 import frc.robot.commands.climber.MoveArmSlow;
 import frc.robot.commands.climber.RightZeroSequence;
+import frc.robot.commands.climber.ToggleTippy;
 import frc.robot.commands.conveyor.ReverseInfeedAndConveyor;
 import frc.robot.commands.conveyor.RunConveyorTwoBall;
 import frc.robot.commands.infeed.EvacuateWrongCargo;
@@ -155,6 +156,7 @@ public class RobotContainer {
 
         // ======== DRIVER CONTROLLER ========
         m_driverController.a.whenPressed(new ToggleLEDMode());
+        m_driverController.b.whenPressed(new ToggleTippy());
         m_driverController.x.whenPressed(new InstantCommand(() -> toggleFieldOriented()));
         m_driverController.start.whenPressed(new InstantCommand(() -> m_drive.zeroHeading()));
         m_driverController.lb.toggleWhenPressed(new ReverseInfeedAndConveyor());
