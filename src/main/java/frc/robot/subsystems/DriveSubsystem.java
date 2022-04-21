@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import static frc.robot.Constants.DriveConstants.*;
 
+import java.io.IOException;
 import java.util.function.BooleanSupplier;
 
 import com.ctre.phoenix.sensors.WPI_Pigeon2;
@@ -91,7 +92,7 @@ public class DriveSubsystem extends SubsystemBase {
     public void periodic() {
         // Update the odometry in the periodic block -- only during auton/disabled
         // Not needed during teleop
-        if (/* !DriverStation.isTeleopEnabled() && */testTimer > 8 * configWaitCycles) {
+        if (/* !DriverStation.isTeleopEnabled() && */testTimer > 15 * configWaitCycles) {
             m_odometry.update(
                     getGyroRotation2d(),
                     m_frontLeft.getState(),
@@ -124,7 +125,7 @@ public class DriveSubsystem extends SubsystemBase {
         }
 
         // TODO: Fix this/ remove if possible
-        if (testTimer < 8 * configWaitCycles + 3) {
+        if (testTimer < 15 * configWaitCycles + 3) {
             testTimer++;
         }
         if (testTimer == configWaitCycles) {
@@ -150,6 +151,13 @@ public class DriveSubsystem extends SubsystemBase {
         } else if (testTimer == 8 * configWaitCycles) {
             m_rearLeft.configTurningMotor();
             zeroHeading();
+        } else if(testTimer == 9 * configWaitCycles) {
+            String resetCaniv = "caniv -r -d " + kCANivoreName;
+            try{
+                Runtime.getRuntime().exec(resetCaniv);
+            } catch (IOException excep) {
+                System.out.println("Something went wrong resetting canivore");
+            }
         }
     }
 
