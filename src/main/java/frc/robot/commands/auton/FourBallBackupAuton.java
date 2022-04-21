@@ -26,7 +26,7 @@ public class FourBallBackupAuton extends BeakAutonCommand {
         // addCommands(new FooCommand(), new BarCommand());
         super.setInitialPose(Trajectories.FourBall_AcquireFirstCargo());
         super.addCommands(
-                new ResetDefaultIndex(),
+                new InstantCommand(() -> Shooter.getInstance().setShooterIndex(12.8, true), Shooter.getInstance()),
                 new InstantCommand(() -> Infeed.getInstance().setInfeedDown()),
                 new WaitCommand(0.25),
                 new InstantCommand(() -> Infeed.getInstance().forceRunInfeed(), Infeed.getInstance()),

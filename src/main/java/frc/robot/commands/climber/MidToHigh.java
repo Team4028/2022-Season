@@ -18,7 +18,7 @@ public class MidToHigh extends SequentialCommandGroup {
         // addCommands(new FooCommand(), new BarCommand());
         addCommands(
                 new ToggleGrippy(), // get grippy ready to latch
-                new WaitCommand(1),
+                new WaitCommand(0.75/*1*/),
                 new MoveArm(VBusConstants.kClimberFast, 152, true),
                 new WaitCommand(1),
                 new ToggleGrippy()); // get grippy to high
