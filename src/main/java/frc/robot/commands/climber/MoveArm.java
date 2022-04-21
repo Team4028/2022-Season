@@ -12,12 +12,14 @@ public class MoveArm extends CommandBase {
     private Climber climber = Climber.getInstance();
     double speed;
     double encoderValue;
+    boolean resetEncoders;
 
     boolean leftFinished = false, rightFinished = false;
 
-    public MoveArm(double speed, double encoderValue) {
+    public MoveArm(double speed, double encoderValue, boolean resetEncoders) {
         this.speed = speed;
         this.encoderValue = encoderValue;
+        this.resetEncoders = resetEncoders;
         // Use addRequirements() here to declare subsystem dependencies.
         addRequirements(climber);
 
@@ -31,7 +33,9 @@ public class MoveArm extends CommandBase {
         climber.rightMotorForward(speed);
         climber.leftMotorForward(speed);
 
-        climber.setRightEncoder(climber.getLeftEncoderPosition());
+        if (resetEncoders) {
+            climber.setRightEncoder(climber.getLeftEncoderPosition());
+        }
         leftFinished = false;
         rightFinished = false;
     }

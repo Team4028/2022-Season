@@ -31,7 +31,7 @@ public class MoveArmSlow extends CommandBase {
         climber.rightMotorForward(speed);
         climber.leftMotorForward(speed);
 
-        climber.setRightEncoder(climber.getLeftEncoderPosition());
+        // climber.setRightEncoder(climber.getLeftEncoderPosition());
         leftFinished = false;
         rightFinished = false;
     }

@@ -19,7 +19,7 @@ public class LeftZeroSequence extends SequentialCommandGroup {
         addCommands(
                 new LeftCurrentZero(),
                 new InstantCommand(() -> Climber.getInstance().setLeftEncoder(0.)),
-                new MoveLeftArm(0.1, 9),
+                new MoveLeftArm(0.1, 8.5),
                 new InstantCommand(() -> Climber.getInstance().setLeftEncoder(0.)));
     }
 }

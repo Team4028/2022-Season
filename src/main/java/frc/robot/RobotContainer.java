@@ -189,7 +189,7 @@ public class RobotContainer {
                 .whenReleased(new InstantCommand(() -> m_climber.leftMotorOff()));
 
         // THIS IS ALL WORKING, DON'T CHANGE ANY OF THE COMMANDS
-        m_climberController.back.whenPressed(new MoveArm(0.9, 135)
+        m_climberController.back.whenPressed(new MoveArm(0.9, 135, false)
                 .andThen(new WaitCommand(0.25))
                 .andThen(new MoveArmSlow(-0.2, 127)));
         m_climberController.back.whenPressed(new InstantCommand(() -> m_infeed.setInfeedDown()));
