@@ -31,7 +31,7 @@ public class FiveBallBackupAuton extends BeakAutonCommand {
                 new InstantCommand(() -> Infeed.getInstance().setInfeedDown()),
                 new WaitCommand(0.25),
                 new InstantCommand(() -> Infeed.getInstance().forceRunInfeed()),
-                new InstantCommand(() -> Shooter.getInstance().setShooterIndex(17.0, true)),
+                new InstantCommand(() -> Shooter.getInstance().setShooterIndex(16.5, true)),
                 util.getPathPlannerSwerveControllerCommand(Trajectories.FiveBall_AcquireFirstCargo()),
                 new WaitCommand(0.2),
                 new ToggleInfeedUp(),

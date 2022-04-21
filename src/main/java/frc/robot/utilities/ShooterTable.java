@@ -217,13 +217,13 @@ public class ShooterTable {
                         7., "close lob", false));
                 primarytable.add(new ShooterTableEntry(_indexCounter++, 10., 39, 59, 55,
                         14., "index 10", false));
-                primarytable.add(new ShooterTableEntry(_indexCounter++, 12.5, 41, 63, 55,
+                primarytable.add(new ShooterTableEntry(_indexCounter++, 12.8, 41, 63, 55,
                         19., "index 12.5", false));
-                primarytable.add(new ShooterTableEntry(_indexCounter++, 15., 43, 69, 55,
+                primarytable.add(new ShooterTableEntry(_indexCounter++, 15.3, 43, 69, 55,
                         30., "index 15", false));
-                primarytable.add(new ShooterTableEntry(_indexCounter++, 19., 49, 78, 55,
+                primarytable.add(new ShooterTableEntry(_indexCounter++, 19.3, 49, 78, 55,
                         30., "index 19", false));
-                primarytable.add(new ShooterTableEntry(_indexCounter++, 22., 54, 85, 55,
+                primarytable.add(new ShooterTableEntry(_indexCounter++, 22.3, 54, 85, 55,
                         33., "index 22", false));
             } else {
                 primarytable.add(new ShooterTableEntry(_indexCounter++, 7., 1180, 1460, 55, 7., "close lob", false));
