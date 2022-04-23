@@ -21,7 +21,8 @@ public class TwoBallTopTrussDisposal extends BeakAutonCommand {
     /** Creates a new TwoBallTopTrussDisposal. */
     public TwoBallTopTrussDisposal() {
         super.addCommands(
-                new ResetDefaultIndex(),
+                // new ResetDefaultIndex(),
+                new InstantCommand(() -> Shooter.getInstance().setShooterIndex(12.8, true), Shooter.getInstance()),
                 new InstantCommand(() -> Infeed.getInstance().setInfeedDown()),
                 new WaitCommand(0.25),
                 new InstantCommand(() -> Infeed.getInstance().forceRunInfeed()),
