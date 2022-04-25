@@ -11,6 +11,8 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.Constants.ShooterConstants;
+import frc.robot.commands.TestAll;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.ColorSensor;
 import frc.robot.subsystems.Limelight;
@@ -55,14 +57,10 @@ public class Robot extends TimedRobot {
         limelight = Limelight.getInstance();
         shooter = Shooter.getInstance();
         commandScheduler = CommandScheduler.getInstance();
-
-        /*
-         * MjpegServer cam = CameraServer.startAutomaticCapture(new UsbCamera("BRUH",
-         * "/dev/video0"));
-         * cam.setResolution(160, 120);
-         * cam.setCompression(35);
-         * cam.setFPS(10);
-         */
+        
+        limelight.setPipeline(ShooterConstants.kIsRealGoal ? 5 : 0);
+        limelight.setPictureInPicture(0);
+        limelight.setLedMode(1);
     }
 
     /**
@@ -87,7 +85,6 @@ public class Robot extends TimedRobot {
         // block in order for anything in the Command-based framework to work.
         commandScheduler.run();
         SmartDashboard.putBoolean("Compressor", compressor.enabled());
-
     }
 
     /** This function is called once each time the robot enters Disabled mode. */
@@ -154,6 +151,8 @@ public class Robot extends TimedRobot {
 
         // Cancels all running commands at the start of test mode.
         // CommandScheduler.getInstance().cancelAll();
+
+        new TestAll().schedule();
     }
 
     /** This function is called periodically during test mode. */

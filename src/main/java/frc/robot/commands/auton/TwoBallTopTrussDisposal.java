@@ -12,7 +12,6 @@ import frc.robot.commands.BeakAutonCommand;
 import frc.robot.commands.chassis.RotateDrivetrainToAngle;
 import frc.robot.commands.conveyor.RunConveyor;
 import frc.robot.commands.conveyor.SlowOutfeedAndConveyor;
-import frc.robot.commands.shooter.ResetDefaultIndex;
 import frc.robot.subsystems.Infeed;
 import frc.robot.subsystems.Shooter;
 import frc.robot.utilities.Trajectories;
