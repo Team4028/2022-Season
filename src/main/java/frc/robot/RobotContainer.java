@@ -45,6 +45,7 @@ import frc.robot.commands.shooter.AcceptLimelightDistance;
 import frc.robot.commands.shooter.DecrementShooterIndex;
 import frc.robot.commands.shooter.IncrementShooterIndex;
 import frc.robot.commands.shooter.MagicShootCommand;
+import frc.robot.commands.shooter.MagicShootMovingCommand;
 import frc.robot.commands.shooter.RunShooterMotors;
 import frc.robot.commands.shooter.RunShootersManual;
 import frc.robot.commands.shooter.SetLongShot;
@@ -155,7 +156,8 @@ public class RobotContainer {
         // ======== DRIVER CONTROLLER ========
         m_driverController.a.whenPressed(new ToggleLEDMode());
         m_driverController.b.whenPressed(new ToggleTippy());
-        m_driverController.x.whenPressed(new InstantCommand(() -> toggleFieldOriented()));
+        m_driverController.x.whenPressed(new MagicShootMovingCommand());
+        m_driverController.y.whenPressed(new InstantCommand(() -> toggleFieldOriented()));
         m_driverController.start.whenPressed(new InstantCommand(() -> m_drive.zeroHeading()));
         m_driverController.lb.toggleWhenPressed(new ReverseInfeedAndConveyor());
         m_driverController.rb.whenPressed(new ToggleInfeedUp());

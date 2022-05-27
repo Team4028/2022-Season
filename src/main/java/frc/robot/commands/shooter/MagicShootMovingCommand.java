@@ -43,7 +43,7 @@ public class MagicShootMovingCommand extends SequentialCommandGroup {
         // define commands & vars
         interruptPoint = false;
         acceptDist = new AcceptLimelightDistance();
-        continuousRotate = new RotateDrivetrainByLimelightAngleOffset(() -> drive.getDriveYVelocity(), true);
+        continuousRotate = new RotateDrivetrainByLimelightAngleOffset(() -> drive.getRobotRelativeYVelocity() / 2, true);
 
         addRequirements(Shooter.getInstance());
         addCommands(

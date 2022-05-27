@@ -276,28 +276,24 @@ public class DriveSubsystem extends SubsystemBase {
         m_odometry.resetPosition(new Pose2d(), getGyroRotation2d());
     }
 
-    public double getDriveXVelocity() {
+    private ChassisSpeeds getChassisSpeeds() {
         return kDriveKinematics.toChassisSpeeds(
                 m_frontLeft.getState(),
                 m_frontRight.getState(),
                 m_rearLeft.getState(),
-                m_rearRight.getState()).vxMetersPerSecond;
+                m_rearRight.getState());
+    }
+
+    public double getDriveXVelocity() {
+        return getChassisSpeeds().vxMetersPerSecond;
     }
 
     public double getDriveYVelocity() {
-        return kDriveKinematics.toChassisSpeeds(
-                m_frontLeft.getState(),
-                m_frontRight.getState(),
-                m_rearLeft.getState(),
-                m_rearRight.getState()).vyMetersPerSecond;
+        return getChassisSpeeds().vyMetersPerSecond;
     }
 
     public double getDriveAngularVelocity() {
-        return kDriveKinematics.toChassisSpeeds(
-                m_frontLeft.getState(),
-                m_frontRight.getState(),
-                m_rearLeft.getState(),
-                m_rearRight.getState()).omegaRadiansPerSecond;
+        return getChassisSpeeds().omegaRadiansPerSecond;
     }
 
     public Rotation2d getOdometryAngleToTarget() {
@@ -315,5 +311,25 @@ public class DriveSubsystem extends SubsystemBase {
      */
     public double getHeading() {
         return getGyroRotation2d().getDegrees();
+    }
+
+    private ChassisSpeeds getRobotRelativeChassisSpeeds() {
+        return ChassisSpeeds.fromFieldRelativeSpeeds(
+            getDriveXVelocity(), 
+            getDriveYVelocity(),
+            getDriveAngularVelocity(),
+            getGyroRotation2d());
+    }
+
+    public double getRobotRelativeXVelocity() {
+        return getChassisSpeeds().vxMetersPerSecond;
+    }
+
+    public double getRobotRelativeYVelocity() {
+        return getChassisSpeeds().vyMetersPerSecond;
+    }
+
+    public double getRobotRelativeAngularVelocity() {
+        return getChassisSpeeds().omegaRadiansPerSecond;
     }
 }
