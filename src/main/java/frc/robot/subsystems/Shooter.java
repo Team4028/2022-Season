@@ -176,6 +176,9 @@ public class Shooter extends SubsystemBase {
         put("Kicker Motor RPM", util.toFalconRPM(_kicker.getSelectedSensorVelocity()));
         put("Angle", _angleEnc.getPosition());
 
+        put("Front Motor Error", (_front.getClosedLoopError()));
+        put("Back Motor Error", (_back.getClosedLoopError()));
+
         SmartDashboard.putBoolean("Shooter/Running", true);
 
         _anglePid.setReference(entry.ActuatorVal, ControlType.kPosition);

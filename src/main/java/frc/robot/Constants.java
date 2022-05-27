@@ -199,11 +199,11 @@ public final class Constants {
 
         public static final double kMaxAllowedAngle = 33.;
 
-        public static final boolean kIsVBus = true;
-        public static final boolean kIsRealGoal = true;
+        public static final boolean kIsVBus = false;
+        public static final boolean kIsRealGoal = false;
 
-        public static final boolean kUseVoltageComp = true;
-        public static final double kVoltageCompensation = 10.75;
+        public static final boolean kUseVoltageComp = false;
+        public static final double kVoltageCompensation = 12;//10.75;
     }
 
     public static final class LimelightConstants {
@@ -226,17 +226,17 @@ public final class Constants {
         // This can be fixed--and nothing can realistically be lost--
         // by upping the D a bit.
         public static final class Front {
-            public static double kF = 0.047;
+            public static double kF = 0.0475;
             public static double kP = 0.1;
-            public static double kD = 0.12;
-            public static double kMax = 22000; // 20400;
+            public static double kD = 0.05;
+            public static double kMax = 22040; // 20400;
         }
 
         public static final class Back {
-            public static double kF = 0.047;
+            public static double kF = 0.049;
             public static double kP = 0.1;
-            public static double kD = 0.12;
-            public static double kMax = 22000; // 17000;
+            public static double kD = 0.05;
+            public static double kMax = 21800; // 17000;
         }
 
         public static final class Angle {
