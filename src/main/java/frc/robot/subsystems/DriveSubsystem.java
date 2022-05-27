@@ -301,8 +301,11 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     public Rotation2d getOdometryAngleToTarget() {
-        return new Rotation2d(Math.atan2(Units.inchesToMeters(324.0) - m_odometry.getPoseMeters().getX(),
-                Units.inchesToMeters(162.0) - m_odometry.getPoseMeters().getY()));
+        return new Rotation2d(
+            Math.atan2(
+                Units.inchesToMeters(162.0) - m_odometry.getPoseMeters().getY(),
+                Units.inchesToMeters(324.0) - m_odometry.getPoseMeters().getX()
+            ));
     }
 
     /**
