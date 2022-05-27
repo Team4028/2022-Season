@@ -318,7 +318,7 @@ public class DriveSubsystem extends SubsystemBase {
             getDriveXVelocity(), 
             getDriveYVelocity(),
             getDriveAngularVelocity(),
-            getGyroRotation2d());
+            getPose().getRotation());
     }
 
     public double getRobotRelativeXVelocity() {

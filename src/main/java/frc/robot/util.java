@@ -29,7 +29,7 @@ public final class util {
     }
 
     public static double speedscaleDrive(double input, double base, double throttle) {
-        return input * base;// * input;
+        return (base + throttle * (1.0 - base)) * input;
     }
 
     public static double swerveModuleReferenceAngleDegrees(Rotation2d angle) {
