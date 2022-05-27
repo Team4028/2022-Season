@@ -163,7 +163,8 @@ public class RobotContainer {
         m_driverController.rb.whenPressed(new ToggleInfeedUp());
         m_driverController.lt.whileActiveContinuous(runInfeed);
         m_driverController.rs.whileActiveContinuous(new RotateDrivetrainByLimelightAngle(true));
-        m_driverController.ls.whenPressed(new ToggleCamera());
+        // m_driverController.ls.whenPressed(new ToggleCamera());
+        m_driverController.ls.whenPressed(new EvacuateWrongCargo().withTimeout(2.0));
         // ===================================
 
         // ======== TEMP. m_climber CONTROLLER
