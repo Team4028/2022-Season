@@ -322,14 +322,14 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     public double getRobotRelativeXVelocity() {
-        return getChassisSpeeds().vxMetersPerSecond;
+        return getRobotRelativeChassisSpeeds().vxMetersPerSecond;
     }
 
     public double getRobotRelativeYVelocity() {
-        return getChassisSpeeds().vyMetersPerSecond;
+        return getRobotRelativeChassisSpeeds().vyMetersPerSecond;
     }
 
     public double getRobotRelativeAngularVelocity() {
-        return getChassisSpeeds().omegaRadiansPerSecond;
+        return getRobotRelativeChassisSpeeds().omegaRadiansPerSecond;
     }
 }
