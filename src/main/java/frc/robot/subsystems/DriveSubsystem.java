@@ -289,7 +289,7 @@ public class DriveSubsystem extends SubsystemBase {
                 m_frontLeft.getState(),
                 m_frontRight.getState(),
                 m_rearLeft.getState(),
-                m_rearRight.getState()).vxMetersPerSecond;
+                m_rearRight.getState()).vyMetersPerSecond;
     }
 
     public double getDriveAngularVelocity() {
@@ -316,5 +316,4 @@ public class DriveSubsystem extends SubsystemBase {
     public double getHeading() {
         return getGyroRotation2d().getDegrees();
     }
-
 }

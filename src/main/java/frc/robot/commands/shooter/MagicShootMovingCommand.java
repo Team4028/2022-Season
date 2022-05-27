@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
-import frc.robot.commands.chassis.RotateDrivetrainByLimelightAngle;
+import frc.robot.commands.chassis.RotateDrivetrainByLimelightAngleOffset;
 import frc.robot.commands.chassis.RotateDrivetrainToOdometryTargetAngle;
 import frc.robot.commands.conveyor.RunConveyorTwoBall;
 import frc.robot.subsystems.Conveyor;
@@ -26,7 +26,7 @@ public class MagicShootMovingCommand extends SequentialCommandGroup {
     DriveSubsystem drive;
 
     AcceptLimelightDistance acceptDist;
-    RotateDrivetrainByLimelightAngle continuousRotate;
+    RotateDrivetrainByLimelightAngleOffset continuousRotate;
     /** Creates a new MagicShootMovingCommand. */
     /**
      * false = before conveyor runs
@@ -35,16 +35,22 @@ public class MagicShootMovingCommand extends SequentialCommandGroup {
     private boolean interruptPoint;
 
     public MagicShootMovingCommand() {
-        // Add your commands in the addCommands() call, e.g.
+        // define subsystems
+        shooter = Shooter.getInstance();
+        drive = DriveSubsystem.getInstance();
+        limelight = Limelight.getInstance();
+
+        // define commands & vars
         interruptPoint = false;
-        // addCommands(new FooCommand(), new BarCommand());
+        acceptDist = new AcceptLimelightDistance();
+        continuousRotate = new RotateDrivetrainByLimelightAngleOffset(() -> drive.getDriveYVelocity(), true);
+
         addRequirements(Shooter.getInstance());
         addCommands(
                 new RotateDrivetrainToOdometryTargetAngle(),
                 new WaitUntilCommand(() -> limelight.getHasTarget()),
                 new InstantCommand(() -> setInterruptPoint(false)),
-                // new RotateDrivetrainByLimelightAngle(false),
-                // new AcceptLimelightDistance(),
+
                 sequence(
                         new WaitCommand(0.25),
                         new InstantCommand(() -> setInterruptPoint(true)),
@@ -66,7 +72,7 @@ public class MagicShootMovingCommand extends SequentialCommandGroup {
     public void end(boolean interrupted) {
         if (interrupted || isOutOfRangeOfManual()) { // || !Limelight.getInstance().getHasTarget()) {
             if (interruptPoint == false) {
-                Shooter.getInstance().stop();
+                shooter.stop();
                 Vision.getInstance().setInfeedCamera();
                 Conveyor.getInstance().setIsRunning(false);
             } else {
@@ -92,8 +98,8 @@ public class MagicShootMovingCommand extends SequentialCommandGroup {
     }
 
     private boolean isOutOfRangeOfManual() {
-        return Shooter.getInstance().getIsShotValidation() &&
+        return shooter.getIsShotValidation() &&
                 (!interruptPoint) &&
-                Math.abs(Shooter.getInstance().manualIndex() - Shooter.getInstance().index()) > 3.0;
+                Math.abs(shooter.manualIndex() - shooter.index()) > 3.0;
     }
 }
