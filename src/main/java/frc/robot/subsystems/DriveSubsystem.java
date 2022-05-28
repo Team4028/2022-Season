@@ -276,7 +276,7 @@ public class DriveSubsystem extends SubsystemBase {
         m_odometry.resetPosition(new Pose2d(), getGyroRotation2d());
     }
 
-    private ChassisSpeeds getChassisSpeeds() {
+    public ChassisSpeeds getChassisSpeeds() {
         return kDriveKinematics.toChassisSpeeds(
                 m_frontLeft.getState(),
                 m_frontRight.getState(),
@@ -313,7 +313,9 @@ public class DriveSubsystem extends SubsystemBase {
         return getGyroRotation2d().getDegrees();
     }
 
-    private ChassisSpeeds getRobotRelativeChassisSpeeds() {
+    /** PROBABLY USELESS: */
+
+    public ChassisSpeeds getRobotRelativeChassisSpeeds() {
         return ChassisSpeeds.fromFieldRelativeSpeeds(
             getDriveXVelocity(), 
             getDriveYVelocity(),
