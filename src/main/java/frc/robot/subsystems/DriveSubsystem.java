@@ -38,7 +38,7 @@ public class DriveSubsystem extends SubsystemBase {
 
     private int testTimer = 0;
     private int configWaitCycles = 50;
-    private Rotation2d zeroAbsoluteCompassHeading;
+    private Rotation2d zeroAbsoluteCompassHeading = new Rotation2d();
 
     private static DriveSubsystem _instance;
 
@@ -88,6 +88,7 @@ public class DriveSubsystem extends SubsystemBase {
     public DriveSubsystem() {
         // zeroHeading();
         // m_gyro.setStatusFramePeriod(PigeonIMU_StatusFrame.CondStatus_1_General, 50);
+        m_field = new Field2d();
     }
 
     @Override
@@ -196,11 +197,11 @@ public class DriveSubsystem extends SubsystemBase {
      * 
      * @param visionDistanceMeters Distance from center of goal to center of robot
      */
-    public void resetOdometryWithVision(double visionDistanceMeters) {
+    public void resetOdometryWithVision(double visionDistanceMeters, double targetX) {
         Pose2d visionCurrentPose = new Pose2d(
                 new Translation2d(Units.inchesToMeters(324.0), Units.inchesToMeters(162.0))
-                        .minus(new Translation2d(visionDistanceMeters, getAbsoluteGyro())),
-                getGyroRotation2d());
+                        .minus(new Translation2d(visionDistanceMeters, m_odometry.getPoseMeters().getRotation())),
+                m_odometry.getPoseMeters().getRotation());
         m_odometry.resetPosition(visionCurrentPose, getGyroRotation2d());
     }
     //////

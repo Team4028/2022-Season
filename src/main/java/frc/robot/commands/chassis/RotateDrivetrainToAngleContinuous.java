@@ -12,6 +12,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.ProfiledPIDCommand;
+import frc.robot.RobotContainer;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.subsystems.DriveSubsystem;
@@ -26,9 +27,9 @@ public class RotateDrivetrainToAngleContinuous extends ProfiledPIDCommand {
                 // The ProfiledPIDController used by the command
                 new ProfiledPIDController(
                         // The PID gains
-                        AutoConstants.kPThetaController,
+                        AutoConstants.kPThetaController * 0.85,
                         0,
-                        0,
+                        0.2,
                         // The motion profile constraints
                         new TrapezoidProfile.Constraints(AutoConstants.MAX_ANGULAR_SPEED_RADIANS_PER_SECOND,
                                 AutoConstants.MAX_ANGULAR_SPEED_RADIANS_PER_SECOND_SQUARED)),
@@ -42,14 +43,16 @@ public class RotateDrivetrainToAngleContinuous extends ProfiledPIDCommand {
                     DriveSubsystem.getInstance().setModuleStates(
                             DriveConstants.kDriveKinematics.toSwerveModuleStates(
                                     ChassisSpeeds.fromFieldRelativeSpeeds(
-                                            0.0,
-                                            0.0,
-                                            output + setpoint.velocity,
+                                        DriveConstants.i_kMaxSpeedMetersPerSecond
+                                            * RobotContainer.getInstance().getSpeedScaledDriverLeftY(),
+                                        DriveConstants.i_kMaxSpeedMetersPerSecond
+                                            * RobotContainer.getInstance().getSpeedScaledDriverLeftX(),
+                                        output + setpoint.velocity,
                                             DriveSubsystem.getInstance().getPose().getRotation())));
                 });
         // Use addRequirements() here to declare subsystem dependencies.
         // Configure additional PID options by calling `getController` here.
-        addRequirements(DriveSubsystem.getInstance());
+        // addRequirements(DriveSubsystem.getInstance());
         getController().enableContinuousInput(-Math.PI, Math.PI);
         getController().setTolerance(Units.degreesToRadians(0.75));
     }

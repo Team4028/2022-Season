@@ -8,11 +8,13 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.commands.chassis.ResetOdometryWithVision;
+import frc.robot.commands.chassis.RotateDrivetrainByLimelightAngle;
 import frc.robot.commands.chassis.RotateDrivetrainToAngleContinuous;
 import frc.robot.commands.chassis.RotateDrivetrainToOdometryTargetAngle;
 import frc.robot.commands.conveyor.RunConveyorTwoBall;
@@ -45,7 +47,7 @@ public class MagicShootMovingCommand extends SequentialCommandGroup {
     private Translation2d target;
 
     /** takes ~0.5 sec for the ball to exit */
-    private double shotTime = 0.5;
+    private double shotTime = 1;
 
     public MagicShootMovingCommand() {
         // init target
@@ -67,8 +69,13 @@ public class MagicShootMovingCommand extends SequentialCommandGroup {
 
         addRequirements(Shooter.getInstance());
         addCommands(
-                new RotateDrivetrainToOdometryTargetAngle(),
-                new WaitUntilCommand(() -> limelight.getHasTarget()),
+                // new RotateDrivetrainToOdometryTargetAngle(),
+                new WaitUntilCommand(() -> limelight.getHasTarget()).withTimeout(1.0),
+                new ConditionalCommand(
+                    new InstantCommand(() -> {}),
+                    new InstantCommand(() -> this.cancel()),
+                    () -> limelight.getHasTarget()),
+                new RotateDrivetrainByLimelightAngle(true).withTimeout(0.5),
                 new InstantCommand(() -> setInterruptPoint(false)),
                 new ResetOdometryWithVision(),
                 new InstantCommand(() -> runPeriodics = true),
@@ -153,7 +160,7 @@ public class MagicShootMovingCommand extends SequentialCommandGroup {
         super.execute();
 
         if (runPeriodics) {
-            shooter.setShooterIndex(getDistanceToMovingGoal() - 1., false);
+            shooter.setShooterIndex(getDistanceToMovingGoal() + 1., false);
             continuousRotate.schedule();
         }
     }

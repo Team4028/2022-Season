@@ -18,15 +18,16 @@ public class ResetOdometryWithVision extends CommandBase {
         drive = DriveSubsystem.getInstance();
         limelight = Limelight.getInstance();
         // Use addRequirements() here to declare subsystem dependencies.
-        addRequirements(drive);
-        addRequirements(limelight);
+        // addRequirements(drive);
+        // addRequirements(limelight);
     }
 
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
         drive.resetOdometryWithVision(
-            Units.feetToMeters(limelight.willTestDistance() - 1.)
+            Units.feetToMeters(limelight.willTestDistance() - 1.),
+            limelight.getX()
         );
     }
 
