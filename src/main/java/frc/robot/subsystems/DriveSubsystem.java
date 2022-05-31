@@ -19,6 +19,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.AutoConstants;
@@ -73,6 +74,8 @@ public class DriveSubsystem extends SubsystemBase {
             i_kRearRightTurningMotorPort,
             i_kRearRightEncoderCan,
             i_BACK_RIGHT_ANGLE_OFFSET);
+    
+    private Field2d m_field; // tmp
 
     // The gyro sensor
     // private final Pigeon2 m_pigeon = new Pigeon2(1);
@@ -98,6 +101,9 @@ public class DriveSubsystem extends SubsystemBase {
                     m_rearLeft.getState(),
                     m_frontRight.getState(),
                     m_rearRight.getState());
+            
+            m_field.setRobotPose(m_odometry.getPoseMeters());
+            SmartDashboard.putData("Field", m_field);
         }
 
         // TODO: Organized, comprehensive data for whole Drivetrain
