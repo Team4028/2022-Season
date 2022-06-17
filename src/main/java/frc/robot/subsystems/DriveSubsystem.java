@@ -11,6 +11,9 @@ import java.util.function.BooleanSupplier;
 
 import com.ctre.phoenix.sensors.WPI_Pigeon2;
 
+import edu.wpi.first.math.MatBuilder;
+import edu.wpi.first.math.Nat;
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -41,6 +44,7 @@ public class DriveSubsystem extends SubsystemBase {
     private Rotation2d zeroAbsoluteCompassHeading = new Rotation2d();
 
     private static DriveSubsystem _instance;
+
 
     private int updateCycles = 0;
 
@@ -83,6 +87,12 @@ public class DriveSubsystem extends SubsystemBase {
 
     // Odometry class for tracking robot pose
     SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(kDriveKinematics, getGyroRotation2d());
+    
+    private SwerveDrivePoseEstimator poseEstimator = new SwerveDrivePoseEstimator(getGyroRotation2d(), getPose(), kDriveKinematics,
+    new MatBuilder<>(Nat.N3(), Nat.N1()).fill(0.02, 0.01, 0.02), // State measurement standard deviations. X, Y, theta.
+    new MatBuilder<>(Nat.N1(), Nat.N1()).fill(0.02), // Local measurement standard deviations. Left encoder, right encoder, gyro.
+    new MatBuilder<>(Nat.N3(), Nat.N1()).fill(0.1, 0.1, 0.01));
+
 
     /** Creates a new DriveSubsystem. */
     public DriveSubsystem() {
@@ -105,6 +115,14 @@ public class DriveSubsystem extends SubsystemBase {
             
             m_field.setRobotPose(m_odometry.getPoseMeters());
             SmartDashboard.putData("Field", m_field);
+
+            poseEstimator.update(
+                    getGyroRotation2d(),
+                    m_frontLeft.getState(),
+                    m_rearLeft.getState(),
+                    m_frontRight.getState(),
+                    m_rearRight.getState());
+            
         }
 
         // TODO: Organized, comprehensive data for whole Drivetrain
@@ -116,6 +134,7 @@ public class DriveSubsystem extends SubsystemBase {
             SmartDashboard.putNumber("X (Metres)", m_odometry.getPoseMeters().getX());
             SmartDashboard.putNumber("Y (Metres)", m_odometry.getPoseMeters().getY());
             SmartDashboard.putNumber("Heading (Deg)", m_odometry.getPoseMeters().getRotation().getDegrees());
+            SmartDashboard.putString("pose", poseEstimator.getEstimatedPosition().toString());
             // SmartDashboard.putNumber("FL Angle",
             // m_frontLeft.getState().angle.getDegrees());
             // SmartDashboard.putNumber("FR Angle",
@@ -281,6 +300,7 @@ public class DriveSubsystem extends SubsystemBase {
     public void zeroHeading() {
         resetModuleHeadingControllers();
         m_odometry.resetPosition(new Pose2d(), getGyroRotation2d());
+        poseEstimator.resetPosition(new Pose2d(), getGyroRotation2d());
     }
 
     public ChassisSpeeds getChassisSpeeds() {
@@ -340,5 +360,17 @@ public class DriveSubsystem extends SubsystemBase {
 
     public double getRobotRelativeAngularVelocity() {
         return getRobotRelativeChassisSpeeds().omegaRadiansPerSecond;
+    }
+
+    public void inputVisionPose(double visionDistanceMeters, double visionThetaRadians, double timestampSeconds){
+        Pose2d visionCurrentPose = new Pose2d(
+            new Translation2d(Units.inchesToMeters(324.0), Units.inchesToMeters(162.0))
+                    .minus(new Translation2d(visionDistanceMeters, poseEstimator.getEstimatedPosition().getRotation()
+                    .rotateBy(new Rotation2d(visionThetaRadians))).times(-1.0)
+                    .plus(new Translation2d(Units.inchesToMeters(14.5), poseEstimator.getEstimatedPosition().getRotation()))),
+            poseEstimator.getEstimatedPosition().getRotation());
+        SmartDashboard.putString("current vision pose", visionCurrentPose.toString());
+        //SmartDashboard.putString("test", new Translation2d(Math.sqrt(2), Rotation2d.fromDegrees(225)).toString());
+        poseEstimator.addVisionMeasurement(visionCurrentPose, timestampSeconds);
     }
 }

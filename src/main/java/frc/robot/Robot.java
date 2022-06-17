@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -15,6 +16,7 @@ import frc.robot.Constants.ShooterConstants;
 import frc.robot.commands.TestAll;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.ColorSensor;
+import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Shooter;
 
@@ -36,6 +38,7 @@ public class Robot extends TimedRobot {
     private Limelight limelight;
     private Climber climber;
     private ColorSensor colorSensor;
+    private DriveSubsystem drive;
 
     private CommandScheduler commandScheduler;
 
@@ -56,6 +59,7 @@ public class Robot extends TimedRobot {
         climber = Climber.getInstance();
         limelight = Limelight.getInstance();
         shooter = Shooter.getInstance();
+        drive = DriveSubsystem.getInstance();
         commandScheduler = CommandScheduler.getInstance();
         
         limelight.setPipeline(ShooterConstants.kIsRealGoal ? 5 : 0);
@@ -144,6 +148,11 @@ public class Robot extends TimedRobot {
     /** This function is called periodically during operator control. */
     @Override
     public void teleopPeriodic() {
+        if(limelight.getHasTarget() && Math.abs(limelight.getX()) < 5.0){
+            drive.inputVisionPose(Units.feetToMeters(limelight.distance()),
+            Units.degreesToRadians(limelight.getX()),
+            Units.millisecondsToSeconds(limelight.getPipelineLatency() + 11));
+        }
     }
 
     @Override

@@ -31,6 +31,7 @@ public class Limelight extends SubsystemBase {
     private NetworkTableEntry tvert = entry("tvert");
     private NetworkTableEntry ty = entry("ty");
     private NetworkTableEntry ts = entry("ts");
+    private NetworkTableEntry tl = entry("tl");
     private NetworkTableEntry stream = entry("stream");
     private NetworkTableEntry ledMode = entry("ledMode");
     private NetworkTableEntry pipeline = entry("pipeline");
@@ -121,6 +122,10 @@ public class Limelight extends SubsystemBase {
 
     public boolean getHasTarget() {
         return tv.getDouble(0.0) != 0.0;
+    }
+
+    public double getPipelineLatency(){
+        return tl.getDouble(0.0);
     }
 
     public double distance() {
