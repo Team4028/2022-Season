@@ -16,6 +16,7 @@ import edu.wpi.first.math.Nat;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
@@ -362,15 +363,13 @@ public class DriveSubsystem extends SubsystemBase {
         return getRobotRelativeChassisSpeeds().omegaRadiansPerSecond;
     }
 
-    public void inputVisionPose(double visionDistanceMeters, double visionThetaRadians, double timestampSeconds){
-        Pose2d visionCurrentPose = new Pose2d(
-            new Translation2d(Units.inchesToMeters(324.0), Units.inchesToMeters(162.0))
-                    .minus(new Translation2d(visionDistanceMeters, poseEstimator.getEstimatedPosition().getRotation()
-                    .rotateBy(new Rotation2d(visionThetaRadians))).times(-1.0)
-                    .plus(new Translation2d(Units.inchesToMeters(14.5), poseEstimator.getEstimatedPosition().getRotation()))),
-            poseEstimator.getEstimatedPosition().getRotation());
-        SmartDashboard.putString("current vision pose", visionCurrentPose.toString());
-        //SmartDashboard.putString("test", new Translation2d(Math.sqrt(2), Rotation2d.fromDegrees(225)).toString());
-        poseEstimator.addVisionMeasurement(visionCurrentPose, timestampSeconds);
+    public void inputVisionPose(Translation2d cameraToTarget, double timestampSeconds){
+        SmartDashboard.putString("cameraToTarget", cameraToTarget.toString());
+
+        Transform2d cameratotargettransform = new Transform2d(cameraToTarget, new Rotation2d());
+        Pose2d cameraPose = new Pose2d(Units.inchesToMeters(324.0), Units.inchesToMeters(162.0), new Rotation2d()).transformBy(cameratotargettransform.inverse());
+        Pose2d robotPose = cameraPose.transformBy(new Transform2d(new Translation2d(Units.inchesToMeters(22 - 14.5), getGyroRotation2d()), new Rotation2d()));
+        SmartDashboard.putString("Vision Pose", robotPose.toString());
+        poseEstimator.addVisionMeasurement(robotPose, timestampSeconds);
     }
 }

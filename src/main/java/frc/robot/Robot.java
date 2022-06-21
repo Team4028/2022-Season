@@ -89,6 +89,7 @@ public class Robot extends TimedRobot {
         // block in order for anything in the Command-based framework to work.
         commandScheduler.run();
         SmartDashboard.putBoolean("Compressor", compressor.enabled());
+
     }
 
     /** This function is called once each time the robot enters Disabled mode. */
@@ -148,10 +149,8 @@ public class Robot extends TimedRobot {
     /** This function is called periodically during operator control. */
     @Override
     public void teleopPeriodic() {
-        if(limelight.getHasTarget() && Math.abs(limelight.getX()) < 5.0){
-            drive.inputVisionPose(Units.feetToMeters(limelight.distance()),
-            Units.degreesToRadians(limelight.getX()),
-            Units.millisecondsToSeconds(limelight.getPipelineLatency() + 11));
+        if(limelight.getHasTarget()){
+            drive.inputVisionPose(limelight.cameraToTarget(), Units.millisecondsToSeconds(limelight.getPipelineLatency() + 11));
         }
     }
 

@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -15,7 +17,8 @@ import frc.robot.utilities.ShooterIndex;
 
 public class Limelight extends SubsystemBase {
     private int distEstIters = 0;
-    private double distEst, distEstTotal;
+    private int cameraDistEstIters = 0;
+    private double distEst, distEstTotal, cameraDistEst, cameraDistEstTotal;
 
     private double kDistIters = 3;
 
@@ -126,6 +129,33 @@ public class Limelight extends SubsystemBase {
 
     public double getPipelineLatency(){
         return tl.getDouble(0.0);
+    }
+
+    public double distanceToCameraMeters(){
+        if (getHasTarget()) {
+            if (cameraDistEstIters >= kDistIters) {
+                cameraDistEst = cameraDistEstTotal / cameraDistEstIters;
+                cameraDistEstTotal = 0;
+                cameraDistEstIters = 0;
+                put("Camera Distance", cameraDistEst / 12);
+            }
+            double heightDelta = LimelightConstants.kTargetHeight -
+                    LimelightConstants.kMountHeight;
+            double goalAngle = (LimelightConstants.kMountAngle + getY()) *
+                    (3.14159 / 180.);
+            // double yawComp = getX() * (3.14159 / 180.);
+
+            double dist = heightDelta /
+                    (Math.tan(goalAngle));
+
+            cameraDistEstTotal += (dist);
+            cameraDistEstIters++;
+        }
+        return Units.inchesToMeters(cameraDistEst + 26);
+    }
+
+    public Translation2d cameraToTarget(){
+        return new Translation2d(distanceToCameraMeters(), Units.degreesToRadians(getX()));
     }
 
     public double distance() {
