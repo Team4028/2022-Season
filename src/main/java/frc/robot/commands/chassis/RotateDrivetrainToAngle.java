@@ -10,6 +10,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.ProfiledPIDCommand;
+import frc.robot.RobotContainer;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.subsystems.DriveSubsystem;
@@ -40,8 +41,10 @@ public class RotateDrivetrainToAngle extends ProfiledPIDCommand {
                     DriveSubsystem.getInstance().setModuleStates(
                             DriveConstants.kDriveKinematics.toSwerveModuleStates(
                                     ChassisSpeeds.fromFieldRelativeSpeeds(
-                                            0.0,
-                                            0.0,
+                                            DriveConstants.i_kMaxSpeedMetersPerSecond
+                                                    * RobotContainer.getInstance().getSpeedScaledDriverLeftY(),
+                                            DriveConstants.i_kMaxSpeedMetersPerSecond
+                                                    * RobotContainer.getInstance().getSpeedScaledDriverLeftX(),
                                             output + setpoint.velocity,
                                             DriveSubsystem.getInstance().getPose().getRotation())));
                 });

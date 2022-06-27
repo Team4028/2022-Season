@@ -117,12 +117,12 @@ public class DriveSubsystem extends SubsystemBase {
             m_field.setRobotPose(m_odometry.getPoseMeters());
             SmartDashboard.putData("Field", m_field);
 
-            poseEstimator.update(
-                    getGyroRotation2d(),
-                    m_frontLeft.getState(),
-                    m_rearLeft.getState(),
-                    m_frontRight.getState(),
-                    m_rearRight.getState());
+            // poseEstimator.update(
+            //         getGyroRotation2d(),
+            //         m_frontLeft.getState(),
+            //         m_rearLeft.getState(),
+            //         m_frontRight.getState(),
+            //         m_rearRight.getState());
             
         }
 
@@ -135,7 +135,7 @@ public class DriveSubsystem extends SubsystemBase {
             SmartDashboard.putNumber("X (Metres)", m_odometry.getPoseMeters().getX());
             SmartDashboard.putNumber("Y (Metres)", m_odometry.getPoseMeters().getY());
             SmartDashboard.putNumber("Heading (Deg)", m_odometry.getPoseMeters().getRotation().getDegrees());
-            SmartDashboard.putString("pose", poseEstimator.getEstimatedPosition().toString());
+            // SmartDashboard.putString("pose", poseEstimator.getEstimatedPosition().toString());
             // SmartDashboard.putNumber("FL Angle",
             // m_frontLeft.getState().angle.getDegrees());
             // SmartDashboard.putNumber("FR Angle",
