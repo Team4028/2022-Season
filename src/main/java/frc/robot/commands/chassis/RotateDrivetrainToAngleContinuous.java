@@ -27,7 +27,7 @@ public class RotateDrivetrainToAngleContinuous extends ProfiledPIDCommand {
                 // The ProfiledPIDController used by the command
                 new ProfiledPIDController(
                         // The PID gains
-                        AutoConstants.kPThetaController * 0.85,
+                        8.,
                         0,
                         0.2,
                         // The motion profile constraints

@@ -49,7 +49,7 @@ public class MagicShootMovingCommand extends SequentialCommandGroup {
     private Translation2d target;
 
     /** takes ~0.5 sec for the ball to exit */
-    private double shotTime = 1;
+    private double shotTime = 1.3;
 
     public MagicShootMovingCommand() {
         // init target
@@ -90,23 +90,27 @@ public class MagicShootMovingCommand extends SequentialCommandGroup {
                                         }),
                                         new InstantCommand(() -> this.cancel()),
                                         () -> limelight.getHasTarget()),
-                                new RotateDrivetrainByLimelightAngle(true).withTimeout(0.5),
+                                new WaitUntilCommand(() -> limelight.getX() < 3.5)
+                                        .deadlineWith(new RotateDrivetrainByLimelightAngle(true)),
                                 new InstantCommand(() -> setInterruptPoint(false)),
                                 new ResetOdometryWithVision(),
                                 new InstantCommand(() -> runPeriodics = true),
                                 new WaitUntilCommand(() -> shooter.getIsAtSetpoint()),
+                                new RotateDrivetrainToAngleContinuous(() -> getAngleToMovingGoal()).withTimeout(0.5),
                                 new InstantCommand(
                                         () -> shooter.setShooterIndex(getDistanceToMovingGoal() + 1., false)),
-                                new RotateDrivetrainToAngleContinuous(() -> getAngleToMovingGoal()).withTimeout(0.25),
-                                new WaitCommand(0.1),
+                                new WaitCommand(0.2),
                                 new RunConveyorOneBall(),
-                                new WaitUntilCommand(() -> shooter.getIsAtSetpoint()),
-                                new InstantCommand(
-                                        () -> shooter.setShooterIndex(getDistanceToMovingGoal() + 1., false)),
-                                new RotateDrivetrainToAngleContinuous(() -> getAngleToMovingGoal()).withTimeout(0.25),
-                                new RunConveyorOneBall(),
-                                new WaitCommand(0.4)).deadlineWith(
-                                        new RunShooterMotors()),
+                                new WaitCommand(0.4))
+                                        // new WaitUntilCommand(() -> shooter.getIsAtSetpoint()),
+                                        // new InstantCommand(
+                                        // () -> shooter.setShooterIndex(getDistanceToMovingGoal() + 1., false)),
+                                        // new RotateDrivetrainToAngleContinuous(() ->
+                                        // getAngleToMovingGoal()).withTimeout(0.25),
+                                        // new RunConveyorOneBall(),
+                                        // new WaitCommand(0.4)
+                                        .deadlineWith(
+                                                new RunShooterMotors()),
 
                         new MagicShootCommand(),
                         () -> Math.hypot(
@@ -129,7 +133,7 @@ public class MagicShootMovingCommand extends SequentialCommandGroup {
     }
 
     private Translation2d getMovingGoal() {
-        ChassisSpeeds vels = drive.getChassisSpeeds();
+        ChassisSpeeds vels = drive.getRobotRelativeChassisSpeeds();
 
         // Treat the robot as stationary and the goal as moving.
         // This "predicts" the location the goal will be in when the ball is shot
@@ -145,10 +149,12 @@ public class MagicShootMovingCommand extends SequentialCommandGroup {
 
     /** In meters */
     private double getDistanceToMovingGoal() {
+        shotTime -= 0.4;
         Translation2d movingGoal = getMovingGoal();
 
         double dist = Units.metersToFeet(movingGoal.getDistance(new Translation2d()));
 
+        shotTime += 0.4;
         return dist;
     }
 

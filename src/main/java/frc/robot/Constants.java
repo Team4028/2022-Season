@@ -202,8 +202,8 @@ public final class Constants {
         public static final boolean kIsVBus = false;
         public static final boolean kIsRealGoal = false;
 
-        public static final boolean kUseVoltageComp = false;
-        public static final double kVoltageCompensation = 12;//10.75;
+        public static final boolean kUseVoltageComp = kIsVBus;
+        public static final double kVoltageCompensation = kUseVoltageComp ? 10.75 : 12;
     }
 
     public static final class LimelightConstants {

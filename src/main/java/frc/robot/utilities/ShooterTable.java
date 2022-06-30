@@ -246,12 +246,11 @@ public class ShooterTable {
                 primarytable.add(new ShooterTableEntry(_indexCounter++, 15, 38, 64, 55,
                         33., "index 15", false));
             } else {
-                // TODO: double these values
-                primarytable.add(new ShooterTableEntry(_indexCounter++, 7., 2660, 2000, 55, 9., "close lob", false));
-                primarytable.add(new ShooterTableEntry(_indexCounter++, 10., 2080, 2820, 55, 18., "index 10", false));
+                primarytable.add(new ShooterTableEntry(_indexCounter++, 7., 2420, 1970, 55, 9., "close lob", false));
+                primarytable.add(new ShooterTableEntry(_indexCounter++, 10., 1900, 2700, 55, 18., "index 10", false));
                 primarytable
-                        .add(new ShooterTableEntry(_indexCounter++, 12.5, 2400, 3440, 55, 27., "index 12.5", false));
-                primarytable.add(new ShooterTableEntry(_indexCounter++, 15, 2380, 3830, 55, 30., "index 15", false));
+                        .add(new ShooterTableEntry(_indexCounter++, 12.5, 2250, 3350, 55, 27.5, "index 12.5", false));
+                primarytable.add(new ShooterTableEntry(_indexCounter++, 15, 2190, 3620, 55, 33., "index 15", false));
 
             }
         }
