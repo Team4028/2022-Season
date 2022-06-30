@@ -228,14 +228,14 @@ public final class Constants {
         public static final class Front {
             public static double kF = 0.0475;
             public static double kP = 0.1;
-            public static double kD = 0.05;
+            public static double kD = 0.1;
             public static double kMax = 22040; // 20400;
         }
 
         public static final class Back {
             public static double kF = 0.049;
             public static double kP = 0.1;
-            public static double kD = 0.05;
+            public static double kD = 0.1;
             public static double kMax = 21800; // 17000;
         }
 

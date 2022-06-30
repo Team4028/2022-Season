@@ -341,26 +341,23 @@ public class DriveSubsystem extends SubsystemBase {
         return getGyroRotation2d().getDegrees();
     }
 
-    /** PROBABLY USELESS: */
-
-    public ChassisSpeeds getRobotRelativeChassisSpeeds() {
-        return ChassisSpeeds.fromFieldRelativeSpeeds(
-            getDriveXVelocity(), 
-            getDriveYVelocity(),
-            getDriveAngularVelocity(),
-            getPose().getRotation());
+    public ChassisSpeeds getFieldRelativeChassisSpeeds() {
+        return new ChassisSpeeds(
+            getChassisSpeeds().vxMetersPerSecond * getPose().getRotation().getCos() - getChassisSpeeds().vyMetersPerSecond * getPose().getRotation().getSin(),
+            getChassisSpeeds().vyMetersPerSecond * getPose().getRotation().getCos() + getChassisSpeeds().vxMetersPerSecond * getPose().getRotation().getSin(),
+            getChassisSpeeds().omegaRadiansPerSecond);
     }
 
-    public double getRobotRelativeXVelocity() {
-        return getRobotRelativeChassisSpeeds().vxMetersPerSecond;
+    public double getFieldRelativeXVelocity() {
+        return getFieldRelativeChassisSpeeds().vxMetersPerSecond;
     }
 
-    public double getRobotRelativeYVelocity() {
-        return getRobotRelativeChassisSpeeds().vyMetersPerSecond;
+    public double getFieldRelativeYVelocity() {
+        return getFieldRelativeChassisSpeeds().vyMetersPerSecond;
     }
 
-    public double getRobotRelativeAngularVelocity() {
-        return getRobotRelativeChassisSpeeds().omegaRadiansPerSecond;
+    public double getFieldRelativeAngularVelocity() {
+        return getFieldRelativeChassisSpeeds().omegaRadiansPerSecond;
     }
 
     public void inputVisionPose(Translation2d cameraToTarget, double timestampSeconds){

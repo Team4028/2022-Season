@@ -62,7 +62,7 @@ public class Robot extends TimedRobot {
         drive = DriveSubsystem.getInstance();
         commandScheduler = CommandScheduler.getInstance();
         
-        limelight.setPipeline(ShooterConstants.kIsRealGoal ? 5 : 0);
+        limelight.setPipeline(ShooterConstants.kIsRealGoal ? 5 : 5);
         limelight.setPictureInPicture(0);
         limelight.setLedMode(1);
     }

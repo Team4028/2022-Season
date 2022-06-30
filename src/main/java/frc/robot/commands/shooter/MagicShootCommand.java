@@ -7,6 +7,7 @@ package frc.robot.commands.shooter;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.commands.chassis.ResetOdometryWithVision;
 import frc.robot.commands.chassis.RotateDrivetrainByLimelightAngle;
 import frc.robot.commands.conveyor.RunConveyorTwoBall;
 import frc.robot.subsystems.Conveyor;
@@ -34,6 +35,7 @@ public class MagicShootCommand extends SequentialCommandGroup {
                 new InstantCommand(() -> setInterruptPoint(false)),
                 new RotateDrivetrainByLimelightAngle(false),
                 new AcceptLimelightDistance(),
+                new ResetOdometryWithVision(),
                 sequence(
                         new WaitCommand(0.25),
                         new InstantCommand(() -> setInterruptPoint(true)),
