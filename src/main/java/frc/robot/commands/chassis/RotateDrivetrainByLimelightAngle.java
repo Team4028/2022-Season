@@ -42,10 +42,10 @@ public class RotateDrivetrainByLimelightAngle extends ProfiledPIDCommand {
                     // Use the output (and setpoint, if desired) here
                     SwerveModuleState[] states = DriveConstants.kDriveKinematics.toSwerveModuleStates(
                             ChassisSpeeds.fromFieldRelativeSpeeds(
-                                    DriveConstants.i_kMaxSpeedMetersPerSecond
-                                            * RobotContainer.getInstance().getSpeedScaledDriverLeftY(),
-                                    DriveConstants.i_kMaxSpeedMetersPerSecond
-                                            * RobotContainer.getInstance().getSpeedScaledDriverLeftX(),
+                                    continuous ? DriveConstants.i_kMaxSpeedMetersPerSecond
+                                            * RobotContainer.getInstance().getSpeedScaledDriverLeftY() : 0.,
+                                    continuous ? DriveConstants.i_kMaxSpeedMetersPerSecond
+                                            * RobotContainer.getInstance().getSpeedScaledDriverLeftX() : 0.,
                                     output + setpoint.velocity,
                                     DriveSubsystem.getInstance().getPose().getRotation()));
                     SwerveDriveKinematics.desaturateWheelSpeeds(states, DriveConstants.i_kMaxSpeedMetersPerSecond);

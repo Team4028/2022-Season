@@ -39,7 +39,6 @@ public class Shooter extends SubsystemBase {
 
     private boolean isShotValidation;
 
-    private Limelight _l;
     private ShooterTable _st = ShooterTable.getPrimaryTable();
     double limelightDistance, manualIndex, shooterIndex = ShooterConstants.kIndexDefault;
     int manualCounter = 0;
@@ -77,8 +76,6 @@ public class Shooter extends SubsystemBase {
 
         m_kickerMotor.configVoltageCompSaturation(ShooterConstants.kVoltageCompensation);
         m_kickerMotor.enableVoltageCompensation(ShooterConstants.kUseVoltageComp);
-
-        _l = Limelight.getInstance();
 
         // _front.configFactoryDefault();
         // _back.configFactoryDefault();
@@ -275,10 +272,6 @@ public class Shooter extends SubsystemBase {
                 manualIndex = 15.0;
             }
         }
-    }
-
-    public void acceptLimelight() {
-        setShooterIndex(_l.willTestDistance(), false);
     }
 
     public void resetIndex() {

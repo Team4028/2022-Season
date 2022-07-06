@@ -41,10 +41,8 @@ public class RotateDrivetrainToAngle extends ProfiledPIDCommand {
                     DriveSubsystem.getInstance().setModuleStates(
                             DriveConstants.kDriveKinematics.toSwerveModuleStates(
                                     ChassisSpeeds.fromFieldRelativeSpeeds(
-                                            DriveConstants.i_kMaxSpeedMetersPerSecond
-                                                    * RobotContainer.getInstance().getSpeedScaledDriverLeftY(),
-                                            DriveConstants.i_kMaxSpeedMetersPerSecond
-                                                    * RobotContainer.getInstance().getSpeedScaledDriverLeftX(),
+                                            0.,
+                                            0.,
                                             output + setpoint.velocity,
                                             DriveSubsystem.getInstance().getPose().getRotation())));
                 });

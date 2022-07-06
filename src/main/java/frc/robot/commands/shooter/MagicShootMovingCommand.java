@@ -34,7 +34,6 @@ public class MagicShootMovingCommand extends SequentialCommandGroup {
     Limelight limelight;
     DriveSubsystem drive;
 
-    RotateDrivetrainToAngleContinuous continuousRotate;
     /** Creates a new MagicShootMovingCommand. */
     /**
      * false = before conveyor runs
@@ -49,7 +48,7 @@ public class MagicShootMovingCommand extends SequentialCommandGroup {
     private Translation2d target;
 
     /** takes ~0.5 sec for the ball to exit */
-    private double shotTime = 1.3;
+    private double shotTime = 1.25;
 
     public MagicShootMovingCommand() {
         // init target
@@ -65,8 +64,6 @@ public class MagicShootMovingCommand extends SequentialCommandGroup {
         // define commands & vars
         interruptPoint = false;
         runPeriodics = false;
-
-        continuousRotate = new RotateDrivetrainToAngleContinuous(() -> getAngleToMovingGoal());
 
         addRequirements(Shooter.getInstance());
         addCommands(
@@ -93,23 +90,26 @@ public class MagicShootMovingCommand extends SequentialCommandGroup {
                                         () -> limelight.getHasTarget()),
                                 new WaitUntilCommand(() -> limelight.getX() < 3.5)
                                         .deadlineWith(new RotateDrivetrainByLimelightAngle(true)),
+                                new AcceptLimelightDistance(),
                                 new InstantCommand(() -> setInterruptPoint(true)),
                                 new ResetOdometryWithVision(),
                                 new InstantCommand(() -> runPeriodics = true),
                                 // new WaitUntilCommand(() -> shooter.getIsAtSetpoint()),
-                                new RotateDrivetrainToAngleContinuous(() -> getAngleToMovingGoal()).withTimeout(0.6),
+                                new WaitCommand(0.55).deadlineWith(
+                                        new RotateDrivetrainToAngleContinuous(() -> getAngleToMovingGoal())),
                                 new InstantCommand(
-                                        () -> shooter.setShooterIndex(getDistanceToMovingGoal() + 1.5, false)),
-                                new WaitCommand(0.2),
-                                new RunConveyorTwoBall(),
+                                        () -> shooter.setShooterIndex(getDistanceToMovingGoal() + 2.25, false)),
+                                new WaitCommand(0.3),
+                                new RunConveyorOneBall(),
                                 new InstantCommand(() -> setInterruptPoint(false)),
                                 new WaitCommand(0.3))
-                                // new RotateDrivetrainToAngleContinuous(() -> getAngleToMovingGoal()).withTimeout(0.6),
-                                // new InstantCommand(
-                                //         () -> shooter.setShooterIndex(getDistanceToMovingGoal() + 1.5, false)),
-                                // new WaitCommand(0.2),
-                                // new RunConveyorOneBall(),
-                                // new WaitCommand(0.4))
+                                        // new RotateDrivetrainToAngleContinuous(() ->
+                                        // getAngleToMovingGoal()).withTimeout(0.6),
+                                        // new InstantCommand(
+                                        // () -> shooter.setShooterIndex(getDistanceToMovingGoal() + 1.5, false)),
+                                        // new WaitCommand(0.2),
+                                        // new RunConveyorOneBall(),
+                                        // new WaitCommand(0.4))
                                         .deadlineWith(
                                                 new RunShooterMotors()),
 
@@ -135,6 +135,12 @@ public class MagicShootMovingCommand extends SequentialCommandGroup {
 
     private Translation2d getMovingGoal() {
         ChassisSpeeds vels = drive.getFieldRelativeChassisSpeeds();
+        
+        boolean comp = limelight.willTestDistance() > 10.25;
+
+        if (comp) {
+            shotTime += 0.3;
+        }
 
         // Treat the robot as stationary and the goal as moving.
         // This "predicts" the location the goal will be in when the ball is shot
@@ -145,6 +151,9 @@ public class MagicShootMovingCommand extends SequentialCommandGroup {
 
         Translation2d toMovingGoal = movingGoalLocation.minus(drive.getPose().getTranslation());
 
+        if (comp) {
+            shotTime -= 0.3;
+        }
         return toMovingGoal;
     }
 
@@ -183,16 +192,13 @@ public class MagicShootMovingCommand extends SequentialCommandGroup {
                 shooter.stop();
                 Vision.getInstance().setInfeedCamera();
                 Conveyor.getInstance().setIsRunning(false);
-                continuousRotate.cancel();
             } else {
                 Vision.getInstance().setInfeedCamera();
                 Conveyor.getInstance().setIsRunning(true);
                 new MagicShootEndCommand().schedule();
-                continuousRotate.cancel();
             }
         } else {
             super.end(interrupted);
-            continuousRotate.cancel();
         }
     }
 

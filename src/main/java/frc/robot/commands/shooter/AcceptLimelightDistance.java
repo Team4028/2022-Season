@@ -5,10 +5,12 @@
 package frc.robot.commands.shooter;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Shooter;
 
 public class AcceptLimelightDistance extends CommandBase {
-    private Shooter _s = Shooter.getInstance();
+    private Shooter shooter = Shooter.getInstance();
+    private Limelight limelight = Limelight.getInstance();
 
     /** Creates a new AcceptLimelightDistance. */
     public AcceptLimelightDistance() {
@@ -19,12 +21,12 @@ public class AcceptLimelightDistance extends CommandBase {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
+        shooter.setShooterIndex(limelight.willTestDistance(), false);
     }
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        _s.acceptLimelight();
     }
 
     // Called once the command ends or is interrupted.
