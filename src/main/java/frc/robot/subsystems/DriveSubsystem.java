@@ -46,7 +46,6 @@ public class DriveSubsystem extends SubsystemBase {
 
     private static DriveSubsystem _instance;
 
-
     private int updateCycles = 0;
 
     public static final DriveSubsystem getInstance() {
@@ -79,7 +78,7 @@ public class DriveSubsystem extends SubsystemBase {
             i_kRearRightTurningMotorPort,
             i_kRearRightEncoderCan,
             i_BACK_RIGHT_ANGLE_OFFSET);
-    
+
     private Field2d m_field; // tmp
 
     // The gyro sensor
@@ -88,12 +87,14 @@ public class DriveSubsystem extends SubsystemBase {
 
     // Odometry class for tracking robot pose
     SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(kDriveKinematics, getGyroRotation2d());
-    
-    private SwerveDrivePoseEstimator poseEstimator = new SwerveDrivePoseEstimator(getGyroRotation2d(), getPose(), kDriveKinematics,
-    new MatBuilder<>(Nat.N3(), Nat.N1()).fill(0.02, 0.01, 0.02), // State measurement standard deviations. X, Y, theta.
-    new MatBuilder<>(Nat.N1(), Nat.N1()).fill(0.02), // Local measurement standard deviations. Left encoder, right encoder, gyro.
-    new MatBuilder<>(Nat.N3(), Nat.N1()).fill(0.1, 0.1, 0.01));
 
+    private SwerveDrivePoseEstimator poseEstimator = new SwerveDrivePoseEstimator(getGyroRotation2d(), getPose(),
+            kDriveKinematics,
+            new MatBuilder<>(Nat.N3(), Nat.N1()).fill(0.02, 0.01, 0.02), // State measurement standard deviations. X, Y,
+                                                                         // theta.
+            new MatBuilder<>(Nat.N1(), Nat.N1()).fill(0.02), // Local measurement standard deviations. Left encoder,
+                                                             // right encoder, gyro.
+            new MatBuilder<>(Nat.N3(), Nat.N1()).fill(0.1, 0.1, 0.01));
 
     /** Creates a new DriveSubsystem. */
     public DriveSubsystem() {
@@ -107,23 +108,25 @@ public class DriveSubsystem extends SubsystemBase {
         // Update the odometry in the periodic block -- only during auton/disabled
         // Not needed during teleop
         if (/* !DriverStation.isTeleopEnabled() && */testTimer > 15 * configWaitCycles) {
-            m_odometry.update(
+            // m_odometry.update(
+            // getGyroRotation2d(),
+            // m_frontLeft.getState(),
+            // m_rearLeft.getState(),
+            // m_frontRight.getState(),
+            // m_rearRight.getState());
+
+            poseEstimator.update(
                     getGyroRotation2d(),
                     m_frontLeft.getState(),
                     m_rearLeft.getState(),
                     m_frontRight.getState(),
                     m_rearRight.getState());
-            
+
+            m_odometry.resetPosition(poseEstimator.getEstimatedPosition(),
+                    getGyroRotation2d());
+
             m_field.setRobotPose(m_odometry.getPoseMeters());
             SmartDashboard.putData("Field", m_field);
-
-            // poseEstimator.update(
-            //         getGyroRotation2d(),
-            //         m_frontLeft.getState(),
-            //         m_rearLeft.getState(),
-            //         m_frontRight.getState(),
-            //         m_rearRight.getState());
-            
         }
 
         // TODO: Organized, comprehensive data for whole Drivetrain
@@ -135,7 +138,8 @@ public class DriveSubsystem extends SubsystemBase {
             SmartDashboard.putNumber("X (Metres)", m_odometry.getPoseMeters().getX());
             SmartDashboard.putNumber("Y (Metres)", m_odometry.getPoseMeters().getY());
             SmartDashboard.putNumber("Heading (Deg)", m_odometry.getPoseMeters().getRotation().getDegrees());
-            // SmartDashboard.putString("pose", poseEstimator.getEstimatedPosition().toString());
+            SmartDashboard.putString("pose",
+                    poseEstimator.getEstimatedPosition().toString());
             // SmartDashboard.putNumber("FL Angle",
             // m_frontLeft.getState().angle.getDegrees());
             // SmartDashboard.putNumber("FR Angle",
@@ -177,9 +181,9 @@ public class DriveSubsystem extends SubsystemBase {
         } else if (testTimer == 8 * configWaitCycles) {
             m_rearLeft.configTurningMotor();
             zeroHeading();
-        } else if(testTimer == 9 * configWaitCycles) {
+        } else if (testTimer == 9 * configWaitCycles) {
             String resetCaniv = "caniv -r -d " + kCANivoreName;
-            try{
+            try {
                 Runtime.getRuntime().exec(resetCaniv);
             } catch (IOException excep) {
                 System.out.println("Something went wrong resetting canivore");
@@ -217,7 +221,7 @@ public class DriveSubsystem extends SubsystemBase {
      * 
      * @param visionDistanceMeters Distance from center of goal to center of robot
      */
-    public void resetOdometryWithVision(double visionDistanceMeters, double targetX) {
+    public void resetOdometryWithVision(double visionDistanceMeters) {
         Pose2d visionCurrentPose = new Pose2d(
                 new Translation2d(Units.inchesToMeters(324.0), Units.inchesToMeters(162.0))
                         .minus(new Translation2d(visionDistanceMeters, m_odometry.getPoseMeters().getRotation())),
@@ -326,10 +330,9 @@ public class DriveSubsystem extends SubsystemBase {
 
     public Rotation2d getOdometryAngleToTarget() {
         return new Rotation2d(
-            Math.atan2(
-                Units.inchesToMeters(162.0) - m_odometry.getPoseMeters().getY(),
-                Units.inchesToMeters(324.0) - m_odometry.getPoseMeters().getX()
-            ));
+                Math.atan2(
+                        Units.inchesToMeters(162.0) - m_odometry.getPoseMeters().getY(),
+                        Units.inchesToMeters(324.0) - m_odometry.getPoseMeters().getX()));
     }
 
     /**
@@ -343,9 +346,11 @@ public class DriveSubsystem extends SubsystemBase {
 
     public ChassisSpeeds getFieldRelativeChassisSpeeds() {
         return new ChassisSpeeds(
-            getChassisSpeeds().vxMetersPerSecond * getPose().getRotation().getCos() - getChassisSpeeds().vyMetersPerSecond * getPose().getRotation().getSin(),
-            getChassisSpeeds().vyMetersPerSecond * getPose().getRotation().getCos() + getChassisSpeeds().vxMetersPerSecond * getPose().getRotation().getSin(),
-            getChassisSpeeds().omegaRadiansPerSecond);
+                getChassisSpeeds().vxMetersPerSecond * getPose().getRotation().getCos()
+                        - getChassisSpeeds().vyMetersPerSecond * getPose().getRotation().getSin(),
+                getChassisSpeeds().vyMetersPerSecond * getPose().getRotation().getCos()
+                        + getChassisSpeeds().vxMetersPerSecond * getPose().getRotation().getSin(),
+                getChassisSpeeds().omegaRadiansPerSecond);
     }
 
     public double getFieldRelativeXVelocity() {
@@ -360,12 +365,14 @@ public class DriveSubsystem extends SubsystemBase {
         return getFieldRelativeChassisSpeeds().omegaRadiansPerSecond;
     }
 
-    public void inputVisionPose(Translation2d cameraToTarget, double timestampSeconds){
+    public void inputVisionPose(Translation2d cameraToTarget, double timestampSeconds) {
         SmartDashboard.putString("cameraToTarget", cameraToTarget.toString());
 
         Transform2d cameratotargettransform = new Transform2d(cameraToTarget, new Rotation2d());
-        Pose2d cameraPose = new Pose2d(Units.inchesToMeters(324.0), Units.inchesToMeters(162.0), new Rotation2d()).transformBy(cameratotargettransform.inverse());
-        Pose2d robotPose = cameraPose.transformBy(new Transform2d(new Translation2d(Units.inchesToMeters(22 - 14.5), getGyroRotation2d()), new Rotation2d()));
+        Pose2d cameraPose = new Pose2d(Units.inchesToMeters(324.0), Units.inchesToMeters(162.0), new Rotation2d())
+                .transformBy(cameratotargettransform.inverse());
+        Pose2d robotPose = cameraPose.transformBy(new Transform2d(
+                new Translation2d(Units.inchesToMeters(22 - 14.5), getGyroRotation2d()), new Rotation2d()));
         SmartDashboard.putString("Vision Pose", robotPose.toString());
         poseEstimator.addVisionMeasurement(robotPose, timestampSeconds);
     }

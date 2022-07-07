@@ -13,13 +13,11 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
+import frc.robot.RobotContainer;
 import frc.robot.commands.chassis.ResetOdometryWithVision;
 import frc.robot.commands.chassis.RotateDrivetrainByLimelightAngle;
-import frc.robot.commands.chassis.RotateDrivetrainToAngle;
 import frc.robot.commands.chassis.RotateDrivetrainToAngleContinuous;
-import frc.robot.commands.chassis.RotateDrivetrainToOdometryTargetAngle;
 import frc.robot.commands.conveyor.RunConveyorOneBall;
-import frc.robot.commands.conveyor.RunConveyorTwoBall;
 import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.Limelight;
@@ -49,6 +47,10 @@ public class MagicShootMovingCommand extends SequentialCommandGroup {
 
     /** takes ~0.5 sec for the ball to exit */
     private double shotTime = 1.25;
+
+    /** locked-controller speeds */
+    private double leftXSpeed = 0.;
+    private double leftYSpeed = 0.;
 
     public MagicShootMovingCommand() {
         // init target
@@ -94,48 +96,42 @@ public class MagicShootMovingCommand extends SequentialCommandGroup {
                                 new InstantCommand(() -> setInterruptPoint(true)),
                                 new ResetOdometryWithVision(),
                                 new InstantCommand(() -> runPeriodics = true),
-                                // new WaitUntilCommand(() -> shooter.getIsAtSetpoint()),
+                                new InstantCommand(() -> resetControllerSpeeds()),
                                 new WaitCommand(0.55).deadlineWith(
-                                        new RotateDrivetrainToAngleContinuous(() -> getAngleToMovingGoal())),
-                                new InstantCommand(
-                                        () -> shooter.setShooterIndex(getDistanceToMovingGoal() + 2.25, false)),
-                                new WaitCommand(0.3),
-                                new RunConveyorOneBall(),
-                                new InstantCommand(() -> setInterruptPoint(false)),
-                                new WaitCommand(0.3))
-                                        // new RotateDrivetrainToAngleContinuous(() ->
-                                        // getAngleToMovingGoal()).withTimeout(0.6),
-                                        // new InstantCommand(
-                                        // () -> shooter.setShooterIndex(getDistanceToMovingGoal() + 1.5, false)),
-                                        // new WaitCommand(0.2),
-                                        // new RunConveyorOneBall(),
-                                        // new WaitCommand(0.4))
-                                        .deadlineWith(
-                                                new RunShooterMotors()),
+                                        new RotateDrivetrainToAngleContinuous(() -> getAngleToMovingGoal(),
+                                                () -> leftXSpeed,
+                                                () -> leftYSpeed)),
+                                parallel(
+                                        sequence(
+                                                new InstantCommand(
+                                                        () -> shooter.setShooterIndex(getDistanceToMovingGoal() + 2.25,
+                                                                false)),
+                                                new WaitCommand(0.3),
+                                                new RunConveyorOneBall(),
+                                                new InstantCommand(() -> setInterruptPoint(false)),
+                                                new WaitCommand(0.3)),
+                                        new InstantCommand(() -> drive.drive(
+                                                leftXSpeed,
+                                                leftYSpeed,
+                                                0,
+                                                () -> true))))
+                                                        .deadlineWith(
+                                                                new RunShooterMotors()),
 
                         new MagicShootCommand(),
                         () -> Math.hypot(
                                 drive.getDriveXVelocity(),
-                                drive.getDriveYVelocity()) > 0.1)
-        // sequence(
-        // new WaitUntilCommand(() -> shooter.getIsAtSetpoint()),
-        // new InstantCommand(() -> shooter.setShooterIndex(getDistanceToMovingGoal() +
-        // 1., false)),
-        // new RotateDrivetrainToAngle(getAngleToMovingGoal()).withTimeout(0.75),
-        // new WaitCommand(0.2),
-        // new RunConveyorOneBall(),
-        // new WaitUntilCommand(() -> shooter.getIsAtSetpoint()),
-        // new InstantCommand(() -> shooter.setShooterIndex(getDistanceToMovingGoal() +
-        // 1., false)),
-        // new RotateDrivetrainToAngle(getAngleToMovingGoal()).withTimeout(0.75),
-        // new RunConveyorOneBall()).deadlineWith(
-        // new RunShooterMotors()));
-        );
+                                drive.getDriveYVelocity()) > 0.3));
+    }
+
+    private void resetControllerSpeeds() {
+        leftXSpeed = RobotContainer.getInstance().getSpeedScaledDriverLeftX();
+        leftYSpeed = RobotContainer.getInstance().getSpeedScaledDriverLeftY();
     }
 
     private Translation2d getMovingGoal() {
         ChassisSpeeds vels = drive.getFieldRelativeChassisSpeeds();
-        
+
         boolean comp = limelight.willTestDistance() > 10.25;
 
         if (comp) {

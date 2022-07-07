@@ -26,8 +26,7 @@ public class ResetOdometryWithVision extends CommandBase {
     @Override
     public void initialize() {
         drive.resetOdometryWithVision(
-            Units.feetToMeters(limelight.willTestDistance() - 1.),
-            limelight.getX()
+            Units.feetToMeters(limelight.willTestDistance() - 1.)
         );
     }
 

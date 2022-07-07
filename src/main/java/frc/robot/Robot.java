@@ -149,9 +149,9 @@ public class Robot extends TimedRobot {
     /** This function is called periodically during operator control. */
     @Override
     public void teleopPeriodic() {
-        // if(limelight.getHasTarget()){
-        //     drive.inputVisionPose(limelight.cameraToTarget(), Units.millisecondsToSeconds(limelight.getPipelineLatency() + 11));
-        // }
+        if(limelight.getHasTarget()){
+            drive.inputVisionPose(limelight.cameraToTarget(), Units.millisecondsToSeconds(limelight.getPipelineLatency() + 11));
+        }
     }
 
     @Override

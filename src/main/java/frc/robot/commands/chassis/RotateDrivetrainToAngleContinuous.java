@@ -4,6 +4,7 @@
 
 package frc.robot.commands.chassis;
 
+import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
 import edu.wpi.first.math.controller.ProfiledPIDController;
@@ -12,7 +13,6 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.ProfiledPIDCommand;
-import frc.robot.RobotContainer;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.subsystems.DriveSubsystem;
@@ -22,7 +22,8 @@ import frc.robot.subsystems.DriveSubsystem;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class RotateDrivetrainToAngleContinuous extends ProfiledPIDCommand {
     /** Creates a new RotateDrivetrainToAngleContinuous. */
-    public RotateDrivetrainToAngleContinuous(Supplier<Rotation2d> goal) {
+    public RotateDrivetrainToAngleContinuous(Supplier<Rotation2d> goal, DoubleSupplier leftXSpeed,
+            DoubleSupplier leftYSpeed) {
         super(
                 // The ProfiledPIDController used by the command
                 new ProfiledPIDController(
@@ -43,11 +44,9 @@ public class RotateDrivetrainToAngleContinuous extends ProfiledPIDCommand {
                     DriveSubsystem.getInstance().setModuleStates(
                             DriveConstants.kDriveKinematics.toSwerveModuleStates(
                                     ChassisSpeeds.fromFieldRelativeSpeeds(
-                                        DriveConstants.i_kMaxSpeedMetersPerSecond
-                                            * RobotContainer.getInstance().getSpeedScaledDriverLeftY(),
-                                        DriveConstants.i_kMaxSpeedMetersPerSecond
-                                            * RobotContainer.getInstance().getSpeedScaledDriverLeftX(),
-                                        output + setpoint.velocity,
+                                            DriveConstants.i_kMaxSpeedMetersPerSecond * leftYSpeed.getAsDouble(),
+                                            DriveConstants.i_kMaxSpeedMetersPerSecond * leftXSpeed.getAsDouble(),
+                                            output + setpoint.velocity,
                                             DriveSubsystem.getInstance().getPose().getRotation())));
                 });
         // Use addRequirements() here to declare subsystem dependencies.
@@ -60,6 +59,6 @@ public class RotateDrivetrainToAngleContinuous extends ProfiledPIDCommand {
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        return false; //return getController().atGoal();
+        return false; // return getController().atGoal();
     }
 }
