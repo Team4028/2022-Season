@@ -23,6 +23,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -108,22 +109,22 @@ public class DriveSubsystem extends SubsystemBase {
         // Update the odometry in the periodic block -- only during auton/disabled
         // Not needed during teleop
         if (/* !DriverStation.isTeleopEnabled() && */testTimer > 15 * configWaitCycles) {
-            // m_odometry.update(
-            // getGyroRotation2d(),
-            // m_frontLeft.getState(),
-            // m_rearLeft.getState(),
-            // m_frontRight.getState(),
-            // m_rearRight.getState());
-
-            poseEstimator.update(
+            m_odometry.update(
                     getGyroRotation2d(),
                     m_frontLeft.getState(),
                     m_rearLeft.getState(),
                     m_frontRight.getState(),
                     m_rearRight.getState());
 
-            m_odometry.resetPosition(poseEstimator.getEstimatedPosition(),
-                    getGyroRotation2d());
+            // poseEstimator.update(
+            // getGyroRotation2d(),
+            // m_frontLeft.getState(),
+            // m_rearLeft.getState(),
+            // m_frontRight.getState(),
+            // m_rearRight.getState());
+
+            // m_odometry.resetPosition(poseEstimator.getEstimatedPosition(),
+            // getGyroRotation2d());
 
             m_field.setRobotPose(m_odometry.getPoseMeters());
             SmartDashboard.putData("Field", m_field);
@@ -138,8 +139,8 @@ public class DriveSubsystem extends SubsystemBase {
             SmartDashboard.putNumber("X (Metres)", m_odometry.getPoseMeters().getX());
             SmartDashboard.putNumber("Y (Metres)", m_odometry.getPoseMeters().getY());
             SmartDashboard.putNumber("Heading (Deg)", m_odometry.getPoseMeters().getRotation().getDegrees());
-            SmartDashboard.putString("pose",
-                    poseEstimator.getEstimatedPosition().toString());
+            // SmartDashboard.putString("pose",
+            // poseEstimator.getEstimatedPosition().toString());
             // SmartDashboard.putNumber("FL Angle",
             // m_frontLeft.getState().angle.getDegrees());
             // SmartDashboard.putNumber("FR Angle",
@@ -374,6 +375,6 @@ public class DriveSubsystem extends SubsystemBase {
         Pose2d robotPose = cameraPose.transformBy(new Transform2d(
                 new Translation2d(Units.inchesToMeters(22 - 14.5), getGyroRotation2d()), new Rotation2d()));
         SmartDashboard.putString("Vision Pose", robotPose.toString());
-        poseEstimator.addVisionMeasurement(robotPose, timestampSeconds);
+        poseEstimator.addVisionMeasurement(robotPose, Timer.getFPGATimestamp());
     }
 }

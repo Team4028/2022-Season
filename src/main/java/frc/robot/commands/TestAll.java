@@ -19,20 +19,18 @@ import frc.robot.commands.shooter.RunShooterMotors;
 import frc.robot.commands.shooter.SetLongShot;
 import frc.robot.commands.shooter.SetShortShot;
 import frc.robot.subsystems.Climber;
-import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.Infeed;
 import frc.robot.subsystems.Limelight;
-import frc.robot.subsystems.Shooter;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class TestAll extends SequentialCommandGroup {
     private Climber climber = Climber.getInstance();
-    private Conveyor conveyor = Conveyor.getInstance();
+    // private Conveyor conveyor = Conveyor.getInstance();
     private Infeed infeed = Infeed.getInstance();
     private Limelight limelight = Limelight.getInstance();
-    private Shooter shooter = Shooter.getInstance();
+    // private Shooter shooter = Shooter.getInstance();
 
     private RunShooterMotors runShooter = new RunShooterMotors();
     private SetShortShot sh = new SetShortShot();

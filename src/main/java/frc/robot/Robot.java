@@ -4,19 +4,12 @@
 
 package frc.robot;
 
-import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj.Compressor;
-import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.Constants.ShooterConstants;
-import frc.robot.commands.TestAll;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.ColorSensor;
-import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Shooter;
 
@@ -32,13 +25,12 @@ import frc.robot.subsystems.Shooter;
 public class Robot extends TimedRobot {
     private Command m_autonomousCommand;
     private RobotContainer m_robotContainer;
-    private Compressor compressor = new Compressor(PneumaticsModuleType.CTREPCM);
 
     private Shooter shooter;
     private Limelight limelight;
     private Climber climber;
     private ColorSensor colorSensor;
-    private DriveSubsystem drive;
+    // private DriveSubsystem drive;
 
     private CommandScheduler commandScheduler;
 
@@ -59,10 +51,10 @@ public class Robot extends TimedRobot {
         climber = Climber.getInstance();
         limelight = Limelight.getInstance();
         shooter = Shooter.getInstance();
-        drive = DriveSubsystem.getInstance();
+        // drive = DriveSubsystem.getInstance();
         commandScheduler = CommandScheduler.getInstance();
         
-        limelight.setPipeline(ShooterConstants.kIsRealGoal ? 5 : 5);
+        limelight.setPipeline(5);
         limelight.setPictureInPicture(0);
         limelight.setLedMode(1);
     }
@@ -95,6 +87,7 @@ public class Robot extends TimedRobot {
     /** This function is called once each time the robot enters Disabled mode. */
     @Override
     public void disabledInit() {
+        limelight.setPipeline(5);
         limelight.setLedMode(1.);
     }
 
@@ -110,6 +103,8 @@ public class Robot extends TimedRobot {
     public void autonomousInit() {
         m_autonomousCommand = m_robotContainer.getAutonomousCommand();
         colorSensor.setAlliance();
+
+        limelight.setPipeline(5);
         limelight.setLedMode(0.);
         /*
          * String autoSelected = SmartDashboard.getString("Auto Selector",
@@ -143,15 +138,17 @@ public class Robot extends TimedRobot {
         shooter.resetCounter();
         shooter.setIsShotValidation(false);
         climber.resetEncoders();
+
+        limelight.setPipeline(5);
         limelight.setLedMode(0.);
     }
 
     /** This function is called periodically during operator control. */
     @Override
     public void teleopPeriodic() {
-        if(limelight.getHasTarget()){
-            drive.inputVisionPose(limelight.cameraToTarget(), Units.millisecondsToSeconds(limelight.getPipelineLatency() + 11));
-        }
+        // if(limelight.getHasTarget()){
+        //     drive.inputVisionPose(limelight.cameraToTarget(), Units.millisecondsToSeconds(limelight.getPipelineLatency() + 11));
+        // }
     }
 
     @Override

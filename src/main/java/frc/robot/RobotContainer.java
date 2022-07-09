@@ -50,7 +50,6 @@ import frc.robot.commands.shooter.RunShooterMotors;
 import frc.robot.commands.shooter.RunShootersManual;
 import frc.robot.commands.shooter.SetLongShot;
 import frc.robot.commands.shooter.SetShortShot;
-import frc.robot.commands.vision.ToggleCamera;
 import frc.robot.commands.vision.ToggleLEDMode;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.DriveSubsystem;
@@ -121,7 +120,12 @@ public class RobotContainer {
                         m_drive));
         m_shooter.setDefaultCommand(
                 new RunCommand(
-                        () -> m_shooter.setShooterIndex(m_shooter.manualIndex(), true),
+                        () -> {
+                            if (!m_shooter.getIsVbus()) {
+                                m_shooter.setIsVbus(true); // DEFAULT TO VBUS
+                            }
+                            m_shooter.setShooterIndex(m_shooter.manualIndex(), true);
+                        },
                         m_shooter));
     }
 

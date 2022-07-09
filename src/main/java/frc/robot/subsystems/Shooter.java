@@ -39,7 +39,7 @@ public class Shooter extends SubsystemBase {
 
     private boolean isShotValidation;
 
-    private ShooterTable _st = ShooterTable.getPrimaryTable();
+    private ShooterTable m_table = ShooterTable.getPrimaryTable();
     double limelightDistance, manualIndex, shooterIndex = ShooterConstants.kIndexDefault;
     int manualCounter = 0;
     boolean longshot;
@@ -52,6 +52,7 @@ public class Shooter extends SubsystemBase {
     private int updateCycles = 0;
 
     private boolean m_isAtSetpoint = false;
+    private boolean m_isVbus = true;
 
     public Shooter() {
         m_frontMotor = new TalonFX(SubsystemConstants.SHOOTER_FRONT_MOTOR_ID);
@@ -67,15 +68,6 @@ public class Shooter extends SubsystemBase {
         m_frontMotor.setNeutralMode(NeutralMode.Coast);
         m_backMotor.setNeutralMode(NeutralMode.Coast);
         m_kickerMotor.setNeutralMode(NeutralMode.Coast);
-
-        m_frontMotor.configVoltageCompSaturation(ShooterConstants.kVoltageCompensation);
-        m_frontMotor.enableVoltageCompensation(ShooterConstants.kUseVoltageComp);
-
-        m_backMotor.configVoltageCompSaturation(ShooterConstants.kVoltageCompensation);
-        m_backMotor.enableVoltageCompensation(ShooterConstants.kUseVoltageComp);
-
-        m_kickerMotor.configVoltageCompSaturation(ShooterConstants.kVoltageCompensation);
-        m_kickerMotor.enableVoltageCompensation(ShooterConstants.kUseVoltageComp);
 
         // _front.configFactoryDefault();
         // _back.configFactoryDefault();
@@ -95,16 +87,6 @@ public class Shooter extends SubsystemBase {
         // put("FrontVbus", VBusConstants.kShooterFrontDefault);
         // put("BackVbus", VBusConstants.kShooterBackDefault);
         // put("Hood Angle (rot)", VBusConstants.kShooterHoodAngleRotDefault);
-
-        if (!ShooterConstants.kIsVBus) {
-            m_frontMotor.config_kF(0, PIDConstants.Front.kF);
-            m_frontMotor.config_kP(0, PIDConstants.Front.kP);
-            m_frontMotor.config_kD(0, PIDConstants.Front.kD);
-
-            m_backMotor.config_kF(0, PIDConstants.Back.kF);
-            m_backMotor.config_kP(0, PIDConstants.Back.kP);
-            m_backMotor.config_kD(0, PIDConstants.Back.kD);
-        }
 
         m_frontMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 100);
         m_backMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 100);
@@ -140,6 +122,38 @@ public class Shooter extends SubsystemBase {
 
     }
 
+    /**
+     * @param vbus true if vbus, false if PID
+     */
+    public void setIsVbus(boolean vbus) {
+        m_isVbus = vbus;
+        if (vbus) {
+            m_frontMotor.configVoltageCompSaturation(ShooterConstants.kVoltageCompensation);
+            m_backMotor.configVoltageCompSaturation(ShooterConstants.kVoltageCompensation);
+            m_kickerMotor.configVoltageCompSaturation(ShooterConstants.kVoltageCompensation);
+
+            m_table = ShooterTable.getPrimaryTable();
+        } else {
+            m_frontMotor.config_kF(0, PIDConstants.Front.kF);
+            m_frontMotor.config_kP(0, PIDConstants.Front.kP);
+            m_frontMotor.config_kD(0, PIDConstants.Front.kD);
+
+            m_backMotor.config_kF(0, PIDConstants.Back.kF);
+            m_backMotor.config_kP(0, PIDConstants.Back.kP);
+            m_backMotor.config_kD(0, PIDConstants.Back.kD);
+
+            m_table = ShooterTable.getSecondaryTable();
+        }
+    }
+
+    public boolean getIsVbus() {
+        return m_isVbus;
+    }
+
+    public void toggleIsVbus() {
+        setIsVbus(!m_isVbus);
+    }
+
     public void put(String key, double val) {
         SmartDashboard.putNumber(key, val);
     }
@@ -158,21 +172,22 @@ public class Shooter extends SubsystemBase {
     // VBusConstants.kShooterHoodAngleRotDefault), ControlType.kPosition);
 
     public void runShooterMotors() {
-        ShooterTableEntry entry = ShooterTable.getPrimaryTable().CalcShooterValues(shooterIndex);
+        ShooterTableEntry entry = m_table.CalcShooterValues(shooterIndex);
 
-        if (ShooterConstants.kIsVBus) {
+        if (m_isVbus) {
             m_frontMotor.set(ControlMode.PercentOutput, entry.ShooterFrontRPM / 100.);
             m_backMotor.set(ControlMode.PercentOutput, entry.ShooterBackRPM / 100.);
-            m_kickerMotor.set(ControlMode.PercentOutput, entry.KickerRPM / 100.);
         } else {
             m_frontMotor.set(ControlMode.Velocity, util.toFalconVelocity(entry.ShooterFrontRPM));
             m_backMotor.set(ControlMode.Velocity, util.toFalconVelocity(entry.ShooterBackRPM));
-            m_kickerMotor.set(ControlMode.PercentOutput, entry.KickerRPM / 100.);
 
             m_isAtSetpoint = 
                 Math.abs(util.toFalconRPM(m_frontMotor.getClosedLoopError())) < 100. &&
                 Math.abs(util.toFalconRPM(m_backMotor.getClosedLoopError())) < 100.;
         }
+
+        m_kickerMotor.set(ControlMode.PercentOutput, entry.KickerRPM / 100.);
+        m_anglePID.setReference(entry.ActuatorVal, ControlType.kPosition);
 
         put("Front Motor RPM", util.toFalconRPM(m_frontMotor.getSelectedSensorVelocity()));
         put("Back Motor RPM", util.toFalconRPM(m_backMotor.getSelectedSensorVelocity()));
@@ -183,8 +198,6 @@ public class Shooter extends SubsystemBase {
         put("Back Motor Error", (m_backMotor.getClosedLoopError()));
 
         SmartDashboard.putBoolean("Shooter/Running", true);
-
-        m_anglePID.setReference(entry.ActuatorVal, ControlType.kPosition);
     }
 
     public boolean getIsAtSetpoint() {
@@ -244,7 +257,7 @@ public class Shooter extends SubsystemBase {
             indexData.setIndex(Math.round(index * 10.) / 10.);
             SmartDashboard.putData("Shooter Index", indexData);
 
-            ShooterTableEntry e = _st.CalcShooterValues(shooterIndex);
+            ShooterTableEntry e = m_table.CalcShooterValues(shooterIndex);
             SmartDashboard.putString("Shot", e.Description);
             put("Shot Front RPM", e.ShooterFrontRPM);
             put("Shot Back RPM", e.ShooterBackRPM);

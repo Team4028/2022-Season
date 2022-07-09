@@ -184,11 +184,6 @@ public final class Constants {
     public static final class EncoderConstants {
         public static final double kConveyOne = 20;
         public static final double kConveyTwo = 100;
-
-        public static final double kAngleThreshold = 0.1;
-
-        public static final double kClimberLeftStart = 35.;
-        public static final double kClimberRightStart = 35.;
     }
 
     public static final class ShooterConstants {
@@ -199,11 +194,9 @@ public final class Constants {
 
         public static final double kMaxAllowedAngle = 33.;
 
-        public static final boolean kIsVBus = false;
         public static final boolean kIsRealGoal = false;
 
-        public static final boolean kUseVoltageComp = kIsVBus;
-        public static final double kVoltageCompensation = kUseVoltageComp ? 10.75 : 12;
+        public static final double kVoltageCompensation = 10.75;
     }
 
     public static final class LimelightConstants {
@@ -229,14 +222,14 @@ public final class Constants {
             public static double kF = 0.0475;
             public static double kP = 0.1;
             public static double kD = 0.1;
-            public static double kMax = 22040; // 20400;
+            public static double kMax = 22040; // 20400; // 6445
         }
 
         public static final class Back {
             public static double kF = 0.049;
             public static double kP = 0.1;
             public static double kD = 0.1;
-            public static double kMax = 21800; // 17000;
+            public static double kMax = 21800; // 17000; // 6445
         }
 
         public static final class Angle {
