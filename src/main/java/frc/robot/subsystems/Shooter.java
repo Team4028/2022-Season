@@ -69,9 +69,13 @@ public class Shooter extends SubsystemBase {
         m_backMotor.setNeutralMode(NeutralMode.Coast);
         m_kickerMotor.setNeutralMode(NeutralMode.Coast);
 
-        // _front.configFactoryDefault();
-        // _back.configFactoryDefault();
-        // _kicker.configFactoryDefault();
+        m_frontMotor.config_kF(0, PIDConstants.Front.kF);
+        m_frontMotor.config_kP(0, PIDConstants.Front.kP);
+        m_frontMotor.config_kD(0, PIDConstants.Front.kD);
+
+        m_backMotor.config_kF(0, PIDConstants.Back.kF);
+        m_backMotor.config_kP(0, PIDConstants.Back.kP);
+        m_backMotor.config_kD(0, PIDConstants.Back.kD);
 
         m_angleMotor.restoreFactoryDefaults();
         m_angleMotor.setSmartCurrentLimit(CurrentLimitConstants.kAngle);
@@ -134,13 +138,9 @@ public class Shooter extends SubsystemBase {
 
             m_table = ShooterTable.getPrimaryTable();
         } else {
-            m_frontMotor.config_kF(0, PIDConstants.Front.kF);
-            m_frontMotor.config_kP(0, PIDConstants.Front.kP);
-            m_frontMotor.config_kD(0, PIDConstants.Front.kD);
-
-            m_backMotor.config_kF(0, PIDConstants.Back.kF);
-            m_backMotor.config_kP(0, PIDConstants.Back.kP);
-            m_backMotor.config_kD(0, PIDConstants.Back.kD);
+            m_frontMotor.configVoltageCompSaturation(12.);
+            m_backMotor.configVoltageCompSaturation(12.);
+            m_kickerMotor.configVoltageCompSaturation(12.);
 
             m_table = ShooterTable.getSecondaryTable();
         }
@@ -202,6 +202,16 @@ public class Shooter extends SubsystemBase {
 
     public boolean getIsAtSetpoint() {
         return m_isAtSetpoint;
+    }
+
+    /**
+     * Get the approximate shot time for the specified index.
+     * @param index The index to use.
+     * @return The shot time for use with moving shots.
+     */
+    public double getShotTime(double index) {
+        ShooterTableEntry entry = m_table.CalcShooterValues(index);
+        return entry.ShotTime;
     }
 
     public void stop() {

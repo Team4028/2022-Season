@@ -221,11 +221,13 @@ public class DriveSubsystem extends SubsystemBase {
      * Inches from that distance
      * 
      * @param visionDistanceMeters Distance from center of goal to center of robot
+     * @param targetX              Approximate angle between the camera and the goal
      */
-    public void resetOdometryWithVision(double visionDistanceMeters) {
+    public void resetOdometryWithVision(double visionDistanceMeters, double targetX) {
         Pose2d visionCurrentPose = new Pose2d(
                 new Translation2d(Units.inchesToMeters(324.0), Units.inchesToMeters(162.0))
-                        .minus(new Translation2d(visionDistanceMeters, m_odometry.getPoseMeters().getRotation())),
+                        .minus(new Translation2d(visionDistanceMeters,
+                                m_odometry.getPoseMeters().getRotation().plus(Rotation2d.fromDegrees(targetX)))),
                 m_odometry.getPoseMeters().getRotation());
         m_odometry.resetPosition(visionCurrentPose, getGyroRotation2d());
     }

@@ -127,11 +127,11 @@ public class Limelight extends SubsystemBase {
         return tv.getDouble(0.0) != 0.0;
     }
 
-    public double getPipelineLatency(){
+    public double getPipelineLatency() {
         return tl.getDouble(0.0);
     }
 
-    public double distanceToCameraMeters(){
+    public double distanceToCameraMeters() {
         if (getHasTarget()) {
             if (cameraDistEstIters >= kDistIters) {
                 cameraDistEst = cameraDistEstTotal / cameraDistEstIters;
@@ -154,7 +154,7 @@ public class Limelight extends SubsystemBase {
         return Units.inchesToMeters(cameraDistEst + 26);
     }
 
-    public Translation2d cameraToTarget(){
+    public Translation2d cameraToTarget() {
         return new Translation2d(distanceToCameraMeters(), Units.degreesToRadians(getX()));
     }
 
@@ -171,13 +171,10 @@ public class Limelight extends SubsystemBase {
                     LimelightConstants.kMountHeight;
             double goalAngle = (LimelightConstants.kMountAngle + getY()) *
                     (3.14159 / 180.);
-            // double yawComp = getX() * (3.14159 / 180.);
+            double yawComp = getX() * (3.14159 / 180.);
 
             double dist = heightDelta /
-                    (Math.tan(goalAngle) /**
-                                          * Math.cos(yawComp)
-                                          */
-                    );
+                    (Math.tan(goalAngle) * Math.cos(yawComp));
 
             distEstTotal += (dist + 22 + 26);
             distEstIters++;
@@ -190,8 +187,10 @@ public class Limelight extends SubsystemBase {
                 LimelightConstants.kMountHeight;
         double goalAngle = (LimelightConstants.kMountAngle + getY()) *
                 (3.14159 / 180.);
+        double yawComp = getX() * (3.14159 / 180.);
+
         double dist = heightDelta /
-                (Math.tan(goalAngle));
+                (Math.tan(goalAngle) * Math.cos(yawComp));
 
         double indexDist = (dist + LimelightConstants.kLensToBack + LimelightConstants.kTapeToCenter) / 12.0;
         if (getHasTarget()) {

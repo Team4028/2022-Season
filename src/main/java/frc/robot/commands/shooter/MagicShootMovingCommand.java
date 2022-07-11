@@ -46,7 +46,7 @@ public class MagicShootMovingCommand extends SequentialCommandGroup {
     private Translation2d target;
 
     /** takes ~0.5 sec for the ball to exit */
-    private double shotTime = 1.35;
+    private double shotTime = 1.45;
 
     /** locked-controller speeds */
     private double leftXSpeed = 0.;
@@ -69,30 +69,19 @@ public class MagicShootMovingCommand extends SequentialCommandGroup {
 
         addRequirements(Shooter.getInstance());
         addCommands(
-                // new RotateDrivetrainToOdometryTargetAngle(),
-
-                // sequence(
-                // new WaitCommand(0.25),
-                // new InstantCommand(() -> setInterruptPoint(true)),
-                // new RunConveyorTwoBall(),
-                // new InstantCommand(() -> Vision.getInstance().setInfeedCamera()),
-                // new InstantCommand(() -> setInterruptPoint(false)),
-                // new InstantCommand(() -> runPeriodics = false),
-                // new WaitCommand(0.25)).deadlineWith(
-                // new RunShooterMotors()
-                // )
                 new InstantCommand(() -> setInterruptPoint(false)),
                 new ConditionalCommand(
                         sequence(
-                                new InstantCommand(() -> shooter.setIsVbus(false)),
                                 new WaitUntilCommand(() -> limelight.getHasTarget()).withTimeout(0.1),
                                 new ConditionalCommand(
                                         new InstantCommand(() -> {
                                         }),
                                         new InstantCommand(() -> this.cancel()),
                                         () -> limelight.getHasTarget()),
-                                new WaitUntilCommand(() -> limelight.getX() < 3.5)
-                                        .deadlineWith(new RotateDrivetrainByLimelightAngle(true)),
+                                new WaitUntilCommand(() -> limelight.getX() < 5.)
+                                        .deadlineWith(new RotateDrivetrainByLimelightAngle(true))
+                                        .withTimeout(0.5),
+                                new InstantCommand(() -> shooter.setIsVbus(false)),
                                 new AcceptLimelightDistance(),
                                 new InstantCommand(() -> setInterruptPoint(true)),
                                 new ResetOdometryWithVision(),
@@ -107,12 +96,11 @@ public class MagicShootMovingCommand extends SequentialCommandGroup {
                                                 new InstantCommand(
                                                         () -> shooter.setShooterIndex(getDistanceToMovingGoal() + 2.5,
                                                                 false)),
-                                                new WaitCommand(0.4),
+                                                new WaitCommand(0.5),
                                                 new RunConveyorOneBall(),
                                                 new InstantCommand(() -> setInterruptPoint(false)),
                                                 new WaitCommand(0.3),
-                                                new InstantCommand(() -> shooter.setIsVbus(true))
-                                                ),
+                                                new InstantCommand(() -> shooter.setIsVbus(true))),
                                         new InstantCommand(() -> drive.drive(
                                                 leftYSpeed,
                                                 leftXSpeed,
@@ -135,11 +123,12 @@ public class MagicShootMovingCommand extends SequentialCommandGroup {
     private Translation2d getMovingGoal() {
         ChassisSpeeds vels = drive.getFieldRelativeChassisSpeeds();
 
-        double distance = limelight.willTestDistance();
+        // double distance = limelight.willTestDistance();
 
-        if (distance > 10.) {
-            shotTime += .095 * (distance - 9.);
-        }
+        // if (distance > 10.) {
+        //     shotTime += .095 * (distance - 9.);
+        // }
+        shotTime = shooter.getShotTime(limelight.willTestDistance());
 
         // Treat the robot as stationary and the goal as moving.
         // This "predicts" the location the goal will be in when the ball is shot
@@ -150,10 +139,10 @@ public class MagicShootMovingCommand extends SequentialCommandGroup {
 
         Translation2d toMovingGoal = movingGoalLocation.minus(drive.getPose().getTranslation());
 
-        if (distance > 10.) {
-            shotTime -= .095 * (distance - 9.);
-        }
-        
+        // if (distance > 10.) {
+        //     shotTime -= .095 * (distance - 9.);
+        // }
+
         return toMovingGoal;
     }
 

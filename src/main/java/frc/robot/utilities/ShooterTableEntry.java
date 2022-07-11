@@ -11,20 +11,30 @@ public class ShooterTableEntry {
     public final int ShooterBackRPM;
     public final int KickerRPM;
     public final double ActuatorVal;
+    public final double ShotTime;
     public final String Description;
     public final boolean IsDefault;
 
     // ============================================================================================
     // constructors follow
     // ============================================================================================
-    public ShooterTableEntry(int index, double distanceInFeet, int shooterFrontRPM, int shooterBackRPM, int kickerRPM,
-            double actuatorValue, String description, boolean isDefault) {
+    public ShooterTableEntry(
+            int index,
+            double distanceInFeet,
+            int shooterFrontRPM,
+            int shooterBackRPM,
+            int kickerRPM,
+            double actuatorValue,
+            double shotTime,
+            String description,
+            boolean isDefault) {
         Index = index;
         DistanceInFeet = distanceInFeet;
         ShooterFrontRPM = shooterFrontRPM;
         ShooterBackRPM = shooterBackRPM;
         KickerRPM = kickerRPM;
         ActuatorVal = actuatorValue;
+        ShotTime = shotTime;
         Description = description;
         IsDefault = isDefault;
     }
