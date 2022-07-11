@@ -121,8 +121,8 @@ public class RobotContainer {
         m_shooter.setDefaultCommand(
                 new RunCommand(
                         () -> {
-                            if (!m_shooter.getIsVbus()) {
-                                m_shooter.setIsVbus(true); // DEFAULT TO VBUS
+                            if (true) {//!m_shooter.getIsVbus()) {
+                                m_shooter.setIsVbus(false); // DEFAULT TO VBUS
                             }
                             m_shooter.setShooterIndex(m_shooter.manualIndex(), true);
                         },

@@ -194,7 +194,7 @@ public final class Constants {
 
         public static final double kMaxAllowedAngle = 33.;
 
-        public static final boolean kIsRealGoal = false;
+        public static final boolean kIsRealGoal = true;
 
         public static final double kVoltageCompensation = 10.75;
     }

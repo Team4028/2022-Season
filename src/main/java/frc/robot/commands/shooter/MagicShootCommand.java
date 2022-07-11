@@ -32,7 +32,7 @@ public class MagicShootCommand extends SequentialCommandGroup {
         // addCommands(new FooCommand(), new BarCommand());
         addRequirements(Shooter.getInstance());
         addCommands(
-                new InstantCommand(() -> Shooter.getInstance().setIsVbus(true)),
+                new InstantCommand(() -> Shooter.getInstance().setIsVbus(false)),
                 new InstantCommand(() -> setInterruptPoint(false)),
                 new RotateDrivetrainByLimelightAngle(false),
                 new AcceptLimelightDistance(),
