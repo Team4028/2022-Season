@@ -226,7 +226,6 @@ public class ShooterTable {
                 primarytable.add(new ShooterTableEntry(_indexCounter++, 22.1, 54, 85, 55,
                         33., "index 22", false));
             } else {
-                // TODO: double these values
                 primarytable.add(new ShooterTableEntry(_indexCounter++, 7., 1180, 1460, 55, 7., "close lob", false));
                 primarytable.add(new ShooterTableEntry(_indexCounter++, 10., 1130, 1740, 55, 14., "index 10", false));
                 primarytable
@@ -245,7 +244,6 @@ public class ShooterTable {
                 primarytable.add(new ShooterTableEntry(_indexCounter++, 15, 38, 64, 55,
                         33., "index 15", false));
             } else {
-                // TODO: double these values
                 primarytable.add(new ShooterTableEntry(_indexCounter++, 7., 1240, 980, 55, 9., "close lob", false));
                 primarytable.add(new ShooterTableEntry(_indexCounter++, 10., 950, 1400, 55, 18., "index 10", false));
                 primarytable

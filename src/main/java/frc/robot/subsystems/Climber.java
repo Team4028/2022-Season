@@ -150,16 +150,6 @@ public class Climber extends SubsystemBase {
         leftMotorOff();
     }
 
-    public void setCoast() {
-        _left.setIdleMode(IdleMode.kCoast);
-        _right.setIdleMode(IdleMode.kCoast);
-    }
-
-    public void setBrake() {
-        _left.setIdleMode(IdleMode.kBrake);
-        _right.setIdleMode(IdleMode.kBrake);
-    }
-
     public double rightCurrent() {
         return _right.getOutputCurrent();
     }

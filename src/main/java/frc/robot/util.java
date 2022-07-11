@@ -17,11 +17,11 @@ import frc.robot.subsystems.DriveSubsystem;
 /** Add your docs here. */
 public final class util {
     public static double toFalconRPM(double velocity) {
-        return velocity * 600 / 2048;
+        return velocity * 600 / 4096;
     }
 
     public static double toFalconVelocity(double rpm) {
-        return rpm * 2048 / 600;
+        return rpm * 4096 / 600;
     }
 
     public static double deadband(double input) {
@@ -29,7 +29,7 @@ public final class util {
     }
 
     public static double speedscaleDrive(double input, double base, double throttle) {
-        return input * base;// * input;
+        return (base + throttle * (1.0 - base)) * input;
     }
 
     public static double swerveModuleReferenceAngleDegrees(Rotation2d angle) {
