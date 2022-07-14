@@ -56,13 +56,9 @@ public class Robot extends TimedRobot {
         shooter = Shooter.getInstance();
         commandScheduler = CommandScheduler.getInstance();
 
-        /*
-         * MjpegServer cam = CameraServer.startAutomaticCapture(new UsbCamera("BRUH",
-         * "/dev/video0"));
-         * cam.setResolution(160, 120);
-         * cam.setCompression(35);
-         * cam.setFPS(10);
-         */
+        limelight.setPipeline(5);
+        limelight.setPictureInPicture(0);
+        limelight.setLedMode(1);
     }
 
     /**

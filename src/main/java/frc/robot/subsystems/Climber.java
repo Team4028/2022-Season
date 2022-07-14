@@ -22,39 +22,39 @@ import frc.robot.Constants.VBusConstants;
 public class Climber extends SubsystemBase {
     private static Climber _instance = new Climber();
 
-    private Solenoid _tippy;
-    private Solenoid _grippy;
+    private Solenoid m_latchSolenoid;
+    private Solenoid m_grippySolenoid;
 
-    private CANSparkMax _left;
-    private CANSparkMax _right;
+    private CANSparkMax m_leftMotor;
+    private CANSparkMax m_rightMotor;
 
-    private RelativeEncoder _leftEncoder;
-    private RelativeEncoder _rightEncoder;
+    private RelativeEncoder m_leftEncoder;
+    private RelativeEncoder m_rightEncoder;
 
-    private int updateCycles = 0;
+    private int m_updateCycles = 0;
 
     /** Creates a new cry about it. */
     public Climber() {
-        _tippy = new Solenoid(PneumaticsModuleType.CTREPCM, SubsystemConstants.TIPPY_SOLENOID_ID);
-        _grippy = new Solenoid(PneumaticsModuleType.CTREPCM, SubsystemConstants.GRIPPY_SOLENOID_ID);
+        m_latchSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, SubsystemConstants.TIPPY_SOLENOID_ID);
+        m_grippySolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, SubsystemConstants.GRIPPY_SOLENOID_ID);
 
-        _left = new CANSparkMax(SubsystemConstants.CLIMBER_LEFT_MOTOR_ID, MotorType.kBrushless);
-        _right = new CANSparkMax(SubsystemConstants.CLIMBER_RIGHT_MOTOR_ID, MotorType.kBrushless);
+        m_leftMotor = new CANSparkMax(SubsystemConstants.CLIMBER_LEFT_MOTOR_ID, MotorType.kBrushless);
+        m_rightMotor = new CANSparkMax(SubsystemConstants.CLIMBER_RIGHT_MOTOR_ID, MotorType.kBrushless);
 
-        _left.restoreFactoryDefaults();
-        _right.restoreFactoryDefaults();
+        m_leftMotor.restoreFactoryDefaults();
+        m_rightMotor.restoreFactoryDefaults();
 
-        _left.setSmartCurrentLimit(CurrentLimitConstants.kClimber);
-        _right.setSmartCurrentLimit(CurrentLimitConstants.kClimber);
+        m_leftMotor.setSmartCurrentLimit(CurrentLimitConstants.kClimber);
+        m_rightMotor.setSmartCurrentLimit(CurrentLimitConstants.kClimber);
 
-        _left.setIdleMode(IdleMode.kBrake);
-        _right.setIdleMode(IdleMode.kBrake);
+        m_leftMotor.setIdleMode(IdleMode.kBrake);
+        m_rightMotor.setIdleMode(IdleMode.kBrake);
 
-        _left.setOpenLoopRampRate(RampRateConstants.kClimber);
-        _right.setOpenLoopRampRate(RampRateConstants.kClimber);
+        m_leftMotor.setOpenLoopRampRate(RampRateConstants.kClimber);
+        m_rightMotor.setOpenLoopRampRate(RampRateConstants.kClimber);
 
-        _leftEncoder = _left.getEncoder();
-        _rightEncoder = _right.getEncoder();
+        m_leftEncoder = m_leftMotor.getEncoder();
+        m_rightEncoder = m_rightMotor.getEncoder();
 
         resetLeftEncoder();
         resetRightEncoder();
@@ -63,73 +63,73 @@ public class Climber extends SubsystemBase {
     }
 
     public void configStatusFramePeriods() {
-        _left.setPeriodicFramePeriod(PeriodicFrame.kStatus0, 11);
-        _left.setPeriodicFramePeriod(PeriodicFrame.kStatus1, 23);
-        _left.setPeriodicFramePeriod(PeriodicFrame.kStatus2, 23);
-        _left.setPeriodicFramePeriod(PeriodicFrame.kStatus3, 53);
+        m_leftMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus0, 11);
+        m_leftMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus1, 23);
+        m_leftMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus2, 23);
+        m_leftMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus3, 53);
 
-        _right.setPeriodicFramePeriod(PeriodicFrame.kStatus0, 11);
-        _right.setPeriodicFramePeriod(PeriodicFrame.kStatus1, 23);
-        _right.setPeriodicFramePeriod(PeriodicFrame.kStatus2, 23);
-        _right.setPeriodicFramePeriod(PeriodicFrame.kStatus3, 53);
+        m_rightMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus0, 11);
+        m_rightMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus1, 23);
+        m_rightMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus2, 23);
+        m_rightMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus3, 53);
     }
 
     public void toggleTippySolenoid() {
-        _tippy.toggle();
+        m_latchSolenoid.toggle();
     }
 
     public void toggleGrippySolenoid() {
-        _grippy.toggle();
+        m_grippySolenoid.toggle();
     }
 
     public double getLeftEncoderPosition() {
-        return _leftEncoder.getPosition();
+        return m_leftEncoder.getPosition();
     }
 
     public double getRightEncoderPosition() {
-        return _rightEncoder.getPosition();
+        return m_rightEncoder.getPosition();
     }
 
     public void resetLeftEncoder() {
-        _leftEncoder.setPosition(0.);
+        m_leftEncoder.setPosition(0.);
     }
 
     public void resetRightEncoder() {
-        _rightEncoder.setPosition(0.);
+        m_rightEncoder.setPosition(0.);
     }
 
     public void leftMotorForward(double speed) {
-        _left.set(speed);
+        m_leftMotor.set(speed);
     }
 
     public void leftMotorBackward(double speed) {
-        _left.set(speed);
+        m_leftMotor.set(speed);
     }
 
     public void rightMotorForward(double speed) {
-        _right.set(speed);
+        m_rightMotor.set(speed);
     }
 
     public void rightMotorBackward(double speed) {
-        _right.set(speed);
+        m_rightMotor.set(speed);
     }
 
     public void slowDrop() {
-        _right.set(-VBusConstants.kClimberSlow);
-        _left.set(-VBusConstants.kClimberSlow);
+        m_rightMotor.set(-VBusConstants.kClimberSlow);
+        m_leftMotor.set(-VBusConstants.kClimberSlow);
     }
 
     public void slowUp() {
-        _right.set(VBusConstants.kClimberSlow);
-        _left.set(VBusConstants.kClimberSlow);
+        m_rightMotor.set(VBusConstants.kClimberSlow);
+        m_leftMotor.set(VBusConstants.kClimberSlow);
     }
 
     public void leftMotorOff() {
-        _left.set(0.);
+        m_leftMotor.set(0.);
     }
 
     public void rightMotorOff() {
-        _right.set(0.);
+        m_rightMotor.set(0.);
     }
 
     public void resetEncoders() {
@@ -138,11 +138,11 @@ public class Climber extends SubsystemBase {
     }
 
     public void setRightEncoder(double val) {
-        _rightEncoder.setPosition(val);
+        m_rightEncoder.setPosition(val);
     }
 
     public void setLeftEncoder(double val) {
-        _leftEncoder.setPosition(val);
+        m_leftEncoder.setPosition(val);
     }
 
     public void stop() {
@@ -150,12 +150,22 @@ public class Climber extends SubsystemBase {
         leftMotorOff();
     }
 
+    public void setCoast() {
+        m_leftMotor.setIdleMode(IdleMode.kCoast);
+        m_rightMotor.setIdleMode(IdleMode.kCoast);
+    }
+
+    public void setBrake() {
+        m_leftMotor.setIdleMode(IdleMode.kBrake);
+        m_rightMotor.setIdleMode(IdleMode.kBrake);
+    }
+
     public double rightCurrent() {
-        return _right.getOutputCurrent();
+        return m_rightMotor.getOutputCurrent();
     }
 
     public double leftCurrent() {
-        return _left.getOutputCurrent();
+        return m_leftMotor.getOutputCurrent();
     }
 
     public static Climber getInstance() {
@@ -165,10 +175,10 @@ public class Climber extends SubsystemBase {
     @Override
     public void periodic() {
         // This method will be called once per scheduler run
-        if (updateCycles % 4 == 0) {
-            SmartDashboard.putNumber("Left Climber", _leftEncoder.getPosition());
-            SmartDashboard.putNumber("Right Climber", _rightEncoder.getPosition());
+        if (m_updateCycles % 4 == 0) {
+            SmartDashboard.putNumber("Left Climber", m_leftEncoder.getPosition());
+            SmartDashboard.putNumber("Right Climber", m_rightEncoder.getPosition());
         }
-        updateCycles++;
+        m_updateCycles++;
     }
 }

@@ -16,12 +16,15 @@ import frc.robot.Constants.SubsystemConstants;
 
 public class Conveyor extends SubsystemBase {
     /** Creates a new Conveyor. */
-    private CANSparkMax _conveyorMotor; // needs to be reversed
-    private boolean isTargetReached = false;
-    private RelativeEncoder _enc;
-    private double encoderOffset = 0;
+    private CANSparkMax m_conveyorMotor; // needs to be reversed
+
+    private RelativeEncoder m_conveyorEncoder;
+
+    private boolean m_isTargetReached = false;
+    private double m_encoderOffset = 0;
+
     private static Conveyor _instance;
-    private boolean isRunning = false;
+    private boolean m_isRunning = false;
 
     public static Conveyor getInstance() {
         if (_instance == null) {
@@ -31,30 +34,30 @@ public class Conveyor extends SubsystemBase {
     }
 
     public Conveyor() {
-        _conveyorMotor = new CANSparkMax(SubsystemConstants.CONVEYOR_MOTOR_ID, MotorType.kBrushless);
-        _conveyorMotor.setSmartCurrentLimit(CurrentLimitConstants.kConveyor);
-        _enc = _conveyorMotor.getEncoder();
-        _enc.setPosition(0);
-        _conveyorMotor.setInverted(false);
+        m_conveyorMotor = new CANSparkMax(SubsystemConstants.CONVEYOR_MOTOR_ID, MotorType.kBrushless);
+        m_conveyorMotor.setSmartCurrentLimit(CurrentLimitConstants.kConveyor);
+        m_conveyorEncoder = m_conveyorMotor.getEncoder();
+        m_conveyorEncoder.setPosition(0);
+        m_conveyorMotor.setInverted(false);
 
         configStatusFramePeriods();
     }
 
     public void configStatusFramePeriods() {
-        _conveyorMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus0, 11);
-        _conveyorMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus1, 23);
-        _conveyorMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus2, 23);
-        _conveyorMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus3, 53);
+        m_conveyorMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus0, 11);
+        m_conveyorMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus1, 23);
+        m_conveyorMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus2, 23);
+        m_conveyorMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus3, 53);
     }
 
     public void runConveyorMotor(double vbus) {
         SmartDashboard.putBoolean("Conveyor/Running", true);
         // SmartDashboard.putNumber("Conveyor/Vbus", vbus);
-        _conveyorMotor.set(vbus);
+        m_conveyorMotor.set(vbus);
     }
 
     public void stopConveyorMotor() {
-        _conveyorMotor.set(0);
+        m_conveyorMotor.set(0);
         SmartDashboard.putBoolean("Conveyor/Running", false);
     }
 
@@ -65,34 +68,34 @@ public class Conveyor extends SubsystemBase {
             // System.out.println("Encoder Value " +_enc.getPosition());
             stopConveyorMotor();
             resetEncoder();
-            isTargetReached = true;
+            m_isTargetReached = true;
         } else {
             runConveyorMotor(vbus);
         }
     }
 
     public double getEncoderPosition() {
-        return (_enc.getPosition() - encoderOffset);
+        return (m_conveyorEncoder.getPosition() - m_encoderOffset);
     }
 
     public void resetEncoder() {
-        encoderOffset = _enc.getPosition();
+        m_encoderOffset = m_conveyorEncoder.getPosition();
     }
 
     public void setIsTargetReached() {
-        isTargetReached = false;
+        m_isTargetReached = false;
     }
 
     public boolean getIsTargetReached() {
-        return isTargetReached;
+        return m_isTargetReached;
     }
 
     public boolean getIsRunning() {
-        return isRunning;
+        return m_isRunning;
     }
 
     public void setIsRunning(boolean set) {
-        isRunning = set;
+        m_isRunning = set;
     }
 
     @Override

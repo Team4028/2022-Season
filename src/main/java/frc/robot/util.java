@@ -17,11 +17,11 @@ import frc.robot.subsystems.DriveSubsystem;
 /** Add your docs here. */
 public final class util {
     public static double toFalconRPM(double velocity) {
-        return velocity * 600 / 4096;
+        return velocity * 600 / 2048;
     }
 
     public static double toFalconVelocity(double rpm) {
-        return rpm * 4096 / 600;
+        return rpm * 2048 / 600;
     }
 
     public static double deadband(double input) {
