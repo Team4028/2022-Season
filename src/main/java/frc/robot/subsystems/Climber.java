@@ -74,7 +74,7 @@ public class Climber extends SubsystemBase {
         m_rightMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus3, 53);
     }
 
-    public void toggleTippySolenoid() {
+    public void toggleLatchSolenoid() {
         m_latchSolenoid.toggle();
     }
 

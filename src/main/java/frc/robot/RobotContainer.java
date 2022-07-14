@@ -155,9 +155,9 @@ public class RobotContainer {
         // ====================================
 
         // ======== DRIVER CONTROLLER ========
-        m_driverController.a.whenPressed(new ToggleLEDMode());
+        m_driverController.a.whenPressed(new InstantCommand(() -> toggleFieldOriented()));
         m_driverController.b.whenPressed(new ToggleTippy());
-        m_driverController.x.whenPressed(new InstantCommand(() -> toggleFieldOriented()));
+        m_driverController.y.whenPressed(new ToggleLEDMode());
         m_driverController.start.whenPressed(new InstantCommand(() -> m_drive.zeroHeading()));
         m_driverController.lb.toggleWhenPressed(new ReverseInfeedAndConveyor());
         m_driverController.rb.whenPressed(new ToggleInfeedUp());
