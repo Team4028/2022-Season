@@ -2,7 +2,7 @@
   "tabPane": [
     {
       "title": "SmartDashboard",
-      "autoPopulate": true,
+      "autoPopulate": false,
       "autoPopulatePrefix": "SmartDashboard/",
       "widgetPane": {
         "gridSize": 32.0,
@@ -13,13 +13,13 @@
         "tiles": {
           "0,0": {
             "size": [
-              7,
+              5,
               2
             ],
             "content": {
               "_type": "ComboBox Chooser",
               "_source0": "network_table:///SmartDashboard/SendableChooser[0]",
-              "_title": "SendableChooser[0]"
+              "_title": "Auton Chooser"
             }
           },
           "0,2": {
@@ -33,7 +33,7 @@
               "_title": "X (Metres)"
             }
           },
-          "9,0": {
+          "7,0": {
             "size": [
               2,
               2
@@ -44,7 +44,7 @@
               "_title": "R Climb"
             }
           },
-          "7,0": {
+          "5,0": {
             "size": [
               2,
               2
@@ -55,7 +55,7 @@
               "_title": "L Climb"
             }
           },
-          "4,2": {
+          "3,2": {
             "size": [
               3,
               2
@@ -66,7 +66,7 @@
               "_title": "Y (Metres)"
             }
           },
-          "11,12": {
+          "9,8": {
             "size": [
               5,
               3
@@ -79,7 +79,7 @@
               "Colors/Color when false": "#8B0000FF"
             }
           },
-          "8,2": {
+          "6,2": {
             "size": [
               3,
               2
@@ -90,7 +90,7 @@
               "_title": "Heading (Deg)"
             }
           },
-          "16,12": {
+          "14,8": {
             "size": [
               2,
               3
@@ -98,10 +98,10 @@
             "content": {
               "_type": "Ball Status",
               "_source0": "network_table:///SmartDashboard/Inner Ball",
-              "_title": "Infeed Ball"
+              "_title": "Shoot Ball"
             }
           },
-          "18,12": {
+          "16,8": {
             "size": [
               2,
               3
@@ -109,12 +109,12 @@
             "content": {
               "_type": "Ball Status",
               "_source0": "network_table:///SmartDashboard/Outer Ball",
-              "_title": "Shoot Ball"
+              "_title": "Infeed Ball"
             }
           },
-          "6,4": {
+          "5,4": {
             "size": [
-              3,
+              2,
               2
             ],
             "content": {
@@ -140,7 +140,7 @@
           },
           "3,4": {
             "size": [
-              3,
+              2,
               2
             ],
             "content": {
@@ -151,7 +151,7 @@
               "Colors/Color when false": "#8B0000FF"
             }
           },
-          "15,8": {
+          "13,4": {
             "size": [
               5,
               4
@@ -161,25 +161,7 @@
               "_title": "Shooter Index"
             }
           },
-          "20,0": {
-            "size": [
-              19,
-              16
-            ],
-            "content": {
-              "_type": "Camera Stream",
-              "_title": "Camera Stream",
-              "Crosshair/Show crosshair": true,
-              "Crosshair/Crosshair color": "#FFFFFFFF",
-              "Controls/Show controls": true,
-              "Controls/Rotation": "NONE",
-              "compression": -1.0,
-              "fps": -1,
-              "imageWidth": -1,
-              "imageHeight": -1
-            }
-          },
-          "15,0": {
+          "13,0": {
             "size": [
               5,
               4
@@ -188,8 +170,8 @@
               "_type": "Grid Layout",
               "_title": "Limelight",
               "Layout/Number of columns": 3,
-              "Layout/Number of rows": 3,
-              "Layout/Label position": "BOTTOM",
+              "Layout/Number of rows": 1,
+              "Layout/Label position": "TOP",
               "_children": {
                 "1,0": {
                   "_type": "Text View",
@@ -198,28 +180,23 @@
                 },
                 "0,0": {
                   "_type": "Shooter Index",
+                  "_source0": "network_table:///SmartDashboard/Limelight Distance",
                   "_title": "Distance"
+                },
+                "2,0": {
+                  "_type": "Boolean Box",
+                  "_source0": "network_table:///SmartDashboard/Has Target",
+                  "_title": "T",
+                  "Colors/Color when true": "#7CFC00FF",
+                  "Colors/Color when false": "#8B0000FF"
                 }
               }
             }
           },
-          "15,4": {
-            "size": [
-              5,
-              4
-            ],
-            "content": {
-              "_type": "Boolean Box",
-              "_source0": "network_table:///SmartDashboard/Has Target",
-              "_title": "Target?",
-              "Colors/Color when true": "#7CFC00FF",
-              "Colors/Color when false": "#8B0000FF"
-            }
-          },
-          "13,0": {
+          "11,0": {
             "size": [
               2,
-              12
+              8
             ],
             "content": {
               "_type": "Grid Layout",
@@ -246,10 +223,10 @@
               }
             }
           },
-          "11,0": {
+          "9,0": {
             "size": [
               2,
-              12
+              8
             ],
             "content": {
               "_type": "Grid Layout",
@@ -276,26 +253,72 @@
               }
             }
           },
-          "9,4": {
+          "0,15": {
             "size": [
               2,
-              2
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/limelight_PipelineName",
+              "_title": "limelight_PipelineName"
+            }
+          },
+          "2,15": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/limelight_Interface",
+              "_title": "limelight_Interface"
+            }
+          },
+          "4,15": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/limelight_Stream",
+              "_title": "limelight_Stream"
+            }
+          },
+          "6,15": {
+            "size": [
+              3,
+              3
             ],
             "content": {
               "_type": "Boolean Box",
-              "_title": "Shooter",
+              "_source0": "network_table:///SmartDashboard/Shooter/Running",
+              "_title": "Shooter/Running",
               "Colors/Color when true": "#7CFC00FF",
               "Colors/Color when false": "#8B0000FF"
             }
           },
-          "0,6": {
+          "9,15": {
             "size": [
-              11,
-              9
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Shot Kicker RPM",
+              "_title": "Shot Kicker RPM"
+            }
+          },
+          "18,0": {
+            "size": [
+              13,
+              12
             ],
             "content": {
               "_type": "Camera Stream",
-              "_title": "Camera Stream",
+              "_source0": "camera_server://Dashboard Cam",
+              "_title": "Dashboard Cam",
               "Crosshair/Show crosshair": true,
               "Crosshair/Crosshair color": "#FFFFFFFF",
               "Controls/Show controls": true,
@@ -304,6 +327,38 @@
               "fps": -1,
               "imageWidth": -1,
               "imageHeight": -1
+            }
+          },
+          "0,6": {
+            "size": [
+              9,
+              7
+            ],
+            "content": {
+              "_type": "Camera Stream",
+              "_source0": "camera_server://limelight",
+              "_title": "limelight",
+              "Crosshair/Show crosshair": true,
+              "Crosshair/Crosshair color": "#FFFFFFFF",
+              "Controls/Show controls": true,
+              "Controls/Rotation": "NONE",
+              "compression": -1.0,
+              "fps": -1,
+              "imageWidth": 0,
+              "imageHeight": 0
+            }
+          },
+          "7,4": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/Shooter/Running",
+              "_title": "Shooter",
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
             }
           }
         }
@@ -324,9 +379,9 @@
     }
   ],
   "windowGeometry": {
-    "x": 1.0,
-    "y": 1.0,
-    "width": 1918.0,
-    "height": 1038.0
+    "x": 0.800000011920929,
+    "y": 0.800000011920929,
+    "width": 1918.4000244140625,
+    "height": 1038.4000244140625
   }
 }
