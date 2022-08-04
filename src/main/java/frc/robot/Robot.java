@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.Constants.ShooterConstants;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.ColorSensor;
 import frc.robot.subsystems.Limelight;
@@ -56,7 +57,7 @@ public class Robot extends TimedRobot {
         shooter = Shooter.getInstance();
         commandScheduler = CommandScheduler.getInstance();
 
-        limelight.setPipeline(5);
+        limelight.setPipeline(ShooterConstants.kIsRealGoal ? 6 : 0);
         limelight.setPictureInPicture(0);
         limelight.setLedMode(1);
     }

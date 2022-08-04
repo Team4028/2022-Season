@@ -41,7 +41,7 @@ public class Limelight extends SubsystemBase {
 
     /** Creates a new Limelight. */
     public Limelight() {
-        setPipeline(ShooterConstants.kIsRealGoal ? 5 : 0);
+        setPipeline(ShooterConstants.kIsRealGoal ? 6 : 0);
         setPictureInPicture(0);
         setLedMode(1);
 
