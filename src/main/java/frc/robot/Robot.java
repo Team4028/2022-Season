@@ -54,7 +54,7 @@ public class Robot extends TimedRobot {
         // drive = DriveSubsystem.getInstance();
         commandScheduler = CommandScheduler.getInstance();
         
-        limelight.setPipeline(5);
+        limelight.setPipeline(0);
         limelight.setPictureInPicture(0);
         limelight.setLedMode(1);
     }
@@ -87,7 +87,7 @@ public class Robot extends TimedRobot {
     /** This function is called once each time the robot enters Disabled mode. */
     @Override
     public void disabledInit() {
-        limelight.setPipeline(5);
+        limelight.setPipeline(0);
         limelight.setLedMode(1.);
     }
 
@@ -104,7 +104,7 @@ public class Robot extends TimedRobot {
         m_autonomousCommand = m_robotContainer.getAutonomousCommand();
         colorSensor.setAlliance();
 
-        limelight.setPipeline(5);
+        limelight.setPipeline(0);
         limelight.setLedMode(0.);
         /*
          * String autoSelected = SmartDashboard.getString("Auto Selector",
@@ -139,7 +139,7 @@ public class Robot extends TimedRobot {
         shooter.setIsShotValidation(false);
         climber.resetEncoders();
 
-        limelight.setPipeline(5);
+        limelight.setPipeline(0);
         limelight.setLedMode(0.);
     }
 

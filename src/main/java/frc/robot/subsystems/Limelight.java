@@ -112,7 +112,8 @@ public class Limelight extends SubsystemBase {
     }
 
     public double getY() {
-        return ty.getDouble(0);
+        double raw = ty.getDouble(0.);
+        return raw - Math.abs(getX()) / 10.;
     }
 
     public void setPipeline(double pipe) {
@@ -174,7 +175,7 @@ public class Limelight extends SubsystemBase {
             double yawComp = getX() * (3.14159 / 180.);
 
             double dist = heightDelta /
-                    (Math.tan(goalAngle) * Math.cos(yawComp));
+                    Math.tan(goalAngle);// * Math.cos(yawComp));
 
             distEstTotal += (dist + 22 + 26);
             distEstIters++;
@@ -190,7 +191,7 @@ public class Limelight extends SubsystemBase {
         double yawComp = getX() * (3.14159 / 180.);
 
         double dist = heightDelta /
-                (Math.tan(goalAngle) * Math.cos(yawComp));
+                (Math.tan(goalAngle));// * Math.cos(yawComp));
 
         double indexDist = (dist + LimelightConstants.kLensToBack + LimelightConstants.kTapeToCenter) / 12.0;
         if (getHasTarget()) {
