@@ -20,96 +20,98 @@ import frc.robot.Constants.VBusConstants;
 
 public class Infeed extends SubsystemBase {
     /** Creates a new SingulatorAndInfeed. */
-    private TalonSRX _infeedMotor;
-    private CANSparkMax _singulatorMotor;
-    private Solenoid _solenoid;
+    private TalonSRX m_infeedMotor;
+    private CANSparkMax m_singulatorMotor;
+
+    private Solenoid m_infeedSolenoid;
+    
     private static Infeed _instance = new Infeed();
-    private boolean isInfeedDown = false;
+    private boolean m_isInfeedDown = false;
 
     public static Infeed getInstance() {
         return _instance;
     }
 
     public Infeed() {
-        _infeedMotor = new TalonSRX(SubsystemConstants.INFEED_MOTOR_ID);
-        _singulatorMotor = new CANSparkMax(SubsystemConstants.SINGULATOR_MOTOR_ID, MotorType.kBrushless);
-        _solenoid = new Solenoid(PneumaticsModuleType.CTREPCM, SubsystemConstants.INFEED_SOLENOID_ID);
-        _infeedMotor.configFactoryDefault();
-        _infeedMotor.setInverted(true);
-        _singulatorMotor.setInverted(false);
+        m_infeedMotor = new TalonSRX(SubsystemConstants.INFEED_MOTOR_ID);
+        m_singulatorMotor = new CANSparkMax(SubsystemConstants.SINGULATOR_MOTOR_ID, MotorType.kBrushless);
+        m_infeedSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, SubsystemConstants.INFEED_SOLENOID_ID);
+        m_infeedMotor.configFactoryDefault();
+        m_infeedMotor.setInverted(true);
+        m_singulatorMotor.setInverted(false);
 
-        _infeedMotor.setInverted(true);
+        m_infeedMotor.setInverted(true);
 
         configStatusFramePeriods();
     }
 
     public void configStatusFramePeriods() {
-        _infeedMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_1_General, 19);
-        _infeedMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 19);
-        _infeedMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_4_AinTempVbat, 253);
-        _infeedMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_6_Misc, 59);
+        m_infeedMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_1_General, 19);
+        m_infeedMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 19);
+        m_infeedMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_4_AinTempVbat, 253);
+        m_infeedMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_6_Misc, 59);
 
-        _singulatorMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus0, 11);
-        _singulatorMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus1, 23);
-        _singulatorMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus2, 23);
-        _singulatorMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus3, 53);
+        m_singulatorMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus0, 11);
+        m_singulatorMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus1, 23);
+        m_singulatorMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus2, 23);
+        m_singulatorMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus3, 53);
     }
 
     public void runInfeedSingulatorMotors(double mult) {
-        if (isInfeedDown) {
-            _infeedMotor.set(ControlMode.PercentOutput, mult * VBusConstants.kInfeed);
+        if (m_isInfeedDown) {
+            m_infeedMotor.set(ControlMode.PercentOutput, mult * VBusConstants.kInfeed);
             SmartDashboard.putBoolean("Infeed/Running", true);
             // SmartDashboard.putNumber("Infeed/Vbus", mult * VBusConstants.kInfeed);
         } else {
-            _infeedMotor.set(ControlMode.PercentOutput, 0.);
+            m_infeedMotor.set(ControlMode.PercentOutput, 0.);
             SmartDashboard.putBoolean("Infeed/Running", false);
         }
-        _singulatorMotor.set(mult * VBusConstants.kSingulator);
+        m_singulatorMotor.set(mult * VBusConstants.kSingulator);
         SmartDashboard.putBoolean("Singulator/Running", true);
         // SmartDashboard.putNumber("Singulator/Vbus", mult * VBusConstants.kInfeed);
     }
 
     public void runSingulator() {
-        _singulatorMotor.set(VBusConstants.kSingulator);
+        m_singulatorMotor.set(VBusConstants.kSingulator);
         SmartDashboard.putBoolean("Singulator/Running", true);
     }
 
     public void forceRunInfeed() {
-        _infeedMotor.set(ControlMode.PercentOutput, 0.85);
-        _singulatorMotor.set(VBusConstants.kSingulator);
+        m_infeedMotor.set(ControlMode.PercentOutput, 0.85);
+        m_singulatorMotor.set(VBusConstants.kSingulator);
     }
 
     public void stopInfeedSingulatorMotors() {
-        _infeedMotor.set(ControlMode.PercentOutput, 0);
-        _singulatorMotor.set(0);
+        m_infeedMotor.set(ControlMode.PercentOutput, 0);
+        m_singulatorMotor.set(0);
         SmartDashboard.putBoolean("Infeed/Running", false);
         SmartDashboard.putBoolean("Singulator/Running", false);
     }
 
     public void runInfeedMotor(double mult) {
-        if (isInfeedDown) {
-            _infeedMotor.set(ControlMode.PercentOutput, mult * VBusConstants.kInfeed);
+        if (m_isInfeedDown) {
+            m_infeedMotor.set(ControlMode.PercentOutput, mult * VBusConstants.kInfeed);
             SmartDashboard.putBoolean("Infeed/Running", true);
             // SmartDashboard.putNumber("Infeed/Vbus", mult * VBusConstants.kInfeed);
         } else {
-            _infeedMotor.set(ControlMode.PercentOutput, 0.);
+            m_infeedMotor.set(ControlMode.PercentOutput, 0.);
             SmartDashboard.putBoolean("Infeed/Running", false);
         }
     }
 
     public void toggleInfeedUp() {
-        isInfeedDown = !_solenoid.get();
-        _solenoid.toggle();
+        m_isInfeedDown = !m_infeedSolenoid.get();
+        m_infeedSolenoid.toggle();
     }
 
     public void setInfeedDown() {
-        _solenoid.set(true);
-        isInfeedDown = true;
+        m_infeedSolenoid.set(true);
+        m_isInfeedDown = true;
     }
 
     public void setInfeedUp() {
-        _solenoid.set(false);
-        isInfeedDown = false;
+        m_infeedSolenoid.set(false);
+        m_isInfeedDown = false;
     }
 
     @Override

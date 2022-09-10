@@ -37,19 +37,18 @@ public class Shooter extends SubsystemBase {
     private RelativeEncoder m_angleEncoder;
     private SparkMaxPIDController m_anglePID;
 
-    private boolean isShotValidation;
+    private boolean m_isShotValidation;
 
     private ShooterTable m_table = ShooterTable.getPrimaryTable();
-    double limelightDistance, manualIndex, shooterIndex = ShooterConstants.kIndexDefault;
-    int manualCounter = 0;
-    boolean longshot;
+    private double m_manualIndex, m_shooterIndex = ShooterConstants.kIndexDefault;
+    private int m_manualCounter = 0;
+    private boolean m_isLongShot;
 
-    private double lastIndex = 0.;
+    private double m_lastIndex = 0.;
 
-    private ShooterIndex indexData;
+    private ShooterIndex m_indexData;
 
     private static Shooter _instance;
-    private int updateCycles = 0;
 
     private boolean m_isAtSetpoint = false;
     private boolean m_isVbus = true;
@@ -88,17 +87,13 @@ public class Shooter extends SubsystemBase {
         m_anglePID = m_angleMotor.getPIDController();
         m_anglePID.setP(PIDConstants.Angle.kP);
 
-        // put("FrontVbus", VBusConstants.kShooterFrontDefault);
-        // put("BackVbus", VBusConstants.kShooterBackDefault);
-        // put("Hood Angle (rot)", VBusConstants.kShooterHoodAngleRotDefault);
-
         m_frontMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 100);
         m_backMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 100);
 
-        isShotValidation = false;
+        m_isShotValidation = false;
 
-        indexData = new ShooterIndex();
-        indexData.setFontSize(100);
+        m_indexData = new ShooterIndex();
+        m_indexData.setFontSize(100);
 
         configStatusFramePeriods();
     }
@@ -123,7 +118,6 @@ public class Shooter extends SubsystemBase {
         m_kickerMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 19);
         m_kickerMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_4_AinTempVbat, 253);
         m_kickerMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_6_Misc, 59);
-
     }
 
     /**
@@ -161,18 +155,9 @@ public class Shooter extends SubsystemBase {
     public double getNumber(String key, double defaultValue) {
         return SmartDashboard.getNumber(key, defaultValue);
     }
-    // _front.set(ControlMode.PercentOutput, SmartDashboard.getNumber("FrontVbus",
-    // VBusConstants.kShooterFrontDefault));
-    // _back.set(ControlMode.PercentOutput, SmartDashboard.getNumber("BackVbus",
-    // VBusConstants.kShooterBackDefault));
-    // _kicker.set(ControlMode.PercentOutput, SmartDashboard.getNumber("KickerVbus",
-    // VBusConstants.kKicker));
-
-    // _anglePid.setReference(SmartDashboard.getNumber("Hood Angle (rot)",
-    // VBusConstants.kShooterHoodAngleRotDefault), ControlType.kPosition);
 
     public void runShooterMotors() {
-        ShooterTableEntry entry = m_table.CalcShooterValues(shooterIndex);
+        ShooterTableEntry entry = m_table.CalcShooterValues(m_shooterIndex);
 
         if (m_isVbus) {
             m_frontMotor.set(ControlMode.PercentOutput, entry.ShooterFrontRPM / 100.);
@@ -184,6 +169,9 @@ public class Shooter extends SubsystemBase {
             m_isAtSetpoint = 
                 Math.abs(util.toFalconRPM(m_frontMotor.getClosedLoopError())) < 100. &&
                 Math.abs(util.toFalconRPM(m_backMotor.getClosedLoopError())) < 100.;
+            
+                put("Front Motor Error", (m_frontMotor.getClosedLoopError()));
+                put("Back Motor Error", (m_backMotor.getClosedLoopError()));        
         }
 
         m_kickerMotor.set(ControlMode.PercentOutput, entry.KickerRPM / 100.);
@@ -193,9 +181,6 @@ public class Shooter extends SubsystemBase {
         put("Back Motor RPM", util.toFalconRPM(m_backMotor.getSelectedSensorVelocity()));
         put("Kicker Motor RPM", util.toFalconRPM(m_kickerMotor.getSelectedSensorVelocity()));
         put("Angle", m_angleEncoder.getPosition());
-
-        put("Front Motor Error", (m_frontMotor.getClosedLoopError()));
-        put("Back Motor Error", (m_backMotor.getClosedLoopError()));
 
         SmartDashboard.putBoolean("Shooter/Running", true);
     }
@@ -224,113 +209,113 @@ public class Shooter extends SubsystemBase {
     }
 
     public double index() {
-        return shooterIndex;
+        return m_shooterIndex;
     }
 
     public double manualIndex() {
-        return manualIndex;
+        return m_manualIndex;
     }
 
     public void setLongshot(boolean longshot) {
-        if (this.longshot != longshot) {
+        if (m_isLongShot != longshot) {
             resetCounter();
             incrementCounter();
         }
-        this.longshot = longshot;
+        m_isLongShot = longshot;
     }
 
     public void incrementIndex(boolean fine) {
         if (fine) {
-            manualIndex += ShooterConstants.kFineAdjustment;
+            m_manualIndex += ShooterConstants.kFineAdjustment;
         } else {
-            manualIndex += ShooterConstants.kCoarseAdjustment;
+            m_manualIndex += ShooterConstants.kCoarseAdjustment;
         }
         // update();
     }
 
     public void decrementIndex(boolean fine) {
         if (fine) {
-            manualIndex -= ShooterConstants.kFineAdjustment;
+            m_manualIndex -= ShooterConstants.kFineAdjustment;
         } else {
-            manualIndex -= ShooterConstants.kCoarseAdjustment;
+            m_manualIndex -= ShooterConstants.kCoarseAdjustment;
         }
         // update();
     }
 
     public void setShooterIndex(double index, boolean setManual) {
         if (setManual) {
-            manualIndex = index;
+            m_manualIndex = index;
         }
-        shooterIndex = index;
+        m_shooterIndex = index;
 
-        if (lastIndex != index) {
-            indexData.setIndex(Math.round(index * 10.) / 10.);
-            SmartDashboard.putData("Shooter Index", indexData);
+        if (m_lastIndex != index) {
+            m_indexData.setIndex(Math.round(index * 10.) / 10.);
+            SmartDashboard.putData("Shooter Index", m_indexData);
 
-            ShooterTableEntry e = m_table.CalcShooterValues(shooterIndex);
+            ShooterTableEntry e = m_table.CalcShooterValues(m_shooterIndex);
             SmartDashboard.putString("Shot", e.Description);
             put("Shot Front RPM", e.ShooterFrontRPM);
             put("Shot Back RPM", e.ShooterBackRPM);
             put("Shot Kicker RPM", e.KickerRPM);
             put("Actuator Value", e.ActuatorVal);
-            lastIndex = index;
+            m_lastIndex = index;
         }
     }
 
     public void setManualIndex() {
-        if (!longshot) {
-            if (manualCounter() % 3 == 0) {
-                manualIndex = 7.0;
-            } else if (manualCounter() % 3 == 2) {
-                manualIndex = 10.0;
+        if (!m_isLongShot) {
+            if (m_manualCounter() % 3 == 0) {
+                m_manualIndex = 7.0;
+            } else if (m_manualCounter() % 3 == 2) {
+                m_manualIndex = 10.0;
             } else {
-                manualIndex = 12.5;
+                m_manualIndex = 12.5;
             }
         } else {
-            if (manualCounter() % 3 == 0) {
-                manualIndex = 21.0;
-            } else if (manualCounter() % 3 == 2) {
-                manualIndex = 17.0;
+            if (m_manualCounter() % 3 == 0) {
+                m_manualIndex = 21.0;
+            } else if (m_manualCounter() % 3 == 2) {
+                m_manualIndex = 17.0;
             } else {
-                manualIndex = 15.0;
+                m_manualIndex = 15.0;
             }
         }
     }
 
     public void resetIndex() {
-        manualIndex = ShooterConstants.kIndexDefault;
-        shooterIndex = ShooterConstants.kIndexDefault;
+        m_manualIndex = ShooterConstants.kIndexDefault;
+        m_shooterIndex = ShooterConstants.kIndexDefault;
     }
 
     public void resetManualIndex() {
-        manualIndex = ShooterConstants.kIndexDefault;
+        m_manualIndex = ShooterConstants.kIndexDefault;
         resetCounter();
     }
 
-    public int manualCounter() {
-        return manualCounter;
+    public int m_manualCounter() {
+        return m_manualCounter;
     }
 
     public void incrementCounter() {
-        manualCounter++;
+        m_manualCounter++;
     }
 
     public void resetCounter() {
-        manualCounter = 0;
+        m_manualCounter = 0;
     }
 
     public void setIsShotValidation(boolean isShotValidation) {
-        this.isShotValidation = isShotValidation;
-        SmartDashboard.putBoolean("Shot Validation", this.isShotValidation);
+        this.m_isShotValidation = isShotValidation;
+        SmartDashboard.putBoolean("Shot Validation", this.m_isShotValidation);
     }
 
     public void toggleIsShotValidation() {
-        this.isShotValidation = !this.isShotValidation;
-        SmartDashboard.putBoolean("Shot Validation", this.isShotValidation);
+        this.m_isShotValidation = !this.m_isShotValidation;
+        SmartDashboard.putBoolean("Shot Validation", this.m_isShotValidation);
     }
 
     public boolean getIsShotValidation() {
-        return isShotValidation;
+        return m_isShotValidation;
     }
 
     public void runShooterOutfeed() {
@@ -349,12 +334,7 @@ public class Shooter extends SubsystemBase {
 
     @Override
     public void periodic() {
-        if (updateCycles % 5 == 0) {
-            // update();
-            // SmartDashboard.putNumber("Manual Index", manualIndex());
-            SmartDashboard.putBoolean("Shot Validation", getIsShotValidation());
-        }
-        updateCycles++;
+        SmartDashboard.putBoolean("Shot Validation", getIsShotValidation());
         // This method will be called once per scheduler run
         // System.out.println(_angle.getOutputCurrent());
 

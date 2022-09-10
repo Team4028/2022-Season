@@ -221,12 +221,12 @@ public class ShooterTable {
 
         if (ShooterConstants.kIsRealGoal) {
             // TODO
-            primarytable.add(new ShooterTableEntry(_indexCounter++, 7.  , 40, 50, 55, 7. , 1.65, "close lob", false));
-            primarytable.add(new ShooterTableEntry(_indexCounter++, 10. , 39, 59, 55, 14., 1.73, "index 10", false));
-            primarytable.add(new ShooterTableEntry(_indexCounter++, 12.6, 41, 63, 55, 19., 1.98, "index 12.5", false));
-            primarytable.add(new ShooterTableEntry(_indexCounter++, 15.1, 43, 69, 55, 30., 2.22, "index 15", false));
-            primarytable.add(new ShooterTableEntry(_indexCounter++, 19.1, 49, 78, 55, 30.5, 2.61, "index 19", false));
-            primarytable.add(new ShooterTableEntry(_indexCounter++, 22.1, 54, 85, 55, 33., 2.90, "index 22", false));
+            primarytable.add(new ShooterTableEntry(_indexCounter++, 7., 40, 50, 55, 7.,   0., /* TODO */ "close lob", false));
+                primarytable.add(new ShooterTableEntry(_indexCounter++, 10., 39, 59, 55, 14., 0.,"index 10", false));
+                primarytable.add(new ShooterTableEntry(_indexCounter++, 12.6, 41, 63, 55, 19., 0., "index 12.5", false));
+                primarytable.add(new ShooterTableEntry(_indexCounter++, 15.1, 43, 69, 55, 30., 0., "index 15", false));
+                primarytable.add(new ShooterTableEntry(_indexCounter++, 19.1, 49, 78, 55, 30., 0., "index 19", false));
+                primarytable.add(new ShooterTableEntry(_indexCounter++, 22.1, 54, 85, 55, 33., 0., "index 22", false));
         } else {
             primarytable.add(new ShooterTableEntry(_indexCounter++, 7.  , 42, 35, 55, 9.  , 1.45, "close lob", false));
             primarytable.add(new ShooterTableEntry(_indexCounter++, 10. , 33, 48, 55, 18. , 1.53, "index 10", false));
@@ -250,12 +250,12 @@ public class ShooterTable {
         // secondarytable.add(new ShooterTableEntry(_indexCounter++, 29, 2910, .33));
         if (ShooterConstants.kIsRealGoal) {
             // TODO
-            secondarytable.add(new ShooterTableEntry(_indexCounter++, 7.  , 2400, 2960, 55, 7. , 1.35, "close lob", false));
-            secondarytable.add(new ShooterTableEntry(_indexCounter++, 10. , 2390, 3530, 55, 14., 1.47, "index 10", false));
-            secondarytable.add(new ShooterTableEntry(_indexCounter++, 12.6, 2520, 3760, 55, 20., 1.58, "index 12.5", false));
-            secondarytable.add(new ShooterTableEntry(_indexCounter++, 15.1, 2660, 4140, 55, 29., 1.72, "index 15", false));
-            secondarytable.add(new ShooterTableEntry(_indexCounter++, 19.1, 3270, 4900, 55, 31.5, 2.30, "index 19", false));
-            secondarytable.add(new ShooterTableEntry(_indexCounter++, 22.1, 3620, 5440, 55, 33., 2.50, "index 22", false));
+            secondarytable.add(new ShooterTableEntry(_indexCounter++, 7., 1180, 1460, 55, 7., 0., "close lob", false));
+            secondarytable.add(new ShooterTableEntry(_indexCounter++, 10., 1130, 1740, 55, 14., 0., "index 10", false));
+            secondarytable.add(new ShooterTableEntry(_indexCounter++, 12.5, 1260, 2040, 55, 22, 0., "index 12.5", false));
+            secondarytable.add(new ShooterTableEntry(_indexCounter++, 15, 1100, 1940, 55, 30., 0., "index 15", false));
+            secondarytable.add(new ShooterTableEntry(_indexCounter++, 19, 1440, 2300, 55, 30., 0., "index 19", false));
+        secondarytable.add(new ShooterTableEntry(_indexCounter++, 22.1, 3620, 5440, 55, 33., 2.50, "index 22", false));
         } else {
             secondarytable.add(new ShooterTableEntry(_indexCounter++, 7. , 2420, 1970, 55, 9., 1.45, "close lob", false));
             secondarytable.add(new ShooterTableEntry(_indexCounter++, 10., 1950, 2770, 55, 17.5, 1.53, "index 10", false));

@@ -1,679 +1,387 @@
 {
-    "tabPane": [
-        {
-            "title": "SmartDashboard",
-            "autoPopulate": false,
-            "autoPopulatePrefix": "SmartDashboard/",
-            "widgetPane": {
-                "gridSize": 128.0,
-                "showGrid": true,
-                "hgap": 16.0,
-                "vgap": 16.0,
-                "titleType": 0,
-                "tiles": {
-                    "0,0": {
-                        "size": [
-                            1,
-                            1
-                        ],
-                        "content": {
-                            "_type": "Text View",
-                            "_source0": "network_table:///SmartDashboard/Shot Front RPM",
-                            "_title": "Shot Front RPM"
-                        }
-                    },
-                    "5,0": {
-                        "size": [
-                            1,
-                            1
-                        ],
-                        "content": {
-                            "_type": "Text View",
-                            "_source0": "network_table:///SmartDashboard/Limelight Distance",
-                            "_title": "Limelight"
-                        }
-                    },
-                    "4,0": {
-                        "size": [
-                            1,
-                            1
-                        ],
-                        "content": {
-                            "_type": "Text View",
-                            "_source0": "network_table:///SmartDashboard/Shooter Index",
-                            "_title": "Shooter Index"
-                        }
-                    },
-                    "1,0": {
-                        "size": [
-                            1,
-                            1
-                        ],
-                        "content": {
-                            "_type": "Text View",
-                            "_source0": "network_table:///SmartDashboard/Shot Back RPM",
-                            "_title": "Shot Back RPM"
-                        }
-                    },
-                    "6,0": {
-                        "size": [
-                            1,
-                            1
-                        ],
-                        "content": {
-                            "_type": "Boolean Box",
-                            "_source0": "network_table:///SmartDashboard/Has Target",
-                            "_title": "Has Target",
-                            "Colors/Color when true": "#7CFC00FF",
-                            "Colors/Color when false": "#8B0000FF"
-                        }
-                    },
-                    "1,3": {
-                        "size": [
-                            1,
-                            1
-                        ],
-                        "content": {
-                            "_type": "Text View",
-                            "_source0": "network_table:///SmartDashboard/X (Metres)",
-                            "_title": "X (Metres)"
-                        }
-                    },
-                    "3,0": {
-                        "size": [
-                            1,
-                            1
-                        ],
-                        "content": {
-                            "_type": "Text View",
-                            "_source0": "network_table:///SmartDashboard/Actuator Value",
-                            "_title": "Angle Target"
-                        }
-                    },
-                    "5,1": {
-                        "size": [
-                            1,
-                            1
-                        ],
-                        "content": {
-                            "_type": "Text View",
-                            "_source0": "network_table:///SmartDashboard/Target X Offset",
-                            "_title": "Target X Offset"
-                        }
-                    },
-                    "2,2": {
-                        "size": [
-                            1,
-                            1
-                        ],
-                        "content": {
-                            "_type": "Text View",
-                            "_source0": "network_table:///SmartDashboard/Y (Feet)",
-                            "_title": "Y (Feet)"
-                        }
-                    },
-                    "3,2": {
-                        "size": [
-                            1,
-                            1
-                        ],
-                        "content": {
-                            "_type": "Text View",
-                            "_source0": "network_table:///SmartDashboard/FL Angle",
-                            "_title": "FL Angle"
-                        }
-                    },
-                    "4,1": {
-                        "size": [
-                            1,
-                            1
-                        ],
-                        "content": {
-                            "_type": "Text View",
-                            "_source0": "network_table:///SmartDashboard/Shot",
-                            "_title": "Shot"
-                        }
-                    },
-                    "4,2": {
-                        "size": [
-                            1,
-                            1
-                        ],
-                        "content": {
-                            "_type": "Text View",
-                            "_source0": "network_table:///SmartDashboard/FR Angle",
-                            "_title": "FR Angle"
-                        }
-                    },
-                    "3,3": {
-                        "size": [
-                            1,
-                            1
-                        ],
-                        "content": {
-                            "_type": "Text View",
-                            "_source0": "network_table:///SmartDashboard/RL Angle",
-                            "_title": "RL Angle"
-                        }
-                    },
-                    "1,2": {
-                        "size": [
-                            1,
-                            1
-                        ],
-                        "content": {
-                            "_type": "Text View",
-                            "_source0": "network_table:///SmartDashboard/Y (Metres)",
-                            "_title": "Y (Metres)"
-                        }
-                    },
-                    "4,3": {
-                        "size": [
-                            1,
-                            1
-                        ],
-                        "content": {
-                            "_type": "Text View",
-                            "_source0": "network_table:///SmartDashboard/RR Angle",
-                            "_title": "RR Angle"
-                        }
-                    },
-                    "2,3": {
-                        "size": [
-                            1,
-                            1
-                        ],
-                        "content": {
-                            "_type": "Text View",
-                            "_source0": "network_table:///SmartDashboard/X (Feet)",
-                            "_title": "X (Feet)"
-                        }
-                    },
-                    "0,3": {
-                        "size": [
-                            1,
-                            1
-                        ],
-                        "content": {
-                            "_type": "Text View",
-                            "_source0": "network_table:///SmartDashboard/Heading (Deg)",
-                            "_title": "Heading (Deg)"
-                        }
-                    },
-                    "0,1": {
-                        "size": [
-                            1,
-                            1
-                        ],
-                        "content": {
-                            "_type": "Text View",
-                            "_source0": "network_table:///SmartDashboard/Front Motor RPM",
-                            "_title": "Front Motor RPM"
-                        }
-                    },
-                    "2,0": {
-                        "size": [
-                            1,
-                            1
-                        ],
-                        "content": {
-                            "_type": "Text View",
-                            "_source0": "network_table:///SmartDashboard/Shot Kicker RPM",
-                            "_title": "Shot Kicker RPM"
-                        }
-                    },
-                    "2,1": {
-                        "size": [
-                            1,
-                            1
-                        ],
-                        "content": {
-                            "_type": "Text View",
-                            "_source0": "network_table:///SmartDashboard/Kicker Motor RPM",
-                            "_title": "Kicker Motor RPM"
-                        }
-                    },
-                    "3,1": {
-                        "size": [
-                            1,
-                            1
-                        ],
-                        "content": {
-                            "_type": "Text View",
-                            "_source0": "network_table:///SmartDashboard/Angle",
-                            "_title": "Angle"
-                        }
-                    },
-                    "6,2": {
-                        "size": [
-                            1,
-                            1
-                        ],
-                        "content": {
-                            "_type": "Text View",
-                            "_source0": "network_table:///SmartDashboard/Right Climber",
-                            "_title": "Right Climber"
-                        }
-                    },
-                    "5,2": {
-                        "size": [
-                            1,
-                            1
-                        ],
-                        "content": {
-                            "_type": "Text View",
-                            "_source0": "network_table:///SmartDashboard/Left Climber",
-                            "_title": "Left Climber"
-                        }
-                    },
-                    "1,1": {
-                        "size": [
-                            1,
-                            1
-                        ],
-                        "content": {
-                            "_type": "Text View",
-                            "_source0": "network_table:///SmartDashboard/Back Motor RPM",
-                            "_title": "Back Motor RPM"
-                        }
-                    },
-                    "8,2": {
-                        "size": [
-                            2,
-                            2
-                        ],
-                        "content": {
-                            "_type": "ComboBox Chooser",
-                            "_source0": "network_table:///SmartDashboard/SendableChooser[0]",
-                            "_title": "/SmartDashboard/SendableChooser[0]"
-                        }
-                    },
-                    "7,0": {
-                        "size": [
-                            3,
-                            2
-                        ],
-                        "content": {
-                            "_type": "Camera Stream",
-                            "_source0": "camera_server://limelight",
-                            "_title": "limelight",
-                            "Crosshair/Show crosshair": true,
-                            "Crosshair/Crosshair color": "#FFFFFFFF",
-                            "Controls/Show controls": true,
-                            "Controls/Rotation": "NONE",
-                            "compression": -1.0,
-                            "fps": -1,
-                            "imageWidth": 0,
-                            "imageHeight": 0
-                        }
-                    },
-                    "5,3": {
-                        "size": [
-                            3,
-                            2
-                        ],
-                        "content": {
-                            "_type": "Camera Stream",
-                            "_source0": "camera_server://Shooter Cam",
-                            "_title": "Shooter Cam",
-                            "Crosshair/Show crosshair": true,
-                            "Crosshair/Crosshair color": "#FFFFFFFF",
-                            "Controls/Show controls": true,
-                            "Controls/Rotation": "NONE",
-                            "compression": -1.0,
-                            "fps": -1,
-                            "imageWidth": 0,
-                            "imageHeight": 0
-                        }
-                    }
-                }
+  "tabPane": [
+    {
+      "title": "SmartDashboard",
+      "autoPopulate": false,
+      "autoPopulatePrefix": "SmartDashboard/",
+      "widgetPane": {
+        "gridSize": 32.0,
+        "showGrid": true,
+        "hgap": 16.0,
+        "vgap": 16.0,
+        "titleType": 0,
+        "tiles": {
+          "0,0": {
+            "size": [
+              5,
+              2
+            ],
+            "content": {
+              "_type": "ComboBox Chooser",
+              "_source0": "network_table:///SmartDashboard/SendableChooser[0]",
+              "_title": "Auton Chooser"
             }
-        },
-        {
-            "title": "LiveWindow",
-            "autoPopulate": true,
-            "autoPopulatePrefix": "LiveWindow/",
-            "widgetPane": {
-                "gridSize": 128.0,
-                "showGrid": true,
-                "hgap": 16.0,
-                "vgap": 16.0,
-                "titleType": 0,
-                "tiles": {
-                    "0,0": {
-                        "size": [
-                            2,
-                            4
-                        ],
-                        "content": {
-                            "_type": "Subsystem Layout",
-                            "_source0": "network_table:///LiveWindow/Ungrouped",
-                            "_title": "Ungrouped",
-                            "Layout/Label position": "BOTTOM",
-                            "_children": [
-                                {
-                                    "_type": "Motor Controller",
-                                    "_source0": "network_table:///LiveWindow/Ungrouped/Talon FX [5]",
-                                    "_title": "Talon FX [5]",
-                                    "Visuals/Orientation": "HORIZONTAL"
-                                },
-                                {
-                                    "_type": "Motor Controller",
-                                    "_source0": "network_table:///LiveWindow/Ungrouped/Talon FX [4]",
-                                    "_title": "Talon FX [4]",
-                                    "Visuals/Orientation": "HORIZONTAL"
-                                },
-                                {
-                                    "_type": "PID Controller",
-                                    "_source0": "network_table:///LiveWindow/Ungrouped/PIDController[1]",
-                                    "_title": "PIDController[1]"
-                                },
-                                {
-                                    "_type": "Motor Controller",
-                                    "_source0": "network_table:///LiveWindow/Ungrouped/Talon FX [1]",
-                                    "_title": "Talon FX [1]",
-                                    "Visuals/Orientation": "HORIZONTAL"
-                                },
-                                {
-                                    "_type": "Motor Controller",
-                                    "_source0": "network_table:///LiveWindow/Ungrouped/Talon FX [3]",
-                                    "_title": "Talon FX [3]",
-                                    "Visuals/Orientation": "HORIZONTAL"
-                                },
-                                {
-                                    "_type": "PID Controller",
-                                    "_source0": "network_table:///LiveWindow/Ungrouped/PIDController[2]",
-                                    "_title": "PIDController[2]"
-                                },
-                                {
-                                    "_type": "Motor Controller",
-                                    "_source0": "network_table:///LiveWindow/Ungrouped/Talon FX [2]",
-                                    "_title": "Talon FX [2]",
-                                    "Visuals/Orientation": "HORIZONTAL"
-                                },
-                                {
-                                    "_type": "Motor Controller",
-                                    "_source0": "network_table:///LiveWindow/Ungrouped/Talon FX [6]",
-                                    "_title": "Talon FX [6]",
-                                    "Visuals/Orientation": "HORIZONTAL"
-                                },
-                                {
-                                    "_type": "Motor Controller",
-                                    "_source0": "network_table:///LiveWindow/Ungrouped/Talon FX [8]",
-                                    "_title": "Talon FX [8]",
-                                    "Visuals/Orientation": "HORIZONTAL"
-                                },
-                                {
-                                    "_type": "Boolean Box",
-                                    "_source0": "network_table:///LiveWindow/Ungrouped/Solenoid[0,0]/Value",
-                                    "_title": "Solenoid[0,0]/Value",
-                                    "Colors/Color when true": "#7CFC00FF",
-                                    "Colors/Color when false": "#8B0000FF"
-                                },
-                                {
-                                    "_type": "PID Controller",
-                                    "_source0": "network_table:///LiveWindow/Ungrouped/PIDController[3]",
-                                    "_title": "PIDController[3]"
-                                },
-                                {
-                                    "_type": "Text View",
-                                    "_source0": "network_table:///LiveWindow/Ungrouped/CANCoder [2]/Position",
-                                    "_title": "CANCoder [2]/Position"
-                                },
-                                {
-                                    "_type": "Motor Controller",
-                                    "_source0": "network_table:///LiveWindow/Ungrouped/Talon FX [7]",
-                                    "_title": "Talon FX [7]",
-                                    "Visuals/Orientation": "HORIZONTAL"
-                                },
-                                {
-                                    "_type": "PID Controller",
-                                    "_source0": "network_table:///LiveWindow/Ungrouped/PIDController[4]",
-                                    "_title": "PIDController[4]"
-                                },
-                                {
-                                    "_type": "Text View",
-                                    "_source0": "network_table:///LiveWindow/Ungrouped/CANCoder [4]/Position",
-                                    "_title": "CANCoder [4]/Position"
-                                },
-                                {
-                                    "_type": "Text View",
-                                    "_source0": "network_table:///LiveWindow/Ungrouped/Pigeon 2 [1]/Heading",
-                                    "_title": "Pigeon 2 [1]/Heading"
-                                },
-                                {
-                                    "_type": "Text View",
-                                    "_source0": "network_table:///LiveWindow/Ungrouped/CANCoder [1]/Position",
-                                    "_title": "CANCoder [1]/Position"
-                                },
-                                {
-                                    "_type": "Text View",
-                                    "_source0": "network_table:///LiveWindow/Ungrouped/CANCoder [3]/Position",
-                                    "_title": "CANCoder [3]/Position"
-                                },
-                                {
-                                    "_type": "PID Controller",
-                                    "_source0": "network_table:///LiveWindow/Ungrouped/PIDController[6]",
-                                    "_title": "PIDController[6]"
-                                },
-                                {
-                                    "_type": "Boolean Box",
-                                    "_source0": "network_table:///LiveWindow/Ungrouped/Solenoid[0,2]/Value",
-                                    "_title": "Solenoid[0,2]/Value",
-                                    "Colors/Color when true": "#7CFC00FF",
-                                    "Colors/Color when false": "#8B0000FF"
-                                },
-                                {
-                                    "_type": "PID Controller",
-                                    "_source0": "network_table:///LiveWindow/Ungrouped/PIDController[5]",
-                                    "_title": "PIDController[5]"
-                                },
-                                {
-                                    "_type": "Boolean Box",
-                                    "_source0": "network_table:///LiveWindow/Ungrouped/Solenoid[0,1]/Value",
-                                    "_title": "Solenoid[0,1]/Value",
-                                    "Colors/Color when true": "#7CFC00FF",
-                                    "Colors/Color when false": "#8B0000FF"
-                                },
-                                {
-                                    "_type": "PID Controller",
-                                    "_source0": "network_table:///LiveWindow/Ungrouped/PIDController[7]",
-                                    "_title": "PIDController[7]"
-                                },
-                                {
-                                    "_type": "PID Controller",
-                                    "_source0": "network_table:///LiveWindow/Ungrouped/PIDController[8]",
-                                    "_title": "PIDController[8]"
-                                },
-                                {
-                                    "_type": "PID Controller",
-                                    "_source0": "network_table:///LiveWindow/Ungrouped/PIDController[9]",
-                                    "_title": "PIDController[9]"
-                                },
-                                {
-                                    "_type": "PID Controller",
-                                    "_source0": "network_table:///LiveWindow/Ungrouped/PIDController[11]",
-                                    "_title": "PIDController[11]"
-                                },
-                                {
-                                    "_type": "PID Controller",
-                                    "_source0": "network_table:///LiveWindow/Ungrouped/PIDController[10]",
-                                    "_title": "PIDController[10]"
-                                },
-                                {
-                                    "_type": "PID Controller",
-                                    "_source0": "network_table:///LiveWindow/Ungrouped/PIDController[13]",
-                                    "_title": "/LiveWindow/Ungrouped/PIDController[13]"
-                                },
-                                {
-                                    "_type": "PID Controller",
-                                    "_source0": "network_table:///LiveWindow/Ungrouped/PIDController[12]",
-                                    "_title": "/LiveWindow/Ungrouped/PIDController[12]"
-                                },
-                                {
-                                    "_type": "PID Controller",
-                                    "_source0": "network_table:///LiveWindow/Ungrouped/PIDController[14]",
-                                    "_title": "/LiveWindow/Ungrouped/PIDController[14]"
-                                },
-                                {
-                                    "_type": "PID Controller",
-                                    "_source0": "network_table:///LiveWindow/Ungrouped/PIDController[15]",
-                                    "_title": "/LiveWindow/Ungrouped/PIDController[15]"
-                                }
-                            ]
-                        }
-                    },
-                    "2,0": {
-                        "size": [
-                            2,
-                            4
-                        ],
-                        "content": {
-                            "_type": "Subsystem Layout",
-                            "_source0": "network_table:///LiveWindow/Conveyor",
-                            "_title": "Conveyor",
-                            "Layout/Label position": "BOTTOM",
-                            "_children": []
-                        }
-                    },
-                    "4,0": {
-                        "size": [
-                            2,
-                            4
-                        ],
-                        "content": {
-                            "_type": "Subsystem Layout",
-                            "_source0": "network_table:///LiveWindow/Vision",
-                            "_title": "Vision",
-                            "Layout/Label position": "BOTTOM",
-                            "_children": []
-                        }
-                    },
-                    "6,0": {
-                        "size": [
-                            2,
-                            4
-                        ],
-                        "content": {
-                            "_type": "Subsystem Layout",
-                            "_source0": "network_table:///LiveWindow/Limelight",
-                            "_title": "Limelight",
-                            "Layout/Label position": "BOTTOM",
-                            "_children": []
-                        }
-                    },
-                    "8,0": {
-                        "size": [
-                            2,
-                            4
-                        ],
-                        "content": {
-                            "_type": "Subsystem Layout",
-                            "_source0": "network_table:///LiveWindow/Climber",
-                            "_title": "Climber",
-                            "Layout/Label position": "BOTTOM",
-                            "_children": []
-                        }
-                    }
-                }
+          },
+          "0,2": {
+            "size": [
+              3,
+              2
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/X (Metres)",
+              "_title": "X (Metres)"
             }
-        },
-        {
-            "title": "Shooter Testing",
-            "autoPopulate": false,
-            "autoPopulatePrefix": "",
-            "widgetPane": {
-                "gridSize": 128.0,
-                "showGrid": true,
-                "hgap": 16.0,
-                "vgap": 16.0,
-                "titleType": 0,
-                "tiles": {
-                    "3,1": {
-                        "size": [
-                            1,
-                            1
-                        ],
-                        "content": {
-                            "_type": "Text View",
-                            "_source0": "network_table:///SmartDashboard/Hood Angle (rot)",
-                            "_title": "Hood Angle (rot)"
-                        }
-                    },
-                    "3,0": {
-                        "size": [
-                            1,
-                            1
-                        ],
-                        "content": {
-                            "_type": "Text View",
-                            "_source0": "network_table:///SmartDashboard/FrontVbus",
-                            "_title": "FrontVbus"
-                        }
-                    },
-                    "5,0": {
-                        "size": [
-                            1,
-                            1
-                        ],
-                        "content": {
-                            "_type": "Text View",
-                            "_source0": "network_table:///SmartDashboard/BackVbus",
-                            "_title": "BackVbus"
-                        }
-                    },
-                    "5,1": {
-                        "size": [
-                            1,
-                            1
-                        ],
-                        "content": {
-                            "_type": "Text View",
-                            "_source0": "network_table:///SmartDashboard/KickerVbus",
-                            "_title": "KickerVbus"
-                        }
-                    }
-                }
+          },
+          "7,0": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Right Climber",
+              "_title": "R Climb"
             }
-        },
-        {
-            "title": "Tab 4",
-            "autoPopulate": false,
-            "autoPopulatePrefix": "",
-            "widgetPane": {
-                "gridSize": 128.0,
-                "showGrid": true,
-                "hgap": 16.0,
-                "vgap": 16.0,
-                "titleType": 0,
-                "tiles": {
-                    "3,0": {
-                        "size": [
-                            4,
-                            3
-                        ],
-                        "content": {
-                            "_type": "Camera Stream",
-                            "_source0": "camera_server://limelight",
-                            "_title": "limelight",
-                            "Crosshair/Show crosshair": true,
-                            "Crosshair/Crosshair color": "#FFFFFFFF",
-                            "Controls/Show controls": true,
-                            "Controls/Rotation": "NONE",
-                            "compression": -1.0,
-                            "fps": -1,
-                            "imageWidth": 0,
-                            "imageHeight": 0
-                        }
-                    }
-                }
+          },
+          "5,0": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Left Climber",
+              "_title": "L Climb"
             }
+          },
+          "3,2": {
+            "size": [
+              3,
+              2
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Y (Metres)",
+              "_title": "Y (Metres)"
+            }
+          },
+          "9,8": {
+            "size": [
+              5,
+              3
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/Shot Validation",
+              "_title": "Shot Validation",
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "6,2": {
+            "size": [
+              3,
+              2
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Heading (Deg)",
+              "_title": "Heading (Deg)"
+            }
+          },
+          "14,8": {
+            "size": [
+              2,
+              3
+            ],
+            "content": {
+              "_type": "Ball Status",
+              "_source0": "network_table:///SmartDashboard/Inner Ball",
+              "_title": "Shoot Ball"
+            }
+          },
+          "16,8": {
+            "size": [
+              2,
+              3
+            ],
+            "content": {
+              "_type": "Ball Status",
+              "_source0": "network_table:///SmartDashboard/Outer Ball",
+              "_title": "Infeed Ball"
+            }
+          },
+          "5,4": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/Singulator/Running",
+              "_title": "Sing",
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "0,4": {
+            "size": [
+              3,
+              2
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/Infeed/Running",
+              "_title": "Infeed",
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "3,4": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/Conveyor/Running",
+              "_title": "Convey",
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "13,4": {
+            "size": [
+              5,
+              4
+            ],
+            "content": {
+              "_type": "Shooter Index",
+              "_title": "Shooter Index"
+            }
+          },
+          "13,0": {
+            "size": [
+              5,
+              4
+            ],
+            "content": {
+              "_type": "Grid Layout",
+              "_title": "Limelight",
+              "Layout/Number of columns": 3,
+              "Layout/Number of rows": 1,
+              "Layout/Label position": "TOP",
+              "_children": {
+                "1,0": {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/Target X Offset",
+                  "_title": "Deg Off"
+                },
+                "0,0": {
+                  "_type": "Shooter Index",
+                  "_source0": "network_table:///SmartDashboard/Limelight Distance",
+                  "_title": "Distance"
+                },
+                "2,0": {
+                  "_type": "Boolean Box",
+                  "_source0": "network_table:///SmartDashboard/Has Target",
+                  "_title": "T",
+                  "Colors/Color when true": "#7CFC00FF",
+                  "Colors/Color when false": "#8B0000FF"
+                }
+              }
+            }
+          },
+          "11,0": {
+            "size": [
+              2,
+              8
+            ],
+            "content": {
+              "_type": "Grid Layout",
+              "_title": "Targets",
+              "Layout/Number of columns": 3,
+              "Layout/Number of rows": 3,
+              "Layout/Label position": "TOP",
+              "_children": {
+                "0,0": {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/Shot Front RPM",
+                  "_title": "Front"
+                },
+                "0,1": {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/Shot Back RPM",
+                  "_title": "Back"
+                },
+                "0,2": {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/Angle",
+                  "_title": "Angle"
+                }
+              }
+            }
+          },
+          "9,0": {
+            "size": [
+              2,
+              8
+            ],
+            "content": {
+              "_type": "Grid Layout",
+              "_title": "Actual",
+              "Layout/Number of columns": 3,
+              "Layout/Number of rows": 3,
+              "Layout/Label position": "TOP",
+              "_children": {
+                "0,0": {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/Front Motor RPM",
+                  "_title": "Front"
+                },
+                "0,1": {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/Back Motor RPM",
+                  "_title": "Back"
+                },
+                "0,2": {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/Actuator Value",
+                  "_title": "Angle"
+                }
+              }
+            }
+          },
+          "0,15": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/limelight_PipelineName",
+              "_title": "limelight_PipelineName"
+            }
+          },
+          "2,15": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/limelight_Interface",
+              "_title": "limelight_Interface"
+            }
+          },
+          "4,15": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/limelight_Stream",
+              "_title": "limelight_Stream"
+            }
+          },
+          "6,15": {
+            "size": [
+              3,
+              3
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/Shooter/Running",
+              "_title": "Shooter/Running",
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "9,15": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Shot Kicker RPM",
+              "_title": "Shot Kicker RPM"
+            }
+          },
+          "18,0": {
+            "size": [
+              13,
+              12
+            ],
+            "content": {
+              "_type": "Camera Stream",
+              "_source0": "camera_server://Dashboard Cam",
+              "_title": "Dashboard Cam",
+              "Crosshair/Show crosshair": true,
+              "Crosshair/Crosshair color": "#FFFFFFFF",
+              "Controls/Show controls": true,
+              "Controls/Rotation": "NONE",
+              "compression": -1.0,
+              "fps": -1,
+              "imageWidth": -1,
+              "imageHeight": -1
+            }
+          },
+          "0,6": {
+            "size": [
+              9,
+              7
+            ],
+            "content": {
+              "_type": "Camera Stream",
+              "_source0": "camera_server://limelight",
+              "_title": "limelight",
+              "Crosshair/Show crosshair": true,
+              "Crosshair/Crosshair color": "#FFFFFFFF",
+              "Controls/Show controls": true,
+              "Controls/Rotation": "NONE",
+              "compression": -1.0,
+              "fps": -1,
+              "imageWidth": 0,
+              "imageHeight": 0
+            }
+          },
+          "7,4": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/Shooter/Running",
+              "_title": "Shooter",
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          }
         }
-    ],
-    "windowGeometry": {
-        "x": -7.199999809265137,
-        "y": -7.199999809265137,
-        "width": 1550.4000244140625,
-        "height": 838.4000244140625
+      }
+    },
+    {
+      "title": "LiveWindow",
+      "autoPopulate": true,
+      "autoPopulatePrefix": "LiveWindow/",
+      "widgetPane": {
+        "gridSize": 128.0,
+        "showGrid": true,
+        "hgap": 16.0,
+        "vgap": 16.0,
+        "titleType": 0,
+        "tiles": {}
+      }
     }
+  ],
+  "windowGeometry": {
+    "x": 0.800000011920929,
+    "y": 0.800000011920929,
+    "width": 1918.4000244140625,
+    "height": 1038.4000244140625
+  }
 }

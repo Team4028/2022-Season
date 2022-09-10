@@ -5,12 +5,14 @@
 package frc.robot;
 
 import edu.wpi.first.math.filter.SlewRateLimiter;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
@@ -27,11 +29,13 @@ import frc.robot.commands.auton.TwoBallTopGetOutOfTheWayAuton;
 import frc.robot.commands.auton.TwoBallTopHangarDisposal;
 import frc.robot.commands.auton.TwoBallTopTrussDisposal;
 import frc.robot.commands.chassis.RotateDrivetrainByLimelightAngle;
+import frc.robot.commands.chassis.RotateDrivetrainToAngle;
 import frc.robot.commands.climber.HighBar;
 import frc.robot.commands.climber.LeftZeroSequence;
 import frc.robot.commands.climber.MidBar;
 import frc.robot.commands.climber.MidToHigh;
 import frc.robot.commands.climber.MoveArm;
+import frc.robot.commands.climber.MoveArmSlow;
 import frc.robot.commands.climber.RightZeroSequence;
 import frc.robot.commands.climber.ToggleTippy;
 import frc.robot.commands.conveyor.ReverseInfeedAndConveyor;
@@ -143,7 +147,7 @@ public class RobotContainer {
         m_operatorController.a.whenPressed(new RunConveyorTwoBall());
         m_operatorController.y.whenPressed(new EvacuateWrongCargo().withTimeout(2.0));
         // m_operatorController.b.whenPressed(new RunConveyorOneBall());
-        m_operatorController.b.whileActiveOnce(new RunShootersManual());
+        m_operatorController.b.toggleWhenPressed(new RunShootersManual());
         m_operatorController.x.whileActiveOnce(new MagicShootCommand());
         m_operatorController.rs.toggleWhenPressed(new ReverseInfeedAndSingulator());
         m_operatorController.start.whenPressed(new SetInfeedUp());
@@ -195,8 +199,8 @@ public class RobotContainer {
 
         // THIS IS ALL WORKING, DON'T CHANGE ANY OF THE COMMANDS
         m_climberController.back.whenPressed(new MoveArm(0.9, 127, false));
-                // .andThen(new WaitCommand(0.25))
-                // .andThen(new MoveArmSlow(0.2, 127)));
+        // .andThen(new WaitCommand(0.25))
+        // .andThen(new MoveArmSlow(0.2, 127)));
         m_climberController.back.whenPressed(new InstantCommand(() -> m_infeed.setInfeedDown()));
         m_climberController.back.whenPressed(new InstantCommand(() -> runShooter.cancel()));
         m_climberController.ls.whenPressed(new MidToHigh());
