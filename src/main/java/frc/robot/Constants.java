@@ -219,16 +219,16 @@ public final class Constants {
         // This can be fixed--and nothing can realistically be lost--
         // by upping the D a bit.
         public static final class Front {
-            public static double kF = 0.0475;
+            public static double kF = 0.045;
             public static double kP = 0.1;
-            public static double kD = 0.1;
+            public static double kD = 0.0;
             public static double kMax = 22040; // 20400; // 6445
         }
 
         public static final class Back {
-            public static double kF = 0.049;
+            public static double kF = 0.0465;
             public static double kP = 0.1;
-            public static double kD = 0.1;
+            public static double kD = 0.0;
             public static double kMax = 21800; // 17000; // 6445
         }
 

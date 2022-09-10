@@ -78,7 +78,7 @@ public class MagicShootMovingCommand extends SequentialCommandGroup {
                                         }),
                                         new InstantCommand(() -> this.cancel()),
                                         () -> limelight.getHasTarget()),
-                                new WaitUntilCommand(() -> limelight.getX() < 5.)
+                                new WaitUntilCommand(() -> Math.abs(limelight.getX()) < 10.)
                                         .deadlineWith(new RotateDrivetrainByLimelightAngle(true))
                                         .withTimeout(0.5),
                                 new InstantCommand(() -> shooter.setIsVbus(false)),
@@ -181,6 +181,7 @@ public class MagicShootMovingCommand extends SequentialCommandGroup {
                 shooter.stop();
                 Vision.getInstance().setInfeedCamera();
                 Conveyor.getInstance().setIsRunning(false);
+                Conveyor.getInstance().stopConveyorMotor();
             } else {
                 Vision.getInstance().setInfeedCamera();
                 Conveyor.getInstance().setIsRunning(true);

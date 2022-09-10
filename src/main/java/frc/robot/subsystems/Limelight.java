@@ -113,7 +113,9 @@ public class Limelight extends SubsystemBase {
 
     public double getY() {
         double raw = ty.getDouble(0.);
-        return raw - Math.abs(getX()) / 10.;
+        double x = getX();
+        double Yadj = (raw - 0.007693 * x * x) / (0.000316 * x * x + 1);
+        return Yadj;
     }
 
     public void setPipeline(double pipe) {
