@@ -19,10 +19,10 @@ public class MidToHigh extends SequentialCommandGroup {
         addCommands(
                 new ToggleGrippy(), // get grippy ready to latch
                 new WaitCommand(0.75/*1*/),
-                new MoveArm(VBusConstants.kClimberFast, 148, true),
+                new MoveArm(VBusConstants.kClimberFast, 153, 150, true),
                 new WaitCommand(1),
                 new ToggleGrippy()); // get grippy to high
-        /*
+        /*%
          * new ToggleGrippy(), // latch to high
          * new WaitCommand(1),
          * new MoveArm(-VBusConstants.kClimberFast, -5), // pull down to high

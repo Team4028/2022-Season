@@ -11,14 +11,23 @@ public class MoveArm extends CommandBase {
     /** Creates a new MoveArm. */
     private Climber climber = Climber.getInstance();
     double speed;
-    double encoderValue;
+    // double encoderValue;
+
+    double leftEncoderValue;
+    double rightEncoderValue;
+
     boolean resetEncoders;
 
     boolean leftFinished = false, rightFinished = false;
 
     public MoveArm(double speed, double encoderValue, boolean resetEncoders) {
+        this(speed, encoderValue, encoderValue, resetEncoders);
+    }
+
+    public MoveArm(double speed, double leftEncoderValue, double rightEncoderValue, boolean resetEncoders) {
         this.speed = speed;
-        this.encoderValue = encoderValue;
+        this.leftEncoderValue = leftEncoderValue;
+        this.rightEncoderValue = rightEncoderValue;
         this.resetEncoders = resetEncoders;
         // Use addRequirements() here to declare subsystem dependencies.
         addRequirements(climber);
@@ -55,11 +64,11 @@ public class MoveArm extends CommandBase {
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        if (Math.abs(climber.getLeftEncoderPosition() - encoderValue) < 3.) {
+        if (Math.abs(climber.getLeftEncoderPosition() - leftEncoderValue) < 3.) {
             climber.leftMotorOff();
             leftFinished = true;
         }
-        if (Math.abs(climber.getRightEncoderPosition() - encoderValue) < 3.) {
+        if (Math.abs(climber.getRightEncoderPosition() - rightEncoderValue) < 3.) {
             climber.rightMotorOff();
             rightFinished = true;
         }
