@@ -57,7 +57,7 @@ public class Robot extends TimedRobot {
         shooter = Shooter.getInstance();
         commandScheduler = CommandScheduler.getInstance();
 
-        limelight.setPipeline(ShooterConstants.kIsRealGoal ? 6 : 0);
+        limelight.setPipeline(ShooterConstants.kIsRealGoal ? 7 : 0);
         limelight.setPictureInPicture(0);
         limelight.setLedMode(1);
     }

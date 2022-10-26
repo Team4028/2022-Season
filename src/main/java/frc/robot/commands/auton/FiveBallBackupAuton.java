@@ -54,12 +54,13 @@ public class FiveBallBackupAuton extends BeakAutonCommand {
                 // new RunConveyor()
                 // ),
                 new RunConveyorTwoBall(),
+                new WaitCommand(0.2),
                 new InstantCommand(() -> Shooter.getInstance().stop()),
                 new InstantCommand(() -> Infeed.getInstance().forceRunInfeed(), Infeed.getInstance()),
                 util.getPathPlannerSwerveControllerCommand(Trajectories.FiveBall_AcquireLoadingZoneCargo()),
-                new WaitCommand(0.35),
+                new WaitCommand(0.25),
                 util.getPathPlannerSwerveControllerCommand(Trajectories.FourBall_Backup()),
-                new WaitCommand(1.0),
+                new WaitCommand(0.9),
                 util.getPathPlannerSwerveControllerCommand(Trajectories.FourBall_BackupReturnToShoot())
                         .alongWith(new WaitCommand(1.0)
                                 .andThen(new InstantCommand(() -> Shooter.getInstance().runShooterMotors()))),
